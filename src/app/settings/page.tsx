@@ -392,7 +392,7 @@ export default function SettingsPage() {
           <div className="space-y-2 text-sm">
             <p>
               <span className="text-muted-foreground">Version:</span>{' '}
-              <span className="text-foreground">0.3.5</span>
+              <span className="text-foreground">1.0.0</span>
             </p>
             <p className="text-muted-foreground">
               Chrysalide est une application de suivi médical personnel pour les personnes trans.
