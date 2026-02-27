@@ -1,0 +1,18 @@
+# Build output
+.next/
+out/
+build/
+
+# Dependencies
+node_modules/
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+pnpm-lock.yaml
+
+# Planning files (local only)
+task_plan.md
+findings.md
+progress.md
+notes.md
