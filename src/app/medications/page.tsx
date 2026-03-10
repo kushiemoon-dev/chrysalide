@@ -25,6 +25,7 @@ import {
   ChevronDown,
   Droplet,
   History,
+  BarChart3,
 } from 'lucide-react'
 import Link from 'next/link'
 import {
@@ -46,6 +47,7 @@ import {
 } from '@/lib/notifications'
 import type { Medication, MedicationLog, GelApplicationZone } from '@/lib/types'
 import { MEDICATION_TYPES, ADMINISTRATION_METHODS, GEL_APPLICATION_ZONES } from '@/lib/constants'
+import { TreatmentGanttChart } from '@/components/medications/treatment-gantt-chart'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useConfetti } from '@/components/objectives/celebration-modal'
@@ -57,6 +59,7 @@ export default function MedicationsPage() {
   const [lastLogs, setLastLogs] = useState<Record<number, MedicationLog>>({})
   const [loading, setLoading] = useState(true)
   const [inactiveOpen, setInactiveOpen] = useState(false)
+  const [ganttOpen, setGanttOpen] = useState(false)
 
   // Modal pour prise passée
   const [pastDoseModal, setPastDoseModal] = useState(false)
@@ -90,8 +93,14 @@ export default function MedicationsPage() {
 
     let autoCreatedCount = 0
 
+    const now = new Date()
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
     for (const med of medications) {
       if (!med.id || !med.isActive) continue
+
+      // Skip ended treatments
+      if (med.endDate && new Date(med.endDate) < todayStart) continue
 
       // Skip if medication shouldn't be taken today
       if (!shouldTakeMedicationToday(med)) continue
@@ -166,9 +175,17 @@ export default function MedicationsPage() {
 
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
+    const yesterdayStart = new Date(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate()
+    )
 
     for (const med of medications) {
       if (!med.id || !med.isActive) continue
+
+      // Skip ended treatments
+      if (med.endDate && new Date(med.endDate) < yesterdayStart) continue
 
       // Check if medication should have been taken yesterday
       if (!shouldTakeMedicationOnDate(med, yesterday)) continue
@@ -216,9 +233,16 @@ export default function MedicationsPage() {
         getTodayLogs(),
       ])
 
-      const activeMeds = allMeds.filter((med) => med.isActive)
+      const now = new Date()
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+      const activeMeds = allMeds.filter((med) => {
+        if (!med.isActive) return false
+        if (med.endDate && new Date(med.endDate) < todayStart) return false
+        return true
+      })
       setActiveMedications(activeMeds)
-      setInactiveMedications(allMeds.filter((med) => !med.isActive))
+      setInactiveMedications(allMeds.filter((med) => !activeMeds.includes(med)))
 
       // Auto-validate yesterday's missed doses first (one-time on load)
       const yesterdayCount = await autoValidateYesterdayDoses(activeMeds)
@@ -509,6 +533,26 @@ export default function MedicationsPage() {
           </Link>
         </div>
       </div>
+
+      {/* Vue chronologique Gantt */}
+      {(activeMedications.length > 0 || inactiveMedications.length > 0) && (
+        <Collapsible open={ganttOpen} onOpenChange={setGanttOpen}>
+          <CollapsibleTrigger asChild>
+            <Button variant="outline" className="w-full justify-between">
+              <span className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Vue chronologique
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${ganttOpen ? 'rotate-180' : ''}`}
+              />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="mt-3">
+            <TreatmentGanttChart medications={[...activeMedications, ...inactiveMedications]} />
+          </CollapsibleContent>
+        </Collapsible>
+      )}
 
       {/* Medications List */}
       {activeMedications.length === 0 && inactiveMedications.length === 0 ? (

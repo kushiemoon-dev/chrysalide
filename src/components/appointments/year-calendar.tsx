@@ -162,7 +162,12 @@ function MonthMiniCalendar({
                 hasAppointments && 'font-medium'
               )}
             >
-              <span className={cn(today && 'text-primary')}>{format(day, 'd')}</span>
+              <span
+                className={cn(today && 'text-primary')}
+                style={hasAppointments && !today ? { color: appointmentColors[0] } : undefined}
+              >
+                {format(day, 'd')}
+              </span>
 
               {/* Indicateurs de RDV */}
               {hasAppointments && (
