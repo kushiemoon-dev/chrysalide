@@ -250,7 +250,19 @@ export async function getTodayLogsForMedication(medicationId: number) {
 }
 
 export async function addMedicationLog(log: Omit<MedicationLog, 'id'>) {
-  return db.medicationLogs.add(log)
+  const id = await db.medicationLogs.add(log)
+
+  if (log.taken) {
+    const medication = await db.medications.get(log.medicationId)
+    if (medication && medication.stock !== undefined && medication.stock > 0) {
+      await db.medications.update(log.medicationId, {
+        stock: medication.stock - 1,
+        updatedAt: new Date(),
+      })
+    }
+  }
+
+  return id
 }
 
 export async function updateMedicationLog(id: number, updates: Partial<MedicationLog>) {

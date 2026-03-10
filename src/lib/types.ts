@@ -22,7 +22,7 @@ export type AdministrationMethod =
 export type SchedulingMode = 'simple' | 'advanced'
 
 // Routes d'administration spécifiques
-export type PillAdministrationRoute = 'oral' | 'sublingual'
+export type PillAdministrationRoute = 'oral' | 'sublingual' | 'vaginal' | 'rectal'
 export type InjectionAdministrationRoute = 'subcutaneous' | 'intramuscular'
 
 // Zones d'application gel
