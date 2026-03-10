@@ -36,6 +36,8 @@ export const ADMINISTRATION_METHODS: Record<AdministrationMethod, string> = {
 export const PILL_ROUTES: Record<PillAdministrationRoute, string> = {
   oral: 'Oral',
   sublingual: 'Sublingual',
+  vaginal: 'Vaginal',
+  rectal: 'Rectal',
 }
 
 export const INJECTION_ROUTES: Record<InjectionAdministrationRoute, string> = {
