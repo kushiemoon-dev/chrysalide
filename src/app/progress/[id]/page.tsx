@@ -22,8 +22,6 @@ import { db } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { getDateLocale } from '@/i18n/date-locale'
-import type { Locale } from '@/i18n/config'
 
 const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
   weight: 'kg',
