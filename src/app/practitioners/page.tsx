@@ -40,12 +40,15 @@ import {
   deletePractitioner,
   countAppointmentsForAllPractitioners,
 } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Practitioner, AppointmentType } from '@/lib/types'
 
 type FilterType = 'all' | AppointmentType
 
 export default function PractitionersPage() {
+  const tAppt = useTranslations('appointments')
+  const t = useTranslations('practitioners')
   const [practitioners, setPractitioners] = useState<Practitioner[]>([])
   const [appointmentCounts, setAppointmentCounts] = useState<Map<number, number>>(new Map())
   const [loading, setLoading] = useState(true)
@@ -98,17 +101,17 @@ export default function PractitionersPage() {
         <div>
           <h1 className="text-foreground flex items-center gap-2 text-2xl font-bold">
             <Users className="text-trans-blue h-6 w-6" />
-            Praticien·nes
+            {t('title')}
           </h1>
           <p className="text-muted-foreground text-sm">
-            {practitioners.length} praticien·ne{practitioners.length > 1 ? 's' : ''} enregistré·e
-            {practitioners.length > 1 ? 's' : ''}
+            {practitioners.length}{' '}
+            {practitioners.length > 1 ? t('registeredPlural') : t('registered')}
           </p>
         </div>
         <Link href="/practitioners/new">
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            Ajouter
+            {t('add')}
           </Button>
         </Link>
       </div>
@@ -119,13 +122,13 @@ export default function PractitionersPage() {
           <Select value={filter} onValueChange={(v) => setFilter(v as FilterType)}>
             <SelectTrigger className="w-full">
               <Filter className="text-muted-foreground mr-2 h-4 w-4" />
-              <SelectValue placeholder="Filtrer par type" />
+              <SelectValue placeholder={t('list.filterByType')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les types</SelectItem>
-              {Object.entries(APPOINTMENT_TYPES).map(([key, info]) => (
+              <SelectItem value="all">{t('list.allTypes')}</SelectItem>
+              {Object.entries(APPOINTMENT_TYPES).map(([key]) => (
                 <SelectItem key={key} value={key}>
-                  {info.label}
+                  {tAppt('types.' + key)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -140,14 +143,12 @@ export default function PractitionersPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <Users className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucun·e praticien·ne</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez vos praticien·nes pour les retrouver facilement
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('list.empty')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDesc')}</p>
             <Link href="/practitioners/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter un·e praticien·ne
+                {t('addPractitioner')}
               </Button>
             </Link>
           </CardContent>
@@ -179,7 +180,7 @@ export default function PractitionersPage() {
           {Object.entries(grouped).map(([specialty, list]) => (
             <div key={specialty} className="space-y-2">
               <h3 className="text-muted-foreground px-1 text-sm font-medium">
-                {APPOINTMENT_TYPES[specialty as AppointmentType]?.label}
+                {tAppt('types.' + specialty)}
               </h3>
               <div className="space-y-2">
                 {list.map((practitioner) => (
@@ -210,7 +211,7 @@ export default function PractitionersPage() {
           {filteredPractitioners.length === 0 && (
             <Card>
               <CardContent className="py-8 text-center">
-                <p className="text-muted-foreground">Aucun·e praticien·ne de ce type</p>
+                <p className="text-muted-foreground">{t('list.emptyOfType')}</p>
               </CardContent>
             </Card>
           )}
@@ -221,18 +222,18 @@ export default function PractitionersPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer ce·tte praticien·ne ?</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              {deleteTarget?.name} sera supprimé·e de votre annuaire. Cette action est irréversible.
+              {t('deleteDialog.description', { name: deleteTarget?.name ?? '' })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{t('deleteDialog.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground"
             >
-              Supprimer
+              {t('deleteDialog.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -250,6 +251,7 @@ function PractitionerCard({
   appointmentCount: number
   onDelete: () => void
 }) {
+  const t = useTranslations('practitioners')
   const typeInfo = APPOINTMENT_TYPES[practitioner.specialty]
 
   return (
@@ -297,7 +299,7 @@ function PractitionerCard({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Mail className="h-3 w-3" />
-                  Email
+                  {t('email')}
                 </a>
               )}
               {practitioner.website && (
@@ -309,7 +311,7 @@ function PractitionerCard({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ExternalLink className="h-3 w-3" />
-                  Site web
+                  {t('siteWeb')}
                 </a>
               )}
             </div>
@@ -322,7 +324,7 @@ function PractitionerCard({
 
             <div className="mt-2 flex items-center gap-2">
               <Badge variant="outline" className="text-xs">
-                {appointmentCount} RDV
+                {t('countRDV', { count: appointmentCount })}
               </Badge>
             </div>
           </div>

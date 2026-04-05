@@ -1,16 +1,21 @@
 'use client'
 
 import { useMemo, useRef, useState } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { MEDICATION_TYPES } from '@/lib/constants'
 import type { Medication } from '@/lib/types'
 import { format, differenceInDays, startOfMonth, endOfMonth, eachMonthOfInterval } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 interface TreatmentGanttChartProps {
   medications: Medication[]
 }
 
 export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
+  const t = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [currentTime] = useState(() => Date.now())
 
@@ -40,7 +45,7 @@ export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
 
   if (medications.length === 0) {
     return (
-      <p className="text-muted-foreground py-4 text-center text-sm">Aucun traitement à afficher.</p>
+      <p className="text-muted-foreground py-4 text-center text-sm">{t('history.noTreatments')}</p>
     )
   }
 
@@ -113,7 +118,7 @@ export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
                   style={{ left, width, lineHeight: '32px' }}
                 >
                   <span className="text-muted-foreground capitalize">
-                    {format(month, 'MMM yy', { locale: fr })}
+                    {format(month, 'MMM yy', { locale: dateLocale })}
                   </span>
                 </div>
               )

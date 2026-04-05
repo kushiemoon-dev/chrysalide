@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +38,8 @@ import {
 
 export default function NewMedicationPage() {
   const router = useRouter()
+  const t = useTranslations('medications')
+  const tc = useTranslations('common')
   const [loading, setLoading] = useState(false)
 
   // Form state
@@ -140,7 +143,7 @@ export default function NewMedicationPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-foreground text-xl font-bold">Nouveau médicament</h1>
+        <h1 className="text-foreground text-xl font-bold">{t('new.title')}</h1>
       </div>
 
       {/* Quick Select */}
@@ -148,13 +151,13 @@ export default function NewMedicationPage() {
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-sm">
             <Sparkles className="text-primary h-4 w-4" />
-            Médicaments courants
+            {t('new.commonTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Select onValueChange={handleSelectCommonMedication}>
             <SelectTrigger>
-              <SelectValue placeholder="Sélectionner un médicament..." />
+              <SelectValue placeholder={t('new.commonPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
               {COMMON_MEDICATIONS.map((med) => (
@@ -171,30 +174,30 @@ export default function NewMedicationPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Informations générales</CardTitle>
+            <CardTitle className="text-base">{t('new.generalInfo')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom du médicament</Label>
+              <Label htmlFor="name">{t('form.medicationName')}</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ex: Œstradiol"
+                placeholder={t('new.namePlaceholder')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="type">Type</Label>
+              <Label htmlFor="type">{t('form.type')}</Label>
               <Select value={type} onValueChange={(v) => setType(v as MedicationType)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(MEDICATION_TYPES).map(([key, { label }]) => (
+                  {Object.keys(MEDICATION_TYPES).map((key) => (
                     <SelectItem key={key} value={key}>
-                      {label}
+                      {t(`types.${key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -203,7 +206,7 @@ export default function NewMedicationPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="dosage">Dosage</Label>
+                <Label htmlFor="dosage">{t('form.dosage')}</Label>
                 <Input
                   id="dosage"
                   type="number"
@@ -215,7 +218,7 @@ export default function NewMedicationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="unit">Unité</Label>
+                <Label htmlFor="unit">{t('form.unit')}</Label>
                 <Select value={unit} onValueChange={setUnit}>
                   <SelectTrigger>
                     <SelectValue />
@@ -232,7 +235,7 @@ export default function NewMedicationPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="method">Mode d&apos;administration</Label>
+              <Label htmlFor="method">{t('form.method')}</Label>
               <Select
                 value={method}
                 onValueChange={(v) => {
@@ -249,9 +252,9 @@ export default function NewMedicationPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(ADMINISTRATION_METHODS).map(([key, label]) => (
+                  {Object.keys(ADMINISTRATION_METHODS).map((key) => (
                     <SelectItem key={key} value={key}>
-                      {label}
+                      {t(`methods.${key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -261,18 +264,18 @@ export default function NewMedicationPage() {
             {/* Route d'administration pour comprimés */}
             {method === 'pill' && (
               <div className="space-y-2">
-                <Label htmlFor="pillRoute">Voie d&apos;administration (optionnel)</Label>
+                <Label htmlFor="pillRoute">{t('form.pillRoute')}</Label>
                 <Select
                   value={pillRoute || ''}
                   onValueChange={(v) => setPillRoute((v as PillAdministrationRoute) || undefined)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(PILL_ROUTES).map(([key, label]) => (
+                    {Object.keys(PILL_ROUTES).map((key) => (
                       <SelectItem key={key} value={key}>
-                        {label}
+                        {t(`pillRoutes.${key}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -283,7 +286,7 @@ export default function NewMedicationPage() {
             {/* Route d'administration pour injections */}
             {method === 'injection' && (
               <div className="space-y-2">
-                <Label htmlFor="injectionRoute">Type d&apos;injection (optionnel)</Label>
+                <Label htmlFor="injectionRoute">{t('form.injectionRoute')}</Label>
                 <Select
                   value={injectionRoute || ''}
                   onValueChange={(v) =>
@@ -291,12 +294,12 @@ export default function NewMedicationPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(INJECTION_ROUTES).map(([key, label]) => (
+                    {Object.keys(INJECTION_ROUTES).map((key) => (
                       <SelectItem key={key} value={key}>
-                        {label}
+                        {t(`injectionRoutes.${key}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -305,7 +308,7 @@ export default function NewMedicationPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="frequency">Fréquence</Label>
+              <Label htmlFor="frequency">{t('form.frequency')}</Label>
               <Select value={frequency} onValueChange={setFrequency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -313,7 +316,7 @@ export default function NewMedicationPage() {
                 <SelectContent>
                   {getFrequenciesForMethod(method).map((f) => (
                     <SelectItem key={f} value={f}>
-                      {f}
+                      {t('frequencies.' + f)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -321,7 +324,7 @@ export default function NewMedicationPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="startDate">Date de début</Label>
+              <Label htmlFor="startDate">{t('form.startDate')}</Label>
               <Input
                 id="startDate"
                 type="date"
@@ -338,16 +341,14 @@ export default function NewMedicationPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Clock className="text-primary h-4 w-4" />
-              Horaires de prise
+              {t('new.schedulingTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-foreground font-medium">Mode avancé</p>
-                <p className="text-muted-foreground text-sm">
-                  Définir des horaires précis pour chaque dose
-                </p>
+                <p className="text-foreground font-medium">{t('new.advancedMode')}</p>
+                <p className="text-muted-foreground text-sm">{t('new.advancedModeDescription')}</p>
               </div>
               <Switch
                 checked={schedulingMode === 'advanced'}
@@ -357,9 +358,7 @@ export default function NewMedicationPage() {
 
             {schedulingMode === 'advanced' && (
               <div className="border-border space-y-3 border-t pt-2">
-                <p className="text-muted-foreground text-sm">
-                  Ajoutez les horaires pour chaque prise quotidienne :
-                </p>
+                <p className="text-muted-foreground text-sm">{t('new.advancedModeHint')}</p>
                 {scheduledTimes.map((time, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <Input
@@ -389,7 +388,7 @@ export default function NewMedicationPage() {
                   className="w-full gap-2"
                 >
                   <Plus className="h-4 w-4" />
-                  Ajouter un horaire
+                  {t('new.addTime')}
                 </Button>
               </div>
             )}
@@ -398,12 +397,12 @@ export default function NewMedicationPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Gestion du stock (optionnel)</CardTitle>
+            <CardTitle className="text-base">{t('new.stockTitle')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="stock">Stock actuel</Label>
+                <Label htmlFor="stock">{t('form.stock')}</Label>
                 <Input
                   id="stock"
                   type="number"
@@ -414,15 +413,15 @@ export default function NewMedicationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="stockUnit">Unité de stock</Label>
+                <Label htmlFor="stockUnit">{t('form.stockUnit')}</Label>
                 <Select value={stockUnit} onValueChange={setStockUnit}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STOCK_UNITS.map((u) => (
                       <SelectItem key={u} value={u}>
-                        {u}
+                        {t(`stockUnits.${u}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -430,7 +429,7 @@ export default function NewMedicationPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="stockAlert">Alerte si sous</Label>
+              <Label htmlFor="stockAlert">{t('form.lowStockAlert')}</Label>
               <Input
                 id="stockAlert"
                 type="number"
@@ -446,11 +445,11 @@ export default function NewMedicationPage() {
         <div className="flex gap-3">
           <Link href="/medications" className="flex-1">
             <Button variant="outline" className="w-full" type="button">
-              Annuler
+              {tc('cancel')}
             </Button>
           </Link>
           <Button type="submit" className="flex-1" disabled={loading}>
-            {loading ? 'Enregistrement...' : 'Enregistrer'}
+            {loading ? tc('saving') : tc('save')}
           </Button>
         </div>
       </form>

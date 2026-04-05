@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -30,20 +33,16 @@ import {
   updateMedicationLog,
   getGelApplicationHistory,
 } from '@/lib/db'
-import {
-  MEDICATION_TYPES,
-  ADMINISTRATION_METHODS,
-  PILL_ROUTES,
-  INJECTION_ROUTES,
-  GEL_APPLICATION_ZONES,
-} from '@/lib/constants'
+import { MEDICATION_TYPES } from '@/lib/constants'
 import type { Medication, MedicationLog } from '@/lib/types'
 import { format, differenceInDays } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 export default function MedicationDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const t = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [medication, setMedication] = useState<Medication | null>(null)
   const [recentLogs, setRecentLogs] = useState<MedicationLog[]>([])
   const [gelHistory, setGelHistory] = useState<MedicationLog[]>([])
@@ -159,12 +158,12 @@ export default function MedicationDetailPage() {
 
   // Construire la description complète de la méthode d'administration
   const getFullMethodDescription = () => {
-    const baseMethod = ADMINISTRATION_METHODS[medication.method]
+    const baseMethod = t(`methods.${medication.method}`)
     if (medication.method === 'pill' && medication.pillRoute) {
-      return `${baseMethod} (${PILL_ROUTES[medication.pillRoute]})`
+      return `${baseMethod} (${t(`pillRoutes.${medication.pillRoute}`)})`
     }
     if (medication.method === 'injection' && medication.injectionRoute) {
-      return `${baseMethod} (${INJECTION_ROUTES[medication.injectionRoute]})`
+      return `${baseMethod} (${t(`injectionRoutes.${medication.injectionRoute}`)})`
     }
     return baseMethod
   }
@@ -208,7 +207,7 @@ export default function MedicationDetailPage() {
       {/* Status Badges */}
       <div className="flex flex-wrap gap-2">
         <Badge variant="outline" style={{ borderColor: typeInfo.color, color: typeInfo.color }}>
-          {typeInfo.label}
+          {t(`types.${medication.type}`)}
         </Badge>
         {medication.isActive ? (
           <Badge variant="default" className="bg-green-600">
@@ -251,7 +250,7 @@ export default function MedicationDetailPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-foreground font-medium">{medication.frequency}</p>
+          <p className="text-foreground font-medium">{t('frequencies.' + medication.frequency)}</p>
 
           {/* Mode avancé: afficher les horaires */}
           {medication.schedulingMode === 'advanced' && medication.scheduledTimes?.length && (
@@ -279,8 +278,10 @@ export default function MedicationDetailPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Date de début</span>
-            <span className="font-medium">{format(startDate, 'd MMMM yyyy', { locale: fr })}</span>
+            <span className="text-muted-foreground">{t('detail.startDate')}</span>
+            <span className="font-medium">
+              {format(startDate, 'd MMMM yyyy', { locale: dateLocale })}
+            </span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Durée</span>
@@ -288,14 +289,14 @@ export default function MedicationDetailPage() {
           </div>
           {medication.endDate && (
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Date de fin</span>
+              <span className="text-muted-foreground">{t('detail.endDate')}</span>
               <span className="font-medium">
                 {format(
                   medication.endDate instanceof Date
                     ? medication.endDate
                     : new Date(medication.endDate),
                   'd MMMM yyyy',
-                  { locale: fr }
+                  { locale: dateLocale }
                 )}
               </span>
             </div>
@@ -323,7 +324,7 @@ export default function MedicationDetailPage() {
             )}
             {medication.stockAlert !== undefined && (
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Alerte si sous</span>
+                <span className="text-muted-foreground">{t('detail.lowStockAlert')}</span>
                 <span className="font-medium">
                   {medication.stockAlert} {medication.stockUnit || medication.unit}
                 </span>
@@ -365,11 +366,11 @@ export default function MedicationDetailPage() {
                   className="border-border flex items-center justify-between border-b py-2 text-sm last:border-0"
                 >
                   <span className="text-muted-foreground">
-                    {format(new Date(log.timestamp), 'EEEE d MMM', { locale: fr })}
+                    {format(new Date(log.timestamp), 'EEEE d MMM', { locale: dateLocale })}
                   </span>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="text-xs">
-                      {log.applicationZone && GEL_APPLICATION_ZONES[log.applicationZone]}
+                      {log.applicationZone && t(`gelZones.${log.applicationZone}`)}
                     </Badge>
                     <span className="text-foreground">
                       {format(new Date(log.timestamp), 'HH:mm')}
@@ -435,7 +436,7 @@ export default function MedicationDetailPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">
-                          {format(new Date(log.timestamp), 'EEEE d MMM', { locale: fr })}
+                          {format(new Date(log.timestamp), 'EEEE d MMM', { locale: dateLocale })}
                         </span>
                         <div className="flex items-center gap-2">
                           {log.scheduledTime && (

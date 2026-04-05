@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -18,7 +21,6 @@ import Link from 'next/link'
 import { getPhysicalProgress, getUserProfile } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { ExportButton } from '@/components/ui/export-button'
 import {
   LineChart,
@@ -31,16 +33,6 @@ import {
   Legend,
 } from 'recharts'
 
-const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
-  weight: 'Poids',
-  height: 'Taille',
-  chest: 'Poitrine',
-  underbust: 'Sous-poitrine',
-  waist: 'Taille',
-  hips: 'Hanches',
-  shoulders: 'Épaules',
-}
-
 const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
   weight: 'kg',
   height: 'cm',
@@ -52,6 +44,20 @@ const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
 }
 
 export default function ProgressPage() {
+  const t = useTranslations('progress')
+  const tc = useTranslations('common')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
+
+  const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
+    weight: t('measurements.weight'),
+    height: t('measurements.height'),
+    chest: t('measurements.chest'),
+    underbust: t('measurements.underChest'),
+    waist: t('waistLabel'),
+    hips: t('measurements.hips'),
+    shoulders: t('measurements.shoulders'),
+  }
   const [entries, setEntries] = useState<PhysicalProgress[]>([])
   const [loading, setLoading] = useState(true)
   const [userName, setUserName] = useState<string | undefined>()
@@ -71,8 +77,8 @@ export default function ProgressPage() {
 
   // Prepare chart data (reverse for chronological order)
   const chartData = [...entries].reverse().map((entry) => ({
-    date: format(new Date(entry.date), 'd MMM', { locale: fr }),
-    fullDate: format(new Date(entry.date), 'd MMMM yyyy', { locale: fr }),
+    date: format(new Date(entry.date), 'd MMM', { locale: dateLocale }),
+    fullDate: format(new Date(entry.date), 'd MMMM yyyy', { locale: dateLocale }),
     ...entry.measurements,
   }))
 
@@ -92,7 +98,7 @@ export default function ProgressPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{tc('loading')}</p>
       </div>
     )
   }
@@ -102,9 +108,9 @@ export default function ProgressPage() {
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Évolution</h1>
+          <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground text-sm">
-            {entries.length} entrée{entries.length > 1 ? 's' : ''}
+            {entries.length} {entries.length > 1 ? t('entries') : t('entry')}
           </p>
         </div>
         <div className="flex gap-2">
@@ -116,7 +122,7 @@ export default function ProgressPage() {
           <Link href="/progress/new">
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Ajouter
+              {t('add')}
             </Button>
           </Link>
         </div>
@@ -128,14 +134,12 @@ export default function ProgressPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <TrendingUp className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucune entrée</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Documentez votre évolution physique avec photos et mensurations
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('noEntries')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('noEntriesDesc')}</p>
             <Link href="/progress/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter une entrée
+                {t('addEntry')}
               </Button>
             </Link>
           </CardContent>
@@ -143,9 +147,9 @@ export default function ProgressPage() {
       ) : (
         <Tabs defaultValue="timeline" className="space-y-4">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="timeline">Timeline</TabsTrigger>
-            <TabsTrigger value="graphs">Graphiques</TabsTrigger>
-            <TabsTrigger value="photos">Photos</TabsTrigger>
+            <TabsTrigger value="timeline">{t('tabs.timeline')}</TabsTrigger>
+            <TabsTrigger value="graphs">{t('tabs.charts')}</TabsTrigger>
+            <TabsTrigger value="photos">{t('tabs.photos')}</TabsTrigger>
           </TabsList>
 
           {/* Timeline Tab */}
@@ -155,13 +159,13 @@ export default function ProgressPage() {
               <Card>
                 <CardContent className="p-3 text-center">
                   <p className="text-primary text-2xl font-bold">{entries.length}</p>
-                  <p className="text-muted-foreground text-xs">Entrées</p>
+                  <p className="text-muted-foreground text-xs">{t('stats.entries')}</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-3 text-center">
                   <p className="text-foreground text-2xl font-bold">{totalPhotos}</p>
-                  <p className="text-muted-foreground text-xs">Photos</p>
+                  <p className="text-muted-foreground text-xs">{t('stats.photos')}</p>
                 </CardContent>
               </Card>
               <Card>
@@ -175,7 +179,7 @@ export default function ProgressPage() {
                         )
                       : 0}
                   </p>
-                  <p className="text-muted-foreground text-xs">Jours</p>
+                  <p className="text-muted-foreground text-xs">{t('stats.days')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -206,7 +210,7 @@ export default function ProgressPage() {
                         <div className="flex flex-1 items-center justify-between p-3">
                           <div className="space-y-1">
                             <p className="text-foreground font-medium">
-                              {format(new Date(entry.date), 'd MMMM yyyy', { locale: fr })}
+                              {format(new Date(entry.date), 'd MMMM yyyy', { locale: dateLocale })}
                             </p>
                             <div className="flex flex-wrap gap-1">
                               {entry.photos && entry.photos.length > 0 && (
@@ -243,7 +247,7 @@ export default function ProgressPage() {
             {availableMeasurements.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center">
-                  <p className="text-muted-foreground">Aucune mensuration enregistrée</p>
+                  <p className="text-muted-foreground">{t('noMeasurements')}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -255,11 +259,11 @@ export default function ProgressPage() {
                   <Card>
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">Mensurations corporelles</CardTitle>
+                        <CardTitle className="text-base">{t('bodyMeasurements')}</CardTitle>
                         <ExportButton
                           chartRef={chartRef}
-                          title="Évolution corporelle"
-                          subtitle="Mensurations"
+                          title={t('bodyEvolution')}
+                          subtitle={t('measurementsLabel')}
                           userName={userName}
                           data={availableMeasurements
                             .filter((m) => ['chest', 'underbust', 'waist', 'hips'].includes(m))
@@ -304,7 +308,7 @@ export default function ProgressPage() {
                               <Line
                                 type="monotone"
                                 dataKey="chest"
-                                name="Poitrine"
+                                name={t('chestLabel')}
                                 stroke="#F5A9B8"
                                 strokeWidth={2}
                                 dot={{ fill: '#F5A9B8' }}
@@ -314,7 +318,7 @@ export default function ProgressPage() {
                               <Line
                                 type="monotone"
                                 dataKey="underbust"
-                                name="Sous-poitrine"
+                                name={t('underChestLabel')}
                                 stroke="#D4849A"
                                 strokeWidth={2}
                                 dot={{ fill: '#D4849A' }}
@@ -324,7 +328,7 @@ export default function ProgressPage() {
                               <Line
                                 type="monotone"
                                 dataKey="waist"
-                                name="Taille"
+                                name={t('waistLabel')}
                                 stroke="#5BCEFA"
                                 strokeWidth={2}
                                 dot={{ fill: '#5BCEFA' }}
@@ -334,7 +338,7 @@ export default function ProgressPage() {
                               <Line
                                 type="monotone"
                                 dataKey="hips"
-                                name="Hanches"
+                                name={t('hipsLabel')}
                                 stroke="#3BA8D4"
                                 strokeWidth={2}
                                 dot={{ fill: '#3BA8D4' }}
@@ -351,7 +355,7 @@ export default function ProgressPage() {
                 {availableMeasurements.includes('weight') && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Poids</CardTitle>
+                      <CardTitle className="text-base">{t('weightLabel')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="h-48">
@@ -372,7 +376,7 @@ export default function ProgressPage() {
                                 border: '1px solid var(--border)',
                                 borderRadius: '8px',
                               }}
-                              formatter={(value) => [`${value} kg`, 'Poids']}
+                              formatter={(value) => [`${value} kg`, t('weightLabel')]}
                             />
                             <Line
                               type="monotone"
@@ -392,7 +396,7 @@ export default function ProgressPage() {
                 {firstEntry && lastEntry && firstEntry.id !== lastEntry.id && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Évolution</CardTitle>
+                      <CardTitle className="text-base">{t('evolution')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
@@ -446,7 +450,7 @@ export default function ProgressPage() {
                   <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
                     <ImageIcon className="text-muted-foreground h-8 w-8" />
                   </div>
-                  <p className="text-muted-foreground">Aucune photo enregistrée</p>
+                  <p className="text-muted-foreground">{t('noPhotos')}</p>
                 </CardContent>
               </Card>
             ) : (

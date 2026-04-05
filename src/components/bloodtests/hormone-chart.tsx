@@ -1,5 +1,8 @@
 'use client'
 
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import {
   LineChart,
   Line,
@@ -12,7 +15,6 @@ import {
   Legend,
 } from 'recharts'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import type { BloodTest, BloodMarker } from '@/lib/types'
 import { BLOOD_MARKERS, REFERENCE_RANGES } from '@/lib/constants'
 
@@ -52,9 +54,10 @@ interface CustomTooltipProps {
   payload?: TooltipPayloadEntry[]
   label?: string
   context: 'feminizing' | 'masculinizing'
+  translateMarker: (key: string) => string
 }
 
-function CustomTooltip({ active, payload, label, context }: CustomTooltipProps) {
+function CustomTooltip({ active, payload, label, context, translateMarker }: CustomTooltipProps) {
   if (!active || !payload?.length) return null
 
   const fullDate = payload[0]?.payload?.fullDate
@@ -75,7 +78,7 @@ function CustomTooltip({ active, payload, label, context }: CustomTooltipProps) 
         return (
           <div key={entry.dataKey} className="flex items-center gap-2 text-sm">
             <div className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
-            <span className="text-muted-foreground">{info?.label}:</span>
+            <span className="text-muted-foreground">{translateMarker(marker)}:</span>
             <span className={`font-medium ${inRange ? 'text-foreground' : 'text-destructive'}`}>
               {entry.value} {info?.unit}
             </span>
@@ -87,13 +90,16 @@ function CustomTooltip({ active, payload, label, context }: CustomTooltipProps) 
 }
 
 export function HormoneChart({ tests, markers, context, height = 250 }: HormoneChartProps) {
+  const t = useTranslations('bloodtests')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   // Transform data for Recharts
   const chartData = tests
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map((test) => {
       const dataPoint: Record<string, number | string> = {
-        date: format(new Date(test.date), 'dd MMM yy', { locale: fr }),
-        fullDate: format(new Date(test.date), 'dd MMMM yyyy', { locale: fr }),
+        date: format(new Date(test.date), 'dd MMM yy', { locale: dateLocale }),
+        fullDate: format(new Date(test.date), 'dd MMMM yyyy', { locale: dateLocale }),
       }
 
       for (const marker of markers) {
@@ -283,12 +289,16 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
           />
         )}
 
-        <Tooltip content={<CustomTooltip context={context} />} />
+        <Tooltip
+          content={
+            <CustomTooltip context={context} translateMarker={(marker) => t('markers.' + marker)} />
+          }
+        />
 
         {markers.length > 1 && (
           <Legend
             wrapperStyle={{ fontSize: '12px' }}
-            formatter={(value) => BLOOD_MARKERS[value as BloodMarker]?.label || value}
+            formatter={(value) => t('markers.' + value)}
           />
         )}
 

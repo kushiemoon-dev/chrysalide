@@ -33,10 +33,8 @@ describe('COLOR_SCHEMES', () => {
     expect(Object.keys(COLOR_SCHEMES)).toEqual(['trans', 'blue', 'pink', 'violet'])
   })
 
-  it('chaque schéma a un label, une description et 3 couleurs preview', () => {
+  it('chaque schéma a 3 couleurs preview', () => {
     Object.values(COLOR_SCHEMES).forEach((scheme) => {
-      expect(scheme.label).toBeTruthy()
-      expect(scheme.description).toBeTruthy()
       expect(scheme.preview).toHaveLength(3)
     })
   })
@@ -55,10 +53,8 @@ describe('THEME_MODES', () => {
     expect(Object.keys(THEME_MODES)).toEqual(['dark', 'light', 'system'])
   })
 
-  it('chaque mode a un label, une description et une icône', () => {
+  it('chaque mode a une icône', () => {
     Object.values(THEME_MODES).forEach((mode) => {
-      expect(mode.label).toBeTruthy()
-      expect(mode.description).toBeTruthy()
       expect(mode.icon).toBeTruthy()
     })
   })

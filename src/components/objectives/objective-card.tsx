@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -106,6 +108,8 @@ export function ObjectiveCard({
   milestonesCount = 0,
   milestonesCompleted = 0,
 }: ObjectiveCardProps) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const category = categoryConfig[objective.category]
   const status = statusConfig[objective.status]
   const CategoryIcon = category.icon
@@ -170,7 +174,8 @@ export function ObjectiveCard({
                 <div className="text-muted-foreground mt-2 flex items-center gap-1 text-xs">
                   <Calendar className="h-3 w-3" />
                   <span>
-                    Objectif: {format(new Date(objective.targetDate), 'd MMM yyyy', { locale: fr })}
+                    Objectif:{' '}
+                    {format(new Date(objective.targetDate), 'd MMM yyyy', { locale: dateLocale })}
                   </span>
                 </div>
               )}
@@ -181,7 +186,9 @@ export function ObjectiveCard({
                   <CheckCircle2 className="h-3 w-3" />
                   <span>
                     Terminé le{' '}
-                    {format(new Date(objective.completedDate), 'd MMM yyyy', { locale: fr })}
+                    {format(new Date(objective.completedDate), 'd MMM yyyy', {
+                      locale: dateLocale,
+                    })}
                   </span>
                 </div>
               )}

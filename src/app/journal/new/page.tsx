@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -12,7 +15,6 @@ import Link from 'next/link'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { addJournalEntry } from '@/lib/db'
 import type { MoodLevel } from '@/lib/types'
@@ -20,7 +22,10 @@ import { MoodPicker } from '@/components/journal/mood-picker'
 import { TagInput } from '@/components/journal/tag-input'
 
 export default function NewJournalEntryPage() {
+  const t = useTranslations('journal')
   const router = useRouter()
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [saving, setSaving] = useState(false)
 
   // Form state
@@ -67,8 +72,8 @@ export default function NewJournalEntryPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Nouvelle entrée</h1>
-          <p className="text-muted-foreground text-sm">Exprime-toi librement</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('new.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('new.subtitle')}</p>
         </div>
       </div>
 
@@ -77,7 +82,7 @@ export default function NewJournalEntryPage() {
         <Card>
           <CardContent className="p-4">
             <div className="space-y-2">
-              <Label>Date de l&apos;entrée</Label>
+              <Label>{t('new.dateLabel')}</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -85,7 +90,7 @@ export default function NewJournalEntryPage() {
                     className={cn('w-full justify-start text-left font-normal')}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {format(entryDate, 'EEEE d MMMM yyyy', { locale: fr })}
+                    {format(entryDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -93,7 +98,7 @@ export default function NewJournalEntryPage() {
                     mode="single"
                     selected={entryDate}
                     onSelect={(date) => date && setEntryDate(date)}
-                    locale={fr}
+                    locale={dateLocale}
                     disabled={(date) => date > new Date()}
                   />
                 </PopoverContent>
@@ -106,12 +111,12 @@ export default function NewJournalEntryPage() {
         <Card>
           <CardContent className="space-y-4 p-4">
             <div className="space-y-2">
-              <Label htmlFor="content">Qu&apos;est-ce qui te traverse l&apos;esprit ?</Label>
+              <Label htmlFor="content">{t('new.contentLabel')}</Label>
               <Textarea
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Écris ici... tes pensées, ton ressenti, ce qui s'est passé aujourd'hui..."
+                placeholder={t('new.contentPlaceholder')}
                 className="min-h-[200px] resize-none"
                 autoFocus
               />
@@ -124,23 +129,23 @@ export default function NewJournalEntryPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Sparkles className="text-primary h-4 w-4" />
-              Comment tu te sens ?
+              {t('new.howFeeling')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <MoodPicker value={mood} onChange={setMood} label="Humeur générale" size="lg" />
+            <MoodPicker value={mood} onChange={setMood} label={t('new.generalMood')} size="lg" />
 
             <MoodPicker
               value={energyLevel}
               onChange={setEnergyLevel}
-              label="Niveau d'énergie"
+              label={t('new.energyLevel')}
               size="md"
             />
 
             <MoodPicker
               value={sleepQuality}
               onChange={setSleepQuality}
-              label="Qualité du sommeil"
+              label={t('new.sleepQuality')}
               size="md"
             />
           </CardContent>
@@ -149,10 +154,10 @@ export default function NewJournalEntryPage() {
         {/* Tags */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Tags</CardTitle>
+            <CardTitle className="text-base">{t('new.tags')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <TagInput value={tags} onChange={setTags} placeholder="Ajouter des tags..." />
+            <TagInput value={tags} onChange={setTags} placeholder={t('new.addTags')} />
           </CardContent>
         </Card>
 
@@ -165,8 +170,8 @@ export default function NewJournalEntryPage() {
                   <Lock className="text-muted-foreground h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-foreground font-medium">Entrée privée</p>
-                  <p className="text-muted-foreground text-sm">Exclue des exports</p>
+                  <p className="text-foreground font-medium">{t('new.privateEntry')}</p>
+                  <p className="text-muted-foreground text-sm">{t('new.excludeExport')}</p>
                 </div>
               </div>
               <Switch checked={isPrivate} onCheckedChange={setIsPrivate} />
@@ -177,7 +182,7 @@ export default function NewJournalEntryPage() {
         {/* Submit */}
         <Button type="submit" className="w-full gap-2" disabled={!isValid || saving}>
           <Save className="h-4 w-4" />
-          {saving ? 'Enregistrement...' : 'Enregistrer'}
+          {saving ? t('new.saving') : t('new.save')}
         </Button>
       </form>
     </div>

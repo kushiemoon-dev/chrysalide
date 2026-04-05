@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { cn } from '@/lib/utils'
 
 interface HeaderProps {
@@ -27,6 +29,9 @@ export function Header({
   className,
   children,
 }: HeaderProps) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
+
   return (
     <header className={cn('relative overflow-hidden', className)}>
       {/* Gradient background accent */}
@@ -53,7 +58,7 @@ export function Header({
           {subtitle && <p className="text-muted-foreground truncate text-sm">{subtitle}</p>}
           {showDate && !subtitle && (
             <p className="text-muted-foreground text-sm">
-              {format(new Date(), 'EEEE d MMMM', { locale: fr })}
+              {format(new Date(), 'EEEE d MMMM', { locale: dateLocale })}
             </p>
           )}
         </div>

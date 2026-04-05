@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import Link from 'next/link'
 import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -40,6 +42,10 @@ type FilterType = 'all' | TreatmentChangeType
 type MedicationFilter = 'all' | number
 
 export default function TreatmentHistoryPage() {
+  const t = useTranslations('medications')
+  const tObj = useTranslations('objectives')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [changes, setChanges] = useState<TreatmentChange[]>([])
   const [medications, setMedications] = useState<Medication[]>([])
   const [loading, setLoading] = useState(true)
@@ -154,8 +160,8 @@ export default function TreatmentHistoryPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Historique des traitements</h1>
-          <p className="text-muted-foreground text-sm">Tous les changements de tes médicaments</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('history.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('history.subtitle')}</p>
         </div>
       </div>
 
@@ -169,7 +175,7 @@ export default function TreatmentHistoryPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.total}</p>
-                <p className="text-muted-foreground text-xs">Total changements</p>
+                <p className="text-muted-foreground text-xs">{t('history.totalChanges')}</p>
               </div>
             </div>
           </CardContent>
@@ -182,7 +188,7 @@ export default function TreatmentHistoryPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.thisMonth}</p>
-                <p className="text-muted-foreground text-xs">Ce mois-ci</p>
+                <p className="text-muted-foreground text-xs">{t('history.thisMonth')}</p>
               </div>
             </div>
           </CardContent>
@@ -195,7 +201,7 @@ export default function TreatmentHistoryPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.uniqueMeds}</p>
-                <p className="text-muted-foreground text-xs">Médicaments suivis</p>
+                <p className="text-muted-foreground text-xs">{t('history.trackedMeds')}</p>
               </div>
             </div>
           </CardContent>
@@ -208,11 +214,9 @@ export default function TreatmentHistoryPage() {
               </div>
               <div>
                 <p className="truncate text-sm font-bold">
-                  {stats.mostCommon
-                    ? changeTypeConfig[stats.mostCommon[0] as TreatmentChangeType]?.label
-                    : '-'}
+                  {stats.mostCommon ? tObj(`changeTypes.${stats.mostCommon[0]}`) : '-'}
                 </p>
-                <p className="text-muted-foreground text-xs">Type le plus fréquent</p>
+                <p className="text-muted-foreground text-xs">{t('history.mostCommon')}</p>
               </div>
             </div>
           </CardContent>
@@ -224,7 +228,7 @@ export default function TreatmentHistoryPage() {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <Filter className="h-4 w-4" />
-            Filtres
+            {t('history.filters')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -235,14 +239,14 @@ export default function TreatmentHistoryPage() {
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tous les types</SelectItem>
+                <SelectItem value="all">{t('history.allTypes')}</SelectItem>
                 {Object.entries(changeTypeConfig).map(([key, config]) => {
                   const Icon = config.icon
                   return (
                     <SelectItem key={key} value={key}>
                       <div className="flex items-center gap-2">
                         <Icon className={`h-3 w-3 ${config.color}`} />
-                        {config.label}
+                        {tObj(`changeTypes.${key}`)}
                       </div>
                     </SelectItem>
                   )
@@ -259,7 +263,7 @@ export default function TreatmentHistoryPage() {
                 <SelectValue placeholder="Médicament" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tous les médicaments</SelectItem>
+                <SelectItem value="all">{t('history.allMeds')}</SelectItem>
                 {uniqueMedicationNames.map(([id, name]) => (
                   <SelectItem key={id} value={String(id)}>
                     {name}
@@ -281,7 +285,9 @@ export default function TreatmentHistoryPage() {
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateRange.from ? format(dateRange.from, 'd MMM yyyy', { locale: fr }) : 'Début'}
+                  {dateRange.from
+                    ? format(dateRange.from, 'd MMM yyyy', { locale: dateLocale })
+                    : t('history.start')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -289,7 +295,7 @@ export default function TreatmentHistoryPage() {
                   mode="single"
                   selected={dateRange.from}
                   onSelect={(date) => date && setDateRange((prev) => ({ ...prev, from: date }))}
-                  locale={fr}
+                  locale={dateLocale}
                   disabled={(date) => date > dateRange.to}
                 />
               </PopoverContent>
@@ -305,7 +311,9 @@ export default function TreatmentHistoryPage() {
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateRange.to ? format(dateRange.to, 'd MMM yyyy', { locale: fr }) : 'Fin'}
+                  {dateRange.to
+                    ? format(dateRange.to, 'd MMM yyyy', { locale: dateLocale })
+                    : t('history.end')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -313,7 +321,7 @@ export default function TreatmentHistoryPage() {
                   mode="single"
                   selected={dateRange.to}
                   onSelect={(date) => date && setDateRange((prev) => ({ ...prev, to: date }))}
-                  locale={fr}
+                  locale={dateLocale}
                   disabled={(date) => date < dateRange.from}
                 />
               </PopoverContent>
@@ -332,7 +340,7 @@ export default function TreatmentHistoryPage() {
                 })
               }
             >
-              Dernier mois
+              {t('history.lastMonth')}
             </Button>
             <Button
               variant="outline"
@@ -344,7 +352,7 @@ export default function TreatmentHistoryPage() {
                 })
               }
             >
-              3 mois
+              {t('history.threeMonths')}
             </Button>
             <Button
               variant="outline"
@@ -356,7 +364,7 @@ export default function TreatmentHistoryPage() {
                 })
               }
             >
-              6 mois
+              {t('history.sixMonths')}
             </Button>
             <Button
               variant="outline"
@@ -368,7 +376,7 @@ export default function TreatmentHistoryPage() {
                 })
               }
             >
-              1 an
+              {t('history.oneYear')}
             </Button>
           </div>
         </CardContent>
@@ -385,11 +393,9 @@ export default function TreatmentHistoryPage() {
         <Card>
           <CardContent className="py-12 text-center">
             <History className="text-muted-foreground/50 mx-auto mb-4 h-12 w-12" />
-            <h3 className="mb-2 text-lg font-medium">Aucun changement trouvé</h3>
+            <h3 className="mb-2 text-lg font-medium">{t('history.noChanges')}</h3>
             <p className="text-muted-foreground mx-auto max-w-xs text-sm">
-              {changes.length === 0
-                ? "L'historique de tes traitements apparaîtra ici quand tu modifieras tes médicaments."
-                : 'Essaie de modifier les filtres pour voir plus de résultats.'}
+              {changes.length === 0 ? t('history.noChangesEmpty') : t('history.noChangesFiltered')}
             </p>
           </CardContent>
         </Card>
@@ -408,7 +414,7 @@ export default function TreatmentHistoryPage() {
             return (
               <div key={monthKey} className="space-y-3">
                 <h3 className="text-muted-foreground bg-background/95 sticky top-0 -mx-4 px-4 py-2 text-sm font-medium capitalize backdrop-blur-sm">
-                  {format(monthDate, 'MMMM yyyy', { locale: fr })}
+                  {format(monthDate, 'MMMM yyyy', { locale: dateLocale })}
                   <Badge variant="outline" className="ml-2">
                     {monthChanges.length}
                   </Badge>

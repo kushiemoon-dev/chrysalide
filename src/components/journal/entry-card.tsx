@@ -1,7 +1,9 @@
 'use client'
 
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent } from '@/components/ui/card'
 import { ChevronRight, Lock } from 'lucide-react'
 import Link from 'next/link'
@@ -14,6 +16,8 @@ interface EntryCardProps {
 }
 
 export function EntryCard({ entry }: EntryCardProps) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   // Tronquer le contenu pour l'aperçu
   const preview = entry.content.length > 150 ? entry.content.slice(0, 150) + '...' : entry.content
 
@@ -34,7 +38,7 @@ export function EntryCard({ entry }: EntryCardProps) {
               {/* Date et indicateurs */}
               <div className="flex items-center gap-2">
                 <time className="text-foreground text-sm font-medium">
-                  {format(new Date(entry.date), 'EEEE d MMMM yyyy', { locale: fr })}
+                  {format(new Date(entry.date), 'EEEE d MMMM yyyy', { locale: dateLocale })}
                 </time>
                 {entry.isPrivate && <Lock className="text-muted-foreground h-3 w-3" />}
               </div>

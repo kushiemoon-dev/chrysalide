@@ -17,13 +17,18 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { getAppointments } from '@/lib/db'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment } from '@/lib/types'
 import { YearCalendar } from '@/components/appointments/year-calendar'
 
 export default function CalendarPage() {
+  const t = useTranslations('appointments')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const router = useRouter()
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
@@ -62,15 +67,15 @@ export default function CalendarPage() {
           <div>
             <h1 className="text-foreground flex items-center gap-2 text-xl font-bold">
               <CalendarIcon className="text-trans-pink h-5 w-5" />
-              Calendrier annuel
+              {t('calendarPage.title')}
             </h1>
-            <p className="text-muted-foreground text-sm">Vue d&apos;ensemble de vos rendez-vous</p>
+            <p className="text-muted-foreground text-sm">{t('calendarPage.subtitle')}</p>
           </div>
         </div>
         <Link href="/appointments/new">
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            Ajouter
+            {t('add')}
           </Button>
         </Link>
       </div>
@@ -80,7 +85,7 @@ export default function CalendarPage() {
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-foreground text-2xl font-bold">{appointments.length}</p>
-            <p className="text-muted-foreground text-xs">Total</p>
+            <p className="text-muted-foreground text-xs">{t('calendarPage.total')}</p>
           </CardContent>
         </Card>
         <Card>
@@ -88,7 +93,7 @@ export default function CalendarPage() {
             <p className="text-foreground text-2xl font-bold">
               {appointments.filter((a) => new Date(a.date) >= new Date()).length}
             </p>
-            <p className="text-muted-foreground text-xs">À venir</p>
+            <p className="text-muted-foreground text-xs">{t('calendarPage.upcoming')}</p>
           </CardContent>
         </Card>
         <Card>
@@ -102,7 +107,7 @@ export default function CalendarPage() {
                 }).length
               }
             </p>
-            <p className="text-muted-foreground text-xs">Cette année</p>
+            <p className="text-muted-foreground text-xs">{t('calendarPage.thisYear')}</p>
           </CardContent>
         </Card>
       </div>
@@ -111,7 +116,7 @@ export default function CalendarPage() {
       {loading ? (
         <Card>
           <CardContent className="py-12 text-center">
-            <p className="text-muted-foreground">Chargement du calendrier...</p>
+            <p className="text-muted-foreground">{t('calendarPage.loading')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -128,18 +133,18 @@ export default function CalendarPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <CalendarIcon className="text-primary h-5 w-5" />
-              {selectedDate && format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}
+              {selectedDate && format(selectedDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}
             </DialogTitle>
           </DialogHeader>
 
           <div className="mt-4 space-y-3">
             {selectedAppointments.length === 0 ? (
               <div className="py-6 text-center">
-                <p className="text-muted-foreground mb-4">Aucun rendez-vous ce jour</p>
+                <p className="text-muted-foreground mb-4">{t('calendarPage.noneThisDay')}</p>
                 <Link href="/appointments/new">
                   <Button className="gap-2">
                     <Plus className="h-4 w-4" />
-                    Ajouter un RDV
+                    {t('calendarPage.addRdv')}
                   </Button>
                 </Link>
               </div>
@@ -166,7 +171,7 @@ export default function CalendarPage() {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <p className="text-foreground font-medium">{typeInfo?.label}</p>
+                            <p className="text-foreground font-medium">{t('types.' + apt.type)}</p>
                             {apt.time && (
                               <Badge variant="outline" className="text-xs">
                                 {apt.time}

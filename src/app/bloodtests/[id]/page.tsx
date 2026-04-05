@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -17,18 +20,13 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { db, deleteBloodTest, getUserProfile } from '@/lib/db'
 import type { BloodTest, BloodMarker } from '@/lib/types'
-import { BLOOD_MARKERS, REFERENCE_RANGES } from '@/lib/constants'
+import { REFERENCE_RANGES } from '@/lib/constants'
 
 // Marker groups for display
-const MARKER_GROUPS: Record<
-  string,
-  { label: string; icon: typeof FlaskConical; markers: BloodMarker[] }
-> = {
+const MARKER_GROUPS: Record<string, { icon: typeof FlaskConical; markers: BloodMarker[] }> = {
   hormones: {
-    label: 'Hormones',
     icon: FlaskConical,
     markers: [
       'estradiol',
@@ -42,18 +40,19 @@ const MARKER_GROUPS: Record<
     ],
   },
   blood: {
-    label: 'Santé sanguine',
     icon: Heart,
     markers: ['hematocrit', 'hemoglobin'],
   },
   organs: {
-    label: 'Foie & Reins',
     icon: Activity,
     markers: ['alt', 'ast', 'creatinine', 'potassium'],
   },
 }
 
 export default function BloodTestDetailPage() {
+  const t = useTranslations('bloodtests')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const params = useParams()
   const router = useRouter()
   const [test, setTest] = useState<BloodTest | null>(null)
@@ -86,7 +85,7 @@ export default function BloodTestDetailPage() {
 
   async function handleDelete() {
     if (!test?.id) return
-    if (!confirm('Supprimer cette analyse?')) return
+    if (!confirm(t('detail.deleteConfirm'))) return
 
     await deleteBloodTest(test.id)
     router.push('/bloodtests')
@@ -105,7 +104,7 @@ export default function BloodTestDetailPage() {
     return (
       <div className="space-y-6 p-4">
         <div className="pt-2">
-          <h1 className="text-foreground text-xl font-bold">Chargement...</h1>
+          <h1 className="text-foreground text-xl font-bold">{t('detail.loading')}</h1>
         </div>
       </div>
     )
@@ -128,7 +127,7 @@ export default function BloodTestDetailPage() {
           </Link>
           <div>
             <h1 className="text-foreground text-xl font-bold">
-              {format(new Date(test.date), 'dd MMMM yyyy', { locale: fr })}
+              {format(new Date(test.date), 'dd MMMM yyyy', { locale: dateLocale })}
             </h1>
             {test.lab && (
               <Badge variant="secondary" className="mt-1">
@@ -172,12 +171,11 @@ export default function BloodTestDetailPage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Icon className="text-primary h-4 w-4" />
-                {group.label}
+                {t('groups.' + groupKey)}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {groupResults.map(({ marker, result }) => {
-                const info = BLOOD_MARKERS[marker]
                 const status = getMarkerStatus(marker, result.value)
                 const range = REFERENCE_RANGES.find(
                   (r) => r.marker === marker && r.context === context
@@ -196,7 +194,9 @@ export default function BloodTestDetailPage() {
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-foreground font-medium">{info.label}</span>
+                        <span className="text-foreground font-medium">
+                          {t('markers.' + marker)}
+                        </span>
                         {status !== 'normal' && (
                           <AlertTriangle
                             className={`h-4 w-4 ${
@@ -206,7 +206,9 @@ export default function BloodTestDetailPage() {
                         )}
                         {status === 'normal' && <CheckCircle2 className="h-4 w-4 text-green-500" />}
                       </div>
-                      <p className="text-muted-foreground mt-0.5 text-xs">{info.description}</p>
+                      <p className="text-muted-foreground mt-0.5 text-xs">
+                        {t('descriptions.' + marker)}
+                      </p>
                     </div>
                     <div className="text-right">
                       <div
@@ -225,7 +227,7 @@ export default function BloodTestDetailPage() {
                       </div>
                       {range && (
                         <p className="text-muted-foreground text-xs">
-                          Cible: {range.min} - {range.max}
+                          {t('detail.targetLabel')}: {range.min} - {range.max}
                         </p>
                       )}
                     </div>
@@ -241,7 +243,7 @@ export default function BloodTestDetailPage() {
       {test.notes && (
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Notes</CardTitle>
+            <CardTitle className="text-base">{t('detail.notesTitle')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground text-sm whitespace-pre-wrap">{test.notes}</p>
@@ -258,12 +260,12 @@ export default function BloodTestDetailPage() {
             </div>
             <div>
               <p className="text-foreground font-medium">
-                {test.results.length} marqueur{test.results.length > 1 ? 's' : ''} enregistré
-                {test.results.length > 1 ? 's' : ''}
+                {test.results.length}{' '}
+                {test.results.length > 1 ? t('detail.markerPlural') : t('detail.markerSingular')}
               </p>
               <p className="text-muted-foreground text-sm">
                 {test.results.filter((r) => getMarkerStatus(r.marker, r.value) === 'normal').length}{' '}
-                dans la plage cible
+                {t('detail.inTargetRange')}
               </p>
             </div>
           </div>

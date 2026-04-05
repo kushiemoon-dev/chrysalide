@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { PRONOUNS_OPTIONS, TRANSITION_TYPES, OnboardingState } from '@/lib/onboarding'
 
@@ -12,6 +13,7 @@ interface ProfileStepProps {
 }
 
 export function ProfileStep({ state, onUpdate, onNext, onSkip }: ProfileStepProps) {
+  const t = useTranslations('onboarding')
   const [pronouns, setPronouns] = useState(state.profile?.pronouns || '')
   const [transitionType, setTransitionType] = useState(state.profile?.transitionType || '')
 
@@ -29,15 +31,13 @@ export function ProfileStep({ state, onUpdate, onNext, onSkip }: ProfileStepProp
     <div className="space-y-8 py-4">
       {/* Header */}
       <div className="space-y-2 text-center">
-        <h2 className="text-foreground text-2xl font-bold">Ton profil</h2>
-        <p className="text-muted-foreground">
-          Ces informations sont optionnelles et restent privées
-        </p>
+        <h2 className="text-foreground text-2xl font-bold">{t('profile.title')}</h2>
+        <p className="text-muted-foreground">{t('profile.subtitle')}</p>
       </div>
 
       {/* Pronouns */}
       <div className="space-y-3">
-        <label className="text-foreground text-sm font-medium">Tes pronoms (optionnel)</label>
+        <label className="text-foreground text-sm font-medium">{t('profile.pronouns')}</label>
         <div className="flex flex-wrap gap-2">
           {PRONOUNS_OPTIONS.map((option) => (
             <button
@@ -59,9 +59,7 @@ export function ProfileStep({ state, onUpdate, onNext, onSkip }: ProfileStepProp
 
       {/* Transition Type */}
       <div className="space-y-3">
-        <label className="text-foreground text-sm font-medium">
-          Type de transition (optionnel)
-        </label>
+        <label className="text-foreground text-sm font-medium">{t('profile.transitionType')}</label>
         <div className="space-y-2">
           {TRANSITION_TYPES.map((option) => (
             <button
@@ -95,13 +93,13 @@ export function ProfileStep({ state, onUpdate, onNext, onSkip }: ProfileStepProp
           onClick={onSkip}
           className="text-muted-foreground bg-muted hover:bg-muted/80 flex-1 rounded-xl py-3 font-medium transition-colors"
         >
-          Passer
+          {t('profile.skip')}
         </button>
         <button
           onClick={handleNext}
           className="gradient-trans-glow shadow-trans-glow hover:shadow-trans-glow-lg flex-1 rounded-xl py-3 font-medium text-white transition-all active:scale-[0.98]"
         >
-          Continuer
+          {t('profile.continue')}
         </button>
       </div>
     </div>

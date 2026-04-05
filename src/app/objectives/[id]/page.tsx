@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -49,6 +51,9 @@ import { CelebrationModal, useConfetti } from '@/components/objectives/celebrati
 export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
   const router = useRouter()
+  const t = useTranslations('objectives')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const { fire: fireConfetti } = useConfetti()
 
   const [objective, setObjective] = useState<Objective | null>(null)
@@ -338,7 +343,7 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
                 <span>
                   Cible:{' '}
                   {format(new Date(objective.targetDate), 'd MMM yyyy', {
-                    locale: fr,
+                    locale: dateLocale,
                   })}
                 </span>
               </div>
@@ -349,7 +354,7 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
                 <span>
                   Terminé le{' '}
                   {format(new Date(objective.completedDate), 'd MMM yyyy', {
-                    locale: fr,
+                    locale: dateLocale,
                   })}
                 </span>
               </div>
@@ -359,7 +364,7 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
               <span>
                 Créé le{' '}
                 {format(new Date(objective.createdAt), 'd MMM yyyy', {
-                  locale: fr,
+                  locale: dateLocale,
                 })}
               </span>
             </div>
@@ -378,7 +383,9 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
         </CardHeader>
         <CardContent className="space-y-3">
           {milestones.length === 0 ? (
-            <p className="text-muted-foreground py-4 text-center text-sm">Aucune étape définie</p>
+            <p className="text-muted-foreground py-4 text-center text-sm">
+              {t('detail.noMilestones')}
+            </p>
           ) : (
             <div className="space-y-2">
               {milestones.map((milestone) => (
