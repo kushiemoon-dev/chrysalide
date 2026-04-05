@@ -1,0 +1,784 @@
+{
+  "metadata": {
+    "description": "Suivi médical personnel pour personnes trans"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "loading": "Chargement...",
+    "more": "Plus",
+    "export": "Exporter",
+    "import": "Importer",
+    "exporting": "Export...",
+    "importing": "Import...",
+    "version": "Version",
+    "back": "Retour",
+    "confirm": "Confirmer",
+    "close": "Fermer"
+  },
+  "nav": {
+    "home": "Accueil",
+    "medications": "Medocs",
+    "bloodtests": "Analyses",
+    "more": "Plus",
+    "settings": "Réglages",
+    "evolution": "Évolution",
+    "journal": "Journal",
+    "objectives": "Objectifs",
+    "appointments": "Rendez-vous",
+    "practitioners": "Praticien·nes",
+    "resources": "Ressources"
+  },
+  "settings": {
+    "title": "Réglages",
+    "subtitle": "Configuration et sauvegarde",
+    "appearance": "Apparence",
+    "language": "Langue",
+    "backup": {
+      "title": "Sauvegarde des données",
+      "description": "Toutes vos données sont stockées localement sur cet appareil. Exportez régulièrement une sauvegarde pour ne rien perdre."
+    },
+    "qrSync": {
+      "title": "Synchronisation QR",
+      "description": "Transférez vos données entre appareils en scannant des QR codes. Aucune connexion internet nécessaire."
+    },
+    "appointments": {
+      "title": "Rendez-vous",
+      "upcoming": "{count} à venir",
+      "manage": "Gérer vos rendez-vous médicaux"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "notSupported": "Les notifications ne sont pas supportées sur ce navigateur.",
+      "blocked": "Bloquées",
+      "blockedDescription": "Les notifications ont été bloquées. Modifiez les paramètres de votre navigateur pour les activer.",
+      "enabled": "Activées",
+      "enabledDescription": "Vous recevrez des rappels pour vos médicaments et rendez-vous.",
+      "disable": "Désactiver les notifications",
+      "enableDescription": "Activez les notifications pour recevoir des rappels pour vos médicaments et rendez-vous.",
+      "enable": "Activer les notifications"
+    },
+    "medications": {
+      "title": "Médicaments",
+      "autoValidation": "Validation automatique",
+      "autoValidationDescription": "Marquer automatiquement les prises comme effectuées à l'heure prévue"
+    },
+    "modules": {
+      "title": "Modules",
+      "evolution": "Module Évolution",
+      "evolutionDescription": "Suivi physique et photos",
+      "costTracking": "Suivi des coûts",
+      "costTrackingDescription": "Afficher le reste à charge sur les RDV"
+    },
+    "about": {
+      "title": "À propos",
+      "description": "Chrysalide est une application de suivi médical personnel pour les personnes trans. Toutes vos données restent sur votre appareil - aucun serveur, confidentialité maximale."
+    },
+    "dangerZone": {
+      "title": "Zone de danger",
+      "description": "Supprimer toutes les données de l'application. Cette action est irréversible.",
+      "deleteAll": "Supprimer toutes les données",
+      "confirmDelete": "Êtes-vous sûr·e de vouloir supprimer toutes vos données? Cette action est irréversible."
+    },
+    "importError": "Erreur lors de l'import du fichier"
+  },
+  "medications": {
+    "types": {
+      "estrogen": "Œstrogène",
+      "antiandrogen": "Anti-androgène",
+      "progesteron": "Progestérone",
+      "testosterone": "Testostérone",
+      "gnrh": "Agoniste GnRH",
+      "other": "Autre"
+    },
+    "methods": {
+      "pill": "Comprimé",
+      "injection": "Injection",
+      "patch": "Patch",
+      "gel": "Gel",
+      "implant": "Implant"
+    },
+    "pillRoutes": {
+      "oral": "Oral",
+      "sublingual": "Sublingual",
+      "vaginal": "Vaginal",
+      "rectal": "Rectal"
+    },
+    "injectionRoutes": {
+      "subcutaneous": "Sous-cutané (SC)",
+      "intramuscular": "Intra-musculaire (IM)"
+    },
+    "gelZones": {
+      "forearm_left": "Avant-bras gauche",
+      "forearm_right": "Avant-bras droit",
+      "inner_thigh_left": "Intérieur cuisse gauche",
+      "inner_thigh_right": "Intérieur cuisse droite",
+      "scrotal": "Scrotale"
+    },
+    "frequencies": {
+      "1x/jour": "1x/jour",
+      "2x/jour": "2x/jour",
+      "3x/jour": "3x/jour",
+      "1x/2jours": "1x/2jours",
+      "1x/3jours": "1x/3jours",
+      "1x/4jours": "1x/4jours",
+      "1x/5jours": "1x/5jours",
+      "1x/6jours": "1x/6jours",
+      "1x/10jours": "1x/10jours",
+      "2x/semaine": "2x/semaine",
+      "1x/semaine": "1x/semaine",
+      "1x/2semaines": "1x/2semaines",
+      "1x/mois": "1x/mois",
+      "1x/3mois": "1x/3mois",
+      "1x/6mois": "1x/6mois",
+      "1x/12semaines": "1x/12semaines",
+      "1x/jour (soir)": "1x/jour (soir)"
+    },
+    "calendar": {
+      "title": "Calendrier des prises",
+      "subtitle": "Historique de vos prises",
+      "taken": "pris",
+      "noMeds": "Aucun médicament configuré",
+      "noDoses": "Aucune prise prévue ce jour",
+      "stats": "Statistiques",
+      "daysWithDoses": "Jours avec prises",
+      "totalDoses": "Prises totales",
+      "daysSinceStart": "jours depuis le début",
+      "validateMonth": "Valider le mois entier",
+      "validating": "Validation en cours...",
+      "validateConfirm": "Valider toutes les prises pour {month} ?\n\nCela marquera automatiquement toutes les doses prévues comme prises.",
+      "validateSuccess": "Mois validé avec succès !\n{count} prises ajoutées/mises à jour.",
+      "validateError": "Erreur lors de la validation du mois",
+      "validateHelp": "Marque toutes les prises prévues comme effectuées"
+    },
+    "history": {
+      "title": "Historique des traitements",
+      "subtitle": "Tous les changements de tes médicaments",
+      "totalChanges": "Total changements",
+      "thisMonth": "Ce mois-ci",
+      "trackedMeds": "Médicaments suivis",
+      "mostCommon": "Type le plus fréquent",
+      "filters": "Filtres",
+      "allTypes": "Tous les types",
+      "allMeds": "Tous les médicaments",
+      "start": "Début",
+      "end": "Fin",
+      "lastMonth": "Dernier mois",
+      "threeMonths": "3 mois",
+      "sixMonths": "6 mois",
+      "oneYear": "1 an",
+      "noChanges": "Aucun changement trouvé",
+      "noChangesEmpty": "L'historique de tes traitements apparaîtra ici quand tu modifieras tes médicaments.",
+      "noChangesFiltered": "Essaie de modifier les filtres pour voir plus de résultats.",
+      "change": "changement",
+      "changes": "changements",
+      "found": "trouvé",
+      "foundPlural": "trouvés",
+      "noTreatments": "Aucun traitement à afficher."
+    },
+    "stockUnits": {
+      "comprimés": "comprimés",
+      "tubes": "tubes",
+      "boîtes": "boîtes",
+      "patches": "patches",
+      "flacons": "flacons",
+      "ampoules": "ampoules",
+      "seringues": "seringues",
+      "sachets": "sachets"
+    }
+  },
+  "bloodtests": {
+    "markers": {
+      "estradiol": "Œstradiol (E2)",
+      "testosterone": "Testostérone (T)",
+      "lh": "LH",
+      "fsh": "FSH",
+      "prolactin": "Prolactine",
+      "shbg": "SHBG",
+      "hematocrit": "Hématocrite",
+      "hemoglobin": "Hémoglobine",
+      "alt": "ALT (ALAT)",
+      "ast": "AST (ASAT)",
+      "creatinine": "Créatinine",
+      "potassium": "Potassium",
+      "dheas": "DHEA-S",
+      "progesterone": "Progestérone"
+    },
+    "descriptions": {
+      "estradiol": "Hormone principale pour la féminisation",
+      "testosterone": "Hormone principale pour la masculinisation",
+      "lh": "Hormone lutéinisante",
+      "fsh": "Hormone folliculo-stimulante",
+      "prolactin": "À surveiller avec cyprotérone",
+      "shbg": "Protéine de liaison des hormones",
+      "hematocrit": "À surveiller avec testostérone",
+      "hemoglobin": "Santé du sang",
+      "alt": "Fonction hépatique",
+      "ast": "Fonction hépatique",
+      "creatinine": "Fonction rénale",
+      "potassium": "Important avec spironolactone",
+      "dheas": "Précurseur hormonal surrénalien",
+      "progesterone": "Hormone progestative"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenue dans ton espace",
+    "subtitle": "Suivi médical privé et bienveillant",
+    "todayDoses": "Prises aujourd'hui",
+    "activeMeds": "Médicaments actifs",
+    "todayMeds": "Médicaments du jour",
+    "viewAll": "Voir tout",
+    "noMeds": "Aucun médicament configuré",
+    "addMed": "Ajouter un médicament",
+    "upcomingAppts": "Prochains RDV",
+    "noAppts": "Aucun rendez-vous à venir",
+    "addAppt": "Ajouter un RDV",
+    "newMed": "Nouveau médicament",
+    "newTest": "Nouvelle analyse",
+    "recap": {
+      "title": "Récapitulatif",
+      "loading": "Chargement du récapitulatif...",
+      "transitionMonths": "mois de transition",
+      "transitionDays": "jours de transition",
+      "since": "Depuis le",
+      "streak": "Série de prises",
+      "toStart": "À commencer",
+      "day": "jour",
+      "days": "jours",
+      "lastLevels": "Derniers dosages",
+      "objectives": "Objectifs",
+      "inProgress": "en cours",
+      "completed": "complétés",
+      "encouragement": "Continue comme ça, tu gères ! 💪"
+    }
+  },
+  "journal": {
+    "title": "Journal",
+    "subtitle": "Ton espace personnel",
+    "newEntry": "Nouvelle entrée",
+    "searchPlaceholder": "Rechercher dans le journal...",
+    "entries30d": "entrées (30j)",
+    "avgMood": "humeur moy.",
+    "perWeek": "/semaine",
+    "tagsUsed": "tags utilisés",
+    "all": "Tout",
+    "noResults": "Aucun résultat",
+    "noEntries": "Aucune entrée",
+    "tryOtherSearch": "Essaie une autre recherche",
+    "noEntriesWithTag": "Aucune entrée avec ce tag",
+    "startWriting": "Commence à écrire dans ton journal",
+    "result": "résultat",
+    "results": "résultats",
+    "new": {
+      "title": "Nouvelle entrée",
+      "subtitle": "Exprime-toi librement",
+      "dateLabel": "Date de l'entrée",
+      "contentLabel": "Qu'est-ce qui te traverse l'esprit ?",
+      "contentPlaceholder": "Écris ici... tes pensées, ton ressenti, ce qui s'est passé aujourd'hui...",
+      "howFeeling": "Comment tu te sens ?",
+      "generalMood": "Humeur générale",
+      "energyLevel": "Niveau d'énergie",
+      "sleepQuality": "Qualité du sommeil",
+      "tags": "Tags",
+      "addTags": "Ajouter des tags...",
+      "privateEntry": "Entrée privée",
+      "excludeExport": "Exclue des exports",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer"
+    },
+    "edit": {
+      "title": "Modifier l'entrée",
+      "subtitle": "Mets à jour ton entrée",
+      "content": "Contenu",
+      "placeholder": "Écris ici..."
+    },
+    "detail": {
+      "notFound": "Entrée introuvable",
+      "notFoundDesc": "Cette entrée n'existe pas ou a été supprimée.",
+      "backToJournal": "Retour au journal",
+      "confirmDelete": "Supprimer cette entrée ?",
+      "confirmDeleteDesc": "Cette action est irréversible. L'entrée sera définitivement supprimée.",
+      "deleting": "Suppression...",
+      "mood": "Humeur",
+      "energy": "Énergie",
+      "sleep": "Sommeil",
+      "tags": "Tags",
+      "createdAt": "Créé le",
+      "modifiedAt": "Modifié le"
+    },
+    "moods": {
+      "1": "Très mal",
+      "2": "Mal",
+      "3": "Neutre",
+      "4": "Bien",
+      "5": "Très bien"
+    },
+    "tagCategories": {
+      "mood": "Humeur",
+      "sideEffects": "Effets secondaires",
+      "energy": "Énergie",
+      "sleep": "Sommeil",
+      "social": "Social",
+      "custom": "Personnalisé"
+    },
+    "tags": {
+      "heureux": "heureux",
+      "triste": "triste",
+      "anxieux": "anxieux",
+      "calme": "calme",
+      "irrité": "irrité",
+      "euphorique": "euphorique",
+      "fatigue": "fatigue",
+      "nausées": "nausées",
+      "maux de tête": "maux de tête",
+      "bouffées de chaleur": "bouffées de chaleur",
+      "sensibilité": "sensibilité",
+      "plein d'énergie": "plein d'énergie",
+      "énergie normale": "énergie normale",
+      "fatigué": "fatigué",
+      "épuisé": "épuisé",
+      "bien dormi": "bien dormi",
+      "sommeil moyen": "sommeil moyen",
+      "mal dormi": "mal dormi",
+      "insomnie": "insomnie",
+      "sortie": "sortie",
+      "amis": "amis",
+      "famille": "famille",
+      "isolé": "isolé",
+      "coming out": "coming out"
+    },
+    "tagInput": {
+      "maxReached": "Maximum atteint",
+      "addTag": "Ajouter un tag...",
+      "createTag": "Créer \"{tag}\"",
+      "helpText": "Tapez pour rechercher ou créer un tag"
+    }
+  },
+  "practitioners": {
+    "edit": {
+      "title": "Modifier praticien·ne",
+      "basicInfo": "Informations de base",
+      "fullName": "Nom complet *",
+      "namePlaceholder": "Dr. Prénom Nom",
+      "specialty": "Spécialité",
+      "transFriendly": "Trans-friendly",
+      "transFriendlyDesc": "Ce·tte praticien·ne est connu·e pour accompagner les personnes trans",
+      "contact": "Contact",
+      "address": "Adresse",
+      "addressPlaceholder": "123 rue de la Santé, 75000 Paris",
+      "phone": "Téléphone",
+      "phonePlaceholder": "01 23 45 67 89",
+      "email": "Email",
+      "emailPlaceholder": "contact@praticien.fr",
+      "website": "Site web",
+      "websitePlaceholder": "www.praticien.fr ou https://...",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes personnelles sur ce·tte praticien·ne..."
+    },
+    "new": {
+      "title": "Nouveau·elle praticien·ne",
+      "subtitle": "Ajoutez un·e praticien·ne à votre annuaire",
+      "basicInfo": "Informations de base",
+      "fullName": "Nom complet *",
+      "namePlaceholder": "Dr. Prénom Nom",
+      "specialty": "Spécialité",
+      "contact": "Contact",
+      "address": "Adresse",
+      "addressPlaceholder": "123 rue de la Santé, 75000 Paris",
+      "phone": "Téléphone",
+      "phonePlaceholder": "01 23 45 67 89",
+      "email": "Email",
+      "emailPlaceholder": "contact@praticien.fr",
+      "website": "Site web",
+      "websitePlaceholder": "www.praticien.fr ou https://...",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes personnelles sur ce·tte praticien·ne...",
+      "transFriendly": "Trans-friendly",
+      "transFriendlyDesc": "Ce·tte praticien·ne est connu·e pour accompagner les personnes trans",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer"
+    }
+  },
+  "objectives": {
+    "title": "Mes Objectifs",
+    "subtitle": "Suivi de tes objectifs de transition",
+    "new": "Nouveau",
+    "globalProgress": "Progression globale",
+    "steps": "étapes",
+    "objective": "objectif",
+    "objectives": "objectifs",
+    "inProgress": "en cours",
+    "newObjective": {
+      "title": "Nouvel objectif",
+      "subtitle": "Définis un objectif pour ta transition"
+    },
+    "changeTypes": {
+      "started": "Démarré",
+      "stopped": "Arrêté",
+      "paused": "En pause",
+      "resumed": "Repris",
+      "dosage_change": "Dosage modifié",
+      "method_change": "Méthode modifiée",
+      "frequency_change": "Fréquence modifiée"
+    },
+    "detail": {
+      "notFound": "Objectif introuvable",
+      "notFoundDesc": "Cet objectif n'existe pas ou a été supprimé.",
+      "backToObjectives": "Retour aux objectifs",
+      "deleteTitle": "Supprimer cet objectif ?",
+      "deleteDesc": "Cette action supprimera l'objectif et toutes ses étapes. Cette action est irréversible.",
+      "deleting": "Suppression...",
+      "progression": "Progression",
+      "status": "Statut",
+      "statuses": {
+        "not_started": "Pas commencé",
+        "in_progress": "En cours",
+        "completed": "Terminé",
+        "paused": "En pause",
+        "cancelled": "Annulé"
+      },
+      "target": "Cible",
+      "completedOn": "Terminé le",
+      "createdOn": "Créé le",
+      "milestonesTitle": "Étapes",
+      "noMilestones": "Aucune étape définie",
+      "addMilestone": "Ajouter une étape...",
+      "celebrationCompleted": "Objectif atteint !",
+      "celebrationAllSteps": "Toutes les étapes terminées !",
+      "celebrationDesc": "Tu progresses vers tes objectifs, bravo !"
+    },
+    "edit": {
+      "title": "Modifier l'objectif",
+      "subtitle": "Mets à jour les informations",
+      "titleLabel": "Titre *",
+      "titlePlaceholder": "Ex: Commencer le THS",
+      "description": "Description",
+      "descriptionPlaceholder": "Détails sur cet objectif...",
+      "categoryAndStatus": "Catégorie & Statut",
+      "category": "Catégorie",
+      "targetDate": "Date cible (optionnel)",
+      "selectDate": "Sélectionner une date",
+      "removeDate": "Supprimer la date",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes personnelles..."
+    },
+    "categories": {
+      "medical": "Médical",
+      "administrative": "Administratif",
+      "social": "Social",
+      "physical": "Physique",
+      "mental": "Mental"
+    },
+    "timeline": {
+      "objectiveCreated": "Objectif créé",
+      "targetDate": "Date cible",
+      "objectiveAchieved": "Objectif atteint !",
+      "doneOn": "Fait le"
+    },
+    "celebration": {
+      "continue": "Continuer"
+    }
+  },
+  "onboarding": {
+    "optional": "optionnel",
+    "welcome": {
+      "title": "Bienvenue sur Chrysalide",
+      "subtitle": "Ton compagnon de transition, bienveillant et confidentiel",
+      "localTitle": "100% Local",
+      "localDesc": "Toutes tes données restent sur ton appareil. Aucun serveur, aucun compte.",
+      "privacyTitle": "Confidentialité maximale",
+      "privacyDesc": "Tes informations médicales ne quittent jamais ton téléphone.",
+      "communityTitle": "Fait par et pour la communauté",
+      "communityDesc": "Conçu avec amour pour accompagner ta transition.",
+      "start": "Commencer"
+    },
+    "profile": {
+      "title": "Ton profil",
+      "subtitle": "Ces informations sont optionnelles et restent privées",
+      "pronouns": "Tes pronoms (optionnel)",
+      "transitionType": "Type de transition (optionnel)",
+      "skip": "Passer",
+      "continue": "Continuer"
+    },
+    "medication": {
+      "title": "Tes médicaments",
+      "subtitle": "Ajoute ton traitement pour suivre tes prises et ton stock",
+      "reminders": "Rappels de prise",
+      "stockAlerts": "Suivi du stock avec alertes",
+      "changeHistory": "Historique des changements de traitement",
+      "calendar": "Calendrier des prises",
+      "addMed": "Ajouter un médicament",
+      "later": "Plus tard",
+      "helpText": "Tu pourras toujours ajouter des médicaments depuis le menu Médicaments"
+    }
+  },
+  "progress": {
+    "title": "Évolution",
+    "entry": "entrée",
+    "entries": "entrées",
+    "add": "Ajouter",
+    "noEntries": "Aucune entrée",
+    "noEntriesDesc": "Documentez votre évolution physique avec photos et mensurations",
+    "addEntry": "Ajouter une entrée",
+    "tabs": {
+      "timeline": "Timeline",
+      "charts": "Graphiques",
+      "photos": "Photos"
+    },
+    "measurements": {
+      "weight": "Poids",
+      "height": "Taille",
+      "chest": "Poitrine",
+      "underChest": "Sous-poitrine",
+      "hips": "Hanches",
+      "shoulders": "Épaules"
+    },
+    "stats": {
+      "entries": "Entrées",
+      "photos": "Photos",
+      "days": "Jours"
+    },
+    "noMeasurements": "Aucune mensuration enregistrée",
+    "noPhotos": "Aucune photo enregistrée",
+    "bodyMeasurements": "Mensurations corporelles",
+    "bodyEvolution": "Évolution corporelle",
+    "measurementsLabel": "Mensurations",
+    "evolution": "Évolution",
+    "chestLabel": "Poitrine",
+    "underChestLabel": "Sous-poitrine",
+    "waistLabel": "Taille",
+    "hipsLabel": "Hanches",
+    "weightLabel": "Poids",
+    "new": {
+      "title": "Nouvelle entrée",
+      "subtitle": "Documentez votre évolution",
+      "date": "Date",
+      "photos": "Photos",
+      "addPhotos": "Ajouter des photos",
+      "photosLocal": "Les photos restent stockées localement sur votre appareil",
+      "measurements": "Mensurations",
+      "weightField": "Poids",
+      "heightField": "Taille",
+      "chestField": "Tour de poitrine",
+      "underChestField": "Sous-poitrine",
+      "waistField": "Tour de taille",
+      "hipsField": "Tour de hanches",
+      "shouldersField": "Largeur épaules",
+      "tags": "Tags",
+      "customTag": "Tag personnalisé...",
+      "notes": "Notes",
+      "notesPlaceholder": "Changements observés, remarques, ressenti...",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer"
+    },
+    "detail": {
+      "photos": "Photos",
+      "measurements": "Mensurations",
+      "tags": "Tags",
+      "notes": "Notes",
+      "deleteConfirm": "Supprimer cette entrée ?"
+    },
+    "compare": {
+      "title": "Comparaison",
+      "beforeAfter": "Avant / Après",
+      "daysDiff": "d'écart",
+      "day": "jour",
+      "days": "jours",
+      "notEnough": "Pas assez d'entrées",
+      "notEnoughDesc": "Ajoutez au moins 2 entrées avec photos pour comparer",
+      "addEntry": "Ajouter une entrée",
+      "before": "Avant",
+      "after": "Après",
+      "firstToLast": "Premier → Dernier",
+      "oneMonth": "~1 mois",
+      "threeMonths": "~3 mois",
+      "measurementEvolution": "Évolution des mensurations"
+    }
+  },
+  "resources": {
+    "title": "Ressources",
+    "subtitle": "Liens utiles pour la communauté trans",
+    "searchPlaceholder": "Rechercher une ressource...",
+    "all": "Tout",
+    "faqCard": "Questions fréquentes",
+    "faqCardDesc": "Aide sur l'application et informations générales",
+    "resultCount": "{count} résultat",
+    "resultsCount": "{count} résultats",
+    "for": "pour",
+    "noResults": "Aucune ressource trouvée",
+    "disclaimer": "Ces ressources sont fournies à titre informatif. Chrysalide n'est pas affiliée à ces organisations et ne peut garantir l'exactitude des informations. Pour tout conseil médical, consultez un·e professionnel·le de santé.",
+    "categories": {
+      "community": "Communauté",
+      "medical": "Médical",
+      "legal": "Légal & Administratif",
+      "support": "Soutien",
+      "information": "Information"
+    },
+    "faq": {
+      "title": "FAQ",
+      "subtitle": "Questions fréquentes",
+      "all": "Tout",
+      "helpText": "Vous ne trouvez pas la réponse à votre question ?",
+      "consultPrefix": "Consultez les",
+      "communityResources": "ressources communautaires",
+      "orReport": "ou signalez un problème sur GitHub.",
+      "categoriesLabels": {
+        "app": "Application",
+        "medical": "Médical",
+        "general": "Général"
+      },
+      "question": "question",
+      "questions": "questions",
+      "items": {
+        "app-data-privacy": {
+          "q": "Mes données sont-elles sécurisées ?",
+          "a": "Oui, toutes vos données sont stockées uniquement sur votre appareil (IndexedDB). Rien n'est envoyé sur un serveur. Vous avez le contrôle total de vos informations personnelles. Pensez à faire des sauvegardes régulières via la fonction Export dans les paramètres."
+        },
+        "app-offline": {
+          "q": "L'application fonctionne-t-elle hors ligne ?",
+          "a": "Oui ! Chrysalide est une PWA (Progressive Web App) qui fonctionne entièrement hors ligne une fois installée. Toutes les fonctionnalités sont disponibles sans connexion internet."
+        },
+        "app-backup": {
+          "q": "Comment sauvegarder mes données ?",
+          "a": "Allez dans Paramètres > Exporter les données. Un fichier JSON contenant toutes vos données sera téléchargé. Conservez-le en lieu sûr. Pour restaurer, utilisez la fonction Importer dans les paramètres."
+        },
+        "app-install": {
+          "q": "Comment installer l'application sur mon téléphone ?",
+          "a": "Sur Android (Chrome) : Menu ⋮ > \"Installer l'application\" ou \"Ajouter à l'écran d'accueil\". Sur iOS (Safari) : Bouton Partager > \"Sur l'écran d'accueil\". L'app sera disponible comme une application native."
+        },
+        "app-notifications": {
+          "q": "Comment activer les rappels de médicaments ?",
+          "a": "Allez dans Paramètres > Notifications et activez les rappels. Assurez-vous d'autoriser les notifications dans votre navigateur. Les rappels fonctionnent même quand l'app est fermée (si installée en PWA)."
+        },
+        "app-delete-data": {
+          "q": "Comment supprimer toutes mes données ?",
+          "a": "Allez dans Paramètres > Supprimer toutes les données. Cette action est irréversible. Pensez à exporter vos données avant si vous souhaitez les conserver."
+        },
+        "med-ranges": {
+          "q": "Que signifient les plages de référence sur les graphiques ?",
+          "a": "Les zones colorées sur les graphiques d'analyses représentent les plages cibles pour un THS. Les valeurs dans la zone verte sont généralement optimales. Ces plages sont indicatives - seul·e votre médecin peut interpréter vos résultats dans votre contexte personnel."
+        },
+        "med-tracking": {
+          "q": "Pourquoi suivre mes prises de médicaments ?",
+          "a": "Le suivi permet de : 1) Ne pas oublier de prises, 2) Avoir un historique précis pour vos RDV médicaux, 3) Identifier des patterns (oublis récurrents, effets secondaires), 4) Gérer votre stock et anticiper les renouvellements."
+        },
+        "med-not-advice": {
+          "q": "Cette application remplace-t-elle un suivi médical ?",
+          "a": "Non, absolument pas. Chrysalide est un outil de suivi personnel, pas un conseil médical. Consultez toujours un·e professionnel·le de santé pour vos décisions médicales. L'app vous aide à organiser vos informations pour vos RDV."
+        },
+        "gen-name": {
+          "q": "Pourquoi le nom \"Chrysalide\" ?",
+          "a": "La chrysalide est le cocon dans lequel la chenille se transforme en papillon. C'est une métaphore de la transition : un espace protégé de transformation personnelle. Le papillon qui en émerge symbolise l'épanouissement."
+        },
+        "gen-contribute": {
+          "q": "Comment puis-je contribuer au projet ?",
+          "a": "Chrysalide est un projet open source. Vous pouvez contribuer via GitHub : signaler des bugs, proposer des fonctionnalités, améliorer le code ou la documentation. Tout retour est précieux !"
+        },
+        "gen-support": {
+          "q": "J'ai besoin d'aide urgente, que faire ?",
+          "a": "Si vous êtes en détresse, contactez une ligne d'écoute (voir Ressources > Soutien). En cas d'urgence médicale, appelez le 15 (SAMU) ou le 112. Vous n'êtes pas seul·e."
+        }
+      }
+    }
+  },
+  "theme": {
+    "displayMode": "Mode d'affichage",
+    "colorPalette": "Palette de couleurs",
+    "accessibility": "Accessibilité",
+    "reduceAnimations": "Réduire les animations",
+    "reduceAnimationsDesc": "Désactive les animations pour une navigation plus calme",
+    "modes": {
+      "dark": "Sombre",
+      "darkDesc": "Thème sombre par défaut",
+      "light": "Clair",
+      "lightDesc": "Thème clair",
+      "system": "Système",
+      "systemDesc": "Suit les préférences système"
+    },
+    "colors": {
+      "trans": "Trans",
+      "transDesc": "Couleurs du drapeau trans",
+      "blue": "Océan",
+      "blueDesc": "Tons bleus apaisants",
+      "pink": "Rose",
+      "pinkDesc": "Tons roses chaleureux",
+      "violet": "Violet",
+      "violetDesc": "Tons violets mystiques"
+    }
+  },
+  "sync": {
+    "export": {
+      "title": "Exporter via QR Code",
+      "generating": "Génération des QR codes...",
+      "generationError": "Erreur lors de la génération",
+      "retry": "Réessayer",
+      "scanInOrder": "Scannez chaque QR code dans l'ordre sur l'autre appareil.",
+      "scanSingle": "Scannez ce QR code sur l'autre appareil pour transférer vos données.",
+      "session": "Session"
+    },
+    "import": {
+      "title": "Importer via QR Code",
+      "success": "Importation réussie !",
+      "recordsImported": "{count} enregistrements importés",
+      "importing": "Importation en cours...",
+      "cameraError": "Impossible d'accéder à la caméra",
+      "importError": "Erreur d'importation",
+      "scanInstructions": "Scannez les QR codes générés sur l'autre appareil pour importer vos données.",
+      "startScan": "Démarrer le scan",
+      "cameraRequired": "Nécessite l'accès à la caméra et un navigateur compatible avec l'API BarcodeDetector.",
+      "progress": "Progression"
+    }
+  },
+  "export": {
+    "button": "Exporter",
+    "asPNG": "Exporter en PNG",
+    "asPDF": "Exporter en PDF",
+    "captureError": "Erreur lors de la capture du graphique",
+    "lastValues": "Dernières valeurs",
+    "marker": "Marqueur",
+    "value": "Valeur",
+    "target": "Cible",
+    "statusLabel": "Statut",
+    "statusNormal": "Normal",
+    "statusLow": "Bas",
+    "statusHigh": "Élevé",
+    "patient": "Patient·e",
+    "date": "Date",
+    "generatedBy": "Généré par Chrysalide - chrysalide.app",
+    "disclaimer": "Ce document est informatif et ne remplace pas un avis médical."
+  },
+  "milestones": {
+    "title": "Titre",
+    "titlePlaceholder": "Titre de l'étape",
+    "targetDate": "Date cible (optionnel)",
+    "selectDate": "Sélectionner une date",
+    "doneOn": "Fait le"
+  },
+  "appointments": {
+    "types": {
+      "endocrinologist": "Endocrinologue",
+      "psychiatrist": "Psychiatre",
+      "psychologist": "Psychologue",
+      "surgeon": "Chirurgien·ne",
+      "general": "Médecin généraliste",
+      "nurse": "Infirmier·e",
+      "speechtherapist": "Orthophoniste",
+      "bloodtest": "Prise de sang",
+      "laser": "Épilation laser",
+      "electrolysis": "Électrolyse",
+      "tattoo": "Tatoueur·se",
+      "aesthetician": "Esthéticien·ne",
+      "hairdresser": "Coiffeur·se",
+      "other": "Autre"
+    },
+    "reminderTimes": {
+      "15": "15 minutes avant",
+      "30": "30 minutes avant",
+      "60": "1 heure avant",
+      "120": "2 heures avant",
+      "1440": "1 jour avant",
+      "2880": "2 jours avant"
+    }
+  }
+}
