@@ -1,0 +1,592 @@
+{
+  "metadata": {
+    "description": "Personal medical tracking for trans people"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "more": "More",
+    "export": "Export",
+    "import": "Import",
+    "exporting": "Exporting...",
+    "importing": "Importing...",
+    "version": "Version",
+    "back": "Back",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "medications": "Meds",
+    "bloodtests": "Tests",
+    "more": "More",
+    "settings": "Settings",
+    "evolution": "Progress",
+    "journal": "Journal",
+    "objectives": "Goals",
+    "appointments": "Appointments",
+    "practitioners": "Practitioners",
+    "resources": "Resources"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Configuration and backup",
+    "appearance": "Appearance",
+    "language": "Language",
+    "backup": {
+      "title": "Data backup",
+      "description": "All your data is stored locally on this device. Export regular backups to avoid losing anything."
+    },
+    "qrSync": {
+      "title": "QR Sync",
+      "description": "Transfer your data between devices by scanning QR codes. No internet connection needed."
+    },
+    "appointments": {
+      "title": "Appointments",
+      "upcoming": "{count} upcoming",
+      "manage": "Manage your medical appointments"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "notSupported": "Notifications are not supported on this browser.",
+      "blocked": "Blocked",
+      "blockedDescription": "Notifications have been blocked. Change your browser settings to enable them.",
+      "enabled": "Enabled",
+      "enabledDescription": "You will receive reminders for your medications and appointments.",
+      "disable": "Disable notifications",
+      "enableDescription": "Enable notifications to receive reminders for your medications and appointments.",
+      "enable": "Enable notifications"
+    },
+    "medications": {
+      "title": "Medications",
+      "autoValidation": "Auto-validation",
+      "autoValidationDescription": "Automatically mark doses as taken at the scheduled time"
+    },
+    "modules": {
+      "title": "Modules",
+      "evolution": "Progress module",
+      "evolutionDescription": "Physical tracking and photos",
+      "costTracking": "Cost tracking",
+      "costTrackingDescription": "Show out-of-pocket costs on appointments"
+    },
+    "about": {
+      "title": "About",
+      "description": "Chrysalide is a personal medical tracking app for trans people. All your data stays on your device — no servers, maximum privacy."
+    },
+    "dangerZone": {
+      "title": "Danger zone",
+      "description": "Delete all app data. This action is irreversible.",
+      "deleteAll": "Delete all data",
+      "confirmDelete": "Are you sure you want to delete all your data? This action is irreversible."
+    },
+    "importError": "Error importing file"
+  },
+  "medications": {
+    "types": {
+      "estrogen": "Estrogen",
+      "antiandrogen": "Anti-androgen",
+      "progesteron": "Progesterone",
+      "testosterone": "Testosterone",
+      "gnrh": "GnRH Agonist",
+      "other": "Other"
+    },
+    "methods": {
+      "pill": "Pill",
+      "injection": "Injection",
+      "patch": "Patch",
+      "gel": "Gel",
+      "implant": "Implant"
+    },
+    "pillRoutes": {
+      "oral": "Oral",
+      "sublingual": "Sublingual",
+      "vaginal": "Vaginal",
+      "rectal": "Rectal"
+    },
+    "injectionRoutes": {
+      "subcutaneous": "Subcutaneous (SC)",
+      "intramuscular": "Intramuscular (IM)"
+    },
+    "gelZones": {
+      "forearm_left": "Left forearm",
+      "forearm_right": "Right forearm",
+      "inner_thigh_left": "Left inner thigh",
+      "inner_thigh_right": "Right inner thigh",
+      "scrotal": "Scrotal"
+    },
+    "frequencies": {
+      "1x/jour": "1x/day",
+      "2x/jour": "2x/day",
+      "3x/jour": "3x/day",
+      "1x/2jours": "Every 2 days",
+      "1x/3jours": "Every 3 days",
+      "1x/4jours": "Every 4 days",
+      "1x/5jours": "Every 5 days",
+      "1x/6jours": "Every 6 days",
+      "1x/10jours": "Every 10 days",
+      "2x/semaine": "2x/week",
+      "1x/semaine": "1x/week",
+      "1x/2semaines": "Every 2 weeks",
+      "1x/mois": "1x/month",
+      "1x/3mois": "Every 3 months",
+      "1x/6mois": "Every 6 months",
+      "1x/12semaines": "Every 12 weeks",
+      "1x/jour (soir)": "1x/day (evening)"
+    },
+    "stockUnits": {
+      "comprimés": "tablets",
+      "tubes": "tubes",
+      "boîtes": "boxes",
+      "patches": "patches",
+      "flacons": "vials",
+      "ampoules": "ampoules",
+      "seringues": "syringes",
+      "sachets": "sachets"
+    }
+  },
+  "bloodtests": {
+    "markers": {
+      "estradiol": "Estradiol (E2)",
+      "testosterone": "Testosterone (T)",
+      "lh": "LH",
+      "fsh": "FSH",
+      "prolactin": "Prolactin",
+      "shbg": "SHBG",
+      "hematocrit": "Hematocrit",
+      "hemoglobin": "Hemoglobin",
+      "alt": "ALT (SGPT)",
+      "ast": "AST (SGOT)",
+      "creatinine": "Creatinine",
+      "potassium": "Potassium",
+      "dheas": "DHEA-S",
+      "progesterone": "Progesterone"
+    },
+    "descriptions": {
+      "estradiol": "Primary feminizing hormone",
+      "testosterone": "Primary masculinizing hormone",
+      "lh": "Luteinizing hormone",
+      "fsh": "Follicle-stimulating hormone",
+      "prolactin": "Monitor with cyproterone",
+      "shbg": "Sex hormone-binding globulin",
+      "hematocrit": "Monitor with testosterone",
+      "hemoglobin": "Blood health",
+      "alt": "Liver function",
+      "ast": "Liver function",
+      "creatinine": "Kidney function",
+      "potassium": "Important with spironolactone",
+      "dheas": "Adrenal hormone precursor",
+      "progesterone": "Progestative hormone"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome to your space",
+    "subtitle": "Private and caring medical tracking",
+    "todayDoses": "Today's doses",
+    "activeMeds": "Active medications",
+    "todayMeds": "Today's medications",
+    "viewAll": "View all",
+    "noMeds": "No medications configured",
+    "addMed": "Add a medication",
+    "upcomingAppts": "Upcoming appointments",
+    "noAppts": "No upcoming appointments",
+    "addAppt": "Add an appointment",
+    "newMed": "New medication",
+    "newTest": "New test",
+    "recap": {
+      "title": "Summary",
+      "loading": "Loading summary...",
+      "transitionMonths": "months of transition",
+      "transitionDays": "days of transition",
+      "since": "Since",
+      "streak": "Dose streak",
+      "toStart": "To start",
+      "day": "day",
+      "days": "days",
+      "lastLevels": "Latest levels",
+      "objectives": "Goals",
+      "inProgress": "in progress",
+      "completed": "completed",
+      "encouragement": "Keep it up, you're doing great! 💪"
+    }
+  },
+  "journal": {
+    "title": "Journal",
+    "subtitle": "Your personal space",
+    "newEntry": "New entry",
+    "searchPlaceholder": "Search journal...",
+    "entries30d": "entries (30d)",
+    "avgMood": "avg. mood",
+    "perWeek": "/week",
+    "tagsUsed": "tags used",
+    "all": "All",
+    "noResults": "No results",
+    "noEntries": "No entries",
+    "tryOtherSearch": "Try a different search",
+    "noEntriesWithTag": "No entries with this tag",
+    "startWriting": "Start writing in your journal",
+    "result": "result",
+    "results": "results",
+    "new": {
+      "title": "New entry",
+      "subtitle": "Express yourself freely",
+      "dateLabel": "Entry date",
+      "contentLabel": "What's on your mind?",
+      "contentPlaceholder": "Write here... your thoughts, feelings, what happened today...",
+      "howFeeling": "How are you feeling?",
+      "generalMood": "General mood",
+      "energyLevel": "Energy level",
+      "sleepQuality": "Sleep quality",
+      "tags": "Tags",
+      "addTags": "Add tags...",
+      "privateEntry": "Private entry",
+      "excludeExport": "Excluded from exports",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "edit": {
+      "title": "Edit entry",
+      "subtitle": "Update your entry",
+      "content": "Content",
+      "placeholder": "Write here..."
+    },
+    "detail": {
+      "notFound": "Entry not found",
+      "notFoundDesc": "This entry does not exist or has been deleted.",
+      "backToJournal": "Back to journal",
+      "confirmDelete": "Delete this entry?",
+      "confirmDeleteDesc": "This action is irreversible. The entry will be permanently deleted.",
+      "deleting": "Deleting...",
+      "mood": "Mood",
+      "energy": "Energy",
+      "sleep": "Sleep",
+      "tags": "Tags",
+      "createdAt": "Created on",
+      "modifiedAt": "Modified on"
+    },
+    "moods": {
+      "1": "Very bad",
+      "2": "Bad",
+      "3": "Neutral",
+      "4": "Good",
+      "5": "Very good"
+    },
+    "tagCategories": {
+      "mood": "Mood",
+      "sideEffects": "Side effects",
+      "energy": "Energy",
+      "sleep": "Sleep",
+      "social": "Social",
+      "custom": "Custom"
+    },
+    "tags": {
+      "heureux": "happy",
+      "triste": "sad",
+      "anxieux": "anxious",
+      "calme": "calm",
+      "irrité": "irritated",
+      "euphorique": "euphoric",
+      "fatigue": "fatigue",
+      "nausées": "nausea",
+      "maux de tête": "headache",
+      "bouffées de chaleur": "hot flashes",
+      "sensibilité": "sensitivity",
+      "plein d'énergie": "full of energy",
+      "énergie normale": "normal energy",
+      "fatigué": "tired",
+      "épuisé": "exhausted",
+      "bien dormi": "slept well",
+      "sommeil moyen": "average sleep",
+      "mal dormi": "slept poorly",
+      "insomnie": "insomnia",
+      "sortie": "outing",
+      "amis": "friends",
+      "famille": "family",
+      "isolé": "isolated",
+      "coming out": "coming out"
+    },
+    "tagInput": {
+      "maxReached": "Maximum reached",
+      "addTag": "Add a tag...",
+      "createTag": "Create \"{tag}\"",
+      "helpText": "Type to search or create a tag"
+    }
+  },
+  "onboarding": {
+    "optional": "optional",
+    "welcome": {
+      "title": "Welcome to Chrysalide",
+      "subtitle": "Your caring and confidential transition companion",
+      "localTitle": "100% Local",
+      "localDesc": "All your data stays on your device. No servers, no accounts.",
+      "privacyTitle": "Maximum privacy",
+      "privacyDesc": "Your medical information never leaves your phone.",
+      "communityTitle": "Made by and for the community",
+      "communityDesc": "Designed with love to support your transition.",
+      "start": "Get started"
+    },
+    "profile": {
+      "title": "Your profile",
+      "subtitle": "This information is optional and stays private",
+      "pronouns": "Your pronouns (optional)",
+      "transitionType": "Transition type (optional)",
+      "skip": "Skip",
+      "continue": "Continue"
+    },
+    "medication": {
+      "title": "Your medications",
+      "subtitle": "Add your treatment to track your doses and stock",
+      "reminders": "Dose reminders",
+      "stockAlerts": "Stock tracking with alerts",
+      "changeHistory": "Treatment change history",
+      "calendar": "Dose calendar",
+      "addMed": "Add a medication",
+      "later": "Later",
+      "helpText": "You can always add medications from the Medications menu"
+    }
+  },
+  "progress": {
+    "title": "Progress",
+    "entry": "entry",
+    "entries": "entries",
+    "add": "Add",
+    "noEntries": "No entries",
+    "noEntriesDesc": "Document your physical progress with photos and measurements",
+    "addEntry": "Add an entry",
+    "tabs": {
+      "timeline": "Timeline",
+      "charts": "Charts",
+      "photos": "Photos"
+    },
+    "measurements": {
+      "weight": "Weight",
+      "height": "Height",
+      "chest": "Chest",
+      "underChest": "Under-chest",
+      "hips": "Hips",
+      "shoulders": "Shoulders"
+    },
+    "stats": {
+      "entries": "Entries",
+      "photos": "Photos",
+      "days": "Days"
+    },
+    "noMeasurements": "No measurements recorded",
+    "noPhotos": "No photos recorded",
+    "bodyMeasurements": "Body measurements",
+    "bodyEvolution": "Body evolution",
+    "measurementsLabel": "Measurements",
+    "evolution": "Progress",
+    "chestLabel": "Chest",
+    "underChestLabel": "Under-chest",
+    "waistLabel": "Waist",
+    "hipsLabel": "Hips",
+    "weightLabel": "Weight",
+    "new": {
+      "title": "New entry",
+      "subtitle": "Document your progress",
+      "date": "Date",
+      "photos": "Photos",
+      "addPhotos": "Add photos",
+      "photosLocal": "Photos are stored locally on your device",
+      "measurements": "Measurements",
+      "weightField": "Weight",
+      "heightField": "Height",
+      "chestField": "Chest circumference",
+      "underChestField": "Under-chest",
+      "waistField": "Waist circumference",
+      "hipsField": "Hip circumference",
+      "shouldersField": "Shoulder width",
+      "tags": "Tags",
+      "customTag": "Custom tag...",
+      "notes": "Notes",
+      "notesPlaceholder": "Observed changes, remarks, feelings...",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "detail": {
+      "photos": "Photos",
+      "measurements": "Measurements",
+      "tags": "Tags",
+      "notes": "Notes",
+      "deleteConfirm": "Delete this entry?"
+    },
+    "compare": {
+      "title": "Comparison",
+      "beforeAfter": "Before / After",
+      "daysDiff": "apart",
+      "day": "day",
+      "days": "days",
+      "notEnough": "Not enough entries",
+      "notEnoughDesc": "Add at least 2 entries with photos to compare",
+      "addEntry": "Add an entry",
+      "before": "Before",
+      "after": "After",
+      "firstToLast": "First → Last",
+      "oneMonth": "~1 month",
+      "threeMonths": "~3 months",
+      "measurementEvolution": "Measurement evolution"
+    }
+  },
+  "practitioners": {
+    "new": {
+      "title": "New practitioner",
+      "subtitle": "Add a practitioner to your directory",
+      "basicInfo": "Basic information",
+      "fullName": "Full name *",
+      "namePlaceholder": "Dr. First Last",
+      "specialty": "Specialty",
+      "contact": "Contact",
+      "address": "Address",
+      "addressPlaceholder": "123 Health Street, City",
+      "phone": "Phone",
+      "phonePlaceholder": "+1 234 567 8900",
+      "email": "Email",
+      "emailPlaceholder": "contact@practitioner.com",
+      "website": "Website",
+      "websitePlaceholder": "www.practitioner.com or https://...",
+      "notes": "Notes",
+      "notesPlaceholder": "Personal notes about this practitioner...",
+      "transFriendly": "Trans-friendly",
+      "transFriendlyDesc": "This practitioner is known for supporting trans people",
+      "saving": "Saving...",
+      "save": "Save"
+    }
+  },
+  "objectives": {
+    "title": "My Goals",
+    "subtitle": "Track your transition goals",
+    "new": "New",
+    "globalProgress": "Overall progress",
+    "steps": "steps",
+    "objective": "goal",
+    "objectives": "goals",
+    "inProgress": "in progress",
+    "newObjective": {
+      "title": "New goal",
+      "subtitle": "Define a goal for your transition"
+    },
+    "changeTypes": {
+      "started": "Started",
+      "stopped": "Stopped",
+      "paused": "Paused",
+      "resumed": "Resumed",
+      "dosage_change": "Dosage changed",
+      "method_change": "Method changed",
+      "frequency_change": "Frequency changed"
+    }
+  },
+  "resources": {
+    "title": "Resources",
+    "subtitle": "Useful links for the trans community",
+    "searchPlaceholder": "Search for a resource...",
+    "all": "All",
+    "faqCard": "Frequently asked questions",
+    "faqCardDesc": "App help and general information",
+    "resultCount": "{count} result",
+    "resultsCount": "{count} results",
+    "for": "for",
+    "noResults": "No resources found",
+    "disclaimer": "These resources are provided for informational purposes. Chrysalide is not affiliated with these organizations and cannot guarantee the accuracy of the information. For any medical advice, consult a healthcare professional.",
+    "categories": {
+      "community": "Community",
+      "medical": "Medical",
+      "legal": "Legal & Administrative",
+      "support": "Support",
+      "information": "Information"
+    },
+    "faq": {
+      "title": "FAQ",
+      "subtitle": "Frequently asked questions",
+      "all": "All",
+      "helpText": "Can't find the answer to your question?",
+      "consultPrefix": "Check out the",
+      "communityResources": "community resources",
+      "orReport": "or report an issue on GitHub.",
+      "categoriesLabels": {
+        "app": "Application",
+        "medical": "Medical",
+        "general": "General"
+      },
+      "question": "question",
+      "questions": "questions",
+      "items": {
+        "app-data-privacy": {
+          "q": "Is my data secure?",
+          "a": "Yes, all your data is stored only on your device (IndexedDB). Nothing is sent to a server. You have full control over your personal information. Remember to make regular backups via the Export function in settings."
+        },
+        "app-offline": {
+          "q": "Does the app work offline?",
+          "a": "Yes! Chrysalide is a PWA (Progressive Web App) that works entirely offline once installed. All features are available without an internet connection."
+        },
+        "app-backup": {
+          "q": "How do I back up my data?",
+          "a": "Go to Settings > Export data. A JSON file containing all your data will be downloaded. Keep it in a safe place. To restore, use the Import function in settings."
+        },
+        "app-install": {
+          "q": "How do I install the app on my phone?",
+          "a": "On Android (Chrome): Menu ⋮ > \"Install app\" or \"Add to home screen\". On iOS (Safari): Share button > \"Add to Home Screen\". The app will be available like a native application."
+        },
+        "app-notifications": {
+          "q": "How do I enable medication reminders?",
+          "a": "Go to Settings > Notifications and enable reminders. Make sure to allow notifications in your browser. Reminders work even when the app is closed (if installed as a PWA)."
+        },
+        "app-delete-data": {
+          "q": "How do I delete all my data?",
+          "a": "Go to Settings > Delete all data. This action is irreversible. Consider exporting your data first if you want to keep it."
+        },
+        "med-ranges": {
+          "q": "What do the reference ranges on the charts mean?",
+          "a": "The colored zones on the test charts represent target ranges for HRT. Values in the green zone are generally optimal. These ranges are indicative — only your doctor can interpret your results in your personal context."
+        },
+        "med-tracking": {
+          "q": "Why track my medication doses?",
+          "a": "Tracking helps you: 1) Not miss doses, 2) Have an accurate history for medical appointments, 3) Identify patterns (recurring missed doses, side effects), 4) Manage your stock and anticipate renewals."
+        },
+        "med-not-advice": {
+          "q": "Does this app replace medical supervision?",
+          "a": "No, absolutely not. Chrysalide is a personal tracking tool, not medical advice. Always consult a healthcare professional for your medical decisions. The app helps you organize your information for appointments."
+        },
+        "gen-name": {
+          "q": "Why the name \"Chrysalide\"?",
+          "a": "The chrysalis is the cocoon in which a caterpillar transforms into a butterfly. It's a metaphor for transition: a protected space for personal transformation. The butterfly that emerges symbolizes flourishing."
+        },
+        "gen-contribute": {
+          "q": "How can I contribute to the project?",
+          "a": "Chrysalide is an open source project. You can contribute via GitHub: report bugs, suggest features, improve code or documentation. All feedback is valuable!"
+        },
+        "gen-support": {
+          "q": "I need urgent help, what should I do?",
+          "a": "If you're in distress, contact a helpline (see Resources > Support). In case of medical emergency, call your local emergency number (911 in the US, 112 in Europe). You are not alone."
+        }
+      }
+    }
+  },
+  "appointments": {
+    "types": {
+      "endocrinologist": "Endocrinologist",
+      "psychiatrist": "Psychiatrist",
+      "psychologist": "Psychologist",
+      "surgeon": "Surgeon",
+      "general": "General practitioner",
+      "nurse": "Nurse",
+      "speechtherapist": "Speech therapist",
+      "bloodtest": "Blood test",
+      "laser": "Laser hair removal",
+      "electrolysis": "Electrolysis",
+      "tattoo": "Tattoo artist",
+      "aesthetician": "Aesthetician",
+      "hairdresser": "Hairdresser",
+      "other": "Other"
+    },
+    "reminderTimes": {
+      "15": "15 minutes before",
+      "30": "30 minutes before",
+      "60": "1 hour before",
+      "120": "2 hours before",
+      "1440": "1 day before",
+      "2880": "2 days before"
+    }
+  }
+}
