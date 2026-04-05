@@ -18,8 +18,10 @@ import {
   Pill,
   QrCode,
   Smartphone,
+  Globe,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { exportAllData, importAllData, getUpcomingAppointments } from '@/lib/db'
 import {
   isNotificationSupported,
@@ -34,9 +36,20 @@ import { startReminderService } from '@/lib/notification-scheduler'
 import { QRExport } from '@/components/sync/qr-export'
 import { QRImport } from '@/components/sync/qr-import'
 import { Switch } from '@/components/ui/switch'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { ThemePicker } from '@/components/settings/theme-picker'
+// TODO: replace with useLocaleSwitch when i18n is stable
 
 export default function SettingsPage() {
+  const t = useTranslations('settings')
+  const tc = useTranslations('common')
+  const [locale, setLocale] = useState('fr')
   const [exporting, setExporting] = useState(false)
   const [importing, setImporting] = useState(false)
   const [notificationPermission, setNotificationPermission] = useState<string>('default')
@@ -142,7 +155,7 @@ export default function SettingsPage() {
         window.location.reload()
       } catch (error) {
         console.error('Import error:', error)
-        alert("Erreur lors de l'import du fichier")
+        alert(t('importError'))
       } finally {
         setImporting(false)
       }
@@ -153,28 +166,46 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 p-4">
       <div className="pt-2">
-        <h1 className="text-foreground text-2xl font-bold">Réglages</h1>
-        <p className="text-muted-foreground text-sm">Configuration et sauvegarde</p>
+        <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
+        <p className="text-muted-foreground text-sm">{t('subtitle')}</p>
       </div>
 
       {/* Theme Section */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Palette className="text-primary h-5 w-5" />
-          <h2 className="text-foreground text-lg font-semibold">Apparence</h2>
+          <h2 className="text-foreground text-lg font-semibold">{t('appearance')}</h2>
         </div>
         <ThemePicker />
       </div>
 
+      {/* Language Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Sauvegarde des données</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Globe className="h-4 w-4" />
+            {t('language')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Select value={locale} onValueChange={setLocale}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="fr">Fran\u00e7ais</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t('backup.title')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-muted-foreground text-sm">
-            Toutes vos données sont stockées localement sur cet appareil. Exportez régulièrement une
-            sauvegarde pour ne rien perdre.
-          </p>
+          <p className="text-muted-foreground text-sm">{t('backup.description')}</p>
           <div className="flex gap-3">
             <Button
               variant="outline"
@@ -183,7 +214,7 @@ export default function SettingsPage() {
               disabled={exporting}
             >
               <Download className="h-4 w-4" />
-              {exporting ? 'Export...' : 'Exporter'}
+              {exporting ? tc('exporting') : tc('export')}
             </Button>
             <Button
               variant="outline"
@@ -192,7 +223,7 @@ export default function SettingsPage() {
               disabled={importing}
             >
               <Upload className="h-4 w-4" />
-              {importing ? 'Import...' : 'Importer'}
+              {importing ? tc('importing') : tc('import')}
             </Button>
           </div>
         </CardContent>
@@ -203,14 +234,11 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <Smartphone className="h-4 w-4" />
-            Synchronisation QR
+            {t('qrSync.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-muted-foreground text-sm">
-            Transférez vos données entre appareils en scannant des QR codes. Aucune connexion
-            internet nécessaire.
-          </p>
+          <p className="text-muted-foreground text-sm">{t('qrSync.description')}</p>
           <div className="flex gap-3">
             <Button
               variant="outline"
@@ -218,7 +246,7 @@ export default function SettingsPage() {
               onClick={() => setShowQRExport(true)}
             >
               <QrCode className="h-4 w-4" />
-              Exporter
+              {tc('export')}
             </Button>
             <Button
               variant="outline"
@@ -226,7 +254,7 @@ export default function SettingsPage() {
               onClick={() => setShowQRImport(true)}
             >
               <QrCode className="h-4 w-4" />
-              Importer
+              {tc('import')}
             </Button>
           </div>
         </CardContent>
@@ -262,11 +290,11 @@ export default function SettingsPage() {
                   <Calendar className="text-primary h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-foreground font-medium">Rendez-vous</p>
+                  <p className="text-foreground font-medium">{t('appointments.title')}</p>
                   <p className="text-muted-foreground text-sm">
                     {appointmentCount > 0
-                      ? `${appointmentCount} à venir`
-                      : 'Gérer vos rendez-vous médicaux'}
+                      ? t('appointments.upcoming', { count: appointmentCount })
+                      : t('appointments.manage')}
                   </p>
                 </div>
               </div>
@@ -281,45 +309,41 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <Bell className="h-4 w-4" />
-            Notifications
+            {t('notifications.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {!isNotificationSupported() ? (
-            <p className="text-muted-foreground text-sm">
-              Les notifications ne sont pas supportées sur ce navigateur.
-            </p>
+            <p className="text-muted-foreground text-sm">{t('notifications.notSupported')}</p>
           ) : notificationPermission === 'denied' ? (
             <div className="space-y-2">
-              <Badge variant="destructive">Bloquées</Badge>
+              <Badge variant="destructive">{t('notifications.blocked')}</Badge>
               <p className="text-muted-foreground text-sm">
-                Les notifications ont été bloquées. Modifiez les paramètres de votre navigateur pour
-                les activer.
+                {t('notifications.blockedDescription')}
               </p>
             </div>
           ) : notificationsEnabled ? (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Badge variant="default" className="bg-green-600">
-                  Activées
+                  {t('notifications.enabled')}
                 </Badge>
               </div>
               <p className="text-muted-foreground text-sm">
-                Vous recevrez des rappels pour vos médicaments et rendez-vous.
+                {t('notifications.enabledDescription')}
               </p>
               <Button variant="outline" size="sm" onClick={handleDisableNotifications}>
-                Désactiver les notifications
+                {t('notifications.disable')}
               </Button>
             </div>
           ) : (
             <div className="space-y-3">
               <p className="text-muted-foreground text-sm">
-                Activez les notifications pour recevoir des rappels pour vos médicaments et
-                rendez-vous.
+                {t('notifications.enableDescription')}
               </p>
               <Button onClick={handleEnableNotifications} className="gap-2">
                 <Bell className="h-4 w-4" />
-                Activer les notifications
+                {t('notifications.enable')}
               </Button>
             </div>
           )}
@@ -331,15 +355,15 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <Pill className="h-4 w-4" />
-            Médicaments
+            {t('medications.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-foreground font-medium">Validation automatique</p>
+              <p className="text-foreground font-medium">{t('medications.autoValidation')}</p>
               <p className="text-muted-foreground text-sm">
-                Marquer automatiquement les prises comme effectuées à l&apos;heure prévue
+                {t('medications.autoValidationDescription')}
               </p>
             </div>
             <Switch checked={autoValidationEnabled} onCheckedChange={handleAutoValidationToggle} />
@@ -350,7 +374,7 @@ export default function SettingsPage() {
       {/* Modules */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Modules</CardTitle>
+          <CardTitle className="text-base">{t('modules.title')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
@@ -359,8 +383,8 @@ export default function SettingsPage() {
                 <TrendingUp className="text-primary h-5 w-5" />
               </div>
               <div>
-                <p className="text-foreground font-medium">Module Évolution</p>
-                <p className="text-muted-foreground text-sm">Suivi physique et photos</p>
+                <p className="text-foreground font-medium">{t('modules.evolution')}</p>
+                <p className="text-muted-foreground text-sm">{t('modules.evolutionDescription')}</p>
               </div>
             </div>
             <Switch checked={evolutionEnabled} onCheckedChange={handleEvolutionToggle} />
@@ -371,9 +395,9 @@ export default function SettingsPage() {
                 <Coins className="text-primary h-5 w-5" />
               </div>
               <div>
-                <p className="text-foreground font-medium">Suivi des coûts</p>
+                <p className="text-foreground font-medium">{t('modules.costTracking')}</p>
                 <p className="text-muted-foreground text-sm">
-                  Afficher le reste à charge sur les RDV
+                  {t('modules.costTrackingDescription')}
                 </p>
               </div>
             </div>
@@ -385,20 +409,17 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Info className="text-primary h-4 w-4" />À propos
+            <Info className="text-primary h-4 w-4" />
+            {t('about.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2 text-sm">
             <p>
-              <span className="text-muted-foreground">Version:</span>{' '}
+              <span className="text-muted-foreground">{tc('version')}:</span>{' '}
               <span className="text-foreground">1.0.0</span>
             </p>
-            <p className="text-muted-foreground">
-              Chrysalide est une application de suivi médical personnel pour les personnes trans.
-              Toutes vos données restent sur votre appareil - aucun serveur, confidentialité
-              maximale.
-            </p>
+            <p className="text-muted-foreground">{t('about.description')}</p>
           </div>
         </CardContent>
       </Card>
@@ -407,28 +428,22 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="text-destructive flex items-center gap-2 text-base">
             <Trash2 className="h-4 w-4" />
-            Zone de danger
+            {t('dangerZone.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-3 text-sm">
-            Supprimer toutes les données de l&apos;application. Cette action est irréversible.
-          </p>
+          <p className="text-muted-foreground mb-3 text-sm">{t('dangerZone.description')}</p>
           <Button
             variant="destructive"
             size="sm"
             onClick={() => {
-              if (
-                confirm(
-                  'Êtes-vous sûr·e de vouloir supprimer toutes vos données? Cette action est irréversible.'
-                )
-              ) {
+              if (confirm(t('dangerZone.confirmDelete'))) {
                 indexedDB.deleteDatabase('ChrysalideDB')
                 window.location.reload()
               }
             }}
           >
-            Supprimer toutes les données
+            {t('dangerZone.deleteAll')}
           </Button>
         </CardContent>
       </Card>
