@@ -44,12 +44,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ThemePicker } from '@/components/settings/theme-picker'
-// TODO: replace with useLocaleSwitch when i18n is stable
+import { useLocaleSwitch } from '@/i18n/use-locale-switch'
 
 export default function SettingsPage() {
   const t = useTranslations('settings')
   const tc = useTranslations('common')
-  const [locale, setLocale] = useState('fr')
+  const { locale, setLocale } = useLocaleSwitch()
   const [exporting, setExporting] = useState(false)
   const [importing, setImporting] = useState(false)
   const [notificationPermission, setNotificationPermission] = useState<string>('default')
