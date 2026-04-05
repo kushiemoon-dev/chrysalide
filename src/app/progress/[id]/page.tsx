@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -21,16 +22,8 @@ import { db } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-
-const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
-  weight: 'Poids',
-  height: 'Taille',
-  chest: 'Tour de poitrine',
-  underbust: 'Sous-poitrine',
-  waist: 'Tour de taille',
-  hips: 'Tour de hanches',
-  shoulders: 'Largeur épaules',
-}
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 
 const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
   weight: 'kg',
@@ -43,6 +36,18 @@ const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
 }
 
 export default function ProgressDetailPage() {
+  const t = useTranslations('progress')
+  const tc = useTranslations('common')
+
+  const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
+    weight: t('new.weightField'),
+    height: t('new.heightField'),
+    chest: t('new.chestField'),
+    underbust: t('new.underChestField'),
+    waist: t('new.waistField'),
+    hips: t('new.hipsField'),
+    shoulders: t('new.shouldersField'),
+  }
   const params = useParams()
   const router = useRouter()
   const [entry, setEntry] = useState<PhysicalProgress | null>(null)
@@ -72,7 +77,7 @@ export default function ProgressDetailPage() {
   }, [params.id, router])
 
   async function handleDelete() {
-    if (!entry?.id || !confirm('Supprimer cette entrée ?')) return
+    if (!entry?.id || !confirm(t('detail.deleteConfirm'))) return
 
     setDeleting(true)
     try {
@@ -102,7 +107,7 @@ export default function ProgressDetailPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{tc('loading')}</p>
       </div>
     )
   }
@@ -153,7 +158,7 @@ export default function ProgressDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Camera className="h-4 w-4" />
-              Photos ({entry.photos.length})
+              {t('detail.photos')} ({entry.photos.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -182,7 +187,7 @@ export default function ProgressDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Ruler className="h-4 w-4" />
-              Mensurations
+              {t('detail.measurements')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -207,7 +212,7 @@ export default function ProgressDetailPage() {
       {entry.tags && entry.tags.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Tags</CardTitle>
+            <CardTitle className="text-base">{t('detail.tags')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
@@ -225,7 +230,7 @@ export default function ProgressDetailPage() {
       {entry.notes && (
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Notes</CardTitle>
+            <CardTitle className="text-base">{t('detail.notes')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-foreground whitespace-pre-wrap">{entry.notes}</p>
