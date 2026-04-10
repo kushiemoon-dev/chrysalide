@@ -575,7 +575,8 @@
       "allStatuses": "All statuses",
       "allCategories": "All categories",
       "empty": "No goals",
-      "noResults": "No results"
+      "noResults": "No results",
+      "emptyDescription": "Start by creating your first transition goal."
     },
     "title": "My Goals",
     "subtitle": "Track your transition goals",
@@ -587,7 +588,14 @@
     "inProgress": "in progress",
     "newObjective": {
       "title": "New goal",
-      "subtitle": "Define a goal for your transition"
+      "subtitle": "Define a goal for your transition",
+      "tabTemplates": "Templates",
+      "tabCustom": "Custom",
+      "templateHint": "Choose a pre-configured template to get started quickly",
+      "feminizingPath": "Feminizing journey",
+      "masculinizingPath": "Masculinizing journey",
+      "commonPath": "Common journey",
+      "stepsCount": "{count} predefined steps"
     },
     "changeTypes": {
       "started": "Started",
@@ -651,6 +659,171 @@
       "targetDate": "Target date",
       "objectiveAchieved": "Goal reached!",
       "doneOn": "Done on"
+    },
+    "templates": {
+      "ths-feminisant": {
+        "title": "Feminizing HRT",
+        "description": "Female hormone therapy journey",
+        "duration": "5 years",
+        "milestones": [
+          "Initial consultation",
+          "Start HRT",
+          "3-month follow-up",
+          "6-month follow-up",
+          "Annual check-up"
+        ]
+      },
+      "epilation-visage": {
+        "title": "Facial laser hair removal",
+        "description": "Facial laser hair removal journey",
+        "duration": "18-24 months",
+        "milestones": [
+          "Dermatologist consultation",
+          "Initial sessions",
+          "Mid-course review",
+          "Finishing sessions",
+          "Maintenance"
+        ]
+      },
+      "epilation-corps": {
+        "title": "Body laser hair removal",
+        "description": "Body laser hair removal journey",
+        "duration": "12-18 months",
+        "milestones": [
+          "Consultation",
+          "Area 1: legs",
+          "Area 2: arms/armpits",
+          "Area 3: bikini",
+          "Maintenance"
+        ]
+      },
+      "chirurgie-mammoplastie": {
+        "title": "Breast augmentation",
+        "description": "Breast augmentation surgery journey",
+        "milestones": [
+          "Surgeon consultation",
+          "Pre-op exams",
+          "Surgery",
+          "Recovery",
+          "Post-op follow-up",
+          "Final result"
+        ]
+      },
+      "chirurgie-vaginoplastie": {
+        "title": "Vaginoplasty",
+        "description": "Feminizing genital surgery",
+        "milestones": [
+          "Initial consultation",
+          "Psychological evaluation",
+          "Medical pathway",
+          "Surgery",
+          "Recovery",
+          "Long-term follow-up"
+        ]
+      },
+      "chirurgie-ffs": {
+        "title": "Facial feminization surgery (FFS)",
+        "description": "Facial feminization surgery journey",
+        "milestones": [
+          "Surgeon consultation",
+          "3D simulation",
+          "Exams",
+          "Surgery",
+          "Recovery",
+          "Final result"
+        ]
+      },
+      "ths-masculinisant": {
+        "title": "Masculinizing HRT",
+        "description": "Male hormone therapy journey",
+        "duration": "5 years",
+        "milestones": [
+          "Initial consultation",
+          "Start testosterone",
+          "3-month follow-up",
+          "6-month follow-up",
+          "Annual check-up"
+        ]
+      },
+      "chirurgie-torsoplastie": {
+        "title": "Mastectomy / Chest surgery",
+        "description": "Chest masculinization surgery",
+        "milestones": ["Consultation", "Pre-op exams", "Surgery", "Recovery", "Follow-up"]
+      },
+      "chirurgie-hysterectomie": {
+        "title": "Hysterectomy",
+        "description": "Uterus removal surgery",
+        "milestones": ["Consultation", "Exams", "Surgery", "Recovery", "Follow-up"]
+      },
+      "chirurgie-phalloplastie": {
+        "title": "Phalloplasty",
+        "description": "Masculinizing genital surgery",
+        "milestones": [
+          "Consultation",
+          "Psychological evaluation",
+          "Medical pathway",
+          "Surgery",
+          "Recovery",
+          "Long-term follow-up"
+        ]
+      },
+      "chirurgie-metoidioplastie": {
+        "title": "Metoidioplasty",
+        "description": "Alternative masculinizing genital surgery",
+        "milestones": ["Consultation", "Evaluation", "Surgery", "Recovery", "Follow-up"]
+      },
+      "changement-etat-civil": {
+        "title": "Legal gender recognition",
+        "description": "Legal gender recognition procedure",
+        "duration": "3 to 6 months",
+        "milestones": [
+          "Gather documents",
+          "Submit application",
+          "Hearing",
+          "Judgment",
+          "Update documents"
+        ]
+      },
+      "changement-prenom": {
+        "title": "Name change",
+        "description": "Legal name change procedure",
+        "duration": "2 to 4 months",
+        "milestones": [
+          "Choose name",
+          "Prepare file",
+          "Submit to registry",
+          "Follow up",
+          "Birth certificate update"
+        ]
+      },
+      "parcours-psy": {
+        "title": "Psychological support",
+        "description": "Psychological support during transition",
+        "duration": "Ongoing",
+        "milestones": ["First appointment", "Regular sessions", "Support letter", "Annual review"]
+      },
+      "coming-out-proche": {
+        "title": "Coming out to loved ones",
+        "description": "Sharing your identity with family and friends",
+        "duration": "Varies",
+        "milestones": [
+          "Preparatory reflection",
+          "First coming out",
+          "Difficult conversations",
+          "Support established"
+        ]
+      },
+      "coming-out-travail": {
+        "title": "Professional coming out",
+        "description": "Managing your identity in the workplace",
+        "duration": "Varies",
+        "milestones": [
+          "Preparation",
+          "HR discussion",
+          "Team communication",
+          "Administrative updates"
+        ]
+      }
     },
     "celebration": {
       "continue": "Continue"
