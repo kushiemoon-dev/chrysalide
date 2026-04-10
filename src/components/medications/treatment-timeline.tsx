@@ -50,9 +50,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
         )}
         <CardContent className="py-8 text-center">
           <p className="text-muted-foreground">{tMed('timeline.empty')}</p>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Les modifications de tes médicaments apparaîtront ici.
-          </p>
+          <p className="text-muted-foreground mt-1 text-sm">{tMed('timeline.emptyDesc')}</p>
         </CardContent>
       </Card>
     )
