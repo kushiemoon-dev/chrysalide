@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,24 +15,25 @@ import { addPhysicalProgress } from '@/lib/db'
 import type { Measurements } from '@/lib/types'
 import { format } from 'date-fns'
 
-const MEASUREMENT_FIELDS: {
-  key: keyof Measurements
-  label: string
-  unit: string
-  placeholder: string
-}[] = [
-  { key: 'weight', label: 'Poids', unit: 'kg', placeholder: '65' },
-  { key: 'height', label: 'Taille', unit: 'cm', placeholder: '170' },
-  { key: 'chest', label: 'Tour de poitrine', unit: 'cm', placeholder: '90' },
-  { key: 'underbust', label: 'Sous-poitrine', unit: 'cm', placeholder: '80' },
-  { key: 'waist', label: 'Tour de taille', unit: 'cm', placeholder: '70' },
-  { key: 'hips', label: 'Tour de hanches', unit: 'cm', placeholder: '95' },
-  { key: 'shoulders', label: 'Largeur épaules', unit: 'cm', placeholder: '45' },
-]
-
 const SUGGESTED_TAGS = ['visage', 'corps', 'poitrine', 'cheveux', 'peau', 'énergie', 'humeur']
 
 export default function NewProgressPage() {
+  const t = useTranslations('progress')
+
+  const MEASUREMENT_FIELDS: {
+    key: keyof Measurements
+    label: string
+    unit: string
+    placeholder: string
+  }[] = [
+    { key: 'weight', label: t('new.weightField'), unit: 'kg', placeholder: '65' },
+    { key: 'height', label: t('new.heightField'), unit: 'cm', placeholder: '170' },
+    { key: 'chest', label: t('new.chestField'), unit: 'cm', placeholder: '90' },
+    { key: 'underbust', label: t('new.underChestField'), unit: 'cm', placeholder: '80' },
+    { key: 'waist', label: t('new.waistField'), unit: 'cm', placeholder: '70' },
+    { key: 'hips', label: t('new.hipsField'), unit: 'cm', placeholder: '95' },
+    { key: 'shoulders', label: t('new.shouldersField'), unit: 'cm', placeholder: '45' },
+  ]
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -139,8 +141,8 @@ export default function NewProgressPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-xl font-bold">Nouvelle entrée</h1>
-          <p className="text-muted-foreground text-sm">Documentez votre évolution</p>
+          <h1 className="text-foreground text-xl font-bold">{t('new.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('new.subtitle')}</p>
         </div>
       </div>
 
@@ -148,7 +150,7 @@ export default function NewProgressPage() {
         {/* Date */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Date</CardTitle>
+            <CardTitle className="text-base">{t('new.date')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Input
@@ -165,7 +167,7 @@ export default function NewProgressPage() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-base">
               <Camera className="h-4 w-4" />
-              Photos
+              {t('new.photos')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -211,20 +213,18 @@ export default function NewProgressPage() {
                 className="flex-1 gap-2"
               >
                 <ImageIcon className="h-4 w-4" />
-                Ajouter des photos
+                {t('new.addPhotos')}
               </Button>
             </div>
 
-            <p className="text-muted-foreground text-center text-xs">
-              Les photos restent stockées localement sur votre appareil
-            </p>
+            <p className="text-muted-foreground text-center text-xs">{t('new.photosLocal')}</p>
           </CardContent>
         </Card>
 
         {/* Measurements */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Mensurations</CardTitle>
+            <CardTitle className="text-base">{t('new.measurements')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
@@ -256,7 +256,7 @@ export default function NewProgressPage() {
         {/* Tags */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Tags</CardTitle>
+            <CardTitle className="text-base">{t('new.tags')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex flex-wrap gap-2">
@@ -294,7 +294,7 @@ export default function NewProgressPage() {
             {/* Add custom tag */}
             <div className="flex gap-2">
               <Input
-                placeholder="Tag personnalisé..."
+                placeholder={t('new.customTag')}
                 value={customTag}
                 onChange={(e) => setCustomTag(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomTag())}
@@ -316,11 +316,11 @@ export default function NewProgressPage() {
         {/* Notes */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Notes</CardTitle>
+            <CardTitle className="text-base">{t('new.notes')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Textarea
-              placeholder="Changements observés, remarques, ressenti..."
+              placeholder={t('new.notesPlaceholder')}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="min-h-[100px]"
@@ -330,7 +330,7 @@ export default function NewProgressPage() {
 
         {/* Submit */}
         <Button type="submit" className="w-full" disabled={!hasData || saving}>
-          {saving ? 'Enregistrement...' : 'Enregistrer'}
+          {saving ? t('new.saving') : t('new.save')}
         </Button>
       </form>
     </div>
