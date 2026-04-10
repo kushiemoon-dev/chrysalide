@@ -186,9 +186,38 @@
       "ampoules": "ampoules",
       "seringues": "seringues",
       "sachets": "sachets"
+    },
+    "form": {
+      "medicationName": "Nom du médicament",
+      "startDate": "Date de début",
+      "endDate": "Date de fin (optionnel)",
+      "stockUnit": "Unité de stock",
+      "lowStockAlert": "Alerte si sous",
+      "selectPlaceholder": "Sélectionner..."
+    },
+    "new": {
+      "title": "Nouveau médicament"
+    },
+    "edit": {
+      "title": "Modifier le médicament"
+    },
+    "detail": {
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "lowStockAlert": "Alerte si sous"
+    },
+    "list": {
+      "noMedications": "Aucun médicament",
+      "addPastDoseTitle": "Ajouter une prise",
+      "addPastDoseButton": "Ajouter une prise passée",
+      "notePlaceholder": "Remarques, effets..."
     }
   },
   "bloodtests": {
+    "list": {
+      "subtitle": "Suivi de vos bilans sanguins",
+      "safetyMarkers": "Marqueurs de sécurité"
+    },
     "markers": {
       "estradiol": "Œstradiol (E2)",
       "testosterone": "Testostérone (T)",
@@ -356,6 +385,10 @@
     }
   },
   "practitioners": {
+    "list": {
+      "filterByType": "Filtrer par type",
+      "allTypes": "Tous les types"
+    },
     "edit": {
       "title": "Modifier praticien·ne",
       "basicInfo": "Informations de base",
@@ -401,6 +434,10 @@
     }
   },
   "objectives": {
+    "list": {
+      "allStatuses": "Tous les statuts",
+      "allCategories": "Toutes les catégories"
+    },
     "title": "Mes Objectifs",
     "subtitle": "Suivi de tes objectifs de transition",
     "new": "Nouveau",
@@ -514,6 +551,15 @@
     }
   },
   "progress": {
+    "suggestedTags": {
+      "face": "visage",
+      "body": "corps",
+      "chest": "poitrine",
+      "hair": "cheveux",
+      "skin": "peau",
+      "energy": "énergie",
+      "mood": "humeur"
+    },
     "title": "Évolution",
     "entry": "entrée",
     "entries": "entrées",
@@ -756,6 +802,14 @@
     "doneOn": "Fait le"
   },
   "appointments": {
+    "form": {
+      "dateAndTime": "Date et heure",
+      "selectDate": "Sélectionner une date",
+      "noReminder": "Pas de rappel"
+    },
+    "list": {
+      "filterByPractitioner": "Filtrer par praticien·ne"
+    },
     "types": {
       "endocrinologist": "Endocrinologue",
       "psychiatrist": "Psychiatre",
