@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,8 @@ import { MoodPicker } from '@/components/journal/mood-picker'
 import { TagInput } from '@/components/journal/tag-input'
 
 export default function EditJournalEntryPage({ params }: { params: Promise<{ id: string }> }) {
+  const t = useTranslations('journal')
+  const tCommon = useTranslations('common')
   const resolvedParams = use(params)
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -109,15 +112,13 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold">Entrée introuvable</h1>
+          <h1 className="text-2xl font-bold">{t('detail.notFound')}</h1>
         </div>
         <Card>
           <CardContent className="p-8 text-center">
-            <p className="text-muted-foreground">
-              Cette entrée n&apos;existe pas ou a été supprimée.
-            </p>
+            <p className="text-muted-foreground">{t('detail.notFoundDesc')}</p>
             <Link href="/journal">
-              <Button className="mt-4">Retour au journal</Button>
+              <Button className="mt-4">{t('detail.backToJournal')}</Button>
             </Link>
           </CardContent>
         </Card>
@@ -137,8 +138,8 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Modifier l&apos;entrée</h1>
-          <p className="text-muted-foreground text-sm">Mets à jour ton entrée</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('edit.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('edit.subtitle')}</p>
         </div>
       </div>
 
@@ -147,7 +148,7 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
         <Card>
           <CardContent className="p-4">
             <div className="space-y-2">
-              <Label>Date de l&apos;entrée</Label>
+              <Label>{t('new.dateLabel')}</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -176,12 +177,12 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
         <Card>
           <CardContent className="space-y-4 p-4">
             <div className="space-y-2">
-              <Label htmlFor="content">Contenu</Label>
+              <Label htmlFor="content">{t('edit.content')}</Label>
               <Textarea
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Écris ici..."
+                placeholder={t('edit.placeholder')}
                 className="min-h-[200px] resize-none"
               />
             </div>
@@ -193,23 +194,23 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Sparkles className="text-primary h-4 w-4" />
-              Comment tu te sens ?
+              {t('new.howFeeling')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <MoodPicker value={mood} onChange={setMood} label="Humeur générale" size="lg" />
+            <MoodPicker value={mood} onChange={setMood} label={t('new.generalMood')} size="lg" />
 
             <MoodPicker
               value={energyLevel}
               onChange={setEnergyLevel}
-              label="Niveau d'énergie"
+              label={t('new.energyLevel')}
               size="md"
             />
 
             <MoodPicker
               value={sleepQuality}
               onChange={setSleepQuality}
-              label="Qualité du sommeil"
+              label={t('new.sleepQuality')}
               size="md"
             />
           </CardContent>
@@ -218,10 +219,10 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
         {/* Tags */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Tags</CardTitle>
+            <CardTitle className="text-base">{t('new.tags')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <TagInput value={tags} onChange={setTags} placeholder="Ajouter des tags..." />
+            <TagInput value={tags} onChange={setTags} placeholder={t('new.addTags')} />
           </CardContent>
         </Card>
 
@@ -234,8 +235,8 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
                   <Lock className="text-muted-foreground h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-foreground font-medium">Entrée privée</p>
-                  <p className="text-muted-foreground text-sm">Exclue des exports</p>
+                  <p className="text-foreground font-medium">{t('new.privateEntry')}</p>
+                  <p className="text-muted-foreground text-sm">{t('new.excludeExport')}</p>
                 </div>
               </div>
               <Switch checked={isPrivate} onCheckedChange={setIsPrivate} />
@@ -247,12 +248,12 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
         <div className="flex gap-3">
           <Link href={`/journal/${entry.id}`} className="flex-1">
             <Button type="button" variant="outline" className="w-full">
-              Annuler
+              {tCommon('cancel')}
             </Button>
           </Link>
           <Button type="submit" className="flex-1 gap-2" disabled={!isValid || saving}>
             <Save className="h-4 w-4" />
-            {saving ? 'Enregistrement...' : 'Enregistrer'}
+            {saving ? t('new.saving') : t('new.save')}
           </Button>
         </div>
       </form>
