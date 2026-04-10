@@ -563,7 +563,7 @@ export default function MedicationsPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <Pill className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucun médicament</h3>
+            <h3 className="text-foreground mb-2 font-medium">{t('list.noMedications')}</h3>
             <p className="text-muted-foreground mb-4 text-sm">
               Ajoutez vos médicaments THS pour commencer le suivi
             </p>
@@ -731,7 +731,7 @@ export default function MedicationsPage() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openPastDoseModal(med)}
-                                title="Ajouter une prise passée"
+                                title={t('list.addPastDoseButton')}
                               >
                                 <Clock className="mr-1 h-3 w-3" />+
                               </Button>
@@ -861,7 +861,7 @@ export default function MedicationsPage() {
                 id="gelNote"
                 value={gelNote}
                 onChange={(e) => setGelNote(e.target.value)}
-                placeholder="Remarques, effets..."
+                placeholder={t('list.notePlaceholder')}
                 rows={2}
               />
             </div>
@@ -881,7 +881,7 @@ export default function MedicationsPage() {
       <Dialog open={pastDoseModal} onOpenChange={setPastDoseModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Ajouter une prise</DialogTitle>
+            <DialogTitle>{t('list.addPastDoseTitle')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <p className="text-muted-foreground text-sm">
@@ -914,7 +914,7 @@ export default function MedicationsPage() {
                 id="pastDoseNote"
                 value={pastDoseNote}
                 onChange={(e) => setPastDoseNote(e.target.value)}
-                placeholder="Remarques, effets..."
+                placeholder={t('list.notePlaceholder')}
                 rows={2}
               />
             </div>

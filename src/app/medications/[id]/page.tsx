@@ -275,7 +275,7 @@ export default function MedicationDetailPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Date de début</span>
+            <span className="text-muted-foreground">{t('detail.startDate')}</span>
             <span className="font-medium">{format(startDate, 'd MMMM yyyy', { locale: fr })}</span>
           </div>
           <div className="flex justify-between text-sm">
@@ -284,7 +284,7 @@ export default function MedicationDetailPage() {
           </div>
           {medication.endDate && (
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Date de fin</span>
+              <span className="text-muted-foreground">{t('detail.endDate')}</span>
               <span className="font-medium">
                 {format(
                   medication.endDate instanceof Date
@@ -319,7 +319,7 @@ export default function MedicationDetailPage() {
             )}
             {medication.stockAlert !== undefined && (
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Alerte si sous</span>
+                <span className="text-muted-foreground">{t('detail.lowStockAlert')}</span>
                 <span className="font-medium">
                   {medication.stockAlert} {medication.stockUnit || medication.unit}
                 </span>

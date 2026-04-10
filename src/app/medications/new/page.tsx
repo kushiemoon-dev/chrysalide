@@ -142,7 +142,7 @@ export default function NewMedicationPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-foreground text-xl font-bold">Nouveau médicament</h1>
+        <h1 className="text-foreground text-xl font-bold">{t('new.title')}</h1>
       </div>
 
       {/* Quick Select */}
@@ -177,7 +177,7 @@ export default function NewMedicationPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom du médicament</Label>
+              <Label htmlFor="name">{t('form.medicationName')}</Label>
               <Input
                 id="name"
                 value={name}
@@ -269,7 +269,7 @@ export default function NewMedicationPage() {
                   onValueChange={(v) => setPillRoute((v as PillAdministrationRoute) || undefined)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(PILL_ROUTES).map((key) => (
@@ -293,7 +293,7 @@ export default function NewMedicationPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(INJECTION_ROUTES).map((key) => (
@@ -323,7 +323,7 @@ export default function NewMedicationPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="startDate">Date de début</Label>
+              <Label htmlFor="startDate">{t('form.startDate')}</Label>
               <Input
                 id="startDate"
                 type="date"
@@ -416,10 +416,10 @@ export default function NewMedicationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="stockUnit">Unité de stock</Label>
+                <Label htmlFor="stockUnit">{t('form.stockUnit')}</Label>
                 <Select value={stockUnit} onValueChange={setStockUnit}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STOCK_UNITS.map((u) => (
@@ -432,7 +432,7 @@ export default function NewMedicationPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="stockAlert">Alerte si sous</Label>
+              <Label htmlFor="stockAlert">{t('form.lowStockAlert')}</Label>
               <Input
                 id="stockAlert"
                 type="number"

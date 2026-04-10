@@ -212,7 +212,7 @@ export default function EditMedicationPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-foreground text-xl font-bold">Modifier le médicament</h1>
+        <h1 className="text-foreground text-xl font-bold">{t('edit.title')}</h1>
       </div>
 
       {/* Form */}
@@ -223,7 +223,7 @@ export default function EditMedicationPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom du médicament</Label>
+              <Label htmlFor="name">{t('form.medicationName')}</Label>
               <Input
                 id="name"
                 value={name}
@@ -315,7 +315,7 @@ export default function EditMedicationPage() {
                   onValueChange={(v) => setPillRoute((v as PillAdministrationRoute) || undefined)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(PILL_ROUTES).map((key) => (
@@ -339,7 +339,7 @@ export default function EditMedicationPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(INJECTION_ROUTES).map((key) => (
@@ -370,7 +370,7 @@ export default function EditMedicationPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startDate">Date de début</Label>
+                <Label htmlFor="startDate">{t('form.startDate')}</Label>
                 <Input
                   id="startDate"
                   type="date"
@@ -380,7 +380,7 @@ export default function EditMedicationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="endDate">Date de fin (optionnel)</Label>
+                <Label htmlFor="endDate">{t('form.endDate')}</Label>
                 <Input
                   id="endDate"
                   type="date"
@@ -483,10 +483,10 @@ export default function EditMedicationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="stockUnit">Unité de stock</Label>
+                <Label htmlFor="stockUnit">{t('form.stockUnit')}</Label>
                 <Select value={stockUnit} onValueChange={setStockUnit}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STOCK_UNITS.map((u) => (
@@ -499,7 +499,7 @@ export default function EditMedicationPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="stockAlert">Alerte si sous</Label>
+              <Label htmlFor="stockAlert">{t('form.lowStockAlert')}</Label>
               <Input
                 id="stockAlert"
                 type="number"
