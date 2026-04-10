@@ -247,7 +247,7 @@ export default function MedicationDetailPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-foreground font-medium">{medication.frequency}</p>
+          <p className="text-foreground font-medium">{t('frequencies.' + medication.frequency)}</p>
 
           {/* Mode avancé: afficher les horaires */}
           {medication.schedulingMode === 'advanced' && medication.scheduledTimes?.length && (
