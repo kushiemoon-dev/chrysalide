@@ -19,6 +19,7 @@ import { fr } from 'date-fns/locale'
 export default function Dashboard() {
   const t = useTranslations('dashboard')
   const tCommon = useTranslations('common')
+  const tMed = useTranslations('medications')
   const [medications, setMedications] = useState<Medication[]>([])
   const [todayLogs, setTodayLogs] = useState<MedicationLog[]>([])
   const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -155,7 +156,7 @@ export default function Dashboard() {
                         <div>
                           <p className="text-foreground font-medium">{med.name}</p>
                           <p className="text-muted-foreground text-xs">
-                            {med.dosage} {med.unit} - {med.frequency}
+                            {med.dosage} {med.unit} - {tMed('frequencies.' + med.frequency)}
                           </p>
                         </div>
                         <Badge variant={allTaken ? 'trans-blue' : 'outline'}>

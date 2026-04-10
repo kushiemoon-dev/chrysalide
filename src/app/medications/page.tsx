@@ -610,7 +610,7 @@ export default function MedicationsPage() {
                             {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                           </p>
                           <p className="text-muted-foreground text-xs">
-                            {med.frequency} - {t('list.sincePrefix')}{' '}
+                            {t('frequencies.' + med.frequency)} - {t('list.sincePrefix')}{' '}
                             {format(new Date(med.startDate), 'd MMM yyyy', { locale: fr })}
                           </p>
                         </div>

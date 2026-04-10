@@ -316,7 +316,7 @@ export default function NewMedicationPage() {
                 <SelectContent>
                   {getFrequenciesForMethod(method).map((f) => (
                     <SelectItem key={f} value={f}>
-                      {f}
+                      {t('frequencies.' + f)}
                     </SelectItem>
                   ))}
                 </SelectContent>
