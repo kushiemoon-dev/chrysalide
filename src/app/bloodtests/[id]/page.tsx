@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { useParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,7 +21,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { db, deleteBloodTest, getUserProfile } from '@/lib/db'
 import type { BloodTest, BloodMarker } from '@/lib/types'
-import { BLOOD_MARKERS, REFERENCE_RANGES } from '@/lib/constants'
+import { REFERENCE_RANGES } from '@/lib/constants'
 
 // Marker groups for display
 const MARKER_GROUPS: Record<
@@ -54,6 +55,7 @@ const MARKER_GROUPS: Record<
 }
 
 export default function BloodTestDetailPage() {
+  const t = useTranslations('bloodtests')
   const params = useParams()
   const router = useRouter()
   const [test, setTest] = useState<BloodTest | null>(null)
@@ -177,7 +179,6 @@ export default function BloodTestDetailPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               {groupResults.map(({ marker, result }) => {
-                const info = BLOOD_MARKERS[marker]
                 const status = getMarkerStatus(marker, result.value)
                 const range = REFERENCE_RANGES.find(
                   (r) => r.marker === marker && r.context === context
@@ -196,7 +197,9 @@ export default function BloodTestDetailPage() {
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-foreground font-medium">{info.label}</span>
+                        <span className="text-foreground font-medium">
+                          {t('markers.' + marker)}
+                        </span>
                         {status !== 'normal' && (
                           <AlertTriangle
                             className={`h-4 w-4 ${
@@ -206,7 +209,9 @@ export default function BloodTestDetailPage() {
                         )}
                         {status === 'normal' && <CheckCircle2 className="h-4 w-4 text-green-500" />}
                       </div>
-                      <p className="text-muted-foreground mt-0.5 text-xs">{info.description}</p>
+                      <p className="text-muted-foreground mt-0.5 text-xs">
+                        {t('descriptions.' + marker)}
+                      </p>
                     </div>
                     <div className="text-right">
                       <div

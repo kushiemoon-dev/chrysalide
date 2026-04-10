@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -42,6 +43,7 @@ const MARKER_GROUPS = {
 }
 
 export default function NewBloodTestPage() {
+  const t = useTranslations('bloodtests')
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -168,12 +170,14 @@ export default function NewBloodTestPage() {
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   {group.markers.map((marker) => {
-                    const info = BLOOD_MARKERS[marker]
+                    const markerInfo = BLOOD_MARKERS[marker]
                     return (
                       <div key={marker} className="space-y-1.5">
                         <Label htmlFor={marker} className="text-sm">
-                          {info.label}
-                          <span className="text-muted-foreground ml-1 text-xs">({info.unit})</span>
+                          {t('markers.' + marker)}
+                          <span className="text-muted-foreground ml-1 text-xs">
+                            ({markerInfo.unit})
+                          </span>
                         </Label>
                         <Input
                           id={marker}

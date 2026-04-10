@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -16,6 +17,7 @@ import { HormoneChart } from '@/components/bloodtests/hormone-chart'
 import { ExportButton } from '@/components/ui/export-button'
 
 export default function BloodTestsPage() {
+  const t = useTranslations('bloodtests')
   const [tests, setTests] = useState<BloodTest[]>([])
   const [loading, setLoading] = useState(true)
   const [context, setContext] = useState<'feminizing' | 'masculinizing'>('feminizing')
@@ -159,13 +161,13 @@ export default function BloodTestsPage() {
                         const range = REFERENCE_RANGES.find(
                           (r) => r.marker === marker && r.context === context
                         )
-                        const info = BLOOD_MARKERS[marker]
+                        const markerInfo = BLOOD_MARKERS[marker]
                         if (!lastValue) return null
                         return {
                           marker,
-                          label: info.label,
+                          label: t('markers.' + marker),
                           value: lastValue.value,
-                          unit: info.unit,
+                          unit: markerInfo.unit,
                           targetMin: range?.min,
                           targetMax: range?.max,
                           status: getMarkerStatus(marker, lastValue.value),
@@ -202,7 +204,7 @@ export default function BloodTestsPage() {
                       if (!lastValue) return null
 
                       const status = getMarkerStatus(marker, lastValue.value)
-                      const info = BLOOD_MARKERS[marker]
+                      const markerInfo = BLOOD_MARKERS[marker]
                       const range = REFERENCE_RANGES.find(
                         (r) => r.marker === marker && r.context === context
                       )
@@ -216,7 +218,7 @@ export default function BloodTestsPage() {
                             }}
                           />
                           <span className="text-sm">
-                            {info.label}:{' '}
+                            {t('markers.' + marker)}:{' '}
                             <span
                               className={
                                 status === 'normal'
@@ -226,7 +228,7 @@ export default function BloodTestsPage() {
                                     : 'text-red-500'
                               }
                             >
-                              {lastValue.value} {info.unit}
+                              {lastValue.value} {markerInfo.unit}
                             </span>
                           </span>
                           {range && (
@@ -286,12 +288,13 @@ export default function BloodTestsPage() {
                     {/* Key results */}
                     <div className="flex flex-wrap gap-x-4 gap-y-1">
                       {test.results.slice(0, 4).map((result) => {
-                        const info = BLOOD_MARKERS[result.marker]
                         const status = getMarkerStatus(result.marker, result.value)
 
                         return (
                           <span key={result.marker} className="text-sm">
-                            <span className="text-muted-foreground">{info.label}:</span>{' '}
+                            <span className="text-muted-foreground">
+                              {t('markers.' + result.marker)}:
+                            </span>{' '}
                             <span
                               className={
                                 status === 'normal'
