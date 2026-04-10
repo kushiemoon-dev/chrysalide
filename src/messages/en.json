@@ -15,7 +15,8 @@
     "version": "Version",
     "back": "Back",
     "confirm": "Confirm",
-    "close": "Close"
+    "close": "Close",
+    "saving": "Saving..."
   },
   "nav": {
     "home": "Home",
@@ -198,10 +199,28 @@
       "endDate": "End date (optional)",
       "stockUnit": "Stock unit",
       "lowStockAlert": "Alert when below",
-      "selectPlaceholder": "Select..."
+      "selectPlaceholder": "Select...",
+      "type": "Type",
+      "dosage": "Dosage",
+      "unit": "Unit",
+      "method": "Administration method",
+      "pillRoute": "Administration route (optional)",
+      "injectionRoute": "Injection type (optional)",
+      "frequency": "Frequency",
+      "stock": "Current stock"
     },
     "new": {
-      "title": "New medication"
+      "title": "New medication",
+      "commonTitle": "Common medications",
+      "commonPlaceholder": "Select a medication...",
+      "generalInfo": "General information",
+      "namePlaceholder": "E.g. Estradiol",
+      "schedulingTitle": "Dosing schedule",
+      "advancedMode": "Advanced mode",
+      "advancedModeDescription": "Set precise times for each dose",
+      "advancedModeHint": "Add a time for each daily dose:",
+      "addTime": "Add a time",
+      "stockTitle": "Stock management (optional)"
     },
     "edit": {
       "title": "Edit medication"

@@ -15,7 +15,8 @@
     "version": "Version",
     "back": "Zurück",
     "confirm": "Bestätigen",
-    "close": "Schließen"
+    "close": "Schließen",
+    "saving": "Wird gespeichert..."
   },
   "nav": {
     "home": "Start",
@@ -198,10 +199,28 @@
       "endDate": "Enddatum (optional)",
       "stockUnit": "Bestandseinheit",
       "lowStockAlert": "Warnung wenn unter",
-      "selectPlaceholder": "Auswählen..."
+      "selectPlaceholder": "Auswählen...",
+      "type": "Typ",
+      "dosage": "Dosierung",
+      "unit": "Einheit",
+      "method": "Verabreichungsweg",
+      "pillRoute": "Verabreichungsroute (optional)",
+      "injectionRoute": "Injektionsart (optional)",
+      "frequency": "Häufigkeit",
+      "stock": "Aktueller Bestand"
     },
     "new": {
-      "title": "Neues Medikament"
+      "title": "Neues Medikament",
+      "commonTitle": "Häufige Medikamente",
+      "commonPlaceholder": "Medikament auswählen...",
+      "generalInfo": "Allgemeine Informationen",
+      "namePlaceholder": "z.B. Östradiol",
+      "schedulingTitle": "Einnahmezeiten",
+      "advancedMode": "Erweiterter Modus",
+      "advancedModeDescription": "Genaue Zeiten für jede Dosis festlegen",
+      "advancedModeHint": "Füge eine Uhrzeit für jede tägliche Dosis hinzu:",
+      "addTime": "Zeit hinzufügen",
+      "stockTitle": "Bestandsverwaltung (optional)"
     },
     "edit": {
       "title": "Medikament bearbeiten"

@@ -15,7 +15,8 @@
     "version": "Version",
     "back": "Retour",
     "confirm": "Confirmer",
-    "close": "Fermer"
+    "close": "Fermer",
+    "saving": "Enregistrement..."
   },
   "nav": {
     "home": "Accueil",
@@ -198,10 +199,28 @@
       "endDate": "Date de fin (optionnel)",
       "stockUnit": "Unité de stock",
       "lowStockAlert": "Alerte si sous",
-      "selectPlaceholder": "Sélectionner..."
+      "selectPlaceholder": "Sélectionner...",
+      "type": "Type",
+      "dosage": "Dosage",
+      "unit": "Unité",
+      "method": "Mode d'administration",
+      "pillRoute": "Voie d'administration (optionnel)",
+      "injectionRoute": "Type d'injection (optionnel)",
+      "frequency": "Fréquence",
+      "stock": "Stock actuel"
     },
     "new": {
-      "title": "Nouveau médicament"
+      "title": "Nouveau médicament",
+      "commonTitle": "Médicaments courants",
+      "commonPlaceholder": "Sélectionner un médicament...",
+      "generalInfo": "Informations générales",
+      "namePlaceholder": "Ex: Œstradiol",
+      "schedulingTitle": "Horaires de prise",
+      "advancedMode": "Mode avancé",
+      "advancedModeDescription": "Définir des horaires précis pour chaque dose",
+      "advancedModeHint": "Ajoutez les horaires pour chaque prise quotidienne :",
+      "addTime": "Ajouter un horaire",
+      "stockTitle": "Gestion du stock (optionnel)"
     },
     "edit": {
       "title": "Modifier le médicament"
