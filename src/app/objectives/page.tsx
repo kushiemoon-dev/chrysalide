@@ -201,7 +201,7 @@ export default function ObjectivesPage() {
                   <SelectValue placeholder="Statut" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tous les statuts</SelectItem>
+                  <SelectItem value="all">{t('list.allStatuses')}</SelectItem>
                   <SelectItem value="not_started">Pas commencé</SelectItem>
                   <SelectItem value="in_progress">En cours</SelectItem>
                   <SelectItem value="completed">Terminé</SelectItem>
@@ -222,7 +222,7 @@ export default function ObjectivesPage() {
                   <SelectValue placeholder="Catégorie" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Toutes les catégories</SelectItem>
+                  <SelectItem value="all">{t('list.allCategories')}</SelectItem>
                   {Object.entries(categoryConfig).map(([key, config]) => (
                     <SelectItem key={key} value={key}>
                       {config.label}

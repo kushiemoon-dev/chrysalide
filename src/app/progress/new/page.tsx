@@ -15,10 +15,11 @@ import { addPhysicalProgress } from '@/lib/db'
 import type { Measurements } from '@/lib/types'
 import { format } from 'date-fns'
 
-const SUGGESTED_TAGS = ['visage', 'corps', 'poitrine', 'cheveux', 'peau', 'énergie', 'humeur']
+const SUGGESTED_TAG_KEYS = ['face', 'body', 'chest', 'hair', 'skin', 'energy', 'mood'] as const
 
 export default function NewProgressPage() {
   const t = useTranslations('progress')
+  const SUGGESTED_TAGS = SUGGESTED_TAG_KEYS.map((key) => t(`suggestedTags.${key}`))
 
   const MEASUREMENT_FIELDS: {
     key: keyof Measurements

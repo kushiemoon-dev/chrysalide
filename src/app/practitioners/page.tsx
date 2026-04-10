@@ -48,6 +48,7 @@ type FilterType = 'all' | AppointmentType
 
 export default function PractitionersPage() {
   const tAppt = useTranslations('appointments')
+  const t = useTranslations('practitioners')
   const [practitioners, setPractitioners] = useState<Practitioner[]>([])
   const [appointmentCounts, setAppointmentCounts] = useState<Map<number, number>>(new Map())
   const [loading, setLoading] = useState(true)
@@ -121,10 +122,10 @@ export default function PractitionersPage() {
           <Select value={filter} onValueChange={(v) => setFilter(v as FilterType)}>
             <SelectTrigger className="w-full">
               <Filter className="text-muted-foreground mr-2 h-4 w-4" />
-              <SelectValue placeholder="Filtrer par type" />
+              <SelectValue placeholder={t('list.filterByType')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les types</SelectItem>
+              <SelectItem value="all">{t('list.allTypes')}</SelectItem>
               {Object.entries(APPOINTMENT_TYPES).map(([key]) => (
                 <SelectItem key={key} value={key}>
                   {tAppt('types.' + key)}

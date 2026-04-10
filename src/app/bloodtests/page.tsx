@@ -75,7 +75,7 @@ export default function BloodTestsPage() {
         <div className="flex items-center justify-between pt-2">
           <div>
             <h1 className="text-foreground text-2xl font-bold">Analyses</h1>
-            <p className="text-muted-foreground text-sm">Suivi de vos bilans sanguins</p>
+            <p className="text-muted-foreground text-sm">{t('list.subtitle')}</p>
           </div>
           <Link href="/bloodtests/new">
             <Button size="sm" className="gap-2">
@@ -253,7 +253,7 @@ export default function BloodTestsPage() {
           ) && (
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-base">Marqueurs de sécurité</CardTitle>
+                <CardTitle className="text-base">{t('list.safetyMarkers')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <HormoneChart
