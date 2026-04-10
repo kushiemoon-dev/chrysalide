@@ -218,7 +218,7 @@ export default function AppointmentsPage() {
           <Select value={practitionerFilter} onValueChange={setPractitionerFilter}>
             <SelectTrigger className="flex-1">
               <Filter className="text-muted-foreground mr-2 h-4 w-4" />
-              <SelectValue placeholder="Filtrer par praticien·ne" />
+              <SelectValue placeholder={t('list.filterByPractitioner')} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tous les praticien·nes</SelectItem>
