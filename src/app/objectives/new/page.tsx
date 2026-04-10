@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -48,6 +49,7 @@ interface MilestoneInput {
 
 export default function NewObjectivePage() {
   const router = useRouter()
+  const t = useTranslations('objectives')
   const [saving, setSaving] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [activeTab, setActiveTab] = useState<'template' | 'custom'>('template')
@@ -141,8 +143,8 @@ export default function NewObjectivePage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Nouvel objectif</h1>
-          <p className="text-muted-foreground text-sm">Définis un objectif pour ta transition</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('newObjective.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('newObjective.subtitle')}</p>
         </div>
       </div>
 

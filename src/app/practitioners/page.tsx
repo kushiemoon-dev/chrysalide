@@ -40,12 +40,14 @@ import {
   deletePractitioner,
   countAppointmentsForAllPractitioners,
 } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Practitioner, AppointmentType } from '@/lib/types'
 
 type FilterType = 'all' | AppointmentType
 
 export default function PractitionersPage() {
+  const tAppt = useTranslations('appointments')
   const [practitioners, setPractitioners] = useState<Practitioner[]>([])
   const [appointmentCounts, setAppointmentCounts] = useState<Map<number, number>>(new Map())
   const [loading, setLoading] = useState(true)
@@ -123,9 +125,9 @@ export default function PractitionersPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tous les types</SelectItem>
-              {Object.entries(APPOINTMENT_TYPES).map(([key, info]) => (
+              {Object.entries(APPOINTMENT_TYPES).map(([key]) => (
                 <SelectItem key={key} value={key}>
-                  {info.label}
+                  {tAppt('types.' + key)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -179,7 +181,7 @@ export default function PractitionersPage() {
           {Object.entries(grouped).map(([specialty, list]) => (
             <div key={specialty} className="space-y-2">
               <h3 className="text-muted-foreground px-1 text-sm font-medium">
-                {APPOINTMENT_TYPES[specialty as AppointmentType]?.label}
+                {tAppt('types.' + specialty)}
               </h3>
               <div className="space-y-2">
                 {list.map((practitioner) => (
