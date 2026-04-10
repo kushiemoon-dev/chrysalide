@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -50,11 +52,12 @@ import type { Medication, MedicationLog, GelApplicationZone } from '@/lib/types'
 import { MEDICATION_TYPES, GEL_APPLICATION_ZONES } from '@/lib/constants'
 import { TreatmentGanttChart } from '@/components/medications/treatment-gantt-chart'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { useConfetti } from '@/components/objectives/celebration-modal'
 
 export default function MedicationsPage() {
   const t = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [activeMedications, setActiveMedications] = useState<Medication[]>([])
   const [inactiveMedications, setInactiveMedications] = useState<Medication[]>([])
   const [todayLogs, setTodayLogs] = useState<MedicationLog[]>([])
@@ -610,8 +613,8 @@ export default function MedicationsPage() {
                             {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                           </p>
                           <p className="text-muted-foreground text-xs">
-                            {med.frequency} - {t('list.sincePrefix')}{' '}
-                            {format(new Date(med.startDate), 'd MMM yyyy', { locale: fr })}
+                            {t('frequencies.' + med.frequency)} - {t('list.sincePrefix')}{' '}
+                            {format(new Date(med.startDate), 'd MMM yyyy', { locale: dateLocale })}
                           </p>
                         </div>
 
@@ -650,7 +653,9 @@ export default function MedicationsPage() {
                               <div className="flex items-center gap-2">
                                 <span className="text-muted-foreground text-sm">
                                   {t('list.nextDose')}{' '}
-                                  {nextDate ? format(nextDate, 'd MMM', { locale: fr }) : '-'}
+                                  {nextDate
+                                    ? format(nextDate, 'd MMM', { locale: dateLocale })
+                                    : '-'}
                                 </span>
                                 <Button
                                   variant="outline"

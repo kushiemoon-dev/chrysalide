@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -13,7 +15,6 @@ import Link from 'next/link'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { addJournalEntry } from '@/lib/db'
 import type { MoodLevel } from '@/lib/types'
@@ -23,6 +24,8 @@ import { TagInput } from '@/components/journal/tag-input'
 export default function NewJournalEntryPage() {
   const t = useTranslations('journal')
   const router = useRouter()
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [saving, setSaving] = useState(false)
 
   // Form state
@@ -87,7 +90,7 @@ export default function NewJournalEntryPage() {
                     className={cn('w-full justify-start text-left font-normal')}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {format(entryDate, 'EEEE d MMMM yyyy', { locale: fr })}
+                    {format(entryDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -95,7 +98,7 @@ export default function NewJournalEntryPage() {
                     mode="single"
                     selected={entryDate}
                     onSelect={(date) => date && setEntryDate(date)}
-                    locale={fr}
+                    locale={dateLocale}
                     disabled={(date) => date > new Date()}
                   />
                 </PopoverContent>

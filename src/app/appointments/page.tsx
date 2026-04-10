@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -30,11 +32,10 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { getAppointments, getTotalAppointmentsCost, getPractitioners } from '@/lib/db'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format, isToday, isTomorrow, differenceInDays } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { isAppointmentPast, getAppointmentDateTime } from '@/lib/utils'
 import { getModulePreferences } from '@/lib/notifications'
 
@@ -66,7 +67,8 @@ function AppointmentIcon({
 
 function getRelativeDate(
   date: Date,
-  t: (key: string, values?: Record<string, string | number | Date>) => string
+  t: (key: string, values?: Record<string, string | number | Date>) => string,
+  dateLocale: import('date-fns').Locale
 ): string {
   const dateOnly = new Date(date)
   dateOnly.setHours(0, 0, 0, 0)
@@ -81,11 +83,13 @@ function getRelativeDate(
     return days > 1 ? t('list.inDays', { days }) : t('list.inDay', { days })
   if (days < 0) return t('list.past')
 
-  return format(date, 'd MMMM', { locale: fr })
+  return format(date, 'd MMMM', { locale: dateLocale })
 }
 
 export default function AppointmentsPage() {
   const t = useTranslations('appointments')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [practitioners, setPractitioners] = useState<Practitioner[]>([])
   const [loading, setLoading] = useState(true)
@@ -294,7 +298,7 @@ export default function AppointmentsPage() {
                         {t('types.' + nextAppointment.type)}
                       </p>
                       <p className="text-primary text-lg font-bold">
-                        {getRelativeDate(new Date(nextAppointment.date), t)}
+                        {getRelativeDate(new Date(nextAppointment.date), t, dateLocale)}
                       </p>
                       <div className="text-muted-foreground mt-2 flex flex-wrap gap-2 text-sm">
                         <span className="flex items-center gap-1">
@@ -377,6 +381,8 @@ function AppointmentCard({
   isPast?: boolean
 }) {
   const t = useTranslations('appointments')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const typeInfo = APPOINTMENT_TYPES[appointment.type]
 
   return (
@@ -411,7 +417,7 @@ function AppointmentCard({
                 )}
               </div>
               <p className="text-muted-foreground text-sm">
-                {format(new Date(appointment.date), 'EEEE d MMMM', { locale: fr })}
+                {format(new Date(appointment.date), 'EEEE d MMMM', { locale: dateLocale })}
                 {appointment.time && ` à ${appointment.time}`}
               </p>
               {appointment.doctor && (

@@ -1,8 +1,9 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Badge } from '@/components/ui/badge'
 import {
   Play,
@@ -71,6 +72,8 @@ interface ChangeEntryProps {
 
 export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryProps) {
   const t = useTranslations('objectives')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const config = changeTypeConfig[change.changeType]
   const Icon = config.icon
   const label = t(`changeTypes.${change.changeType}`)
@@ -97,7 +100,7 @@ export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryPr
             )}
           </div>
           <time className="text-muted-foreground text-xs whitespace-nowrap">
-            {format(new Date(change.date), 'd MMM yyyy', { locale: fr })}
+            {format(new Date(change.date), 'd MMM yyyy', { locale: dateLocale })}
           </time>
         </div>
 

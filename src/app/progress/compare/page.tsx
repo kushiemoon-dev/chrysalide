@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -10,7 +12,6 @@ import Link from 'next/link'
 import { getPhysicalProgress } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format, differenceInDays } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
   weight: 'kg',
@@ -25,6 +26,8 @@ const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
 export default function CompareProgressPage() {
   const t = useTranslations('progress')
   const tc = useTranslations('common')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
 
   const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
     weight: t('measurements.weight'),
@@ -160,7 +163,8 @@ export default function CompareProgressPage() {
             </Button>
             <div className="flex-1 text-center">
               <p className="text-foreground text-xs font-medium">
-                {leftEntry && format(new Date(leftEntry.date), 'd MMM yyyy', { locale: fr })}
+                {leftEntry &&
+                  format(new Date(leftEntry.date), 'd MMM yyyy', { locale: dateLocale })}
               </p>
               <p className="text-muted-foreground text-xs">{t('compare.before')}</p>
             </div>
@@ -199,7 +203,8 @@ export default function CompareProgressPage() {
             </Button>
             <div className="flex-1 text-center">
               <p className="text-foreground text-xs font-medium">
-                {rightEntry && format(new Date(rightEntry.date), 'd MMM yyyy', { locale: fr })}
+                {rightEntry &&
+                  format(new Date(rightEntry.date), 'd MMM yyyy', { locale: dateLocale })}
               </p>
               <p className="text-muted-foreground text-xs">{t('compare.after')}</p>
             </div>

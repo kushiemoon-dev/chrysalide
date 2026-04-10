@@ -21,7 +21,6 @@ import Link from 'next/link'
 import { db } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { getDateLocale } from '@/i18n/date-locale'
 import type { Locale } from '@/i18n/config'
 
@@ -38,6 +37,8 @@ const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
 export default function ProgressDetailPage() {
   const t = useTranslations('progress')
   const tc = useTranslations('common')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
 
   const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
     weight: t('new.weightField'),
@@ -132,11 +133,11 @@ export default function ProgressDetailPage() {
           </Link>
           <div>
             <h1 className="text-foreground text-xl font-bold">
-              {format(new Date(entry.date), 'd MMMM yyyy', { locale: fr })}
+              {format(new Date(entry.date), 'd MMMM yyyy', { locale: dateLocale })}
             </h1>
             <p className="text-muted-foreground flex items-center gap-1 text-sm">
               <Calendar className="h-3 w-3" />
-              {format(new Date(entry.date), 'EEEE', { locale: fr })}
+              {format(new Date(entry.date), 'EEEE', { locale: dateLocale })}
             </p>
           </div>
         </div>

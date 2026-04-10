@@ -1,7 +1,9 @@
 'use client'
 
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle2, Circle, Target, Flag, Calendar } from 'lucide-react'
@@ -29,6 +31,8 @@ export function TimelineView({
   milestones,
   showObjectiveInfo = false,
 }: TimelineViewProps) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   // Build timeline events
   const events: TimelineEvent[] = []
 
@@ -186,7 +190,7 @@ export function TimelineView({
                 </p>
                 <div className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
                   <Calendar className="h-3 w-3" />
-                  {format(event.date, 'd MMMM yyyy', { locale: fr })}
+                  {format(event.date, 'd MMMM yyyy', { locale: dateLocale })}
                 </div>
               </div>
             </div>

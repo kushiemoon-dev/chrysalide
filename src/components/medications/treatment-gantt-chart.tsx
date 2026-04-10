@@ -1,11 +1,12 @@
 'use client'
 
 import { useMemo, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { MEDICATION_TYPES } from '@/lib/constants'
 import type { Medication } from '@/lib/types'
 import { format, differenceInDays, startOfMonth, endOfMonth, eachMonthOfInterval } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 interface TreatmentGanttChartProps {
   medications: Medication[]
@@ -13,6 +14,8 @@ interface TreatmentGanttChartProps {
 
 export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
   const t = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [currentTime] = useState(() => Date.now())
 
@@ -115,7 +118,7 @@ export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
                   style={{ left, width, lineHeight: '32px' }}
                 >
                   <span className="text-muted-foreground capitalize">
-                    {format(month, 'MMM yy', { locale: fr })}
+                    {format(month, 'MMM yy', { locale: dateLocale })}
                   </span>
                 </div>
               )

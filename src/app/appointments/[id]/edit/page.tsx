@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,12 +31,13 @@ import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { PractitionerInput } from '@/components/appointments/practitioner-input'
 import { getModulePreferences } from '@/lib/notifications'
 
 export default function EditAppointmentPage() {
   const t = useTranslations('appointments')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const params = useParams()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -207,7 +211,7 @@ export default function EditAppointmentPage() {
                   <Button variant="outline" className="w-full justify-start text-left font-normal">
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? (
-                      format(date, 'EEEE d MMMM yyyy', { locale: fr })
+                      format(date, 'EEEE d MMMM yyyy', { locale: dateLocale })
                     ) : (
                       <span className="text-muted-foreground">{t('form.selectDate')}</span>
                     )}
@@ -218,7 +222,7 @@ export default function EditAppointmentPage() {
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    locale={fr}
+                    locale={dateLocale}
                     initialFocus
                   />
                 </PopoverContent>

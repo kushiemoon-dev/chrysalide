@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import Link from 'next/link'
 import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -43,6 +44,8 @@ type MedicationFilter = 'all' | number
 export default function TreatmentHistoryPage() {
   const t = useTranslations('medications')
   const tObj = useTranslations('objectives')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [changes, setChanges] = useState<TreatmentChange[]>([])
   const [medications, setMedications] = useState<Medication[]>([])
   const [loading, setLoading] = useState(true)
@@ -283,7 +286,7 @@ export default function TreatmentHistoryPage() {
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {dateRange.from
-                    ? format(dateRange.from, 'd MMM yyyy', { locale: fr })
+                    ? format(dateRange.from, 'd MMM yyyy', { locale: dateLocale })
                     : t('history.start')}
                 </Button>
               </PopoverTrigger>
@@ -292,7 +295,7 @@ export default function TreatmentHistoryPage() {
                   mode="single"
                   selected={dateRange.from}
                   onSelect={(date) => date && setDateRange((prev) => ({ ...prev, from: date }))}
-                  locale={fr}
+                  locale={dateLocale}
                   disabled={(date) => date > dateRange.to}
                 />
               </PopoverContent>
@@ -309,7 +312,7 @@ export default function TreatmentHistoryPage() {
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {dateRange.to
-                    ? format(dateRange.to, 'd MMM yyyy', { locale: fr })
+                    ? format(dateRange.to, 'd MMM yyyy', { locale: dateLocale })
                     : t('history.end')}
                 </Button>
               </PopoverTrigger>
@@ -318,7 +321,7 @@ export default function TreatmentHistoryPage() {
                   mode="single"
                   selected={dateRange.to}
                   onSelect={(date) => date && setDateRange((prev) => ({ ...prev, to: date }))}
-                  locale={fr}
+                  locale={dateLocale}
                   disabled={(date) => date < dateRange.from}
                 />
               </PopoverContent>
@@ -411,7 +414,7 @@ export default function TreatmentHistoryPage() {
             return (
               <div key={monthKey} className="space-y-3">
                 <h3 className="text-muted-foreground bg-background/95 sticky top-0 -mx-4 px-4 py-2 text-sm font-medium capitalize backdrop-blur-sm">
-                  {format(monthDate, 'MMMM yyyy', { locale: fr })}
+                  {format(monthDate, 'MMMM yyyy', { locale: dateLocale })}
                   <Badge variant="outline" className="ml-2">
                     {monthChanges.length}
                   </Badge>
