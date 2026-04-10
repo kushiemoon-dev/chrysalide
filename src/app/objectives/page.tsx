@@ -249,7 +249,7 @@ export default function ObjectivesPage() {
               {objectives.length === 0 ? (
                 <>
                   <Target className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                  <h3 className="text-foreground mb-2 font-semibold">Aucun objectif</h3>
+                  <h3 className="text-foreground mb-2 font-semibold">{t('list.empty')}</h3>
                   <p className="text-muted-foreground mb-4 text-sm">
                     Commence par créer ton premier objectif de transition
                   </p>
@@ -263,7 +263,7 @@ export default function ObjectivesPage() {
               ) : (
                 <>
                   <Filter className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                  <h3 className="text-foreground mb-2 font-semibold">Aucun résultat</h3>
+                  <h3 className="text-foreground mb-2 font-semibold">{t('list.noResults')}</h3>
                   <p className="text-muted-foreground text-sm">
                     Aucun objectif ne correspond à ces filtres
                   </p>

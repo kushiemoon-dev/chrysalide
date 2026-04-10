@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
@@ -49,6 +50,7 @@ import { CelebrationModal, useConfetti } from '@/components/objectives/celebrati
 export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
   const router = useRouter()
+  const t = useTranslations('objectives')
   const { fire: fireConfetti } = useConfetti()
 
   const [objective, setObjective] = useState<Objective | null>(null)
@@ -378,7 +380,9 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
         </CardHeader>
         <CardContent className="space-y-3">
           {milestones.length === 0 ? (
-            <p className="text-muted-foreground py-4 text-center text-sm">Aucune étape définie</p>
+            <p className="text-muted-foreground py-4 text-center text-sm">
+              {t('detail.noMilestones')}
+            </p>
           ) : (
             <div className="space-y-2">
               {milestones.map((milestone) => (

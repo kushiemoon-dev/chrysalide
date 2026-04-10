@@ -172,7 +172,7 @@ export function PractitionerInput({
               }}
             >
               <Plus className="text-primary h-4 w-4" />
-              <span>Ajouter &quot;{inputValue}&quot;</span>
+              <span>{t('practitionerInput.addOption', { value: inputValue })}</span>
             </button>
           )}
 

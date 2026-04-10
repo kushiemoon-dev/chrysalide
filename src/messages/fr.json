@@ -177,6 +177,10 @@
       "foundPlural": "trouvés",
       "noTreatments": "Aucun traitement à afficher."
     },
+    "timeline": {
+      "empty": "Aucun changement enregistré pour le moment.",
+      "emptyShort": "Aucun historique"
+    },
     "stockUnits": {
       "comprimés": "comprimés",
       "tubes": "tubes",
@@ -549,7 +553,9 @@
   "objectives": {
     "list": {
       "allStatuses": "Tous les statuts",
-      "allCategories": "Toutes les catégories"
+      "allCategories": "Toutes les catégories",
+      "empty": "Aucun objectif",
+      "noResults": "Aucun résultat"
     },
     "title": "Mes Objectifs",
     "subtitle": "Suivi de tes objectifs de transition",
@@ -919,6 +925,9 @@
     "add": "Ajouter",
     "calendar": "Calendrier",
     "reminder": "Rappel",
+    "practitionerInput": {
+      "addOption": "Ajouter \"{value}\""
+    },
     "form": {
       "dateAndTime": "Date et heure",
       "selectDate": "Sélectionner une date",
