@@ -418,7 +418,7 @@ export default function SettingsPage() {
           <div className="space-y-2 text-sm">
             <p>
               <span className="text-muted-foreground">{tc('version')}:</span>{' '}
-              <span className="text-foreground">1.1.0</span>
+              <span className="text-foreground">1.1.1</span>
             </p>
             <p className="text-muted-foreground">{t('about.description')}</p>
           </div>
