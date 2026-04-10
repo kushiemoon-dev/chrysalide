@@ -575,7 +575,8 @@
       "allStatuses": "Alle Status",
       "allCategories": "Alle Kategorien",
       "empty": "Keine Ziele",
-      "noResults": "Keine Ergebnisse"
+      "noResults": "Keine Ergebnisse",
+      "emptyDescription": "Erstelle zunächst dein erstes Übergangsziel."
     },
     "title": "Meine Ziele",
     "subtitle": "Verfolge deine Transitionsziele",
@@ -587,7 +588,14 @@
     "inProgress": "in Arbeit",
     "newObjective": {
       "title": "Neues Ziel",
-      "subtitle": "Definiere ein Ziel für deine Transition"
+      "subtitle": "Definiere ein Ziel für deine Transition",
+      "tabTemplates": "Vorlagen",
+      "tabCustom": "Angepasst",
+      "templateHint": "Wähle eine vorkonfigurierte Vorlage, um schnell zu starten",
+      "feminizingPath": "Feminisierender Weg",
+      "masculinizingPath": "Maskulinisierender Weg",
+      "commonPath": "Gemeinsamer Weg",
+      "stepsCount": "{count} vordefinierte Schritte"
     },
     "changeTypes": {
       "started": "Begonnen",
@@ -651,6 +659,182 @@
       "targetDate": "Zieldatum",
       "objectiveAchieved": "Ziel erreicht!",
       "doneOn": "Erledigt am"
+    },
+    "templates": {
+      "ths-feminisant": {
+        "title": "Feminisierende HRT",
+        "description": "Weibliche Hormontherapie-Reise",
+        "duration": "5 Jahre",
+        "milestones": [
+          "Erstberatung",
+          "HRT beginnen",
+          "3-Monats-Kontrolle",
+          "6-Monats-Kontrolle",
+          "Jährliche Kontrolle"
+        ]
+      },
+      "epilation-visage": {
+        "title": "Gesichts-Laserhaarentfernung",
+        "description": "Gesichtslaserhaarentfernung",
+        "duration": "18-24 Monate",
+        "milestones": [
+          "Dermatologen-Beratung",
+          "Erste Sitzungen",
+          "Zwischenkontrolle",
+          "Abschlusssitzungen",
+          "Pflege"
+        ]
+      },
+      "epilation-corps": {
+        "title": "Körper-Laserhaarentfernung",
+        "description": "Körperlaserhaarentfernung",
+        "duration": "12-18 Monate",
+        "milestones": [
+          "Beratung",
+          "Bereich 1: Beine",
+          "Bereich 2: Arme/Achseln",
+          "Bereich 3: Bikini",
+          "Pflege"
+        ]
+      },
+      "chirurgie-mammoplastie": {
+        "title": "Brustvergrößerung",
+        "description": "Brustvergrößerungs-Operationsweg",
+        "milestones": [
+          "Chirurgen-Beratung",
+          "Präoperative Untersuchungen",
+          "Operation",
+          "Erholung",
+          "Postoperative Nachsorge",
+          "Endergebnis"
+        ]
+      },
+      "chirurgie-vaginoplastie": {
+        "title": "Vaginoplastie",
+        "description": "Feminisierende Genitaloperation",
+        "milestones": [
+          "Erstberatung",
+          "Psychologische Beurteilung",
+          "Medizinischer Weg",
+          "Operation",
+          "Erholung",
+          "Langzeitnachsorge"
+        ]
+      },
+      "chirurgie-ffs": {
+        "title": "Gesichtsfeminisierung (FFS)",
+        "description": "Gesichtsfeminisierungsoperation",
+        "milestones": [
+          "Chirurgen-Beratung",
+          "3D-Simulation",
+          "Untersuchungen",
+          "Operation",
+          "Erholung",
+          "Endergebnis"
+        ]
+      },
+      "ths-masculinisant": {
+        "title": "Maskulinisierende HRT",
+        "description": "Männliche Hormontherapie-Reise",
+        "duration": "5 Jahre",
+        "milestones": [
+          "Erstberatung",
+          "Testosteron beginnen",
+          "3-Monats-Kontrolle",
+          "6-Monats-Kontrolle",
+          "Jährliche Kontrolle"
+        ]
+      },
+      "chirurgie-torsoplastie": {
+        "title": "Mastektomie / Brustchirurgie",
+        "description": "Brustmaskulinisierungsoperation",
+        "milestones": [
+          "Beratung",
+          "Präoperative Untersuchungen",
+          "Operation",
+          "Erholung",
+          "Nachsorge"
+        ]
+      },
+      "chirurgie-hysterectomie": {
+        "title": "Hysterektomie",
+        "description": "Gebärmutterentfernung",
+        "milestones": ["Beratung", "Untersuchungen", "Operation", "Erholung", "Nachsorge"]
+      },
+      "chirurgie-phalloplastie": {
+        "title": "Phalloplastie",
+        "description": "Maskulinisierende Genitaloperation",
+        "milestones": [
+          "Beratung",
+          "Psychologische Beurteilung",
+          "Medizinischer Weg",
+          "Operation",
+          "Erholung",
+          "Langzeitnachsorge"
+        ]
+      },
+      "chirurgie-metoidioplastie": {
+        "title": "Metoidioplastie",
+        "description": "Alternative maskulinisierende Genitaloperation",
+        "milestones": ["Beratung", "Bewertung", "Operation", "Erholung", "Nachsorge"]
+      },
+      "changement-etat-civil": {
+        "title": "Personenstandsänderung",
+        "description": "Verfahren zur Personenstandsänderung",
+        "duration": "3 bis 6 Monate",
+        "milestones": [
+          "Dokumente sammeln",
+          "Antrag einreichen",
+          "Anhörung",
+          "Urteil",
+          "Dokumente aktualisieren"
+        ]
+      },
+      "changement-prenom": {
+        "title": "Vornamensänderung",
+        "description": "Verfahren zur Vornamensänderung",
+        "duration": "2 bis 4 Monate",
+        "milestones": [
+          "Name wählen",
+          "Unterlagen vorbereiten",
+          "Beim Standesamt einreichen",
+          "Nachverfolgen",
+          "Geburtsurkunde aktualisieren"
+        ]
+      },
+      "parcours-psy": {
+        "title": "Psychologische Begleitung",
+        "description": "Psychologische Unterstützung während des Übergangs",
+        "duration": "Laufend",
+        "milestones": [
+          "Erster Termin",
+          "Regelmäßige Sitzungen",
+          "Unterstützungsbrief",
+          "Jährliche Überprüfung"
+        ]
+      },
+      "coming-out-proche": {
+        "title": "Coming-out gegenüber Nahestehenden",
+        "description": "Deine Identität mit Familie und Freunden teilen",
+        "duration": "Variiert",
+        "milestones": [
+          "Vorbereitende Überlegung",
+          "Erstes Coming-out",
+          "Schwierige Gespräche",
+          "Unterstützung aufgebaut"
+        ]
+      },
+      "coming-out-travail": {
+        "title": "Berufliches Coming-out",
+        "description": "Deine Identität im Arbeitsumfeld managen",
+        "duration": "Variiert",
+        "milestones": [
+          "Vorbereitung",
+          "HR-Gespräch",
+          "Teamkommunikation",
+          "Administrative Anpassungen"
+        ]
+      }
     },
     "celebration": {
       "continue": "Weiter"

@@ -40,7 +40,7 @@ import {
   getTemplatesForContext,
   ALL_OBJECTIVE_TEMPLATES,
   type ObjectiveTemplate,
-} from '@/lib/constants'
+} from '@/lib/objective-templates'
 
 interface MilestoneInput {
   title: string
@@ -79,11 +79,13 @@ export default function NewObjectivePage() {
 
   // Apply template
   const applyTemplate = (template: ObjectiveTemplate) => {
-    setTitle(template.title)
-    setDescription(template.description)
+    setTitle(t(`templates.${template.id}.title`))
+    setDescription(t(`templates.${template.id}.description`))
     setCategory(template.category)
     setStatus('not_started')
-    setMilestones(template.milestones.map((m) => ({ title: m })))
+    setMilestones(
+      (t.raw(`templates.${template.id}.milestones`) as string[]).map((m) => ({ title: m }))
+    )
     setActiveTab('custom') // Switch to form to customize
   }
 
@@ -153,25 +155,23 @@ export default function NewObjectivePage() {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="template" className="gap-2">
             <Sparkles className="h-4 w-4" />
-            Modèles
+            {t('newObjective.tabTemplates')}
           </TabsTrigger>
           <TabsTrigger value="custom" className="gap-2">
             <FileText className="h-4 w-4" />
-            Personnalisé
+            {t('newObjective.tabCustom')}
           </TabsTrigger>
         </TabsList>
 
         {/* Templates Tab */}
         <TabsContent value="template" className="mt-4 space-y-4">
-          <p className="text-muted-foreground text-sm">
-            Choisis un modèle pré-configuré pour démarrer rapidement
-          </p>
+          <p className="text-muted-foreground text-sm">{t('newObjective.templateHint')}</p>
 
           {/* Group templates by context */}
           {userProfile?.targetGender !== 'masculinizing' && (
             <div className="space-y-2">
               <h3 className="text-trans-pink flex items-center gap-2 text-sm font-medium">
-                Parcours féminisant
+                {t('newObjective.feminizingPath')}
               </h3>
               <div className="grid gap-2">
                 {templates
@@ -186,7 +186,7 @@ export default function NewObjectivePage() {
           {userProfile?.targetGender !== 'feminizing' && (
             <div className="space-y-2">
               <h3 className="text-trans-blue flex items-center gap-2 text-sm font-medium">
-                Parcours masculinisant
+                {t('newObjective.masculinizingPath')}
               </h3>
               <div className="grid gap-2">
                 {templates
@@ -200,7 +200,7 @@ export default function NewObjectivePage() {
 
           <div className="space-y-2">
             <h3 className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
-              Parcours commun
+              {t('newObjective.commonPath')}
             </h3>
             <div className="grid gap-2">
               {templates
@@ -409,8 +409,10 @@ function TemplateCard({
   template: ObjectiveTemplate
   onSelect: (t: ObjectiveTemplate) => void
 }) {
+  const t = useTranslations('objectives')
   const categoryInfo = categoryConfig[template.category]
   const CategoryIcon = categoryInfo.icon
+  const milestones = t.raw(`templates.${template.id}.milestones`) as string[]
 
   return (
     <Card
@@ -424,18 +426,20 @@ function TemplateCard({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <h4 className="text-foreground text-sm font-medium">{template.title}</h4>
+              <h4 className="text-foreground text-sm font-medium">
+                {t(`templates.${template.id}.title`)}
+              </h4>
               {template.estimatedDuration && (
                 <Badge variant="outline" className="text-xs">
-                  {template.estimatedDuration}
+                  {t(`templates.${template.id}.duration`)}
                 </Badge>
               )}
             </div>
             <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
-              {template.description}
+              {t(`templates.${template.id}.description`)}
             </p>
             <p className="text-muted-foreground mt-1 text-xs">
-              {template.milestones.length} étapes prédéfinies
+              {t('newObjective.stepsCount', { count: milestones.length })}
             </p>
           </div>
         </div>

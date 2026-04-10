@@ -250,9 +250,7 @@ export default function ObjectivesPage() {
                 <>
                   <Target className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
                   <h3 className="text-foreground mb-2 font-semibold">{t('list.empty')}</h3>
-                  <p className="text-muted-foreground mb-4 text-sm">
-                    Commence par créer ton premier objectif de transition
-                  </p>
+                  <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDescription')}</p>
                   <Link href="/objectives/new">
                     <Button className="gap-2">
                       <Plus className="h-4 w-4" />
