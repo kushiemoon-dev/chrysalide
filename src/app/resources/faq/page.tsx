@@ -1,35 +1,55 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { ArrowLeft, ChevronDown, Smartphone, Stethoscope, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
-import { faqItems, getFAQByCategory, type FAQItem } from '@/lib/resources-data'
 
-const categoryConfig = {
+type FAQCategory = 'app' | 'medical' | 'general'
+
+const faqItemIds: Record<FAQCategory, string[]> = {
+  app: [
+    'app-data-privacy',
+    'app-offline',
+    'app-backup',
+    'app-install',
+    'app-notifications',
+    'app-delete-data',
+  ],
+  medical: ['med-ranges', 'med-tracking', 'med-not-advice'],
+  general: ['gen-name', 'gen-contribute', 'gen-support'],
+}
+
+const categoryConfig: Record<FAQCategory, { icon: React.ReactNode; color: string }> = {
   app: {
-    label: 'Application',
     icon: <Smartphone className="h-4 w-4" />,
     color: 'bg-blue-500/20 text-blue-400',
   },
   medical: {
-    label: 'Médical',
     icon: <Stethoscope className="h-4 w-4" />,
     color: 'bg-pink-500/20 text-pink-400',
   },
   general: {
-    label: 'Général',
     icon: <HelpCircle className="h-4 w-4" />,
     color: 'bg-purple-500/20 text-purple-400',
   },
 }
 
-function FAQItemCard({ item }: { item: FAQItem }) {
+function FAQItemCard({
+  id,
+  category,
+  t,
+}: {
+  id: string
+  category: FAQCategory
+  t: ReturnType<typeof useTranslations<'resources'>>
+}) {
   const [isOpen, setIsOpen] = useState(false)
-  const config = categoryConfig[item.category]
+  const config = categoryConfig[category]
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -39,7 +59,7 @@ function FAQItemCard({ item }: { item: FAQItem }) {
             <div className="flex items-start gap-3">
               <div className={`rounded-lg p-2 ${config.color} shrink-0`}>{config.icon}</div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-foreground text-left font-medium">{item.question}</h3>
+                <h3 className="text-foreground text-left font-medium">{t(`faq.items.${id}.q`)}</h3>
               </div>
               <ChevronDown
                 className={`text-muted-foreground h-5 w-5 shrink-0 transition-transform ${
@@ -52,7 +72,9 @@ function FAQItemCard({ item }: { item: FAQItem }) {
         <CollapsibleContent>
           <div className="px-4 pt-0 pb-4">
             <div className="border-primary/20 ml-4 border-l-2 pl-12">
-              <p className="text-muted-foreground text-sm leading-relaxed">{item.answer}</p>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {t(`faq.items.${id}.a`)}
+              </p>
             </div>
           </div>
         </CollapsibleContent>
@@ -61,25 +83,33 @@ function FAQItemCard({ item }: { item: FAQItem }) {
   )
 }
 
-function FAQSection({ category, items }: { category: FAQItem['category']; items: FAQItem[] }) {
+function FAQSection({
+  category,
+  itemIds,
+  t,
+}: {
+  category: FAQCategory
+  itemIds: string[]
+  t: ReturnType<typeof useTranslations<'resources'>>
+}) {
   const config = categoryConfig[category]
 
-  if (items.length === 0) return null
+  if (itemIds.length === 0) return null
 
   return (
     <section className="space-y-3">
       <div className="flex items-center gap-2">
         <Badge variant="outline" className={`${config.color} border-0`}>
           {config.icon}
-          <span className="ml-1">{config.label}</span>
+          <span className="ml-1">{t(`faq.categoriesLabels.${category}`)}</span>
         </Badge>
         <span className="text-muted-foreground text-sm">
-          {items.length} question{items.length > 1 ? 's' : ''}
+          {itemIds.length} {itemIds.length > 1 ? t('faq.questions') : t('faq.question')}
         </span>
       </div>
       <div className="space-y-2">
-        {items.map((item) => (
-          <FAQItemCard key={item.id} item={item} />
+        {itemIds.map((id) => (
+          <FAQItemCard key={id} id={id} category={category} t={t} />
         ))}
       </div>
     </section>
@@ -87,11 +117,15 @@ function FAQSection({ category, items }: { category: FAQItem['category']; items:
 }
 
 export default function FAQPage() {
-  const [selectedCategory, setSelectedCategory] = useState<FAQItem['category'] | 'all'>('all')
+  const t = useTranslations('resources')
+  const [selectedCategory, setSelectedCategory] = useState<FAQCategory | 'all'>('all')
 
-  const categories: FAQItem['category'][] = ['app', 'medical', 'general']
+  const categories: FAQCategory[] = ['app', 'medical', 'general']
 
-  const displayedItems = selectedCategory === 'all' ? faqItems : getFAQByCategory(selectedCategory)
+  const displayedItemIds =
+    selectedCategory === 'all'
+      ? categories.flatMap((cat) => faqItemIds[cat].map((id) => ({ id, category: cat })))
+      : faqItemIds[selectedCategory].map((id) => ({ id, category: selectedCategory }))
 
   return (
     <div className="space-y-6 p-4 pb-24">
@@ -103,8 +137,8 @@ export default function FAQPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">FAQ</h1>
-          <p className="text-muted-foreground text-sm">Questions fréquentes</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('faq.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('faq.subtitle')}</p>
         </div>
       </div>
 
@@ -116,7 +150,7 @@ export default function FAQPage() {
           onClick={() => setSelectedCategory('all')}
           className="shrink-0"
         >
-          Tout
+          {t('faq.all')}
         </Button>
         {categories.map((cat) => {
           const config = categoryConfig[cat]
@@ -129,7 +163,7 @@ export default function FAQPage() {
               className="shrink-0 gap-1"
             >
               {config.icon}
-              {config.label}
+              {t(`faq.categoriesLabels.${cat}`)}
             </Button>
           )
         })}
@@ -139,13 +173,13 @@ export default function FAQPage() {
       {selectedCategory === 'all' ? (
         <div className="space-y-8">
           {categories.map((category) => (
-            <FAQSection key={category} category={category} items={getFAQByCategory(category)} />
+            <FAQSection key={category} category={category} itemIds={faqItemIds[category]} t={t} />
           ))}
         </div>
       ) : (
         <div className="space-y-2">
-          {displayedItems.map((item) => (
-            <FAQItemCard key={item.id} item={item} />
+          {displayedItemIds.map(({ id, category }) => (
+            <FAQItemCard key={id} id={id} category={category} t={t} />
           ))}
         </div>
       )}
@@ -153,15 +187,13 @@ export default function FAQPage() {
       {/* Contact */}
       <Card className="from-primary/5 bg-gradient-to-r to-pink-500/5">
         <CardContent className="space-y-2 p-4 text-center">
+          <p className="text-muted-foreground text-sm">{t('faq.helpText')}</p>
           <p className="text-muted-foreground text-sm">
-            Vous ne trouvez pas la réponse à votre question ?
-          </p>
-          <p className="text-muted-foreground text-sm">
-            Consultez les{' '}
+            {t('faq.consultPrefix')}{' '}
             <Link href="/resources" className="text-primary hover:underline">
-              ressources communautaires
+              {t('faq.communityResources')}
             </Link>{' '}
-            ou signalez un problème sur GitHub.
+            {t('faq.orReport')}
           </p>
         </CardContent>
       </Card>
