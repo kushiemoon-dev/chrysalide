@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +38,7 @@ import {
 
 export default function NewMedicationPage() {
   const router = useRouter()
+  const t = useTranslations('medications')
   const [loading, setLoading] = useState(false)
 
   // Form state
@@ -192,9 +194,9 @@ export default function NewMedicationPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(MEDICATION_TYPES).map(([key, { label }]) => (
+                  {Object.keys(MEDICATION_TYPES).map((key) => (
                     <SelectItem key={key} value={key}>
-                      {label}
+                      {t(`types.${key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -249,9 +251,9 @@ export default function NewMedicationPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(ADMINISTRATION_METHODS).map(([key, label]) => (
+                  {Object.keys(ADMINISTRATION_METHODS).map((key) => (
                     <SelectItem key={key} value={key}>
-                      {label}
+                      {t(`methods.${key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -270,9 +272,9 @@ export default function NewMedicationPage() {
                     <SelectValue placeholder="Sélectionner..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(PILL_ROUTES).map(([key, label]) => (
+                    {Object.keys(PILL_ROUTES).map((key) => (
                       <SelectItem key={key} value={key}>
-                        {label}
+                        {t(`pillRoutes.${key}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -294,9 +296,9 @@ export default function NewMedicationPage() {
                     <SelectValue placeholder="Sélectionner..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(INJECTION_ROUTES).map(([key, label]) => (
+                    {Object.keys(INJECTION_ROUTES).map((key) => (
                       <SelectItem key={key} value={key}>
-                        {label}
+                        {t(`injectionRoutes.${key}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -422,7 +424,7 @@ export default function NewMedicationPage() {
                   <SelectContent>
                     {STOCK_UNITS.map((u) => (
                       <SelectItem key={u} value={u}>
-                        {u}
+                        {t(`stockUnits.${u}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>

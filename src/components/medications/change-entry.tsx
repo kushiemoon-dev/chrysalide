@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { Badge } from '@/components/ui/badge'
@@ -17,54 +18,46 @@ import {
 } from 'lucide-react'
 import type { TreatmentChange, TreatmentChangeType } from '@/lib/types'
 
-// Configuration des types de changements
+// Configuration des types de changements (sans labels - utiliser les traductions)
 export const changeTypeConfig: Record<
   TreatmentChangeType,
   {
-    label: string
     icon: typeof Play
     color: string
     bgColor: string
   }
 > = {
   started: {
-    label: 'Démarré',
     icon: Play,
     color: 'text-green-500',
     bgColor: 'bg-green-500/10',
   },
   stopped: {
-    label: 'Arrêté',
     icon: Square,
     color: 'text-red-500',
     bgColor: 'bg-red-500/10',
   },
   paused: {
-    label: 'En pause',
     icon: Pause,
     color: 'text-amber-500',
     bgColor: 'bg-amber-500/10',
   },
   resumed: {
-    label: 'Repris',
     icon: RefreshCw,
     color: 'text-blue-500',
     bgColor: 'bg-blue-500/10',
   },
   dosage_change: {
-    label: 'Dosage modifié',
     icon: TrendingUp,
     color: 'text-purple-500',
     bgColor: 'bg-purple-500/10',
   },
   method_change: {
-    label: 'Méthode modifiée',
     icon: Repeat,
     color: 'text-cyan-500',
     bgColor: 'bg-cyan-500/10',
   },
   frequency_change: {
-    label: 'Fréquence modifiée',
     icon: Clock,
     color: 'text-orange-500',
     bgColor: 'bg-orange-500/10',
@@ -77,8 +70,10 @@ interface ChangeEntryProps {
 }
 
 export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryProps) {
+  const t = useTranslations('objectives')
   const config = changeTypeConfig[change.changeType]
   const Icon = config.icon
+  const label = t(`changeTypes.${change.changeType}`)
 
   return (
     <div className="bg-card flex gap-3 rounded-lg border p-3">
@@ -92,7 +87,7 @@ export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryPr
         <div className="flex items-start justify-between gap-2">
           <div>
             <Badge variant="outline" className={`${config.bgColor} border-0`}>
-              <span className={config.color}>{config.label}</span>
+              <span className={config.color}>{label}</span>
             </Badge>
             {showMedicationName && (
               <div className="mt-1 flex items-center gap-1 text-sm font-medium">
@@ -146,15 +141,17 @@ export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryPr
 
 // Version compacte pour timeline
 export function ChangeEntryCompact({ change }: { change: TreatmentChange }) {
+  const t = useTranslations('objectives')
   const config = changeTypeConfig[change.changeType]
   const Icon = config.icon
+  const label = t(`changeTypes.${change.changeType}`)
 
   return (
     <div className="flex items-center gap-2 text-sm">
       <Icon className={`h-3.5 w-3.5 ${config.color}`} />
       <span className="font-medium">{change.medicationName}</span>
       <span className="text-muted-foreground">-</span>
-      <span className={config.color}>{config.label}</span>
+      <span className={config.color}>{label}</span>
       {change.oldValue && change.newValue && (
         <span className="text-muted-foreground">
           ({change.oldValue} → {change.newValue})

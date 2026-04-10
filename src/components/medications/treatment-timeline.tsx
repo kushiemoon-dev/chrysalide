@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,6 +16,7 @@ interface TreatmentTimelineProps {
 }
 
 export function TreatmentTimeline({ changes, showTitle = true, maxItems }: TreatmentTimelineProps) {
+  const t = useTranslations('objectives')
   const displayedChanges = maxItems ? changes.slice(0, maxItems) : changes
 
   // Grouper par date
@@ -115,7 +117,9 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
                               <div className="flex items-center gap-2">
                                 <Badge variant="outline" className={`${config.bgColor} border-0`}>
                                   <Icon className={`mr-1 h-3 w-3 ${config.color}`} />
-                                  <span className={config.color}>{config.label}</span>
+                                  <span className={config.color}>
+                                    {t(`changeTypes.${change.changeType}`)}
+                                  </span>
                                 </Badge>
                                 <span className="text-sm font-medium">{change.medicationName}</span>
                               </div>
@@ -180,6 +184,7 @@ export function TreatmentTimelineCompact({
   changes: TreatmentChange[]
   maxItems?: number
 }) {
+  const t = useTranslations('objectives')
   const displayedChanges = changes.slice(0, maxItems)
 
   if (changes.length === 0) {
@@ -197,7 +202,9 @@ export function TreatmentTimelineCompact({
             <Icon className={`h-3.5 w-3.5 ${config.color}`} />
             <span className="truncate font-medium">{change.medicationName}</span>
             <span className="text-muted-foreground">-</span>
-            <span className={`${config.color} shrink-0`}>{config.label}</span>
+            <span className={`${config.color} shrink-0`}>
+              {t(`changeTypes.${change.changeType}`)}
+            </span>
             <span className="text-muted-foreground ml-auto shrink-0 text-xs">
               {format(new Date(change.date), 'd MMM', { locale: fr })}
             </span>

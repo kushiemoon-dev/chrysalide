@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -46,13 +47,14 @@ import {
   shouldTakeMedicationOnDate,
 } from '@/lib/notifications'
 import type { Medication, MedicationLog, GelApplicationZone } from '@/lib/types'
-import { MEDICATION_TYPES, ADMINISTRATION_METHODS, GEL_APPLICATION_ZONES } from '@/lib/constants'
+import { MEDICATION_TYPES, GEL_APPLICATION_ZONES } from '@/lib/constants'
 import { TreatmentGanttChart } from '@/components/medications/treatment-gantt-chart'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useConfetti } from '@/components/objectives/celebration-modal'
 
 export default function MedicationsPage() {
+  const t = useTranslations('medications')
   const [activeMedications, setActiveMedications] = useState<Medication[]>([])
   const [inactiveMedications, setInactiveMedications] = useState<Medication[]>([])
   const [todayLogs, setTodayLogs] = useState<MedicationLog[]>([])
@@ -601,11 +603,11 @@ export default function MedicationsPage() {
                                 color: typeInfo.color,
                               }}
                             >
-                              {typeInfo.label}
+                              {t(`types.${med.type}`)}
                             </Badge>
                           </div>
                           <p className="text-muted-foreground text-sm">
-                            {med.dosage} {med.unit} - {ADMINISTRATION_METHODS[med.method]}
+                            {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                           </p>
                           <p className="text-muted-foreground text-xs">
                             {med.frequency} - depuis le{' '}
@@ -807,7 +809,7 @@ export default function MedicationsPage() {
                               </Badge>
                             </div>
                             <p className="text-muted-foreground text-sm">
-                              {med.dosage} {med.unit} - {ADMINISTRATION_METHODS[med.method]}
+                              {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                             </p>
                           </div>
 
@@ -842,14 +844,14 @@ export default function MedicationsPage() {
               <span className="text-foreground font-medium">{gelMedName}</span>
             </p>
             <div className="grid gap-2">
-              {Object.entries(GEL_APPLICATION_ZONES).map(([key, label]) => (
+              {Object.keys(GEL_APPLICATION_ZONES).map((key) => (
                 <Button
                   key={key}
                   variant={selectedZone === key ? 'default' : 'outline'}
                   className="justify-start"
                   onClick={() => setSelectedZone(key as GelApplicationZone)}
                 >
-                  {label}
+                  {t(`gelZones.${key}`)}
                 </Button>
               ))}
             </div>
