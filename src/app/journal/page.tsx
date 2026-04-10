@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,6 +23,7 @@ interface JournalStats {
 }
 
 export default function JournalPage() {
+  const t = useTranslations('journal')
   const [entries, setEntries] = useState<JournalEntry[]>([])
   const [stats, setStats] = useState<JournalStats | null>(null)
   const [loading, setLoading] = useState(true)
@@ -80,13 +82,13 @@ export default function JournalPage() {
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Journal</h1>
-          <p className="text-muted-foreground text-sm">Ton espace personnel</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('subtitle')}</p>
         </div>
         <Link href="/journal/new">
           <Button className="gap-2">
             <Plus className="h-4 w-4" />
-            Nouvelle entrée
+            {t('newEntry')}
           </Button>
         </Link>
       </div>
@@ -95,7 +97,7 @@ export default function JournalPage() {
       <div className="relative">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
-          placeholder="Rechercher dans le journal..."
+          placeholder={t('searchPlaceholder')}
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value)
@@ -116,7 +118,7 @@ export default function JournalPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{stats.totalEntries}</p>
-                  <p className="text-muted-foreground text-xs">entrées (30j)</p>
+                  <p className="text-muted-foreground text-xs">{t('entries30d')}</p>
                 </div>
               </div>
             </CardContent>
@@ -139,7 +141,7 @@ export default function JournalPage() {
                   <p className="text-2xl font-bold">
                     {stats.averageMood ? stats.averageMood.toFixed(1) : '-'}
                   </p>
-                  <p className="text-muted-foreground text-xs">humeur moy.</p>
+                  <p className="text-muted-foreground text-xs">{t('avgMood')}</p>
                 </div>
               </div>
             </CardContent>
@@ -153,7 +155,7 @@ export default function JournalPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{stats.entriesPerWeek.toFixed(1)}</p>
-                  <p className="text-muted-foreground text-xs">/semaine</p>
+                  <p className="text-muted-foreground text-xs">{t('perWeek')}</p>
                 </div>
               </div>
             </CardContent>
@@ -167,7 +169,7 @@ export default function JournalPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{Object.keys(stats.tagFrequency).length}</p>
-                  <p className="text-muted-foreground text-xs">tags utilisés</p>
+                  <p className="text-muted-foreground text-xs">{t('tagsUsed')}</p>
                 </div>
               </div>
             </CardContent>
@@ -184,7 +186,7 @@ export default function JournalPage() {
             onClick={() => setSelectedTag(null)}
             className="shrink-0"
           >
-            Tout
+            {t('all')}
           </Button>
           {topTags.map(([tag, count]) => {
             const category = getTagCategory(tag)
@@ -220,20 +222,20 @@ export default function JournalPage() {
             <CardContent className="p-8 text-center">
               <BookOpen className="text-muted-foreground/50 mx-auto mb-3 h-12 w-12" />
               <p className="text-foreground mb-1 font-medium">
-                {searchQuery || selectedTag ? 'Aucun résultat' : 'Aucune entrée'}
+                {searchQuery || selectedTag ? t('noResults') : t('noEntries')}
               </p>
               <p className="text-muted-foreground mb-4 text-sm">
                 {searchQuery
-                  ? 'Essaie une autre recherche'
+                  ? t('tryOtherSearch')
                   : selectedTag
-                    ? 'Aucune entrée avec ce tag'
-                    : 'Commence à écrire dans ton journal'}
+                    ? t('noEntriesWithTag')
+                    : t('startWriting')}
               </p>
               {!searchQuery && !selectedTag && (
                 <Link href="/journal/new">
                   <Button>
                     <Plus className="mr-2 h-4 w-4" />
-                    Nouvelle entrée
+                    {t('newEntry')}
                   </Button>
                 </Link>
               )}
@@ -247,7 +249,7 @@ export default function JournalPage() {
       {/* Results count */}
       {(searchQuery || selectedTag) && filteredEntries.length > 0 && (
         <p className="text-muted-foreground text-center text-sm">
-          {filteredEntries.length} résultat{filteredEntries.length > 1 ? 's' : ''}
+          {filteredEntries.length} {filteredEntries.length > 1 ? t('results') : t('result')}
           {searchQuery && ` pour "${searchQuery}"`}
           {selectedTag && ` avec #${selectedTag}`}
         </p>
