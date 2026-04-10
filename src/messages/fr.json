@@ -179,7 +179,8 @@
     },
     "timeline": {
       "empty": "Aucun changement enregistré pour le moment.",
-      "emptyShort": "Aucun historique"
+      "emptyShort": "Aucun historique",
+      "emptyDesc": "Les modifications de tes médicaments apparaîtront ici."
     },
     "stockUnits": {
       "comprimés": "comprimés",

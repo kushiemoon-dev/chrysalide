@@ -179,7 +179,8 @@
     },
     "timeline": {
       "empty": "Noch keine Änderungen erfasst.",
-      "emptyShort": "Keine Historie"
+      "emptyShort": "Keine Historie",
+      "emptyDesc": "Deine Medikamentenänderungen werden hier angezeigt."
     },
     "stockUnits": {
       "comprimés": "Tabletten",
