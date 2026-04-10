@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter, useParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -60,6 +61,7 @@ const EMPTY_MARKER_VALUES: Record<BloodMarker, string> = {
 }
 
 export default function EditBloodTestPage() {
+  const t = useTranslations('bloodtests')
   const router = useRouter()
   const params = useParams()
   const [loading, setLoading] = useState(true)
@@ -214,12 +216,14 @@ export default function EditBloodTestPage() {
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   {group.markers.map((marker) => {
-                    const info = BLOOD_MARKERS[marker]
+                    const markerInfo = BLOOD_MARKERS[marker]
                     return (
                       <div key={marker} className="space-y-1.5">
                         <Label htmlFor={marker} className="text-sm">
-                          {info.label}
-                          <span className="text-muted-foreground ml-1 text-xs">({info.unit})</span>
+                          {t('markers.' + marker)}
+                          <span className="text-muted-foreground ml-1 text-xs">
+                            ({markerInfo.unit})
+                          </span>
                         </Label>
                         <Input
                           id={marker}
