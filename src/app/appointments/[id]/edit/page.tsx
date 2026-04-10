@@ -196,7 +196,7 @@ export default function EditAppointmentPage() {
         {/* Date & Time */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Date et heure</CardTitle>
+            <CardTitle className="text-base">{t('form.dateAndTime')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Date Picker */}
@@ -209,7 +209,7 @@ export default function EditAppointmentPage() {
                     {date ? (
                       format(date, 'EEEE d MMMM yyyy', { locale: fr })
                     ) : (
-                      <span className="text-muted-foreground">Sélectionner une date</span>
+                      <span className="text-muted-foreground">{t('form.selectDate')}</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -318,7 +318,7 @@ export default function EditAppointmentPage() {
                 <SelectValue placeholder="Configurer un rappel" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">Pas de rappel</SelectItem>
+                <SelectItem value="none">{t('form.noReminder')}</SelectItem>
                 {REMINDER_TIMES.map(({ value }) => (
                   <SelectItem key={value} value={value.toString()}>
                     {t('reminderTimes.' + value)}
