@@ -27,8 +27,9 @@ import {
   Coins,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { getAppointmentWithPractitioner, deleteAppointment } from '@/lib/db'
-import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
+import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -65,6 +66,7 @@ function AppointmentIcon({
 }
 
 export default function AppointmentDetailPage() {
+  const t = useTranslations('appointments')
   const params = useParams()
   const router = useRouter()
   const [appointment, setAppointment] = useState<Appointment | null>(null)
@@ -121,7 +123,6 @@ export default function AppointmentDetailPage() {
 
   const typeInfo = APPOINTMENT_TYPES[appointment.type]
   const isPastAppointment = isAppointmentPast(appointment)
-  const reminderLabel = REMINDER_TIMES.find((r) => r.value === appointment.reminderMinutes)?.label
 
   return (
     <div className="space-y-6 p-4 pb-24">
@@ -134,9 +135,7 @@ export default function AppointmentDetailPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-foreground text-xl font-bold">
-              {typeInfo?.label || 'Rendez-vous'}
-            </h1>
+            <h1 className="text-foreground text-xl font-bold">{t('types.' + appointment.type)}</h1>
             <p className="text-muted-foreground text-sm">
               {format(new Date(appointment.date), 'EEEE d MMMM yyyy', { locale: fr })}
             </p>
@@ -181,7 +180,7 @@ export default function AppointmentDetailPage() {
             </div>
             <div>
               <p className="text-foreground text-lg font-medium">
-                {typeInfo?.label || 'Rendez-vous'}
+                {t('types.' + appointment.type)}
               </p>
               <p className="text-muted-foreground capitalize">{appointment.type}</p>
             </div>
@@ -259,9 +258,7 @@ export default function AppointmentDetailPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge variant="outline">
-              {reminderLabel || `${appointment.reminderMinutes} minutes avant`}
-            </Badge>
+            <Badge variant="outline">{t('reminderTimes.' + appointment.reminderMinutes)}</Badge>
           </CardContent>
         </Card>
       )}

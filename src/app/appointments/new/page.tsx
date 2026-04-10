@@ -24,6 +24,7 @@ import {
   findOrCreatePractitioner,
   incrementPractitionerUsage,
 } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
 import type { AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
@@ -32,6 +33,7 @@ import { PractitionerInput } from '@/components/appointments/practitioner-input'
 import { getModulePreferences } from '@/lib/notifications'
 
 export default function NewAppointmentPage() {
+  const t = useTranslations('appointments')
   const router = useRouter()
   const [saving, setSaving] = useState(false)
 
@@ -110,7 +112,7 @@ export default function NewAppointmentPage() {
         await addReminder({
           type: 'appointment',
           referenceId: appointmentId as number,
-          title: `RDV ${APPOINTMENT_TYPES[type]?.label}`,
+          title: `RDV ${t('types.' + type)}`,
           message: doctor ? `Avec ${doctor}` : undefined,
           schedule: reminderTime.toISOString(),
           enabled: true,
@@ -157,11 +159,11 @@ export default function NewAppointmentPage() {
                     AppointmentType,
                     { label: string; color: string },
                   ][]
-                ).map(([key, { label, color }]) => (
+                ).map(([key, { color }]) => (
                   <SelectItem key={key} value={key}>
                     <div className="flex items-center gap-2">
                       <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
-                      {label}
+                      {t('types.' + key)}
                     </div>
                   </SelectItem>
                 ))}
@@ -296,9 +298,9 @@ export default function NewAppointmentPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">Pas de rappel</SelectItem>
-                {REMINDER_TIMES.map(({ value, label }) => (
+                {REMINDER_TIMES.map(({ value }) => (
                   <SelectItem key={value} value={value.toString()}>
-                    {label}
+                    {t('reminderTimes.' + value)}
                   </SelectItem>
                 ))}
               </SelectContent>
