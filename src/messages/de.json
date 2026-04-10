@@ -800,6 +800,64 @@
       "support": "Unterstützung",
       "information": "Information"
     },
+    "items": {
+      "partagenre": {
+        "name": "Partagenre",
+        "description": "Historisches französischsprachiges Trans-Community-Forum. Diskussionen, Erfahrungsberichte, Ratschläge und gegenseitige Unterstützung. (Französischsprachige Ressource)"
+      },
+      "wiki-trans": {
+        "name": "Wiki Trans",
+        "description": "Kollaboratives Wiki mit umfassenden Informationen zu Trans-Wegen in Frankreich: medizinisch, administrativ, sozial. (Französischsprachige Ressource)"
+      },
+      "carte-associations": {
+        "name": "Karte der Trans-Verbände",
+        "description": "Kollaborative Karte der Trans-Verbände in Frankreich. Finde Selbsthilfegruppen und Verbände in deiner Nähe. (Französischsprachige Ressource)"
+      },
+      "fransgenre": {
+        "name": "Fransgenre",
+        "description": "Nationaler Trans- und Intersex-Verband. Ressourcen, Begleitung und Advocacy für die Rechte trans Personen. (Französischsprachige Ressource)"
+      },
+      "sofect-alternatives": {
+        "name": "Freie Wege (außerhalb SOFeRT)",
+        "description": "Informationen zu medizinischen Transitionswegen außerhalb offizieller Krankenhausteams in Frankreich. (Französischsprachige Ressource)"
+      },
+      "ths-feminisant": {
+        "name": "Leitfaden feminisierende HRT",
+        "description": "Detaillierte Informationen zur feminisierenden Hormontherapie: Wirkstoffe, Dosierungen, Wirkungen, Kontrolle. (Französischsprachige Ressource)"
+      },
+      "ths-masculinisant": {
+        "name": "Leitfaden maskulinisierende HRT",
+        "description": "Detaillierte Informationen zur maskulinisierenden Hormontherapie: Testosteron, Wirkungen, medizinische Kontrolle. (Französischsprachige Ressource)"
+      },
+      "administrans": {
+        "name": "Administrans",
+        "description": "Umfassender Leitfaden zu administrativen Verfahren in Frankreich: Personenstandsänderung, Name, Geschlechtseintrag. (Französischsprachige Ressource)"
+      },
+      "cec-guide": {
+        "name": "Personenstandsänderung (CEC)",
+        "description": "Detailliertes Verfahren zur Änderung des Geschlechtseintrags im Personenstandsregister in Frankreich. (Französischsprachige Ressource)"
+      },
+      "droits-travail": {
+        "name": "Rechte am Arbeitsplatz",
+        "description": "Ressourcen zu den Rechten trans Personen bei der Arbeit: Diskriminierung, Transition im Unternehmen, Leitfäden für HR. (Französischsprachige Ressource)"
+      },
+      "ligne-ecoute": {
+        "name": "Ressourcen für Angehörige",
+        "description": "Leitfäden und Ressourcen für Angehörige von trans Personen. Unterstützung, Ratschläge und praktische Informationen. (Französischsprachige Ressource)"
+      },
+      "trans-posez": {
+        "name": "Trans-Posez",
+        "description": "Selbsthilfeverband für trans Personen. Gesprächsgruppen, Aktivitäten, gegenseitige Unterstützung. (Französischsprachige Ressource)"
+      },
+      "transfemscience": {
+        "name": "Transfeminine Science",
+        "description": "Englischsprachige wissenschaftliche Ressource zur feminisierenden HRT. Detaillierte Artikel, Forschung, Daten."
+      },
+      "folx-health": {
+        "name": "FOLX Health (US)",
+        "description": "Bildungsressourcen zur trans Gesundheit. Obwohl in den USA ansässig, enthält nützliche medizinische Informationen."
+      }
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Häufige Fragen",

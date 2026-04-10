@@ -800,6 +800,64 @@
       "support": "Soutien",
       "information": "Information"
     },
+    "items": {
+      "partagenre": {
+        "name": "Partagenre",
+        "description": "Forum francophone historique de la communauté trans. Discussions, témoignages, conseils et soutien entre pairs."
+      },
+      "wiki-trans": {
+        "name": "Wiki Trans",
+        "description": "Wiki collaboratif avec des informations complètes sur les parcours trans en France : médical, administratif, social."
+      },
+      "carte-associations": {
+        "name": "Carte des associations trans",
+        "description": "Carte collaborative des associations trans en France. Trouvez des groupes de soutien et associations près de chez vous."
+      },
+      "fransgenre": {
+        "name": "Fransgenre",
+        "description": "Association nationale trans et intersexe. Ressources, accompagnement et plaidoyer pour les droits des personnes trans."
+      },
+      "sofect-alternatives": {
+        "name": "Parcours libres (hors SOFeRT)",
+        "description": "Informations sur les parcours de transition médicale en dehors des équipes hospitalières officielles."
+      },
+      "ths-feminisant": {
+        "name": "Guide THS féminisant",
+        "description": "Informations détaillées sur le traitement hormonal féminisant : molécules, dosages, effets, suivi."
+      },
+      "ths-masculinisant": {
+        "name": "Guide THS masculinisant",
+        "description": "Informations détaillées sur le traitement hormonal masculinisant : testostérone, effets, suivi médical."
+      },
+      "administrans": {
+        "name": "Administrans",
+        "description": "Guide complet des démarches administratives : changement d'état civil, prénom, mention de sexe."
+      },
+      "cec-guide": {
+        "name": "Changement d'état civil (CEC)",
+        "description": "Procédure détaillée pour le changement de la mention de sexe à l'état civil en France."
+      },
+      "droits-travail": {
+        "name": "Droits au travail",
+        "description": "Ressources sur les droits des personnes trans au travail : discrimination, transition en entreprise, guides pour RH."
+      },
+      "ligne-ecoute": {
+        "name": "Ressources pour les proches",
+        "description": "Guides et ressources pour les proches de personnes trans. Soutien, conseils et informations pratiques."
+      },
+      "trans-posez": {
+        "name": "Trans-Posez",
+        "description": "Association d'entraide entre personnes trans. Groupes de parole, activités, soutien par les pairs."
+      },
+      "transfemscience": {
+        "name": "Transfeminine Science",
+        "description": "Ressource scientifique anglophone sur les THS féminisants. Articles détaillés, recherches, données."
+      },
+      "folx-health": {
+        "name": "FOLX Health (US)",
+        "description": "Ressources éducatives sur la santé trans. Bien que basé aux US, contient des informations médicales utiles."
+      }
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Questions fréquentes",
