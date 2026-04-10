@@ -40,7 +40,7 @@ export default function BloodTestsPage() {
   }, [])
 
   async function handleDelete(id: number) {
-    if (!confirm('Supprimer cette analyse?')) return
+    if (!confirm(t('confirmDelete'))) return
     await deleteBloodTest(id)
     setTests(tests.filter((t) => t.id !== id))
   }
@@ -62,8 +62,8 @@ export default function BloodTestsPage() {
     return (
       <div className="space-y-6 p-4">
         <div className="pt-2">
-          <h1 className="text-foreground text-2xl font-bold">Analyses</h1>
-          <p className="text-muted-foreground text-sm">Chargement...</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('loading')}</p>
         </div>
       </div>
     )
@@ -74,13 +74,13 @@ export default function BloodTestsPage() {
       <div className="space-y-6 p-4">
         <div className="flex items-center justify-between pt-2">
           <div>
-            <h1 className="text-foreground text-2xl font-bold">Analyses</h1>
+            <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
             <p className="text-muted-foreground text-sm">{t('list.subtitle')}</p>
           </div>
           <Link href="/bloodtests/new">
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Ajouter
+              {t('add')}
             </Button>
           </Link>
         </div>
@@ -90,14 +90,12 @@ export default function BloodTestsPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <TestTube className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucune analyse</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez vos résultats de bilans sanguins pour suivre votre évolution hormonale
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('list.empty')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDesc')}</p>
             <Link href="/bloodtests/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter une analyse
+                {t('list.addOne')}
               </Button>
             </Link>
           </CardContent>
@@ -111,16 +109,15 @@ export default function BloodTestsPage() {
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Analyses</h1>
+          <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground text-sm">
-            {tests.length} bilan{tests.length > 1 ? 's' : ''} enregistré
-            {tests.length > 1 ? 's' : ''}
+            {tests.length} {tests.length > 1 ? t('list.recordedPlural') : t('list.recorded')}
           </p>
         </div>
         <Link href="/bloodtests/new">
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            Ajouter
+            {t('add')}
           </Button>
         </Link>
       </div>
@@ -130,11 +127,11 @@ export default function BloodTestsPage() {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="charts" className="gap-2">
             <TrendingUp className="h-4 w-4" />
-            Graphiques
+            {t('list.chartsTab')}
           </TabsTrigger>
           <TabsTrigger value="list" className="gap-2">
             <List className="h-4 w-4" />
-            Historique
+            {t('list.historyTab')}
           </TabsTrigger>
         </TabsList>
 
@@ -145,15 +142,13 @@ export default function BloodTestsPage() {
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">
-                  {context === 'feminizing'
-                    ? 'Hormones (THS féminisant)'
-                    : 'Hormones (THS masculinisant)'}
+                  {context === 'feminizing' ? t('hormonesFem') : t('hormonesMas')}
                 </CardTitle>
                 {tests.length > 0 && (
                   <ExportButton
                     chartRef={chartRef}
-                    title="Suivi hormonal"
-                    subtitle={context === 'feminizing' ? 'THS féminisant' : 'THS masculinisant'}
+                    title={t('hormoneTracking')}
+                    subtitle={context === 'feminizing' ? t('thsFem') : t('thsMas')}
                     userName={userName}
                     data={mainHormones
                       .map((marker) => {
@@ -189,7 +184,7 @@ export default function BloodTestsPage() {
                   />
                 ) : (
                   <p className="text-muted-foreground py-8 text-center text-sm">
-                    Ajoutez au moins une analyse pour voir l&apos;évolution
+                    {t('addForChart')}
                   </p>
                 )}
               </div>
@@ -197,7 +192,7 @@ export default function BloodTestsPage() {
               {/* Legend with current values */}
               {tests.length > 0 && (
                 <div className="border-border mt-4 border-t pt-4">
-                  <p className="text-muted-foreground mb-2 text-xs">Dernière analyse</p>
+                  <p className="text-muted-foreground mb-2 text-xs">{t('lastAnalysis')}</p>
                   <div className="flex flex-wrap gap-4">
                     {mainHormones.map((marker) => {
                       const lastValue = tests[0]?.results.find((r) => r.marker === marker)
@@ -233,7 +228,7 @@ export default function BloodTestsPage() {
                           </span>
                           {range && (
                             <span className="text-muted-foreground text-xs">
-                              (cible: {range.min}-{range.max})
+                              ({t('target')}: {range.min}-{range.max})
                             </span>
                           )}
                         </div>
@@ -311,7 +306,7 @@ export default function BloodTestsPage() {
                       })}
                       {test.results.length > 4 && (
                         <span className="text-muted-foreground text-sm">
-                          +{test.results.length - 4} autres
+                          +{test.results.length - 4} {t('othersSuffix')}
                         </span>
                       )}
                     </div>

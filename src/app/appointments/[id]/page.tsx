@@ -99,7 +99,7 @@ export default function AppointmentDetailPage() {
   }, [params.id, router])
 
   async function handleDelete() {
-    if (!appointment?.id || !confirm('Supprimer ce rendez-vous ?')) return
+    if (!appointment?.id || !confirm(t('detail.deleteConfirm'))) return
 
     setDeleting(true)
     try {
@@ -114,7 +114,7 @@ export default function AppointmentDetailPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('detail.loading')}</p>
       </div>
     )
   }
@@ -163,7 +163,7 @@ export default function AppointmentDetailPage() {
       {/* Status Badge */}
       {isPastAppointment && (
         <Badge variant="secondary" className="w-fit">
-          Rendez-vous passé
+          {t('detail.pastBadge')}
         </Badge>
       )}
 
@@ -193,7 +193,7 @@ export default function AppointmentDetailPage() {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <Calendar className="h-4 w-4" />
-            Date et heure
+            {t('detail.dateAndTime')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -222,14 +222,14 @@ export default function AppointmentDetailPage() {
         return (
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Informations</CardTitle>
+              <CardTitle className="text-base">{t('detail.information')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {displayName && (
                 <div className="flex items-center gap-3">
                   <User className="text-muted-foreground h-5 w-5" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Praticien·ne</p>
+                    <p className="text-muted-foreground text-xs">{t('detail.practitionerLabel')}</p>
                     <p className="font-medium">{displayName}</p>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function AppointmentDetailPage() {
                 <div className="flex items-center gap-3">
                   <MapPin className="text-muted-foreground h-5 w-5" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Lieu</p>
+                    <p className="text-muted-foreground text-xs">{t('detail.locationLabel')}</p>
                     <p className="font-medium">{displayLocation}</p>
                   </div>
                 </div>
@@ -254,7 +254,7 @@ export default function AppointmentDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Bell className="h-4 w-4" />
-              Rappel
+              {t('detail.reminderTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -269,7 +269,7 @@ export default function AppointmentDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Coins className="h-4 w-4" />
-              Reste à charge
+              {t('detail.costTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -290,7 +290,7 @@ export default function AppointmentDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <FileText className="h-4 w-4" />
-              Notes
+              {t('detail.notesTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>

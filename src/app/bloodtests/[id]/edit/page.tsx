@@ -17,7 +17,6 @@ import { BLOOD_MARKERS } from '@/lib/constants'
 // Groupes de marqueurs pour une meilleure organisation
 const MARKER_GROUPS = {
   hormones: {
-    label: 'Hormones',
     icon: FlaskConical,
     markers: [
       'estradiol',
@@ -31,12 +30,10 @@ const MARKER_GROUPS = {
     ] as BloodMarker[],
   },
   blood: {
-    label: 'Santé sanguine',
     icon: Heart,
     markers: ['hematocrit', 'hemoglobin'] as BloodMarker[],
   },
   organs: {
-    label: 'Foie & Reins',
     icon: Activity,
     markers: ['alt', 'ast', 'creatinine', 'potassium'] as BloodMarker[],
   },
@@ -129,7 +126,7 @@ export default function EditBloodTestPage() {
     }
 
     if (results.length === 0) {
-      alert('Veuillez entrer au moins un résultat')
+      alert(t('new.noResultAlert'))
       return
     }
 
@@ -154,7 +151,7 @@ export default function EditBloodTestPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('detail.loading')}</p>
       </div>
     )
   }
@@ -168,19 +165,19 @@ export default function EditBloodTestPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-foreground text-xl font-bold">Modifier l&apos;analyse</h1>
+        <h1 className="text-foreground text-xl font-bold">{t('edit.title')}</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* General Info */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Informations générales</CardTitle>
+            <CardTitle className="text-base">{t('new.generalInfo')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="date">Date de l&apos;analyse</Label>
+                <Label htmlFor="date">{t('new.dateLabel')}</Label>
                 <Input
                   id="date"
                   type="date"
@@ -190,12 +187,12 @@ export default function EditBloodTestPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lab">Laboratoire</Label>
+                <Label htmlFor="lab">{t('new.labLabel')}</Label>
                 <Input
                   id="lab"
                   value={lab}
                   onChange={(e) => setLab(e.target.value)}
-                  placeholder="Optionnel"
+                  placeholder={t('new.labOptional')}
                 />
               </div>
             </div>
@@ -210,7 +207,7 @@ export default function EditBloodTestPage() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Icon className="text-primary h-4 w-4" />
-                  {group.label}
+                  {t('groups.' + groupKey)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -246,13 +243,13 @@ export default function EditBloodTestPage() {
         {/* Notes */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Notes</CardTitle>
+            <CardTitle className="text-base">{t('new.notesTitle')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Observations, contexte de la prise de sang..."
+              placeholder={t('new.notesPlaceholder')}
               rows={3}
             />
           </CardContent>
@@ -262,11 +259,11 @@ export default function EditBloodTestPage() {
         <div className="flex gap-3">
           <Link href={`/bloodtests/${params.id}`} className="flex-1">
             <Button variant="outline" className="w-full" type="button">
-              Annuler
+              {t('new.cancel')}
             </Button>
           </Link>
           <Button type="submit" className="flex-1" disabled={saving}>
-            {saving ? 'Enregistrement...' : 'Enregistrer'}
+            {saving ? t('edit.saving') : t('new.save')}
           </Button>
         </div>
       </form>

@@ -101,17 +101,17 @@ export default function PractitionersPage() {
         <div>
           <h1 className="text-foreground flex items-center gap-2 text-2xl font-bold">
             <Users className="text-trans-blue h-6 w-6" />
-            Praticien·nes
+            {t('title')}
           </h1>
           <p className="text-muted-foreground text-sm">
-            {practitioners.length} praticien·ne{practitioners.length > 1 ? 's' : ''} enregistré·e
-            {practitioners.length > 1 ? 's' : ''}
+            {practitioners.length}{' '}
+            {practitioners.length > 1 ? t('registeredPlural') : t('registered')}
           </p>
         </div>
         <Link href="/practitioners/new">
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            Ajouter
+            {t('add')}
           </Button>
         </Link>
       </div>
@@ -143,14 +143,12 @@ export default function PractitionersPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <Users className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucun·e praticien·ne</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez vos praticien·nes pour les retrouver facilement
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('list.empty')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDesc')}</p>
             <Link href="/practitioners/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter un·e praticien·ne
+                {t('addPractitioner')}
               </Button>
             </Link>
           </CardContent>
@@ -213,7 +211,7 @@ export default function PractitionersPage() {
           {filteredPractitioners.length === 0 && (
             <Card>
               <CardContent className="py-8 text-center">
-                <p className="text-muted-foreground">Aucun·e praticien·ne de ce type</p>
+                <p className="text-muted-foreground">{t('list.emptyOfType')}</p>
               </CardContent>
             </Card>
           )}
@@ -224,18 +222,18 @@ export default function PractitionersPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Supprimer ce·tte praticien·ne ?</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              {deleteTarget?.name} sera supprimé·e de votre annuaire. Cette action est irréversible.
+              {t('deleteDialog.description', { name: deleteTarget?.name ?? '' })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogCancel>{t('deleteDialog.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground"
             >
-              Supprimer
+              {t('deleteDialog.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -253,6 +251,7 @@ function PractitionerCard({
   appointmentCount: number
   onDelete: () => void
 }) {
+  const t = useTranslations('practitioners')
   const typeInfo = APPOINTMENT_TYPES[practitioner.specialty]
 
   return (
@@ -300,7 +299,7 @@ function PractitionerCard({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Mail className="h-3 w-3" />
-                  Email
+                  {t('email')}
                 </a>
               )}
               {practitioner.website && (
@@ -312,7 +311,7 @@ function PractitionerCard({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ExternalLink className="h-3 w-3" />
-                  Site web
+                  {t('siteWeb')}
                 </a>
               )}
             </div>
@@ -325,7 +324,7 @@ function PractitionerCard({
 
             <div className="mt-2 flex items-center gap-2">
               <Badge variant="outline" className="text-xs">
-                {appointmentCount} RDV
+                {t('countRDV', { count: appointmentCount })}
               </Badge>
             </div>
           </div>
