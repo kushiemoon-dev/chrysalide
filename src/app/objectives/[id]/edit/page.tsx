@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -30,6 +31,8 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
   const resolvedParams = use(params)
   const router = useRouter()
   const t = useTranslations('objectives')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [objective, setObjective] = useState<Objective | null>(null)
@@ -244,7 +247,7 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {targetDate
-                      ? format(targetDate, 'd MMMM yyyy', { locale: fr })
+                      ? format(targetDate, 'd MMMM yyyy', { locale: dateLocale })
                       : 'Sélectionner une date'}
                   </Button>
                 </PopoverTrigger>
@@ -253,7 +256,7 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
                     mode="single"
                     selected={targetDate}
                     onSelect={setTargetDate}
-                    locale={fr}
+                    locale={dateLocale}
                   />
                 </PopoverContent>
               </Popover>

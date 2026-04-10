@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -18,7 +20,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { db, deleteBloodTest, getUserProfile } from '@/lib/db'
 import type { BloodTest, BloodMarker } from '@/lib/types'
 import { REFERENCE_RANGES } from '@/lib/constants'
@@ -50,6 +51,8 @@ const MARKER_GROUPS: Record<string, { icon: typeof FlaskConical; markers: BloodM
 
 export default function BloodTestDetailPage() {
   const t = useTranslations('bloodtests')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const params = useParams()
   const router = useRouter()
   const [test, setTest] = useState<BloodTest | null>(null)
@@ -124,7 +127,7 @@ export default function BloodTestDetailPage() {
           </Link>
           <div>
             <h1 className="text-foreground text-xl font-bold">
-              {format(new Date(test.date), 'dd MMMM yyyy', { locale: fr })}
+              {format(new Date(test.date), 'dd MMMM yyyy', { locale: dateLocale })}
             </h1>
             {test.lab && (
               <Badge variant="secondary" className="mt-1">

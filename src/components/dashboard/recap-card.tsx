@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { SectionHeader } from '@/components/layout/header'
 import { DecoratedIcon } from '@/components/brand/decorated-icon'
 import { Activity, Calendar, Clock, Droplets, Heart, Target, TrendingUp, Zap } from 'lucide-react'
 import { format, formatDistanceToNow, differenceInDays, differenceInMonths } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import {
   getBloodTests,
   getUserProfile,
@@ -52,6 +53,8 @@ function calculateStreak(
 export function RecapCard() {
   const tBlood = useTranslations('bloodtests')
   const t = useTranslations('dashboard')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [data, setData] = useState<RecapData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -139,7 +142,7 @@ export function RecapCard() {
                   : `${transitionDays} ${t('recap.transitionDays')}`}
               </p>
               <p className="text-muted-foreground text-xs">
-                {t('recap.since')} {format(transitionStart, 'd MMMM yyyy', { locale: fr })}
+                {t('recap.since')} {format(transitionStart, 'd MMMM yyyy', { locale: dateLocale })}
               </p>
             </div>
             <Heart className="text-trans-pink/60 h-5 w-5" />
@@ -174,7 +177,7 @@ export function RecapCard() {
                   (
                   {formatDistanceToNow(new Date(latestBloodTest.date), {
                     addSuffix: true,
-                    locale: fr,
+                    locale: dateLocale,
                   })}
                   )
                 </span>

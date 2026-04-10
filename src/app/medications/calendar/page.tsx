@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -16,12 +19,13 @@ import {
   eachDayOfInterval,
   differenceInDays,
 } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { db, getMedications } from '@/lib/db'
 import { getMedicationReminderTimes, shouldTakeMedicationOnDate } from '@/lib/notifications'
 import type { Medication, MedicationLog } from '@/lib/types'
 
 export default function MedicationsCalendarPage() {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [medications, setMedications] = useState<Medication[]>([])
   const [logs, setLogs] = useState<MedicationLog[]>([])
   const [totalDaysWithLogs, setTotalDaysWithLogs] = useState(0)
@@ -128,7 +132,7 @@ export default function MedicationsCalendarPage() {
   async function validateMonth() {
     if (
       !confirm(
-        `Valider toutes les prises pour ${format(currentMonth, 'MMMM yyyy', { locale: fr })} ?\n\nCela marquera automatiquement toutes les doses prévues comme prises.`
+        `Valider toutes les prises pour ${format(currentMonth, 'MMMM yyyy', { locale: dateLocale })} ?\n\nCela marquera automatiquement toutes les doses prévues comme prises.`
       )
     ) {
       return
@@ -238,7 +242,7 @@ export default function MedicationsCalendarPage() {
             selected={selectedDate}
             onSelect={(date) => date && setSelectedDate(date)}
             onMonthChange={setCurrentMonth}
-            locale={fr}
+            locale={dateLocale}
             modifiers={{
               hasLogs: daysWithLogs,
             }}
@@ -259,7 +263,7 @@ export default function MedicationsCalendarPage() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center justify-between text-base">
-            <span>{format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}</span>
+            <span>{format(selectedDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}</span>
             {takenCount > 0 && (
               <Badge variant="secondary">
                 {takenCount}/{totalDoses} pris
@@ -375,7 +379,7 @@ export default function MedicationsCalendarPage() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">
-            Statistiques - {format(currentMonth, 'MMMM yyyy', { locale: fr })}
+            Statistiques - {format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">

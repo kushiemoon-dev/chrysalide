@@ -1,8 +1,9 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { History } from 'lucide-react'
@@ -18,6 +19,8 @@ interface TreatmentTimelineProps {
 export function TreatmentTimeline({ changes, showTitle = true, maxItems }: TreatmentTimelineProps) {
   const t = useTranslations('objectives')
   const tMed = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const displayedChanges = maxItems ? changes.slice(0, maxItems) : changes
 
   // Grouper par date
@@ -78,7 +81,9 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
                 {/* Date header */}
                 <div className="bg-card/95 sticky top-0 z-10 border-b px-4 py-2 backdrop-blur-sm">
                   <time className="text-muted-foreground text-sm font-medium">
-                    {isToday ? "Aujourd'hui" : format(date, 'EEEE d MMMM yyyy', { locale: fr })}
+                    {isToday
+                      ? "Aujourd'hui"
+                      : format(date, 'EEEE d MMMM yyyy', { locale: dateLocale })}
                   </time>
                 </div>
 
@@ -148,7 +153,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
 
                             <time className="text-muted-foreground text-xs whitespace-nowrap">
                               {format(new Date(change.date), 'HH:mm', {
-                                locale: fr,
+                                locale: dateLocale,
                               })}
                             </time>
                           </div>
@@ -185,6 +190,8 @@ export function TreatmentTimelineCompact({
 }) {
   const t = useTranslations('objectives')
   const tMed = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const displayedChanges = changes.slice(0, maxItems)
 
   if (changes.length === 0) {
@@ -210,7 +217,7 @@ export function TreatmentTimelineCompact({
               {t(`changeTypes.${change.changeType}`)}
             </span>
             <span className="text-muted-foreground ml-auto shrink-0 text-xs">
-              {format(new Date(change.date), 'd MMM', { locale: fr })}
+              {format(new Date(change.date), 'd MMM', { locale: dateLocale })}
             </span>
           </div>
         )

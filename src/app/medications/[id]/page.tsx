@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -34,12 +36,13 @@ import {
 import { MEDICATION_TYPES } from '@/lib/constants'
 import type { Medication, MedicationLog } from '@/lib/types'
 import { format, differenceInDays } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 export default function MedicationDetailPage() {
   const params = useParams()
   const router = useRouter()
   const t = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [medication, setMedication] = useState<Medication | null>(null)
   const [recentLogs, setRecentLogs] = useState<MedicationLog[]>([])
   const [gelHistory, setGelHistory] = useState<MedicationLog[]>([])
@@ -276,7 +279,9 @@ export default function MedicationDetailPage() {
         <CardContent className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t('detail.startDate')}</span>
-            <span className="font-medium">{format(startDate, 'd MMMM yyyy', { locale: fr })}</span>
+            <span className="font-medium">
+              {format(startDate, 'd MMMM yyyy', { locale: dateLocale })}
+            </span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Durée</span>
@@ -291,7 +296,7 @@ export default function MedicationDetailPage() {
                     ? medication.endDate
                     : new Date(medication.endDate),
                   'd MMMM yyyy',
-                  { locale: fr }
+                  { locale: dateLocale }
                 )}
               </span>
             </div>
@@ -361,7 +366,7 @@ export default function MedicationDetailPage() {
                   className="border-border flex items-center justify-between border-b py-2 text-sm last:border-0"
                 >
                   <span className="text-muted-foreground">
-                    {format(new Date(log.timestamp), 'EEEE d MMM', { locale: fr })}
+                    {format(new Date(log.timestamp), 'EEEE d MMM', { locale: dateLocale })}
                   </span>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="text-xs">
@@ -431,7 +436,7 @@ export default function MedicationDetailPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">
-                          {format(new Date(log.timestamp), 'EEEE d MMM', { locale: fr })}
+                          {format(new Date(log.timestamp), 'EEEE d MMM', { locale: dateLocale })}
                         </span>
                         <div className="flex items-center gap-2">
                           {log.scheduledTime && (

@@ -13,13 +13,15 @@
  */
 
 import { useState } from 'react'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Download, FileImage, FileText, Loader2 } from 'lucide-react'
 import { domToPng } from 'modern-screenshot'
 import { jsPDF } from 'jspdf'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 interface ExportData {
   marker: string
@@ -40,6 +42,8 @@ interface ExportButtonProps {
 }
 
 export function ExportButton({ chartRef, title, subtitle, data, userName }: ExportButtonProps) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [exporting, setExporting] = useState<'png' | 'pdf' | null>(null)
   const [open, setOpen] = useState(false)
 
@@ -110,7 +114,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
       // Nom + Date
       pdf.setFontSize(10)
       pdf.setTextColor(80, 80, 80)
-      const dateStr = format(new Date(), "dd MMMM yyyy 'à' HH:mm", { locale: fr })
+      const dateStr = format(new Date(), "dd MMMM yyyy 'à' HH:mm", { locale: dateLocale })
       if (userName) {
         pdf.text(`Patient·e : ${userName}`, margin, 38)
         pdf.text(`Date : ${dateStr}`, margin, 44)
