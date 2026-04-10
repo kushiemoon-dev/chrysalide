@@ -177,6 +177,10 @@
       "foundPlural": "gefunden",
       "noTreatments": "Keine Behandlungen zum Anzeigen."
     },
+    "timeline": {
+      "empty": "Noch keine Änderungen erfasst.",
+      "emptyShort": "Keine Historie"
+    },
     "stockUnits": {
       "comprimés": "Tabletten",
       "tubes": "Tuben",
@@ -549,7 +553,9 @@
   "objectives": {
     "list": {
       "allStatuses": "Alle Status",
-      "allCategories": "Alle Kategorien"
+      "allCategories": "Alle Kategorien",
+      "empty": "Keine Ziele",
+      "noResults": "Keine Ergebnisse"
     },
     "title": "Meine Ziele",
     "subtitle": "Verfolge deine Transitionsziele",
@@ -919,6 +925,9 @@
     "add": "Hinzufügen",
     "calendar": "Kalender",
     "reminder": "Erinnerung",
+    "practitionerInput": {
+      "addOption": "\"{value}\" hinzufügen"
+    },
     "form": {
       "dateAndTime": "Datum und Uhrzeit",
       "selectDate": "Datum auswählen",

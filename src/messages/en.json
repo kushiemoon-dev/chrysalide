@@ -177,6 +177,10 @@
       "foundPlural": "found",
       "noTreatments": "No treatments to display."
     },
+    "timeline": {
+      "empty": "No changes recorded yet.",
+      "emptyShort": "No history"
+    },
     "stockUnits": {
       "comprimés": "tablets",
       "tubes": "tubes",
@@ -549,7 +553,9 @@
   "objectives": {
     "list": {
       "allStatuses": "All statuses",
-      "allCategories": "All categories"
+      "allCategories": "All categories",
+      "empty": "No goals",
+      "noResults": "No results"
     },
     "title": "My Goals",
     "subtitle": "Track your transition goals",
@@ -919,6 +925,9 @@
     "add": "Add",
     "calendar": "Calendar",
     "reminder": "Reminder",
+    "practitionerInput": {
+      "addOption": "Add \"{value}\""
+    },
     "form": {
       "dateAndTime": "Date and time",
       "selectDate": "Select a date",

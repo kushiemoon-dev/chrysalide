@@ -17,6 +17,7 @@ interface TreatmentTimelineProps {
 
 export function TreatmentTimeline({ changes, showTitle = true, maxItems }: TreatmentTimelineProps) {
   const t = useTranslations('objectives')
+  const tMed = useTranslations('medications')
   const displayedChanges = maxItems ? changes.slice(0, maxItems) : changes
 
   // Grouper par date
@@ -48,7 +49,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
           </CardHeader>
         )}
         <CardContent className="py-8 text-center">
-          <p className="text-muted-foreground">Aucun changement enregistré pour le moment.</p>
+          <p className="text-muted-foreground">{tMed('timeline.empty')}</p>
           <p className="text-muted-foreground mt-1 text-sm">
             Les modifications de tes médicaments apparaîtront ici.
           </p>
@@ -185,10 +186,15 @@ export function TreatmentTimelineCompact({
   maxItems?: number
 }) {
   const t = useTranslations('objectives')
+  const tMed = useTranslations('medications')
   const displayedChanges = changes.slice(0, maxItems)
 
   if (changes.length === 0) {
-    return <p className="text-muted-foreground py-4 text-center text-sm">Aucun historique</p>
+    return (
+      <p className="text-muted-foreground py-4 text-center text-sm">
+        {tMed('timeline.emptyShort')}
+      </p>
+    )
   }
 
   return (
