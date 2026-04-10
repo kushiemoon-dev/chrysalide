@@ -24,6 +24,7 @@ import {
   findOrCreatePractitioner,
   incrementPractitionerUsage,
 } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
@@ -32,6 +33,7 @@ import { PractitionerInput } from '@/components/appointments/practitioner-input'
 import { getModulePreferences } from '@/lib/notifications'
 
 export default function EditAppointmentPage() {
+  const t = useTranslations('appointments')
   const params = useParams()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -99,7 +101,7 @@ export default function EditAppointmentPage() {
     e.preventDefault()
 
     if (!date || !appointment?.id) {
-      alert('Veuillez sélectionner une date')
+      alert(t('form.selectDateAlert'))
       return
     }
 
@@ -133,7 +135,7 @@ export default function EditAppointmentPage() {
       router.push(`/appointments/${appointment.id}`)
     } catch (error) {
       console.error('Error updating appointment:', error)
-      alert('Erreur lors de la sauvegarde')
+      alert(t('form.saveError'))
       setSaving(false)
     }
   }
@@ -141,7 +143,7 @@ export default function EditAppointmentPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('detail.loading')}</p>
       </div>
     )
   }
@@ -156,8 +158,8 @@ export default function EditAppointmentPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-xl font-bold">Modifier le rendez-vous</h1>
-          <p className="text-muted-foreground text-sm">Modifiez les informations du rendez-vous</p>
+          <h1 className="text-foreground text-xl font-bold">{t('edit.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('edit.subtitle')}</p>
         </div>
       </div>
 
@@ -165,12 +167,12 @@ export default function EditAppointmentPage() {
         {/* Type */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Type de rendez-vous</CardTitle>
+            <CardTitle className="text-base">{t('form.typeLabel')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Select value={type} onValueChange={(v) => setType(v as AppointmentType)}>
               <SelectTrigger>
-                <SelectValue placeholder="Sélectionner un type" />
+                <SelectValue placeholder={t('form.selectType')} />
               </SelectTrigger>
               <SelectContent>
                 {(
@@ -178,11 +180,11 @@ export default function EditAppointmentPage() {
                     AppointmentType,
                     { label: string; color: string },
                   ][]
-                ).map(([key, { label, color }]) => (
+                ).map(([key, { color }]) => (
                   <SelectItem key={key} value={key}>
                     <div className="flex items-center gap-2">
                       <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
-                      {label}
+                      {t('types.' + key)}
                     </div>
                   </SelectItem>
                 ))}
@@ -194,12 +196,12 @@ export default function EditAppointmentPage() {
         {/* Date & Time */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Date et heure</CardTitle>
+            <CardTitle className="text-base">{t('form.dateAndTime')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Date Picker */}
             <div className="space-y-2">
-              <Label>Date *</Label>
+              <Label>{t('form.dateLabel')}</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full justify-start text-left font-normal">
@@ -207,7 +209,7 @@ export default function EditAppointmentPage() {
                     {date ? (
                       format(date, 'EEEE d MMMM yyyy', { locale: fr })
                     ) : (
-                      <span className="text-muted-foreground">Sélectionner une date</span>
+                      <span className="text-muted-foreground">{t('form.selectDate')}</span>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -225,7 +227,7 @@ export default function EditAppointmentPage() {
 
             {/* Time */}
             <div className="space-y-2">
-              <Label htmlFor="time">Heure</Label>
+              <Label htmlFor="time">{t('form.timeLabel')}</Label>
               <div className="relative">
                 <Clock className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                 <Input
@@ -243,37 +245,37 @@ export default function EditAppointmentPage() {
         {/* Details */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Détails</CardTitle>
+            <CardTitle className="text-base">{t('form.details')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="doctor">Médecin / Praticien·ne</Label>
+              <Label htmlFor="doctor">{t('form.practitionerLabel')}</Label>
               <PractitionerInput
                 value={doctor}
                 onChange={handlePractitionerChange}
                 onSelect={handlePractitionerSelect}
                 specialty={type}
-                placeholder="Rechercher ou ajouter..."
+                placeholder={t('form.practitionerPlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Lieu</Label>
+              <Label htmlFor="location">{t('form.locationLabel')}</Label>
               <Input
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="Hôpital, cabinet..."
+                placeholder={t('form.locationPlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
+              <Label htmlFor="notes">{t('form.notesLabel')}</Label>
               <Textarea
                 id="notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Informations supplémentaires..."
+                placeholder={t('form.notesPlaceholder')}
                 rows={3}
               />
             </div>
@@ -282,7 +284,7 @@ export default function EditAppointmentPage() {
               <div className="space-y-2">
                 <Label htmlFor="cost" className="flex items-center gap-2">
                   <Coins className="h-4 w-4" />
-                  Reste à charge (€)
+                  {t('form.costLabel')}
                 </Label>
                 <Input
                   id="cost"
@@ -292,7 +294,7 @@ export default function EditAppointmentPage() {
                   step="0.01"
                   value={cost}
                   onChange={(e) => setCost(e.target.value)}
-                  placeholder="0.00"
+                  placeholder={t('form.costPlaceholder')}
                 />
               </div>
             )}
@@ -304,7 +306,7 @@ export default function EditAppointmentPage() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-base">
               <Bell className="h-4 w-4" />
-              Rappel
+              {t('form.reminderTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -313,13 +315,13 @@ export default function EditAppointmentPage() {
               onValueChange={(v) => setReminderMinutes(v === 'none' ? undefined : parseInt(v))}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Configurer un rappel" />
+                <SelectValue placeholder={t('form.reminderConfig')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">Pas de rappel</SelectItem>
-                {REMINDER_TIMES.map(({ value, label }) => (
+                <SelectItem value="none">{t('form.noReminder')}</SelectItem>
+                {REMINDER_TIMES.map(({ value }) => (
                   <SelectItem key={value} value={value.toString()}>
-                    {label}
+                    {t('reminderTimes.' + value)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -329,7 +331,7 @@ export default function EditAppointmentPage() {
 
         {/* Submit */}
         <Button type="submit" className="w-full" disabled={saving || !date}>
-          {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
+          {saving ? t('edit.saving') : t('edit.save')}
         </Button>
       </form>
     </div>

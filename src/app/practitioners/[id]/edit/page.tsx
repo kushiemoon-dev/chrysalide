@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -24,6 +25,8 @@ import type { AppointmentType, Practitioner } from '@/lib/types'
 export default function EditPractitionerPage() {
   const router = useRouter()
   const params = useParams()
+  const t = useTranslations('practitioners')
+  const tAppt = useTranslations('appointments')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [practitioner, setPractitioner] = useState<Practitioner | null>(null)
@@ -95,7 +98,7 @@ export default function EditPractitionerPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{tAppt('detail.loading')}</p>
       </div>
     )
   }
@@ -110,7 +113,7 @@ export default function EditPractitionerPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Modifier praticien·ne</h1>
+          <h1 className="text-foreground text-2xl font-bold">{t('edit.title')}</h1>
           <p className="text-muted-foreground text-sm">{practitioner?.name}</p>
         </div>
       </div>
@@ -121,31 +124,31 @@ export default function EditPractitionerPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <User className="text-primary h-4 w-4" />
-              Informations de base
+              {t('edit.basicInfo')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom complet *</Label>
+              <Label htmlFor="name">{t('edit.fullName')}</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Dr. Prenom Nom"
+                placeholder={t('edit.namePlaceholder')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="specialty">Specialite</Label>
+              <Label htmlFor="specialty">{t('edit.specialty')}</Label>
               <Select value={specialty} onValueChange={(v) => setSpecialty(v as AppointmentType)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(APPOINTMENT_TYPES).map(([key, info]) => (
+                  {Object.entries(APPOINTMENT_TYPES).map(([key]) => (
                     <SelectItem key={key} value={key}>
-                      {info.label}
+                      {tAppt('types.' + key)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -156,11 +159,9 @@ export default function EditPractitionerPage() {
               <div className="space-y-0.5">
                 <Label htmlFor="trans-friendly" className="flex items-center gap-2">
                   <Star className="h-4 w-4 text-yellow-500" />
-                  Trans-friendly
+                  {t('edit.transFriendly')}
                 </Label>
-                <p className="text-muted-foreground text-xs">
-                  Ce·tte praticien·ne est connu·e pour accompagner les personnes trans
-                </p>
+                <p className="text-muted-foreground text-xs">{t('edit.transFriendlyDesc')}</p>
               </div>
               <Switch
                 id="trans-friendly"
@@ -176,62 +177,62 @@ export default function EditPractitionerPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Phone className="text-primary h-4 w-4" />
-              Contact
+              {t('edit.contact')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="location" className="flex items-center gap-2">
                 <MapPin className="h-3 w-3" />
-                Adresse
+                {t('edit.address')}
               </Label>
               <Input
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="123 rue de la Sante, 75000 Paris"
+                placeholder={t('edit.addressPlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="phone" className="flex items-center gap-2">
                 <Phone className="h-3 w-3" />
-                Telephone
+                {t('edit.phone')}
               </Label>
               <Input
                 id="phone"
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="01 23 45 67 89"
+                placeholder={t('edit.phonePlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="email" className="flex items-center gap-2">
                 <Mail className="h-3 w-3" />
-                Email
+                {t('edit.email')}
               </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="contact@praticien.fr"
+                placeholder={t('edit.emailPlaceholder')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="website" className="flex items-center gap-2">
                 <Globe className="h-3 w-3" />
-                Site web
+                {t('edit.website')}
               </Label>
               <Input
                 id="website"
                 type="text"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
-                placeholder="www.praticien.fr ou https://..."
+                placeholder={t('edit.websitePlaceholder')}
               />
             </div>
           </CardContent>
@@ -240,13 +241,13 @@ export default function EditPractitionerPage() {
         {/* Notes */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Notes</CardTitle>
+            <CardTitle className="text-base">{t('edit.notes')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Notes personnelles sur ce·tte praticien·ne..."
+              placeholder={t('edit.notesPlaceholder')}
               className="min-h-[100px] resize-none"
             />
           </CardContent>
@@ -256,12 +257,12 @@ export default function EditPractitionerPage() {
         <div className="flex gap-3">
           <Link href="/practitioners" className="flex-1">
             <Button type="button" variant="outline" className="w-full">
-              Annuler
+              {t('editPage.cancel')}
             </Button>
           </Link>
           <Button type="submit" className="flex-1 gap-2" disabled={!isValid || saving}>
             <Save className="h-4 w-4" />
-            {saving ? 'Enregistrement...' : 'Enregistrer'}
+            {saving ? t('editPage.saving') : t('editPage.save')}
           </Button>
         </div>
       </form>

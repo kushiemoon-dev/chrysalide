@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { X, Plus } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
@@ -48,13 +49,14 @@ export const predefinedTags: { name: string; category: JournalTagCategory }[] = 
   { name: 'coming out', category: 'social' },
 ]
 
-const categoryLabels: Record<JournalTagCategory, string> = {
-  mood: 'Humeur',
-  side_effects: 'Effets secondaires',
-  energy: 'Énergie',
-  sleep: 'Sommeil',
-  social: 'Social',
-  custom: 'Personnalisé',
+// Category label keys map to journal.tagCategories namespace
+const categoryKeyMap: Record<JournalTagCategory, string> = {
+  mood: 'mood',
+  side_effects: 'sideEffects',
+  energy: 'energy',
+  sleep: 'sleep',
+  social: 'social',
+  custom: 'custom',
 }
 
 const categoryColors: Record<JournalTagCategory, string> = {
@@ -71,12 +73,9 @@ export function getTagCategory(tagName: string): JournalTagCategory {
   return predefined?.category || 'custom'
 }
 
-export function TagInput({
-  value,
-  onChange,
-  placeholder = 'Ajouter un tag...',
-  maxTags = 10,
-}: TagInputProps) {
+export function TagInput({ value, onChange, placeholder, maxTags = 10 }: TagInputProps) {
+  const t = useTranslations('journal')
+  const defaultPlaceholder = t('tagInput.addTag')
   const [inputValue, setInputValue] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -146,7 +145,7 @@ export function TagInput({
                 variant="secondary"
                 className={cn('gap-1 pr-1', categoryColors[category])}
               >
-                {tag}
+                {t.has(`tags.${tag}`) ? t(`tags.${tag}`) : tag}
                 <button
                   type="button"
                   onClick={() => removeTag(tag)}
@@ -171,7 +170,9 @@ export function TagInput({
           }}
           onFocus={() => setShowSuggestions(true)}
           onKeyDown={handleKeyDown}
-          placeholder={value.length >= maxTags ? 'Maximum atteint' : placeholder}
+          placeholder={
+            value.length >= maxTags ? t('tagInput.maxReached') : placeholder || defaultPlaceholder
+          }
           disabled={value.length >= maxTags}
           className="pr-10"
         />
@@ -197,14 +198,14 @@ export function TagInput({
                 onClick={() => addTag(inputValue)}
               >
                 <Plus className="text-muted-foreground h-4 w-4" />
-                <span>Créer &quot;{inputValue}&quot;</span>
+                <span>{t('tagInput.createTag', { tag: inputValue })}</span>
               </button>
             )}
 
             {Object.entries(groupedSuggestions).map(([category, tags]) => (
               <div key={category}>
                 <div className="text-muted-foreground bg-muted/30 px-3 py-1 text-xs font-medium">
-                  {categoryLabels[category as JournalTagCategory]}
+                  {t(`tagCategories.${categoryKeyMap[category as JournalTagCategory]}`)}
                 </div>
                 {tags.map((tag) => (
                   <button
@@ -213,7 +214,7 @@ export function TagInput({
                     className="hover:bg-muted/50 w-full px-3 py-2 text-left text-sm"
                     onClick={() => addTag(tag.name)}
                   >
-                    {tag.name}
+                    {t.has(`tags.${tag.name}`) ? t(`tags.${tag.name}`) : tag.name}
                   </button>
                 ))}
               </div>
@@ -221,7 +222,7 @@ export function TagInput({
 
             {suggestions.length === 0 && !inputValue && (
               <div className="text-muted-foreground px-3 py-2 text-sm">
-                Tapez pour rechercher ou créer un tag
+                {t('tagInput.helpText')}
               </div>
             )}
           </div>
@@ -232,10 +233,11 @@ export function TagInput({
 }
 
 export function TagBadge({ tag }: { tag: string }) {
+  const t = useTranslations('journal')
   const category = getTagCategory(tag)
   return (
     <Badge variant="secondary" className={cn('text-xs', categoryColors[category])}>
-      {tag}
+      {t.has(`tags.${tag}`) ? t(`tags.${tag}`) : tag}
     </Badge>
   )
 }

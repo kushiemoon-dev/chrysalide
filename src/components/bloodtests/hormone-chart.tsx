@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import {
   LineChart,
   Line,
@@ -52,9 +53,10 @@ interface CustomTooltipProps {
   payload?: TooltipPayloadEntry[]
   label?: string
   context: 'feminizing' | 'masculinizing'
+  translateMarker: (key: string) => string
 }
 
-function CustomTooltip({ active, payload, label, context }: CustomTooltipProps) {
+function CustomTooltip({ active, payload, label, context, translateMarker }: CustomTooltipProps) {
   if (!active || !payload?.length) return null
 
   const fullDate = payload[0]?.payload?.fullDate
@@ -75,7 +77,7 @@ function CustomTooltip({ active, payload, label, context }: CustomTooltipProps) 
         return (
           <div key={entry.dataKey} className="flex items-center gap-2 text-sm">
             <div className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
-            <span className="text-muted-foreground">{info?.label}:</span>
+            <span className="text-muted-foreground">{translateMarker(marker)}:</span>
             <span className={`font-medium ${inRange ? 'text-foreground' : 'text-destructive'}`}>
               {entry.value} {info?.unit}
             </span>
@@ -87,6 +89,7 @@ function CustomTooltip({ active, payload, label, context }: CustomTooltipProps) 
 }
 
 export function HormoneChart({ tests, markers, context, height = 250 }: HormoneChartProps) {
+  const t = useTranslations('bloodtests')
   // Transform data for Recharts
   const chartData = tests
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
@@ -283,12 +286,16 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
           />
         )}
 
-        <Tooltip content={<CustomTooltip context={context} />} />
+        <Tooltip
+          content={
+            <CustomTooltip context={context} translateMarker={(marker) => t('markers.' + marker)} />
+          }
+        />
 
         {markers.length > 1 && (
           <Legend
             wrapperStyle={{ fontSize: '12px' }}
-            formatter={(value) => BLOOD_MARKERS[value as BloodMarker]?.label || value}
+            formatter={(value) => t('markers.' + value)}
           />
         )}
 

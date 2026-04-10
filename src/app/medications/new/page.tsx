@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +38,7 @@ import {
 
 export default function NewMedicationPage() {
   const router = useRouter()
+  const t = useTranslations('medications')
   const [loading, setLoading] = useState(false)
 
   // Form state
@@ -140,7 +142,7 @@ export default function NewMedicationPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-foreground text-xl font-bold">Nouveau médicament</h1>
+        <h1 className="text-foreground text-xl font-bold">{t('new.title')}</h1>
       </div>
 
       {/* Quick Select */}
@@ -175,7 +177,7 @@ export default function NewMedicationPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom du médicament</Label>
+              <Label htmlFor="name">{t('form.medicationName')}</Label>
               <Input
                 id="name"
                 value={name}
@@ -192,9 +194,9 @@ export default function NewMedicationPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(MEDICATION_TYPES).map(([key, { label }]) => (
+                  {Object.keys(MEDICATION_TYPES).map((key) => (
                     <SelectItem key={key} value={key}>
-                      {label}
+                      {t(`types.${key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -249,9 +251,9 @@ export default function NewMedicationPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(ADMINISTRATION_METHODS).map(([key, label]) => (
+                  {Object.keys(ADMINISTRATION_METHODS).map((key) => (
                     <SelectItem key={key} value={key}>
-                      {label}
+                      {t(`methods.${key}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -267,12 +269,12 @@ export default function NewMedicationPage() {
                   onValueChange={(v) => setPillRoute((v as PillAdministrationRoute) || undefined)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(PILL_ROUTES).map(([key, label]) => (
+                    {Object.keys(PILL_ROUTES).map((key) => (
                       <SelectItem key={key} value={key}>
-                        {label}
+                        {t(`pillRoutes.${key}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -291,12 +293,12 @@ export default function NewMedicationPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(INJECTION_ROUTES).map(([key, label]) => (
+                    {Object.keys(INJECTION_ROUTES).map((key) => (
                       <SelectItem key={key} value={key}>
-                        {label}
+                        {t(`injectionRoutes.${key}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -321,7 +323,7 @@ export default function NewMedicationPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="startDate">Date de début</Label>
+              <Label htmlFor="startDate">{t('form.startDate')}</Label>
               <Input
                 id="startDate"
                 type="date"
@@ -414,15 +416,15 @@ export default function NewMedicationPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="stockUnit">Unité de stock</Label>
+                <Label htmlFor="stockUnit">{t('form.stockUnit')}</Label>
                 <Select value={stockUnit} onValueChange={setStockUnit}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder={t('form.selectPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STOCK_UNITS.map((u) => (
                       <SelectItem key={u} value={u}>
-                        {u}
+                        {t(`stockUnits.${u}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -430,7 +432,7 @@ export default function NewMedicationPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="stockAlert">Alerte si sous</Label>
+              <Label htmlFor="stockAlert">{t('form.lowStockAlert')}</Label>
               <Input
                 id="stockAlert"
                 type="number"

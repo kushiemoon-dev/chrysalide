@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { MEDICATION_TYPES } from '@/lib/constants'
 import type { Medication } from '@/lib/types'
 import { format, differenceInDays, startOfMonth, endOfMonth, eachMonthOfInterval } from 'date-fns'
@@ -11,6 +12,7 @@ interface TreatmentGanttChartProps {
 }
 
 export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
+  const t = useTranslations('medications')
   const scrollRef = useRef<HTMLDivElement>(null)
   const [currentTime] = useState(() => Date.now())
 
@@ -40,7 +42,7 @@ export function TreatmentGanttChart({ medications }: TreatmentGanttChartProps) {
 
   if (medications.length === 0) {
     return (
-      <p className="text-muted-foreground py-4 text-center text-sm">Aucun traitement à afficher.</p>
+      <p className="text-muted-foreground py-4 text-center text-sm">{t('history.noTreatments')}</p>
     )
   }
 

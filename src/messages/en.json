@@ -50,13 +50,13 @@
     },
     "notifications": {
       "title": "Notifications",
-      "notSupported": "Notifications are not supported on this browser.",
+      "notSupported": "Notifications are not supported in this browser.",
       "blocked": "Blocked",
       "blockedDescription": "Notifications have been blocked. Change your browser settings to enable them.",
       "enabled": "Enabled",
       "enabledDescription": "You will receive reminders for your medications and appointments.",
       "disable": "Disable notifications",
-      "enableDescription": "Enable notifications to receive reminders for your medications and appointments.",
+      "enableDescription": "Enable notifications to get reminders for your medications and appointments.",
       "enable": "Enable notifications"
     },
     "medications": {
@@ -89,7 +89,7 @@
       "antiandrogen": "Anti-androgen",
       "progesteron": "Progesterone",
       "testosterone": "Testosterone",
-      "gnrh": "GnRH Agonist",
+      "gnrh": "GnRH agonist",
       "other": "Other"
     },
     "methods": {
@@ -135,6 +135,53 @@
       "1x/12semaines": "Every 12 weeks",
       "1x/jour (soir)": "1x/day (evening)"
     },
+    "calendar": {
+      "title": "Dose calendar",
+      "subtitle": "History of your doses",
+      "taken": "taken",
+      "noMeds": "No medications configured",
+      "noDoses": "No doses scheduled for this day",
+      "stats": "Statistics",
+      "daysWithDoses": "Days with doses",
+      "totalDoses": "Total doses",
+      "daysSinceStart": "days since start",
+      "validateMonth": "Confirm entire month",
+      "validating": "Validating...",
+      "validateConfirm": "Validate all doses for {month}?\n\nThis will automatically mark all scheduled doses as taken.",
+      "validateSuccess": "Month validated successfully!\n{count} doses added/updated.",
+      "validateError": "Error validating the month",
+      "validateHelp": "Marks all scheduled doses as taken"
+    },
+    "history": {
+      "title": "Treatment history",
+      "subtitle": "All changes to your medications",
+      "totalChanges": "Total changes",
+      "thisMonth": "This month",
+      "trackedMeds": "Tracked medications",
+      "mostCommon": "Most common type",
+      "filters": "Filters",
+      "allTypes": "All types",
+      "allMeds": "All medications",
+      "start": "Start",
+      "end": "End",
+      "lastMonth": "Last month",
+      "threeMonths": "3 months",
+      "sixMonths": "6 months",
+      "oneYear": "1 year",
+      "noChanges": "No changes found",
+      "noChangesEmpty": "Your treatment history will appear here when you modify your medications.",
+      "noChangesFiltered": "Try adjusting the filters to see more results.",
+      "change": "change",
+      "changes": "changes",
+      "found": "found",
+      "foundPlural": "found",
+      "noTreatments": "No treatments to display."
+    },
+    "timeline": {
+      "empty": "No changes recorded yet.",
+      "emptyShort": "No history",
+      "emptyDesc": "Your medication changes will appear here."
+    },
     "stockUnits": {
       "comprimés": "tablets",
       "tubes": "tubes",
@@ -144,9 +191,128 @@
       "ampoules": "ampoules",
       "seringues": "syringes",
       "sachets": "sachets"
+    },
+    "form": {
+      "medicationName": "Medication name",
+      "startDate": "Start date",
+      "endDate": "End date (optional)",
+      "stockUnit": "Stock unit",
+      "lowStockAlert": "Alert when below",
+      "selectPlaceholder": "Select..."
+    },
+    "new": {
+      "title": "New medication"
+    },
+    "edit": {
+      "title": "Edit medication"
+    },
+    "detail": {
+      "startDate": "Start date",
+      "endDate": "End date",
+      "lowStockAlert": "Alert when below"
+    },
+    "list": {
+      "loading": "Loading...",
+      "title": "Medications",
+      "add": "Add",
+      "active": "active",
+      "activePlural": "active",
+      "medicationWord": "medication",
+      "medicationWordPlural": "medications",
+      "inactive": "inactive",
+      "inactivePlural": "inactive",
+      "inactiveBadge": "Inactive",
+      "noMedications": "No medications",
+      "emptyDesc": "Add your HRT medications to start tracking",
+      "emptyCta": "Add a medication",
+      "ganttTitle": "Timeline view",
+      "stockLabel": "Stock",
+      "stockLow": "Low stock!",
+      "nextDose": "Next dose:",
+      "catchUp": "Catch up",
+      "sincePrefix": "since",
+      "taken": "Taken",
+      "apply": "Apply",
+      "take": "Take",
+      "addPastDoseTitle": "Add a dose",
+      "addPastDoseButton": "Add a past dose",
+      "notePlaceholder": "Notes, effects...",
+      "gelZoneDialogTitle": "Application zone",
+      "gelZoneDialogDesc": "Select the application zone for",
+      "noteLabel": "Note (optional)",
+      "cancel": "Cancel",
+      "save": "Save",
+      "pastDoseDesc": "Record a dose of",
+      "dateLabel": "Date",
+      "timeLabel": "Time"
     }
   },
   "bloodtests": {
+    "title": "Tests",
+    "add": "Add",
+    "loading": "Loading...",
+    "hormonesFem": "Hormones (feminizing HRT)",
+    "hormonesMas": "Hormones (masculinizing HRT)",
+    "hormoneTracking": "Hormone tracking",
+    "thsFem": "Feminizing HRT",
+    "thsMas": "Masculinizing HRT",
+    "addForChart": "Add at least one test to see the trend",
+    "lastAnalysis": "Latest test",
+    "target": "target",
+    "othersSuffix": "more",
+    "confirmDelete": "Delete this test?",
+    "list": {
+      "subtitle": "Track your blood test results",
+      "safetyMarkers": "Safety markers",
+      "empty": "No tests",
+      "emptyDesc": "Add your blood test results to track your hormone progress",
+      "addOne": "Add a test",
+      "recorded": "test recorded",
+      "recordedPlural": "tests recorded",
+      "chartsTab": "Charts",
+      "historyTab": "History"
+    },
+    "groups": {
+      "hormones": "Hormones",
+      "blood": "Blood health",
+      "organs": "Liver & kidneys"
+    },
+    "new": {
+      "title": "New test",
+      "subtitle": "Add the results of a blood test",
+      "generalInfo": "General information",
+      "dateLabel": "Test date",
+      "labLabel": "Lab",
+      "labOptional": "Optional",
+      "notesTitle": "Notes",
+      "notesPlaceholder": "Observations, context of the test...",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "save": "Save",
+      "noResultAlert": "Please enter at least one result"
+    },
+    "edit": {
+      "title": "Edit test",
+      "subtitle": "Update the test information",
+      "saving": "Saving...",
+      "save": "Save changes"
+    },
+    "detail": {
+      "loading": "Loading...",
+      "notFound": "Test not found",
+      "deleteConfirm": "Delete this test?",
+      "labTitle": "Lab",
+      "resultsTitle": "Results",
+      "notesTitle": "Notes",
+      "statusNormal": "Normal",
+      "statusLow": "Low",
+      "statusHigh": "High",
+      "hormonesLabel": "Hormones",
+      "targetLabel": "Target",
+      "markerSingular": "marker recorded",
+      "markerPlural": "markers recorded",
+      "inTargetRange": "in target range"
+    },
     "markers": {
       "estradiol": "Estradiol (E2)",
       "testosterone": "Testosterone (T)",
@@ -177,7 +343,7 @@
       "creatinine": "Kidney function",
       "potassium": "Important with spironolactone",
       "dheas": "Adrenal hormone precursor",
-      "progesterone": "Progestative hormone"
+      "progesterone": "Progestogen hormone"
     }
   },
   "dashboard": {
@@ -208,7 +374,7 @@
       "objectives": "Goals",
       "inProgress": "in progress",
       "completed": "completed",
-      "encouragement": "Keep it up, you're doing great! 💪"
+      "encouragement": "Keep it up, you've got this! 💪"
     }
   },
   "journal": {
@@ -253,7 +419,7 @@
     },
     "detail": {
       "notFound": "Entry not found",
-      "notFoundDesc": "This entry does not exist or has been deleted.",
+      "notFoundDesc": "This entry doesn't exist or has been deleted.",
       "backToJournal": "Back to journal",
       "confirmDelete": "Delete this entry?",
       "confirmDeleteDesc": "This action is irreversible. The entry will be permanently deleted.",
@@ -291,7 +457,7 @@
       "nausées": "nausea",
       "maux de tête": "headache",
       "bouffées de chaleur": "hot flashes",
-      "sensibilité": "sensitivity",
+      "sensibilité": "tenderness",
       "plein d'énergie": "full of energy",
       "énergie normale": "normal energy",
       "fatigué": "tired",
@@ -311,6 +477,164 @@
       "addTag": "Add a tag...",
       "createTag": "Create \"{tag}\"",
       "helpText": "Type to search or create a tag"
+    }
+  },
+  "practitioners": {
+    "title": "Practitioners",
+    "add": "Add",
+    "addPractitioner": "Add a practitioner",
+    "registered": "practitioner registered",
+    "registeredPlural": "practitioners registered",
+    "countRDV": "{count} appt",
+    "siteWeb": "Website",
+    "email": "Email",
+    "list": {
+      "filterByType": "Filter by type",
+      "allTypes": "All types",
+      "empty": "No practitioners",
+      "emptyDesc": "Add your practitioners to find them easily",
+      "emptyOfType": "No practitioners of this type"
+    },
+    "deleteDialog": {
+      "title": "Delete this practitioner?",
+      "description": "{name} will be removed from your directory. This action is irreversible.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "editPage": {
+      "title": "Edit practitioner",
+      "saving": "Saving...",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "edit": {
+      "title": "Edit practitioner",
+      "basicInfo": "Basic information",
+      "fullName": "Full name *",
+      "namePlaceholder": "Dr. First Last",
+      "specialty": "Specialty",
+      "transFriendly": "Trans-friendly",
+      "transFriendlyDesc": "This practitioner is known for supporting trans people",
+      "contact": "Contact",
+      "address": "Address",
+      "addressPlaceholder": "123 Health Street, City",
+      "phone": "Phone",
+      "phonePlaceholder": "+1 234 567 8900",
+      "email": "Email",
+      "emailPlaceholder": "contact@practitioner.com",
+      "website": "Website",
+      "websitePlaceholder": "www.practitioner.com or https://...",
+      "notes": "Notes",
+      "notesPlaceholder": "Personal notes about this practitioner..."
+    },
+    "new": {
+      "title": "New practitioner",
+      "subtitle": "Add a practitioner to your directory",
+      "basicInfo": "Basic information",
+      "fullName": "Full name *",
+      "namePlaceholder": "Dr. First Last",
+      "specialty": "Specialty",
+      "contact": "Contact",
+      "address": "Address",
+      "addressPlaceholder": "123 Health Street, City",
+      "phone": "Phone",
+      "phonePlaceholder": "+1 234 567 8900",
+      "email": "Email",
+      "emailPlaceholder": "contact@practitioner.com",
+      "website": "Website",
+      "websitePlaceholder": "www.practitioner.com or https://...",
+      "notes": "Notes",
+      "notesPlaceholder": "Personal notes about this practitioner...",
+      "transFriendly": "Trans-friendly",
+      "transFriendlyDesc": "This practitioner is known for supporting trans people",
+      "saving": "Saving...",
+      "save": "Save"
+    }
+  },
+  "objectives": {
+    "list": {
+      "allStatuses": "All statuses",
+      "allCategories": "All categories",
+      "empty": "No goals",
+      "noResults": "No results"
+    },
+    "title": "My Goals",
+    "subtitle": "Track your transition goals",
+    "new": "New",
+    "globalProgress": "Overall progress",
+    "steps": "steps",
+    "objective": "goal",
+    "objectives": "goals",
+    "inProgress": "in progress",
+    "newObjective": {
+      "title": "New goal",
+      "subtitle": "Define a goal for your transition"
+    },
+    "changeTypes": {
+      "started": "Started",
+      "stopped": "Stopped",
+      "paused": "Paused",
+      "resumed": "Resumed",
+      "dosage_change": "Dosage changed",
+      "method_change": "Method changed",
+      "frequency_change": "Frequency changed"
+    },
+    "detail": {
+      "notFound": "Goal not found",
+      "notFoundDesc": "This goal doesn't exist or has been deleted.",
+      "backToObjectives": "Back to goals",
+      "deleteTitle": "Delete this goal?",
+      "deleteDesc": "This will delete the goal and all its steps. This action is irreversible.",
+      "deleting": "Deleting...",
+      "progression": "Progress",
+      "status": "Status",
+      "statuses": {
+        "not_started": "Not started",
+        "in_progress": "In progress",
+        "completed": "Completed",
+        "paused": "Paused",
+        "cancelled": "Cancelled"
+      },
+      "target": "Target",
+      "completedOn": "Completed on",
+      "createdOn": "Created on",
+      "milestonesTitle": "Steps",
+      "noMilestones": "No steps defined",
+      "addMilestone": "Add a step...",
+      "celebrationCompleted": "Goal reached!",
+      "celebrationAllSteps": "All steps completed!",
+      "celebrationDesc": "You're making progress toward your goals, well done!"
+    },
+    "edit": {
+      "title": "Edit goal",
+      "subtitle": "Update the information",
+      "titleLabel": "Title *",
+      "titlePlaceholder": "E.g. Start HRT",
+      "description": "Description",
+      "descriptionPlaceholder": "Details about this goal...",
+      "categoryAndStatus": "Category & status",
+      "category": "Category",
+      "targetDate": "Target date (optional)",
+      "selectDate": "Select a date",
+      "removeDate": "Remove date",
+      "notes": "Notes",
+      "notesPlaceholder": "Personal notes..."
+    },
+    "categories": {
+      "medical": "Medical",
+      "administrative": "Administrative",
+      "social": "Social",
+      "physical": "Physical",
+      "mental": "Mental"
+    },
+    "timeline": {
+      "objectiveCreated": "Goal created",
+      "targetDate": "Target date",
+      "objectiveAchieved": "Goal reached!",
+      "doneOn": "Done on"
+    },
+    "celebration": {
+      "continue": "Continue"
     }
   },
   "onboarding": {
@@ -343,10 +667,19 @@
       "calendar": "Dose calendar",
       "addMed": "Add a medication",
       "later": "Later",
-      "helpText": "You can always add medications from the Medications menu"
+      "helpText": "You can always add medications later from the Medications menu"
     }
   },
   "progress": {
+    "suggestedTags": {
+      "face": "face",
+      "body": "body",
+      "chest": "chest",
+      "hair": "hair",
+      "skin": "skin",
+      "energy": "energy",
+      "mood": "mood"
+    },
     "title": "Progress",
     "entry": "entry",
     "entries": "entries",
@@ -375,7 +708,7 @@
     "noMeasurements": "No measurements recorded",
     "noPhotos": "No photos recorded",
     "bodyMeasurements": "Body measurements",
-    "bodyEvolution": "Body evolution",
+    "bodyEvolution": "Body progress",
     "measurementsLabel": "Measurements",
     "evolution": "Progress",
     "chestLabel": "Chest",
@@ -401,7 +734,7 @@
       "tags": "Tags",
       "customTag": "Custom tag...",
       "notes": "Notes",
-      "notesPlaceholder": "Observed changes, remarks, feelings...",
+      "notesPlaceholder": "Observed changes, notes, feelings...",
       "saving": "Saving...",
       "save": "Save"
     },
@@ -426,55 +759,7 @@
       "firstToLast": "First → Last",
       "oneMonth": "~1 month",
       "threeMonths": "~3 months",
-      "measurementEvolution": "Measurement evolution"
-    }
-  },
-  "practitioners": {
-    "new": {
-      "title": "New practitioner",
-      "subtitle": "Add a practitioner to your directory",
-      "basicInfo": "Basic information",
-      "fullName": "Full name *",
-      "namePlaceholder": "Dr. First Last",
-      "specialty": "Specialty",
-      "contact": "Contact",
-      "address": "Address",
-      "addressPlaceholder": "123 Health Street, City",
-      "phone": "Phone",
-      "phonePlaceholder": "+1 234 567 8900",
-      "email": "Email",
-      "emailPlaceholder": "contact@practitioner.com",
-      "website": "Website",
-      "websitePlaceholder": "www.practitioner.com or https://...",
-      "notes": "Notes",
-      "notesPlaceholder": "Personal notes about this practitioner...",
-      "transFriendly": "Trans-friendly",
-      "transFriendlyDesc": "This practitioner is known for supporting trans people",
-      "saving": "Saving...",
-      "save": "Save"
-    }
-  },
-  "objectives": {
-    "title": "My Goals",
-    "subtitle": "Track your transition goals",
-    "new": "New",
-    "globalProgress": "Overall progress",
-    "steps": "steps",
-    "objective": "goal",
-    "objectives": "goals",
-    "inProgress": "in progress",
-    "newObjective": {
-      "title": "New goal",
-      "subtitle": "Define a goal for your transition"
-    },
-    "changeTypes": {
-      "started": "Started",
-      "stopped": "Stopped",
-      "paused": "Paused",
-      "resumed": "Resumed",
-      "dosage_change": "Dosage changed",
-      "method_change": "Method changed",
-      "frequency_change": "Frequency changed"
+      "measurementEvolution": "Measurement progress"
     }
   },
   "resources": {
@@ -492,7 +777,7 @@
     "categories": {
       "community": "Community",
       "medical": "Medical",
-      "legal": "Legal & Administrative",
+      "legal": "Legal & administrative",
       "support": "Support",
       "information": "Information"
     },
@@ -505,7 +790,7 @@
       "communityResources": "community resources",
       "orReport": "or report an issue on GitHub.",
       "categoriesLabels": {
-        "app": "Application",
+        "app": "App",
         "medical": "Medical",
         "general": "General"
       },
@@ -514,7 +799,7 @@
       "items": {
         "app-data-privacy": {
           "q": "Is my data secure?",
-          "a": "Yes, all your data is stored only on your device (IndexedDB). Nothing is sent to a server. You have full control over your personal information. Remember to make regular backups via the Export function in settings."
+          "a": "Yes, all your data is stored only on your device (IndexedDB). Nothing is sent to any server. You have full control over your personal information. Remember to make regular backups via the Export function in settings."
         },
         "app-offline": {
           "q": "Does the app work offline?",
@@ -542,10 +827,10 @@
         },
         "med-tracking": {
           "q": "Why track my medication doses?",
-          "a": "Tracking helps you: 1) Not miss doses, 2) Have an accurate history for medical appointments, 3) Identify patterns (recurring missed doses, side effects), 4) Manage your stock and anticipate renewals."
+          "a": "Tracking helps you: 1) not miss doses, 2) have an accurate history for your medical appointments, 3) identify patterns (recurring missed doses, side effects), 4) manage your stock and anticipate refills."
         },
         "med-not-advice": {
-          "q": "Does this app replace medical supervision?",
+          "q": "Does this app replace medical care?",
           "a": "No, absolutely not. Chrysalide is a personal tracking tool, not medical advice. Always consult a healthcare professional for your medical decisions. The app helps you organize your information for appointments."
         },
         "gen-name": {
@@ -554,16 +839,178 @@
         },
         "gen-contribute": {
           "q": "How can I contribute to the project?",
-          "a": "Chrysalide is an open source project. You can contribute via GitHub: report bugs, suggest features, improve code or documentation. All feedback is valuable!"
+          "a": "Chrysalide is an open source project. You can contribute via GitHub: report bugs, suggest features, improve the code or documentation. All feedback is valuable!"
         },
         "gen-support": {
           "q": "I need urgent help, what should I do?",
-          "a": "If you're in distress, contact a helpline (see Resources > Support). In case of medical emergency, call your local emergency number (911 in the US, 112 in Europe). You are not alone."
+          "a": "If you're in distress, contact a helpline (see Resources > Support). In case of a medical emergency, call your local emergency number (911 in the US, 112 in Europe). You are not alone."
         }
       }
     }
   },
+  "theme": {
+    "displayMode": "Display mode",
+    "colorPalette": "Color palette",
+    "accessibility": "Accessibility",
+    "reduceAnimations": "Reduce animations",
+    "reduceAnimationsDesc": "Disables animations for a calmer experience",
+    "modes": {
+      "dark": "Dark",
+      "darkDesc": "Default dark theme",
+      "light": "Light",
+      "lightDesc": "Light theme",
+      "system": "System",
+      "systemDesc": "Follows system preferences"
+    },
+    "colors": {
+      "trans": "Trans",
+      "transDesc": "Trans flag colors",
+      "blue": "Ocean",
+      "blueDesc": "Soothing blue tones",
+      "pink": "Pink",
+      "pinkDesc": "Warm pink tones",
+      "violet": "Violet",
+      "violetDesc": "Deep violet tones"
+    }
+  },
+  "sync": {
+    "export": {
+      "title": "Export via QR code",
+      "generating": "Generating QR codes...",
+      "generationError": "Generation failed",
+      "retry": "Retry",
+      "scanInOrder": "Scan each QR code in order on the other device.",
+      "scanSingle": "Scan this QR code on the other device to transfer your data.",
+      "session": "Session"
+    },
+    "import": {
+      "title": "Import via QR code",
+      "success": "Import successful!",
+      "recordsImported": "{count} records imported",
+      "importing": "Importing...",
+      "cameraError": "Cannot access the camera",
+      "importError": "Import error",
+      "scanInstructions": "Scan the QR codes generated on the other device to import your data.",
+      "startScan": "Start scanning",
+      "cameraRequired": "Requires camera access and a browser compatible with the BarcodeDetector API.",
+      "progress": "Progress"
+    }
+  },
+  "export": {
+    "button": "Export",
+    "asPNG": "Export as PNG",
+    "asPDF": "Export as PDF",
+    "captureError": "Error capturing the chart",
+    "lastValues": "Latest values",
+    "marker": "Marker",
+    "value": "Value",
+    "target": "Target",
+    "statusLabel": "Status",
+    "statusNormal": "Normal",
+    "statusLow": "Low",
+    "statusHigh": "High",
+    "patient": "Patient",
+    "date": "Date",
+    "generatedBy": "Generated by Chrysalide - chrysalide.app",
+    "disclaimer": "This document is informational and does not replace medical advice."
+  },
+  "milestones": {
+    "title": "Title",
+    "titlePlaceholder": "Step title",
+    "targetDate": "Target date (optional)",
+    "selectDate": "Select a date",
+    "doneOn": "Done on"
+  },
   "appointments": {
+    "title": "Appointments",
+    "add": "Add",
+    "calendar": "Calendar",
+    "reminder": "Reminder",
+    "practitionerInput": {
+      "addOption": "Add \"{value}\""
+    },
+    "form": {
+      "dateAndTime": "Date and time",
+      "selectDate": "Select a date",
+      "noReminder": "No reminder",
+      "selectType": "Select a type",
+      "typeLabel": "Appointment type",
+      "dateLabel": "Date *",
+      "timeLabel": "Time",
+      "details": "Details",
+      "practitionerLabel": "Doctor / practitioner",
+      "practitionerPlaceholder": "Search or add...",
+      "locationLabel": "Location",
+      "locationPlaceholder": "Hospital, clinic...",
+      "notesLabel": "Notes",
+      "notesPlaceholder": "Additional information...",
+      "costLabel": "Out-of-pocket cost",
+      "costPlaceholder": "0.00",
+      "reminderConfig": "Set up a reminder",
+      "reminderTitle": "Reminder",
+      "selectDateAlert": "Please select a date",
+      "saveError": "Error saving"
+    },
+    "new": {
+      "title": "New appointment",
+      "subtitle": "Add a medical appointment",
+      "saving": "Saving...",
+      "save": "Save appointment",
+      "reminderTitle": "{type} appt",
+      "reminderMessage": "With {doctor}"
+    },
+    "edit": {
+      "title": "Edit appointment",
+      "subtitle": "Update the appointment information",
+      "saving": "Saving...",
+      "save": "Save changes"
+    },
+    "detail": {
+      "loading": "Loading...",
+      "deleteConfirm": "Delete this appointment?",
+      "pastBadge": "Past appointment",
+      "dateAndTime": "Date and time",
+      "information": "Information",
+      "practitionerLabel": "Practitioner",
+      "locationLabel": "Location",
+      "reminderTitle": "Reminder",
+      "costTitle": "Out-of-pocket cost",
+      "notesTitle": "Notes"
+    },
+    "list": {
+      "loading": "Loading...",
+      "filterByPractitioner": "Filter by practitioner",
+      "clearFilter": "Clear filter",
+      "allPractitioners": "All practitioners",
+      "countUpcoming": "{count} upcoming",
+      "blahajLabel": "Blahaj says:",
+      "blahajBeforeAmount": "You've invested",
+      "blahajAfterAmount": "in your well-being",
+      "empty": "No appointments",
+      "emptyDesc": "Add your medical appointments to track them",
+      "emptyCta": "Add an appointment",
+      "nextTitle": "Next appointment",
+      "tabUpcoming": "Upcoming ({count})",
+      "tabPast": "Past ({count})",
+      "noneUpcoming": "No upcoming appointments",
+      "nonePast": "No past appointments",
+      "reminderBadge": "Reminder",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "inDay": "In {days} day",
+      "inDays": "In {days} days",
+      "past": "Past"
+    },
+    "calendarPage": {
+      "title": "Yearly calendar",
+      "subtitle": "Overview of your appointments",
+      "total": "Total",
+      "upcoming": "Upcoming",
+      "thisYear": "This year",
+      "loading": "Loading calendar...",
+      "noneThisDay": "No appointments this day",
+      "addRdv": "Add appointment"
+    },
     "types": {
       "endocrinologist": "Endocrinologist",
       "psychiatrist": "Psychiatrist",

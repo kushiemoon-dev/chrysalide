@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import {
   getOnboardingState,
@@ -17,6 +18,7 @@ import { TourStep } from '@/components/onboarding/tour-step'
 
 export default function OnboardingPage() {
   const router = useRouter()
+  const t = useTranslations('onboarding')
   const [state, setState] = useState<OnboardingState>({
     completed: false,
     currentStep: 0,
@@ -92,7 +94,7 @@ export default function OnboardingPage() {
         </div>
         <p className="text-muted-foreground mt-2 text-center text-xs">
           {state.currentStep + 1} / {ONBOARDING_STEPS.length}
-          {currentStep.optional && ' (optionnel)'}
+          {currentStep.optional && ` (${t('optional')})`}
         </p>
       </div>
 

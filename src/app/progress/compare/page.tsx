@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -10,16 +11,6 @@ import { getPhysicalProgress } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format, differenceInDays } from 'date-fns'
 import { fr } from 'date-fns/locale'
-
-const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
-  weight: 'Poids',
-  height: 'Taille',
-  chest: 'Poitrine',
-  underbust: 'Sous-poitrine',
-  waist: 'Taille',
-  hips: 'Hanches',
-  shoulders: 'Épaules',
-}
 
 const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
   weight: 'kg',
@@ -32,6 +23,18 @@ const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
 }
 
 export default function CompareProgressPage() {
+  const t = useTranslations('progress')
+  const tc = useTranslations('common')
+
+  const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
+    weight: t('measurements.weight'),
+    height: t('measurements.height'),
+    chest: t('measurements.chest'),
+    underbust: t('measurements.underChest'),
+    waist: t('waistLabel'),
+    hips: t('measurements.hips'),
+    shoulders: t('measurements.shoulders'),
+  }
   const [entries, setEntries] = useState<PhysicalProgress[]>([])
   const [loading, setLoading] = useState(true)
   const [leftIndex, setLeftIndex] = useState(0)
@@ -77,7 +80,7 @@ export default function CompareProgressPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{tc('loading')}</p>
       </div>
     )
   }
@@ -92,8 +95,8 @@ export default function CompareProgressPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-foreground text-xl font-bold">Comparaison</h1>
-            <p className="text-muted-foreground text-sm">Avant / Après</p>
+            <h1 className="text-foreground text-xl font-bold">{t('compare.title')}</h1>
+            <p className="text-muted-foreground text-sm">{t('compare.beforeAfter')}</p>
           </div>
         </div>
 
@@ -102,12 +105,10 @@ export default function CompareProgressPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <ArrowLeftRight className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Pas assez d&apos;entrées</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez au moins 2 entrées avec photos pour comparer
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('compare.notEnough')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('compare.notEnoughDesc')}</p>
             <Link href="/progress/new">
-              <Button>Ajouter une entrée</Button>
+              <Button>{t('compare.addEntry')}</Button>
             </Link>
           </CardContent>
         </Card>
@@ -125,10 +126,11 @@ export default function CompareProgressPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-xl font-bold">Comparaison</h1>
+          <h1 className="text-foreground text-xl font-bold">{t('compare.title')}</h1>
           <p className="text-muted-foreground flex items-center gap-1 text-sm">
             <Calendar className="h-3 w-3" />
-            {daysBetween} jour{daysBetween > 1 ? 's' : ''} d&apos;écart
+            {daysBetween} {daysBetween > 1 ? t('compare.days') : t('compare.day')}{' '}
+            {t('compare.daysDiff')}
           </p>
         </div>
       </div>
@@ -139,7 +141,11 @@ export default function CompareProgressPage() {
         <div className="space-y-2">
           <div className="bg-muted aspect-[3/4] overflow-hidden rounded-lg">
             {leftEntry?.photos?.[0] && (
-              <img src={leftEntry.photos[0]} alt="Avant" className="h-full w-full object-cover" />
+              <img
+                src={leftEntry.photos[0]}
+                alt={t('compare.before')}
+                className="h-full w-full object-cover"
+              />
             )}
           </div>
           <div className="flex items-center gap-1">
@@ -156,7 +162,7 @@ export default function CompareProgressPage() {
               <p className="text-foreground text-xs font-medium">
                 {leftEntry && format(new Date(leftEntry.date), 'd MMM yyyy', { locale: fr })}
               </p>
-              <p className="text-muted-foreground text-xs">Avant</p>
+              <p className="text-muted-foreground text-xs">{t('compare.before')}</p>
             </div>
             <Button
               variant="ghost"
@@ -174,7 +180,11 @@ export default function CompareProgressPage() {
         <div className="space-y-2">
           <div className="bg-muted aspect-[3/4] overflow-hidden rounded-lg">
             {rightEntry?.photos?.[0] && (
-              <img src={rightEntry.photos[0]} alt="Après" className="h-full w-full object-cover" />
+              <img
+                src={rightEntry.photos[0]}
+                alt={t('compare.after')}
+                className="h-full w-full object-cover"
+              />
             )}
           </div>
           <div className="flex items-center gap-1">
@@ -191,7 +201,7 @@ export default function CompareProgressPage() {
               <p className="text-foreground text-xs font-medium">
                 {rightEntry && format(new Date(rightEntry.date), 'd MMM yyyy', { locale: fr })}
               </p>
-              <p className="text-muted-foreground text-xs">Après</p>
+              <p className="text-muted-foreground text-xs">{t('compare.after')}</p>
             </div>
             <Button
               variant="ghost"
@@ -219,7 +229,7 @@ export default function CompareProgressPage() {
               }}
               className="text-xs"
             >
-              Premier → Dernier
+              {t('compare.firstToLast')}
             </Button>
             <Button
               variant="outline"
@@ -255,7 +265,7 @@ export default function CompareProgressPage() {
               }}
               className="text-xs"
             >
-              ~1 mois
+              {t('compare.oneMonth')}
             </Button>
             <Button
               variant="outline"
@@ -291,7 +301,7 @@ export default function CompareProgressPage() {
               }}
               className="text-xs"
             >
-              ~3 mois
+              {t('compare.threeMonths')}
             </Button>
           </div>
         </CardContent>
@@ -301,7 +311,7 @@ export default function CompareProgressPage() {
       {commonMeasurements.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Évolution des mensurations</CardTitle>
+            <CardTitle className="text-base">{t('compare.measurementEvolution')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">

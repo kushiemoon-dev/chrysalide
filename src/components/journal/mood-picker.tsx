@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import type { MoodLevel } from '@/lib/types'
 
@@ -10,35 +11,35 @@ interface MoodPickerProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const moodConfig: { level: MoodLevel; emoji: string; label: string; color: string }[] = [
+const moodConfig: { level: MoodLevel; emoji: string; labelKey: string; color: string }[] = [
   {
     level: 1,
     emoji: '😢',
-    label: 'Très mal',
+    labelKey: '1',
     color: 'bg-red-500/20 border-red-500/50 hover:bg-red-500/30',
   },
   {
     level: 2,
     emoji: '😔',
-    label: 'Mal',
+    labelKey: '2',
     color: 'bg-orange-500/20 border-orange-500/50 hover:bg-orange-500/30',
   },
   {
     level: 3,
     emoji: '😐',
-    label: 'Neutre',
+    labelKey: '3',
     color: 'bg-yellow-500/20 border-yellow-500/50 hover:bg-yellow-500/30',
   },
   {
     level: 4,
     emoji: '🙂',
-    label: 'Bien',
+    labelKey: '4',
     color: 'bg-green-500/20 border-green-500/50 hover:bg-green-500/30',
   },
   {
     level: 5,
     emoji: '😊',
-    label: 'Très bien',
+    labelKey: '5',
     color: 'bg-emerald-500/20 border-emerald-500/50 hover:bg-emerald-500/30',
   },
 ]
@@ -58,12 +59,14 @@ const sizeClasses = {
 }
 
 export function MoodPicker({ value, onChange, label, size = 'md' }: MoodPickerProps) {
+  const t = useTranslations('journal')
   return (
     <div className="space-y-2">
       {label && <label className="text-foreground text-sm font-medium">{label}</label>}
       <div className="flex items-center gap-2">
         {moodConfig.map((mood) => {
           const isSelected = value === mood.level
+          const moodLabel = t(`moods.${mood.labelKey}`)
           return (
             <button
               key={mood.level}
@@ -74,24 +77,21 @@ export function MoodPicker({ value, onChange, label, size = 'md' }: MoodPickerPr
                 sizeClasses[size],
                 isSelected ? selectedColors[mood.level] : mood.color + ' opacity-60'
               )}
-              title={mood.label}
-              aria-label={mood.label}
+              title={moodLabel}
+              aria-label={moodLabel}
             >
               {mood.emoji}
             </button>
           )
         })}
       </div>
-      {value && (
-        <p className="text-muted-foreground text-xs">
-          {moodConfig.find((m) => m.level === value)?.label}
-        </p>
-      )}
+      {value && <p className="text-muted-foreground text-xs">{t(`moods.${value}`)}</p>}
     </div>
   )
 }
 
 export function MoodDisplay({ mood, size = 'sm' }: { mood: MoodLevel; size?: 'sm' | 'md' | 'lg' }) {
+  const t = useTranslations('journal')
   const config = moodConfig.find((m) => m.level === mood)
   if (!config) return null
 
@@ -102,7 +102,7 @@ export function MoodDisplay({ mood, size = 'sm' }: { mood: MoodLevel; size?: 'sm
         sizeClasses[size],
         selectedColors[mood]
       )}
-      title={config.label}
+      title={t(`moods.${mood}`)}
     >
       {config.emoji}
     </span>

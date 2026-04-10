@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { searchPractitioners, getPractitioners } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import type { Practitioner, AppointmentType } from '@/lib/types'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 
@@ -30,6 +31,7 @@ export function PractitionerInput({
   placeholder = 'Nom du/de la praticien·ne...',
   className,
 }: PractitionerInputProps) {
+  const t = useTranslations('appointments')
   const [inputValue, setInputValue] = useState(value)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState<Practitioner[]>([])
@@ -170,7 +172,7 @@ export function PractitionerInput({
               }}
             >
               <Plus className="text-primary h-4 w-4" />
-              <span>Ajouter &quot;{inputValue}&quot;</span>
+              <span>{t('practitionerInput.addOption', { value: inputValue })}</span>
             </button>
           )}
 
@@ -195,7 +197,7 @@ export function PractitionerInput({
                   )}
                 </div>
                 <div className="text-muted-foreground mt-0.5 flex items-center gap-2 text-xs">
-                  <span>{APPOINTMENT_TYPES[practitioner.specialty]?.label}</span>
+                  <span>{t('types.' + practitioner.specialty)}</span>
                   {practitioner.location && (
                     <>
                       <span className="text-border">•</span>

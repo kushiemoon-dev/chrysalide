@@ -177,6 +177,11 @@
       "foundPlural": "trouvés",
       "noTreatments": "Aucun traitement à afficher."
     },
+    "timeline": {
+      "empty": "Aucun changement enregistré pour le moment.",
+      "emptyShort": "Aucun historique",
+      "emptyDesc": "Les modifications de tes médicaments apparaîtront ici."
+    },
     "stockUnits": {
       "comprimés": "comprimés",
       "tubes": "tubes",
@@ -186,9 +191,128 @@
       "ampoules": "ampoules",
       "seringues": "seringues",
       "sachets": "sachets"
+    },
+    "form": {
+      "medicationName": "Nom du médicament",
+      "startDate": "Date de début",
+      "endDate": "Date de fin (optionnel)",
+      "stockUnit": "Unité de stock",
+      "lowStockAlert": "Alerte si sous",
+      "selectPlaceholder": "Sélectionner..."
+    },
+    "new": {
+      "title": "Nouveau médicament"
+    },
+    "edit": {
+      "title": "Modifier le médicament"
+    },
+    "detail": {
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "lowStockAlert": "Alerte si sous"
+    },
+    "list": {
+      "loading": "Chargement...",
+      "title": "Médicaments",
+      "add": "Ajouter",
+      "active": "actif",
+      "activePlural": "actifs",
+      "medicationWord": "médicament",
+      "medicationWordPlural": "médicaments",
+      "inactive": "inactif",
+      "inactivePlural": "inactifs",
+      "inactiveBadge": "Inactif",
+      "noMedications": "Aucun médicament",
+      "emptyDesc": "Ajoutez vos médicaments THS pour commencer le suivi",
+      "emptyCta": "Ajouter un médicament",
+      "ganttTitle": "Vue chronologique",
+      "stockLabel": "Stock",
+      "stockLow": "Stock bas!",
+      "nextDose": "Prochaine prise:",
+      "catchUp": "Rattraper",
+      "sincePrefix": "depuis le",
+      "taken": "Pris",
+      "apply": "Appliquer",
+      "take": "Prendre",
+      "addPastDoseTitle": "Ajouter une prise",
+      "addPastDoseButton": "Ajouter une prise passée",
+      "notePlaceholder": "Remarques, effets...",
+      "gelZoneDialogTitle": "Zone d'application",
+      "gelZoneDialogDesc": "Sélectionnez la zone d'application pour",
+      "noteLabel": "Note (optionnel)",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "pastDoseDesc": "Enregistrer une prise de",
+      "dateLabel": "Date",
+      "timeLabel": "Heure"
     }
   },
   "bloodtests": {
+    "title": "Analyses",
+    "add": "Ajouter",
+    "loading": "Chargement...",
+    "hormonesFem": "Hormones (THS féminisant)",
+    "hormonesMas": "Hormones (THS masculinisant)",
+    "hormoneTracking": "Suivi hormonal",
+    "thsFem": "THS féminisant",
+    "thsMas": "THS masculinisant",
+    "addForChart": "Ajoutez au moins une analyse pour voir l'évolution",
+    "lastAnalysis": "Dernière analyse",
+    "target": "cible",
+    "othersSuffix": "autres",
+    "confirmDelete": "Supprimer cette analyse?",
+    "list": {
+      "subtitle": "Suivi de vos bilans sanguins",
+      "safetyMarkers": "Marqueurs de sécurité",
+      "empty": "Aucune analyse",
+      "emptyDesc": "Ajoutez vos résultats de bilans sanguins pour suivre votre évolution hormonale",
+      "addOne": "Ajouter une analyse",
+      "recorded": "bilan enregistré",
+      "recordedPlural": "bilans enregistrés",
+      "chartsTab": "Graphiques",
+      "historyTab": "Historique"
+    },
+    "groups": {
+      "hormones": "Hormones",
+      "blood": "Santé sanguine",
+      "organs": "Foie & Reins"
+    },
+    "new": {
+      "title": "Nouvelle analyse",
+      "subtitle": "Ajoutez les résultats d'un bilan sanguin",
+      "generalInfo": "Informations générales",
+      "dateLabel": "Date de l'analyse",
+      "labLabel": "Laboratoire",
+      "labOptional": "Optionnel",
+      "notesTitle": "Notes",
+      "notesPlaceholder": "Observations, contexte de la prise de sang...",
+      "cancel": "Annuler",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer",
+      "noResultAlert": "Veuillez entrer au moins un résultat"
+    },
+    "edit": {
+      "title": "Modifier l'analyse",
+      "subtitle": "Modifiez les informations du bilan",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer les modifications"
+    },
+    "detail": {
+      "loading": "Chargement...",
+      "notFound": "Analyse introuvable",
+      "deleteConfirm": "Supprimer cette analyse?",
+      "labTitle": "Laboratoire",
+      "resultsTitle": "Résultats",
+      "notesTitle": "Notes",
+      "statusNormal": "Normal",
+      "statusLow": "Bas",
+      "statusHigh": "Élevé",
+      "hormonesLabel": "Hormones",
+      "targetLabel": "Cible",
+      "markerSingular": "marqueur enregistré",
+      "markerPlural": "marqueurs enregistrés",
+      "inTargetRange": "dans la plage cible"
+    },
     "markers": {
       "estradiol": "Œstradiol (E2)",
       "testosterone": "Testostérone (T)",
@@ -356,6 +480,33 @@
     }
   },
   "practitioners": {
+    "title": "Praticien·nes",
+    "add": "Ajouter",
+    "addPractitioner": "Ajouter un·e praticien·ne",
+    "registered": "praticien·ne enregistré·e",
+    "registeredPlural": "praticien·nes enregistré·es",
+    "countRDV": "{count} RDV",
+    "siteWeb": "Site web",
+    "email": "Email",
+    "list": {
+      "filterByType": "Filtrer par type",
+      "allTypes": "Tous les types",
+      "empty": "Aucun·e praticien·ne",
+      "emptyDesc": "Ajoutez vos praticien·nes pour les retrouver facilement",
+      "emptyOfType": "Aucun·e praticien·ne de ce type"
+    },
+    "deleteDialog": {
+      "title": "Supprimer ce·tte praticien·ne ?",
+      "description": "{name} sera supprimé·e de votre annuaire. Cette action est irréversible.",
+      "cancel": "Annuler",
+      "confirm": "Supprimer"
+    },
+    "editPage": {
+      "title": "Modifier praticien·ne",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
     "edit": {
       "title": "Modifier praticien·ne",
       "basicInfo": "Informations de base",
@@ -401,6 +552,12 @@
     }
   },
   "objectives": {
+    "list": {
+      "allStatuses": "Tous les statuts",
+      "allCategories": "Toutes les catégories",
+      "empty": "Aucun objectif",
+      "noResults": "Aucun résultat"
+    },
     "title": "Mes Objectifs",
     "subtitle": "Suivi de tes objectifs de transition",
     "new": "Nouveau",
@@ -514,6 +671,15 @@
     }
   },
   "progress": {
+    "suggestedTags": {
+      "face": "visage",
+      "body": "corps",
+      "chest": "poitrine",
+      "hair": "cheveux",
+      "skin": "peau",
+      "energy": "énergie",
+      "mood": "humeur"
+    },
     "title": "Évolution",
     "entry": "entrée",
     "entries": "entrées",
@@ -756,6 +922,95 @@
     "doneOn": "Fait le"
   },
   "appointments": {
+    "title": "Rendez-vous",
+    "add": "Ajouter",
+    "calendar": "Calendrier",
+    "reminder": "Rappel",
+    "practitionerInput": {
+      "addOption": "Ajouter \"{value}\""
+    },
+    "form": {
+      "dateAndTime": "Date et heure",
+      "selectDate": "Sélectionner une date",
+      "noReminder": "Pas de rappel",
+      "selectType": "Sélectionner un type",
+      "typeLabel": "Type de rendez-vous",
+      "dateLabel": "Date *",
+      "timeLabel": "Heure",
+      "details": "Détails",
+      "practitionerLabel": "Médecin / Praticien·ne",
+      "practitionerPlaceholder": "Rechercher ou ajouter...",
+      "locationLabel": "Lieu",
+      "locationPlaceholder": "Hôpital, cabinet...",
+      "notesLabel": "Notes",
+      "notesPlaceholder": "Informations supplémentaires...",
+      "costLabel": "Reste à charge (€)",
+      "costPlaceholder": "0.00",
+      "reminderConfig": "Configurer un rappel",
+      "reminderTitle": "Rappel",
+      "selectDateAlert": "Veuillez sélectionner une date",
+      "saveError": "Erreur lors de la sauvegarde"
+    },
+    "new": {
+      "title": "Nouveau rendez-vous",
+      "subtitle": "Ajoutez un rendez-vous médical",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer le rendez-vous",
+      "reminderTitle": "RDV {type}",
+      "reminderMessage": "Avec {doctor}"
+    },
+    "edit": {
+      "title": "Modifier le rendez-vous",
+      "subtitle": "Modifiez les informations du rendez-vous",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer les modifications"
+    },
+    "detail": {
+      "loading": "Chargement...",
+      "deleteConfirm": "Supprimer ce rendez-vous ?",
+      "pastBadge": "Rendez-vous passé",
+      "dateAndTime": "Date et heure",
+      "information": "Informations",
+      "practitionerLabel": "Praticien·ne",
+      "locationLabel": "Lieu",
+      "reminderTitle": "Rappel",
+      "costTitle": "Reste à charge",
+      "notesTitle": "Notes"
+    },
+    "list": {
+      "loading": "Chargement...",
+      "filterByPractitioner": "Filtrer par praticien·ne",
+      "clearFilter": "Effacer le filtre",
+      "allPractitioners": "Tous les praticien·nes",
+      "countUpcoming": "{count} à venir",
+      "blahajLabel": "Blahaj dit :",
+      "blahajBeforeAmount": "Tu as investi",
+      "blahajAfterAmount": "dans ton bien-être",
+      "empty": "Aucun rendez-vous",
+      "emptyDesc": "Ajoutez vos rendez-vous médicaux pour les suivre",
+      "emptyCta": "Ajouter un rendez-vous",
+      "nextTitle": "Prochain rendez-vous",
+      "tabUpcoming": "À venir ({count})",
+      "tabPast": "Passés ({count})",
+      "noneUpcoming": "Aucun rendez-vous à venir",
+      "nonePast": "Aucun rendez-vous passé",
+      "reminderBadge": "Rappel",
+      "today": "Aujourd'hui",
+      "tomorrow": "Demain",
+      "inDay": "Dans {days} jour",
+      "inDays": "Dans {days} jours",
+      "past": "Passé"
+    },
+    "calendarPage": {
+      "title": "Calendrier annuel",
+      "subtitle": "Vue d'ensemble de vos rendez-vous",
+      "total": "Total",
+      "upcoming": "À venir",
+      "thisYear": "Cette année",
+      "loading": "Chargement du calendrier...",
+      "noneThisDay": "Aucun rendez-vous ce jour",
+      "addRdv": "Ajouter un RDV"
+    },
     "types": {
       "endocrinologist": "Endocrinologue",
       "psychiatrist": "Psychiatre",
