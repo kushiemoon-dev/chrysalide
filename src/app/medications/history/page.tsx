@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -40,6 +41,7 @@ type FilterType = 'all' | TreatmentChangeType
 type MedicationFilter = 'all' | number
 
 export default function TreatmentHistoryPage() {
+  const tObj = useTranslations('objectives')
   const [changes, setChanges] = useState<TreatmentChange[]>([])
   const [medications, setMedications] = useState<Medication[]>([])
   const [loading, setLoading] = useState(true)
@@ -208,9 +210,7 @@ export default function TreatmentHistoryPage() {
               </div>
               <div>
                 <p className="truncate text-sm font-bold">
-                  {stats.mostCommon
-                    ? changeTypeConfig[stats.mostCommon[0] as TreatmentChangeType]?.label
-                    : '-'}
+                  {stats.mostCommon ? tObj(`changeTypes.${stats.mostCommon[0]}`) : '-'}
                 </p>
                 <p className="text-muted-foreground text-xs">Type le plus fréquent</p>
               </div>
@@ -242,7 +242,7 @@ export default function TreatmentHistoryPage() {
                     <SelectItem key={key} value={key}>
                       <div className="flex items-center gap-2">
                         <Icon className={`h-3 w-3 ${config.color}`} />
-                        {config.label}
+                        {tObj(`changeTypes.${key}`)}
                       </div>
                     </SelectItem>
                   )

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -30,13 +31,7 @@ import {
   updateMedicationLog,
   getGelApplicationHistory,
 } from '@/lib/db'
-import {
-  MEDICATION_TYPES,
-  ADMINISTRATION_METHODS,
-  PILL_ROUTES,
-  INJECTION_ROUTES,
-  GEL_APPLICATION_ZONES,
-} from '@/lib/constants'
+import { MEDICATION_TYPES } from '@/lib/constants'
 import type { Medication, MedicationLog } from '@/lib/types'
 import { format, differenceInDays } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -44,6 +39,7 @@ import { fr } from 'date-fns/locale'
 export default function MedicationDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const t = useTranslations('medications')
   const [medication, setMedication] = useState<Medication | null>(null)
   const [recentLogs, setRecentLogs] = useState<MedicationLog[]>([])
   const [gelHistory, setGelHistory] = useState<MedicationLog[]>([])
@@ -159,12 +155,12 @@ export default function MedicationDetailPage() {
 
   // Construire la description complète de la méthode d'administration
   const getFullMethodDescription = () => {
-    const baseMethod = ADMINISTRATION_METHODS[medication.method]
+    const baseMethod = t(`methods.${medication.method}`)
     if (medication.method === 'pill' && medication.pillRoute) {
-      return `${baseMethod} (${PILL_ROUTES[medication.pillRoute]})`
+      return `${baseMethod} (${t(`pillRoutes.${medication.pillRoute}`)})`
     }
     if (medication.method === 'injection' && medication.injectionRoute) {
-      return `${baseMethod} (${INJECTION_ROUTES[medication.injectionRoute]})`
+      return `${baseMethod} (${t(`injectionRoutes.${medication.injectionRoute}`)})`
     }
     return baseMethod
   }
@@ -208,7 +204,7 @@ export default function MedicationDetailPage() {
       {/* Status Badges */}
       <div className="flex flex-wrap gap-2">
         <Badge variant="outline" style={{ borderColor: typeInfo.color, color: typeInfo.color }}>
-          {typeInfo.label}
+          {t(`types.${medication.type}`)}
         </Badge>
         {medication.isActive ? (
           <Badge variant="default" className="bg-green-600">
@@ -369,7 +365,7 @@ export default function MedicationDetailPage() {
                   </span>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="text-xs">
-                      {log.applicationZone && GEL_APPLICATION_ZONES[log.applicationZone]}
+                      {log.applicationZone && t(`gelZones.${log.applicationZone}`)}
                     </Badge>
                     <span className="text-foreground">
                       {format(new Date(log.timestamp), 'HH:mm')}
