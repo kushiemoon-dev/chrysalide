@@ -145,7 +145,7 @@
       "daysWithDoses": "Days with doses",
       "totalDoses": "Total doses",
       "daysSinceStart": "days since start",
-      "validateMonth": "Validate entire month",
+      "validateMonth": "Confirm entire month",
       "validating": "Validating...",
       "validateConfirm": "Validate all doses for {month}?\n\nThis will automatically mark all scheduled doses as taken.",
       "validateSuccess": "Month validated successfully!\n{count} doses added/updated.",
@@ -280,7 +280,7 @@
       "labLabel": "Lab",
       "labOptional": "Optional",
       "notesTitle": "Notes",
-      "notesPlaceholder": "Observations, context of the blood draw...",
+      "notesPlaceholder": "Observations, context of the test...",
       "cancel": "Cancel",
       "saving": "Saving...",
       "save": "Save",
@@ -338,7 +338,7 @@
       "creatinine": "Kidney function",
       "potassium": "Important with spironolactone",
       "dheas": "Adrenal hormone precursor",
-      "progesterone": "Progestative hormone"
+      "progesterone": "Progestogen hormone"
     }
   },
   "dashboard": {
@@ -863,14 +863,14 @@
       "pink": "Pink",
       "pinkDesc": "Warm pink tones",
       "violet": "Violet",
-      "violetDesc": "Mystic violet tones"
+      "violetDesc": "Deep violet tones"
     }
   },
   "sync": {
     "export": {
       "title": "Export via QR code",
       "generating": "Generating QR codes...",
-      "generationError": "Error during generation",
+      "generationError": "Generation failed",
       "retry": "Retry",
       "scanInOrder": "Scan each QR code in order on the other device.",
       "scanSingle": "Scan this QR code on the other device to transfer your data.",
