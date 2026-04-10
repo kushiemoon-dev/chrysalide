@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -13,7 +15,6 @@ import Link from 'next/link'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { getJournalEntry, updateJournalEntry } from '@/lib/db'
 import type { JournalEntry, MoodLevel } from '@/lib/types'
@@ -23,6 +24,8 @@ import { TagInput } from '@/components/journal/tag-input'
 export default function EditJournalEntryPage({ params }: { params: Promise<{ id: string }> }) {
   const t = useTranslations('journal')
   const tCommon = useTranslations('common')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const resolvedParams = use(params)
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -156,7 +159,7 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
                     className={cn('w-full justify-start text-left font-normal')}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {format(entryDate, 'EEEE d MMMM yyyy', { locale: fr })}
+                    {format(entryDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -164,7 +167,7 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
                     mode="single"
                     selected={entryDate}
                     onSelect={(date) => date && setEntryDate(date)}
-                    locale={fr}
+                    locale={dateLocale}
                     disabled={(date) => date > new Date()}
                   />
                 </PopoverContent>

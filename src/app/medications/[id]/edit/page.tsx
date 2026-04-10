@@ -353,7 +353,7 @@ export default function EditMedicationPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="frequency">Fréquence</Label>
+              <Label htmlFor="frequency">{t('form.frequency')}</Label>
               <Select value={frequency} onValueChange={setFrequency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -361,7 +361,7 @@ export default function EditMedicationPage() {
                 <SelectContent>
                   {getFrequenciesForMethod(method).map((f) => (
                     <SelectItem key={f} value={f}>
-                      {f}
+                      {t('frequencies.' + f)}
                     </SelectItem>
                   ))}
                 </SelectContent>

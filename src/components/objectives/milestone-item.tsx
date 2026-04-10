@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -39,6 +41,8 @@ export function MilestoneItem({
   draggable = false,
   showActions = true,
 }: MilestoneItemProps) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [isEditing, setIsEditing] = useState(false)
   const [editTitle, setEditTitle] = useState(milestone.title)
   const [editDate, setEditDate] = useState<Date | undefined>(
@@ -89,12 +93,17 @@ export function MilestoneItem({
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {editDate
-                    ? format(editDate, 'd MMMM yyyy', { locale: fr })
+                    ? format(editDate, 'd MMMM yyyy', { locale: dateLocale })
                     : 'Sélectionner une date'}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={editDate} onSelect={setEditDate} locale={fr} />
+                <Calendar
+                  mode="single"
+                  selected={editDate}
+                  onSelect={setEditDate}
+                  locale={dateLocale}
+                />
               </PopoverContent>
             </Popover>
           </div>
@@ -150,14 +159,15 @@ export function MilestoneItem({
           {milestone.date && !milestone.achieved && (
             <span className="flex items-center gap-1">
               <CalendarIcon className="h-3 w-3" />
-              {format(new Date(milestone.date), 'd MMM yyyy', { locale: fr })}
+              {format(new Date(milestone.date), 'd MMM yyyy', { locale: dateLocale })}
             </span>
           )}
 
           {milestone.achieved && milestone.achievedDate && (
             <span className="flex items-center gap-1 text-green-500">
               <CheckCircle2 className="h-3 w-3" />
-              Fait le {format(new Date(milestone.achievedDate), 'd MMM yyyy', { locale: fr })}
+              Fait le{' '}
+              {format(new Date(milestone.achievedDate), 'd MMM yyyy', { locale: dateLocale })}
             </span>
           )}
         </div>
@@ -197,6 +207,8 @@ export function MilestoneTimelineItem({
   milestone: Milestone
   isLast?: boolean
 }) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   return (
     <div className="flex gap-3">
       {/* Timeline connector */}
@@ -232,7 +244,7 @@ export function MilestoneTimelineItem({
         </p>
         {milestone.achievedDate && (
           <p className="text-muted-foreground mt-1 text-xs">
-            {format(new Date(milestone.achievedDate), 'd MMM yyyy', { locale: fr })}
+            {format(new Date(milestone.achievedDate), 'd MMM yyyy', { locale: dateLocale })}
           </p>
         )}
       </div>

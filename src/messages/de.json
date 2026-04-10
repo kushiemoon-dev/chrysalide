@@ -15,7 +15,8 @@
     "version": "Version",
     "back": "Zurück",
     "confirm": "Bestätigen",
-    "close": "Schließen"
+    "close": "Schließen",
+    "saving": "Wird gespeichert..."
   },
   "nav": {
     "home": "Start",
@@ -198,10 +199,28 @@
       "endDate": "Enddatum (optional)",
       "stockUnit": "Bestandseinheit",
       "lowStockAlert": "Warnung wenn unter",
-      "selectPlaceholder": "Auswählen..."
+      "selectPlaceholder": "Auswählen...",
+      "type": "Typ",
+      "dosage": "Dosierung",
+      "unit": "Einheit",
+      "method": "Verabreichungsweg",
+      "pillRoute": "Verabreichungsroute (optional)",
+      "injectionRoute": "Injektionsart (optional)",
+      "frequency": "Häufigkeit",
+      "stock": "Aktueller Bestand"
     },
     "new": {
-      "title": "Neues Medikament"
+      "title": "Neues Medikament",
+      "commonTitle": "Häufige Medikamente",
+      "commonPlaceholder": "Medikament auswählen...",
+      "generalInfo": "Allgemeine Informationen",
+      "namePlaceholder": "z.B. Östradiol",
+      "schedulingTitle": "Einnahmezeiten",
+      "advancedMode": "Erweiterter Modus",
+      "advancedModeDescription": "Genaue Zeiten für jede Dosis festlegen",
+      "advancedModeHint": "Füge eine Uhrzeit für jede tägliche Dosis hinzu:",
+      "addTime": "Zeit hinzufügen",
+      "stockTitle": "Bestandsverwaltung (optional)"
     },
     "edit": {
       "title": "Medikament bearbeiten"
@@ -556,7 +575,8 @@
       "allStatuses": "Alle Status",
       "allCategories": "Alle Kategorien",
       "empty": "Keine Ziele",
-      "noResults": "Keine Ergebnisse"
+      "noResults": "Keine Ergebnisse",
+      "emptyDescription": "Erstelle zunächst dein erstes Übergangsziel."
     },
     "title": "Meine Ziele",
     "subtitle": "Verfolge deine Transitionsziele",
@@ -568,7 +588,14 @@
     "inProgress": "in Arbeit",
     "newObjective": {
       "title": "Neues Ziel",
-      "subtitle": "Definiere ein Ziel für deine Transition"
+      "subtitle": "Definiere ein Ziel für deine Transition",
+      "tabTemplates": "Vorlagen",
+      "tabCustom": "Angepasst",
+      "templateHint": "Wähle eine vorkonfigurierte Vorlage, um schnell zu starten",
+      "feminizingPath": "Feminisierender Weg",
+      "masculinizingPath": "Maskulinisierender Weg",
+      "commonPath": "Gemeinsamer Weg",
+      "stepsCount": "{count} vordefinierte Schritte"
     },
     "changeTypes": {
       "started": "Begonnen",
@@ -632,6 +659,182 @@
       "targetDate": "Zieldatum",
       "objectiveAchieved": "Ziel erreicht!",
       "doneOn": "Erledigt am"
+    },
+    "templates": {
+      "ths-feminisant": {
+        "title": "Feminisierende HRT",
+        "description": "Hormontherapie zur Feminisierung",
+        "duration": "5 Jahre",
+        "milestones": [
+          "Erstberatung",
+          "HRT beginnen",
+          "3-Monats-Kontrolle",
+          "6-Monats-Kontrolle",
+          "Jährliche Kontrolle"
+        ]
+      },
+      "epilation-visage": {
+        "title": "Gesichts-Laserhaarentfernung",
+        "description": "Laser-Haarentfernung im Gesicht",
+        "duration": "18-24 Monate",
+        "milestones": [
+          "Dermatologen-Beratung",
+          "Erste Sitzungen",
+          "Zwischenkontrolle",
+          "Abschlusssitzungen",
+          "Pflege"
+        ]
+      },
+      "epilation-corps": {
+        "title": "Körper-Laserhaarentfernung",
+        "description": "Laser-Haarentfernung am Körper",
+        "duration": "12-18 Monate",
+        "milestones": [
+          "Beratung",
+          "Bereich 1: Beine",
+          "Bereich 2: Arme/Achseln",
+          "Bereich 3: Bikini",
+          "Pflege"
+        ]
+      },
+      "chirurgie-mammoplastie": {
+        "title": "Brustvergrößerung",
+        "description": "Brustvergrößerungs-Operationsweg",
+        "milestones": [
+          "Chirurgen-Beratung",
+          "Präoperative Untersuchungen",
+          "Operation",
+          "Erholung",
+          "Postoperative Nachsorge",
+          "Endergebnis"
+        ]
+      },
+      "chirurgie-vaginoplastie": {
+        "title": "Vaginoplastie",
+        "description": "Feminisierende Genitaloperation",
+        "milestones": [
+          "Erstberatung",
+          "Psychologische Beurteilung",
+          "Medizinischer Weg",
+          "Operation",
+          "Erholung",
+          "Langzeitnachsorge"
+        ]
+      },
+      "chirurgie-ffs": {
+        "title": "Gesichtsfeminisierung (FFS)",
+        "description": "Gesichtsfeminisierungsoperation",
+        "milestones": [
+          "Chirurgen-Beratung",
+          "3D-Simulation",
+          "Untersuchungen",
+          "Operation",
+          "Erholung",
+          "Endergebnis"
+        ]
+      },
+      "ths-masculinisant": {
+        "title": "Maskulinisierende HRT",
+        "description": "Hormontherapie zur Maskulinisierung",
+        "duration": "5 Jahre",
+        "milestones": [
+          "Erstberatung",
+          "Testosteron beginnen",
+          "3-Monats-Kontrolle",
+          "6-Monats-Kontrolle",
+          "Jährliche Kontrolle"
+        ]
+      },
+      "chirurgie-torsoplastie": {
+        "title": "Mastektomie / Brustchirurgie",
+        "description": "Brustmaskulinisierungsoperation",
+        "milestones": [
+          "Beratung",
+          "Präoperative Untersuchungen",
+          "Operation",
+          "Erholung",
+          "Nachsorge"
+        ]
+      },
+      "chirurgie-hysterectomie": {
+        "title": "Hysterektomie",
+        "description": "Gebärmutterentfernung",
+        "milestones": ["Beratung", "Untersuchungen", "Operation", "Erholung", "Nachsorge"]
+      },
+      "chirurgie-phalloplastie": {
+        "title": "Phalloplastie",
+        "description": "Maskulinisierende Genitaloperation",
+        "milestones": [
+          "Beratung",
+          "Psychologische Beurteilung",
+          "Medizinischer Weg",
+          "Operation",
+          "Erholung",
+          "Langzeitnachsorge"
+        ]
+      },
+      "chirurgie-metoidioplastie": {
+        "title": "Metoidioplastie",
+        "description": "Alternative maskulinisierende Genitaloperation",
+        "milestones": ["Beratung", "Bewertung", "Operation", "Erholung", "Nachsorge"]
+      },
+      "changement-etat-civil": {
+        "title": "Personenstandsänderung",
+        "description": "Verfahren zur Personenstandsänderung",
+        "duration": "3 bis 6 Monate",
+        "milestones": [
+          "Dokumente sammeln",
+          "Antrag einreichen",
+          "Anhörung",
+          "Urteil",
+          "Dokumente aktualisieren"
+        ]
+      },
+      "changement-prenom": {
+        "title": "Vornamensänderung",
+        "description": "Verfahren zur Vornamensänderung",
+        "duration": "2 bis 4 Monate",
+        "milestones": [
+          "Name wählen",
+          "Unterlagen vorbereiten",
+          "Beim Standesamt einreichen",
+          "Nachverfolgen",
+          "Geburtsurkunde aktualisieren"
+        ]
+      },
+      "parcours-psy": {
+        "title": "Psychologische Begleitung",
+        "description": "Psychologische Unterstützung während des Übergangs",
+        "duration": "Laufend",
+        "milestones": [
+          "Erster Termin",
+          "Regelmäßige Sitzungen",
+          "Unterstützungsbrief",
+          "Jährliche Überprüfung"
+        ]
+      },
+      "coming-out-proche": {
+        "title": "Coming-out gegenüber Nahestehenden",
+        "description": "Deine Identität mit Familie und Freunden teilen",
+        "duration": "Variiert",
+        "milestones": [
+          "Vorbereitende Überlegung",
+          "Erstes Coming-out",
+          "Schwierige Gespräche",
+          "Unterstützung aufgebaut"
+        ]
+      },
+      "coming-out-travail": {
+        "title": "Berufliches Coming-out",
+        "description": "Deine Identität im Arbeitsumfeld managen",
+        "duration": "Variiert",
+        "milestones": [
+          "Vorbereitung",
+          "HR-Gespräch",
+          "Teamkommunikation",
+          "Administrative Anpassungen"
+        ]
+      }
     },
     "celebration": {
       "continue": "Weiter"
@@ -781,6 +984,64 @@
       "support": "Unterstützung",
       "information": "Information"
     },
+    "items": {
+      "partagenre": {
+        "name": "Partagenre",
+        "description": "Historisches französischsprachiges Trans-Community-Forum. Diskussionen, Erfahrungsberichte, Ratschläge und gegenseitige Unterstützung. (Französischsprachige Ressource)"
+      },
+      "wiki-trans": {
+        "name": "Wiki Trans",
+        "description": "Kollaboratives Wiki mit umfassenden Informationen zu Trans-Wegen in Frankreich: medizinisch, administrativ, sozial. (Französischsprachige Ressource)"
+      },
+      "carte-associations": {
+        "name": "Karte der Trans-Verbände",
+        "description": "Kollaborative Karte der Trans-Verbände in Frankreich. Finde Selbsthilfegruppen und Verbände in deiner Nähe. (Französischsprachige Ressource)"
+      },
+      "fransgenre": {
+        "name": "Fransgenre",
+        "description": "Nationaler Trans- und Intersex-Verband. Ressourcen, Begleitung und Advocacy für die Rechte trans Personen. (Französischsprachige Ressource)"
+      },
+      "sofect-alternatives": {
+        "name": "Freie Wege (außerhalb SOFeRT)",
+        "description": "Informationen zu medizinischen Transitionswegen außerhalb offizieller Krankenhausteams in Frankreich. (Französischsprachige Ressource)"
+      },
+      "ths-feminisant": {
+        "name": "Leitfaden feminisierende HRT",
+        "description": "Detaillierte Informationen zur feminisierenden Hormontherapie: Wirkstoffe, Dosierungen, Wirkungen, Kontrolle. (Französischsprachige Ressource)"
+      },
+      "ths-masculinisant": {
+        "name": "Leitfaden maskulinisierende HRT",
+        "description": "Detaillierte Informationen zur maskulinisierenden Hormontherapie: Testosteron, Wirkungen, medizinische Kontrolle. (Französischsprachige Ressource)"
+      },
+      "administrans": {
+        "name": "Administrans",
+        "description": "Umfassender Leitfaden zu administrativen Verfahren in Frankreich: Personenstandsänderung, Name, Geschlechtseintrag. (Französischsprachige Ressource)"
+      },
+      "cec-guide": {
+        "name": "Personenstandsänderung (CEC)",
+        "description": "Detailliertes Verfahren zur Änderung des Geschlechtseintrags im Personenstandsregister in Frankreich. (Französischsprachige Ressource)"
+      },
+      "droits-travail": {
+        "name": "Rechte am Arbeitsplatz",
+        "description": "Ressourcen zu den Rechten trans Personen bei der Arbeit: Diskriminierung, Transition im Unternehmen, Leitfäden für HR. (Französischsprachige Ressource)"
+      },
+      "ligne-ecoute": {
+        "name": "Ressourcen für Angehörige",
+        "description": "Leitfäden und Ressourcen für Angehörige von trans Personen. Unterstützung, Ratschläge und praktische Informationen. (Französischsprachige Ressource)"
+      },
+      "trans-posez": {
+        "name": "Trans-Posez",
+        "description": "Selbsthilfeverband für trans Personen. Gesprächsgruppen, Aktivitäten, gegenseitige Unterstützung. (Französischsprachige Ressource)"
+      },
+      "transfemscience": {
+        "name": "Transfeminine Science",
+        "description": "Englischsprachige wissenschaftliche Ressource zur feminisierenden HRT. Detaillierte Artikel, Forschung, Daten."
+      },
+      "folx-health": {
+        "name": "FOLX Health (US)",
+        "description": "Bildungsressourcen zur trans Gesundheit. Obwohl in den USA ansässig, enthält nützliche medizinische Informationen."
+      }
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Häufige Fragen",
@@ -849,28 +1110,42 @@
     }
   },
   "theme": {
-    "displayMode": "Anzeigemodus",
-    "colorPalette": "Farbpalette",
-    "accessibility": "Barrierefreiheit",
-    "reduceAnimations": "Animationen reduzieren",
-    "reduceAnimationsDesc": "Deaktiviert Animationen für eine ruhigere Navigation",
+    "modeTitle": "Anzeigemodus",
+    "paletteTitle": "Farbpalette",
+    "a11yTitle": "Barrierefreiheit",
+    "reducedMotion": "Animationen reduzieren",
+    "reducedMotionDescription": "Deaktiviert Animationen für ein ruhigeres Erlebnis",
     "modes": {
-      "dark": "Dunkel",
-      "darkDesc": "Dunkles Theme (Standard)",
-      "light": "Hell",
-      "lightDesc": "Helles Theme",
-      "system": "System",
-      "systemDesc": "Folgt den Systemeinstellungen"
+      "dark": {
+        "label": "Dunkel",
+        "description": "Standardmäßig dunkles Design"
+      },
+      "light": {
+        "label": "Hell",
+        "description": "Helles Design"
+      },
+      "system": {
+        "label": "System",
+        "description": "Folgt den Systemeinstellungen"
+      }
     },
-    "colors": {
-      "trans": "Trans",
-      "transDesc": "Farben der trans Flagge",
-      "blue": "Ozean",
-      "blueDesc": "Beruhigende Blautöne",
-      "pink": "Rosa",
-      "pinkDesc": "Warme Rosatöne",
-      "violet": "Violett",
-      "violetDesc": "Mystische Violetttöne"
+    "schemes": {
+      "trans": {
+        "label": "Trans",
+        "description": "Farben der Transflagge"
+      },
+      "blue": {
+        "label": "Ozean",
+        "description": "Beruhigende Blautöne"
+      },
+      "pink": {
+        "label": "Rosa",
+        "description": "Warme Rosatöne"
+      },
+      "violet": {
+        "label": "Violett",
+        "description": "Mystische Violetttöne"
+      }
     }
   },
   "sync": {

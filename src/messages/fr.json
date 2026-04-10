@@ -15,7 +15,8 @@
     "version": "Version",
     "back": "Retour",
     "confirm": "Confirmer",
-    "close": "Fermer"
+    "close": "Fermer",
+    "saving": "Enregistrement..."
   },
   "nav": {
     "home": "Accueil",
@@ -198,10 +199,28 @@
       "endDate": "Date de fin (optionnel)",
       "stockUnit": "Unité de stock",
       "lowStockAlert": "Alerte si sous",
-      "selectPlaceholder": "Sélectionner..."
+      "selectPlaceholder": "Sélectionner...",
+      "type": "Type",
+      "dosage": "Dosage",
+      "unit": "Unité",
+      "method": "Mode d'administration",
+      "pillRoute": "Voie d'administration (optionnel)",
+      "injectionRoute": "Type d'injection (optionnel)",
+      "frequency": "Fréquence",
+      "stock": "Stock actuel"
     },
     "new": {
-      "title": "Nouveau médicament"
+      "title": "Nouveau médicament",
+      "commonTitle": "Médicaments courants",
+      "commonPlaceholder": "Sélectionner un médicament...",
+      "generalInfo": "Informations générales",
+      "namePlaceholder": "Ex: Œstradiol",
+      "schedulingTitle": "Horaires de prise",
+      "advancedMode": "Mode avancé",
+      "advancedModeDescription": "Définir des horaires précis pour chaque dose",
+      "advancedModeHint": "Ajoutez les horaires pour chaque prise quotidienne :",
+      "addTime": "Ajouter un horaire",
+      "stockTitle": "Gestion du stock (optionnel)"
     },
     "edit": {
       "title": "Modifier le médicament"
@@ -556,7 +575,8 @@
       "allStatuses": "Tous les statuts",
       "allCategories": "Toutes les catégories",
       "empty": "Aucun objectif",
-      "noResults": "Aucun résultat"
+      "noResults": "Aucun résultat",
+      "emptyDescription": "Commence par créer ton premier objectif de transition."
     },
     "title": "Mes Objectifs",
     "subtitle": "Suivi de tes objectifs de transition",
@@ -568,7 +588,14 @@
     "inProgress": "en cours",
     "newObjective": {
       "title": "Nouvel objectif",
-      "subtitle": "Définis un objectif pour ta transition"
+      "subtitle": "Définis un objectif pour ta transition",
+      "tabTemplates": "Modèles",
+      "tabCustom": "Personnalisé",
+      "templateHint": "Choisis un modèle pré-configuré pour démarrer rapidement",
+      "feminizingPath": "Parcours féminisant",
+      "masculinizingPath": "Parcours masculinisant",
+      "commonPath": "Parcours commun",
+      "stepsCount": "{count} étapes prédéfinies"
     },
     "changeTypes": {
       "started": "Démarré",
@@ -632,6 +659,176 @@
       "targetDate": "Date cible",
       "objectiveAchieved": "Objectif atteint !",
       "doneOn": "Fait le"
+    },
+    "templates": {
+      "ths-feminisant": {
+        "title": "THS féminisant",
+        "description": "Parcours féminin hormonal",
+        "duration": "5 ans",
+        "milestones": [
+          "Consultation initiale",
+          "Début du THS",
+          "Suivi à 3 mois",
+          "Suivi à 6 mois",
+          "Suivi annuel"
+        ]
+      },
+      "epilation-visage": {
+        "title": "Épilation laser visage",
+        "description": "Épilation laser du visage",
+        "duration": "18-24 mois",
+        "milestones": [
+          "Consultation dermatologue",
+          "Séances initiales",
+          "Suivi intermédiaire",
+          "Finitions",
+          "Maintenance"
+        ]
+      },
+      "epilation-corps": {
+        "title": "Épilation laser corps",
+        "description": "Épilation laser du corps",
+        "duration": "12-18 mois",
+        "milestones": [
+          "Consultation",
+          "Zone 1 : jambes",
+          "Zone 2 : bras/aisselles",
+          "Zone 3 : maillot",
+          "Maintenance"
+        ]
+      },
+      "chirurgie-mammoplastie": {
+        "title": "Augmentation mammaire",
+        "description": "Parcours chirurgical mammoplastie d'augmentation",
+        "milestones": [
+          "Consultation chirurgien",
+          "Examens pré-opératoires",
+          "Opération",
+          "Récupération",
+          "Suivi post-op",
+          "Résultat final"
+        ]
+      },
+      "chirurgie-vaginoplastie": {
+        "title": "Vaginoplastie",
+        "description": "Chirurgie génitale féminisante",
+        "milestones": [
+          "Consultation initiale",
+          "Évaluation psy",
+          "Parcours médical",
+          "Opération",
+          "Récupération",
+          "Suivi long terme"
+        ]
+      },
+      "chirurgie-ffs": {
+        "title": "Féminisation faciale (FFS)",
+        "description": "Chirurgie de féminisation du visage",
+        "milestones": [
+          "Consultation chirurgien",
+          "Simulation 3D",
+          "Examens",
+          "Opération",
+          "Récupération",
+          "Résultat final"
+        ]
+      },
+      "ths-masculinisant": {
+        "title": "THS masculinisant",
+        "description": "Parcours masculin hormonal",
+        "duration": "5 ans",
+        "milestones": [
+          "Consultation initiale",
+          "Début testostérone",
+          "Suivi à 3 mois",
+          "Suivi à 6 mois",
+          "Suivi annuel"
+        ]
+      },
+      "chirurgie-torsoplastie": {
+        "title": "Torsoplastie",
+        "description": "Chirurgie de féminisation de la poitrine masculine",
+        "milestones": ["Consultation", "Examens pré-op", "Opération", "Récupération", "Suivi"]
+      },
+      "chirurgie-hysterectomie": {
+        "title": "Hystérectomie",
+        "description": "Ablation de l'utérus",
+        "milestones": ["Consultation", "Examens", "Opération", "Récupération", "Suivi"]
+      },
+      "chirurgie-phalloplastie": {
+        "title": "Phalloplastie",
+        "description": "Chirurgie génitale masculinisante",
+        "milestones": [
+          "Consultation",
+          "Évaluation psy",
+          "Parcours médical",
+          "Opération",
+          "Récupération",
+          "Suivi long terme"
+        ]
+      },
+      "chirurgie-metoidioplastie": {
+        "title": "Métoïdioplastie",
+        "description": "Chirurgie génitale masculinisante alternative",
+        "milestones": ["Consultation", "Évaluation", "Opération", "Récupération", "Suivi"]
+      },
+      "changement-etat-civil": {
+        "title": "Changement d'état civil",
+        "description": "Procédure de changement d'état civil",
+        "duration": "3 à 6 mois",
+        "milestones": [
+          "Rassembler les documents",
+          "Dépôt de dossier",
+          "Audience",
+          "Jugement",
+          "Mise à jour documents"
+        ]
+      },
+      "changement-prenom": {
+        "title": "Changement de prénom",
+        "description": "Procédure de changement de prénom",
+        "duration": "2 à 4 mois",
+        "milestones": [
+          "Prénom choisi",
+          "Constitution du dossier",
+          "Dépôt en mairie",
+          "Suivi",
+          "Acte de naissance"
+        ]
+      },
+      "parcours-psy": {
+        "title": "Suivi psychologique",
+        "description": "Accompagnement psychologique pour la transition",
+        "duration": "En cours",
+        "milestones": [
+          "Premier rendez-vous",
+          "Suivi régulier",
+          "Lettre d'attestation",
+          "Bilan annuel"
+        ]
+      },
+      "coming-out-proche": {
+        "title": "Coming out proches",
+        "description": "Partager son identité avec sa famille et ses amis",
+        "duration": "Variable",
+        "milestones": [
+          "Réflexion préparatoire",
+          "Premier coming out",
+          "Conversations difficiles",
+          "Soutien établi"
+        ]
+      },
+      "coming-out-travail": {
+        "title": "Coming out professionnel",
+        "description": "Gestion de son identité en milieu de travail",
+        "duration": "Variable",
+        "milestones": [
+          "Préparation",
+          "Discussion RH",
+          "Communication équipe",
+          "Adaptation administrative"
+        ]
+      }
     },
     "celebration": {
       "continue": "Continuer"
@@ -781,6 +978,64 @@
       "support": "Soutien",
       "information": "Information"
     },
+    "items": {
+      "partagenre": {
+        "name": "Partagenre",
+        "description": "Forum francophone historique de la communauté trans. Discussions, témoignages, conseils et soutien entre pairs."
+      },
+      "wiki-trans": {
+        "name": "Wiki Trans",
+        "description": "Wiki collaboratif avec des informations complètes sur les parcours trans en France : médical, administratif, social."
+      },
+      "carte-associations": {
+        "name": "Carte des associations trans",
+        "description": "Carte collaborative des associations trans en France. Trouvez des groupes de soutien et associations près de chez vous."
+      },
+      "fransgenre": {
+        "name": "Fransgenre",
+        "description": "Association nationale trans et intersexe. Ressources, accompagnement et plaidoyer pour les droits des personnes trans."
+      },
+      "sofect-alternatives": {
+        "name": "Parcours libres (hors SOFeRT)",
+        "description": "Informations sur les parcours de transition médicale en dehors des équipes hospitalières officielles."
+      },
+      "ths-feminisant": {
+        "name": "Guide THS féminisant",
+        "description": "Informations détaillées sur le traitement hormonal féminisant : molécules, dosages, effets, suivi."
+      },
+      "ths-masculinisant": {
+        "name": "Guide THS masculinisant",
+        "description": "Informations détaillées sur le traitement hormonal masculinisant : testostérone, effets, suivi médical."
+      },
+      "administrans": {
+        "name": "Administrans",
+        "description": "Guide complet des démarches administratives : changement d'état civil, prénom, mention de sexe."
+      },
+      "cec-guide": {
+        "name": "Changement d'état civil (CEC)",
+        "description": "Procédure détaillée pour le changement de la mention de sexe à l'état civil en France."
+      },
+      "droits-travail": {
+        "name": "Droits au travail",
+        "description": "Ressources sur les droits des personnes trans au travail : discrimination, transition en entreprise, guides pour RH."
+      },
+      "ligne-ecoute": {
+        "name": "Ressources pour les proches",
+        "description": "Guides et ressources pour les proches de personnes trans. Soutien, conseils et informations pratiques."
+      },
+      "trans-posez": {
+        "name": "Trans-Posez",
+        "description": "Association d'entraide entre personnes trans. Groupes de parole, activités, soutien par les pairs."
+      },
+      "transfemscience": {
+        "name": "Transfeminine Science",
+        "description": "Ressource scientifique anglophone sur les THS féminisants. Articles détaillés, recherches, données."
+      },
+      "folx-health": {
+        "name": "FOLX Health (US)",
+        "description": "Ressources éducatives sur la santé trans. Bien que basé aux US, contient des informations médicales utiles."
+      }
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Questions fréquentes",
@@ -849,28 +1104,42 @@
     }
   },
   "theme": {
-    "displayMode": "Mode d'affichage",
-    "colorPalette": "Palette de couleurs",
-    "accessibility": "Accessibilité",
-    "reduceAnimations": "Réduire les animations",
-    "reduceAnimationsDesc": "Désactive les animations pour une navigation plus calme",
+    "modeTitle": "Mode d'affichage",
+    "paletteTitle": "Palette de couleurs",
+    "a11yTitle": "Accessibilité",
+    "reducedMotion": "Réduire les animations",
+    "reducedMotionDescription": "Désactive les animations pour une navigation plus calme",
     "modes": {
-      "dark": "Sombre",
-      "darkDesc": "Thème sombre par défaut",
-      "light": "Clair",
-      "lightDesc": "Thème clair",
-      "system": "Système",
-      "systemDesc": "Suit les préférences système"
+      "dark": {
+        "label": "Sombre",
+        "description": "Thème sombre par défaut"
+      },
+      "light": {
+        "label": "Clair",
+        "description": "Thème clair"
+      },
+      "system": {
+        "label": "Système",
+        "description": "Suit les préférences système"
+      }
     },
-    "colors": {
-      "trans": "Trans",
-      "transDesc": "Couleurs du drapeau trans",
-      "blue": "Océan",
-      "blueDesc": "Tons bleus apaisants",
-      "pink": "Rose",
-      "pinkDesc": "Tons roses chaleureux",
-      "violet": "Violet",
-      "violetDesc": "Tons violets mystiques"
+    "schemes": {
+      "trans": {
+        "label": "Trans",
+        "description": "Couleurs du drapeau trans"
+      },
+      "blue": {
+        "label": "Océan",
+        "description": "Tons bleus apaisants"
+      },
+      "pink": {
+        "label": "Rose",
+        "description": "Tons roses chaleureux"
+      },
+      "violet": {
+        "label": "Violet",
+        "description": "Tons violets mystiques"
+      }
     }
   },
   "sync": {

@@ -14,10 +14,11 @@ import {
   isToday,
   getDay,
 } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { cn } from '@/lib/utils'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType } from '@/lib/types'
@@ -109,6 +110,8 @@ function MonthMiniCalendar({
   appointmentsByDate: Map<string, Appointment[]>
   onDayClick?: (date: Date, appointments: Appointment[]) => void
 }) {
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const monthStart = startOfMonth(month)
   const monthEnd = endOfMonth(month)
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
@@ -120,7 +123,7 @@ function MonthMiniCalendar({
     <div className="bg-card border-border rounded-lg border p-2">
       {/* Nom du mois */}
       <h3 className="text-foreground mb-2 text-center text-sm font-medium capitalize">
-        {format(month, 'MMMM', { locale: fr })}
+        {format(month, 'MMMM', { locale: dateLocale })}
       </h3>
 
       {/* En-têtes jours de la semaine */}
