@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, StatCard } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -16,6 +17,8 @@ import { formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
 export default function Dashboard() {
+  const t = useTranslations('dashboard')
+  const tCommon = useTranslations('common')
   const [medications, setMedications] = useState<Medication[]>([])
   const [todayLogs, setTodayLogs] = useState<MedicationLog[]>([])
   const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -62,8 +65,8 @@ export default function Dashboard() {
               <Sparkles className="text-trans-pink h-5 w-5" />
             </div>
             <div>
-              <p className="text-foreground text-sm font-medium">Bienvenue dans ton espace</p>
-              <p className="text-muted-foreground text-xs">Suivi medical prive et bienveillant</p>
+              <p className="text-foreground text-sm font-medium">{t('welcome')}</p>
+              <p className="text-muted-foreground text-xs">{t('subtitle')}</p>
             </div>
           </CardContent>
         </Card>
@@ -78,7 +81,7 @@ export default function Dashboard() {
               <p className="text-foreground text-2xl font-bold">
                 {takenToday}/{totalDoses}
               </p>
-              <p className="text-muted-foreground text-xs">Prises aujourd&apos;hui</p>
+              <p className="text-muted-foreground text-xs">{t('todayDoses')}</p>
             </div>
           </div>
         </StatCard>
@@ -88,7 +91,7 @@ export default function Dashboard() {
             <DecoratedIcon icon={TestTube} variant="pink" size="md" />
             <div>
               <p className="text-foreground text-2xl font-bold">{medications.length}</p>
-              <p className="text-muted-foreground text-xs">Medicaments actifs</p>
+              <p className="text-muted-foreground text-xs">{t('activeMeds')}</p>
             </div>
           </div>
         </StatCard>
@@ -104,11 +107,11 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="pb-3">
             <SectionHeader
-              title="Medicaments du jour"
+              title={t('todayMeds')}
               action={
                 <Link href="/medications">
                   <Button variant="ghost" size="sm" className="text-primary -mr-2">
-                    Voir tout
+                    {t('viewAll')}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -118,18 +121,18 @@ export default function Dashboard() {
           <CardContent className="space-y-2">
             {loading ? (
               <div className="py-8 text-center">
-                <p className="text-muted-foreground text-sm">Chargement...</p>
+                <p className="text-muted-foreground text-sm">{tCommon('loading')}</p>
               </div>
             ) : medications.length === 0 ? (
               <div className="py-8 text-center">
                 <div className="bg-muted/30 mx-auto mb-3 w-fit rounded-2xl p-3">
                   <Pill className="text-muted-foreground h-6 w-6" />
                 </div>
-                <p className="text-muted-foreground mb-4 text-sm">Aucun medicament configure</p>
+                <p className="text-muted-foreground mb-4 text-sm">{t('noMeds')}</p>
                 <Link href="/medications/new">
                   <Button size="sm" variant="gradient" className="gap-2">
                     <Plus className="h-4 w-4" />
-                    Ajouter un medicament
+                    {t('addMed')}
                   </Button>
                 </Link>
               </div>
@@ -176,11 +179,11 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="pb-3">
             <SectionHeader
-              title="Prochains RDV"
+              title={t('upcomingAppts')}
               action={
                 <Link href="/appointments">
                   <Button variant="ghost" size="sm" className="text-primary -mr-2">
-                    Voir tout
+                    {t('viewAll')}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -190,11 +193,11 @@ export default function Dashboard() {
           <CardContent className="space-y-2">
             {appointments.length === 0 ? (
               <div className="py-6 text-center">
-                <p className="text-muted-foreground mb-3 text-sm">Aucun rendez-vous a venir</p>
+                <p className="text-muted-foreground mb-3 text-sm">{t('noAppts')}</p>
                 <Link href="/appointments/new">
                   <Button size="sm" variant="soft-outline" className="gap-2">
                     <Plus className="h-4 w-4" />
-                    Ajouter un RDV
+                    {t('addAppt')}
                   </Button>
                 </Link>
               </div>
@@ -225,13 +228,13 @@ export default function Dashboard() {
         <Link href="/medications/new">
           <Button variant="soft-outline" className="h-auto w-full flex-col gap-2 rounded-2xl py-5">
             <Pill className="text-trans-blue h-5 w-5" />
-            <span className="text-xs">Nouveau medicament</span>
+            <span className="text-xs">{t('newMed')}</span>
           </Button>
         </Link>
         <Link href="/bloodtests/new">
           <Button variant="soft-outline" className="h-auto w-full flex-col gap-2 rounded-2xl py-5">
             <TestTube className="text-trans-pink h-5 w-5" />
-            <span className="text-xs">Nouvelle analyse</span>
+            <span className="text-xs">{t('newTest')}</span>
           </Button>
         </Link>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { Shield, Lock, Heart } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { ChrysalideLogo } from '@/components/brand/logo'
 
 interface WelcomeStepProps {
@@ -8,6 +9,7 @@ interface WelcomeStepProps {
 }
 
 export function WelcomeStep({ onNext }: WelcomeStepProps) {
+  const t = useTranslations('onboarding')
   return (
     <div className="flex flex-col items-center space-y-8 py-8 text-center">
       {/* Logo */}
@@ -17,10 +19,8 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
 
       {/* Title */}
       <div className="space-y-2">
-        <h1 className="text-gradient-trans text-3xl font-bold">Bienvenue sur Chrysalide</h1>
-        <p className="text-muted-foreground">
-          Ton compagnon de transition, bienveillant et confidentiel
-        </p>
+        <h1 className="text-gradient-trans text-3xl font-bold">{t('welcome.title')}</h1>
+        <p className="text-muted-foreground">{t('welcome.subtitle')}</p>
       </div>
 
       {/* Privacy Features */}
@@ -33,10 +33,8 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
             <Lock className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-foreground font-medium">100% Local</p>
-            <p className="text-muted-foreground text-sm">
-              Toutes tes données restent sur ton appareil. Aucun serveur, aucun compte.
-            </p>
+            <p className="text-foreground font-medium">{t('welcome.localTitle')}</p>
+            <p className="text-muted-foreground text-sm">{t('welcome.localDesc')}</p>
           </div>
         </div>
 
@@ -48,10 +46,8 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
             <Shield className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-foreground font-medium">Confidentialité maximale</p>
-            <p className="text-muted-foreground text-sm">
-              Tes informations médicales ne quittent jamais ton téléphone.
-            </p>
+            <p className="text-foreground font-medium">{t('welcome.privacyTitle')}</p>
+            <p className="text-muted-foreground text-sm">{t('welcome.privacyDesc')}</p>
           </div>
         </div>
 
@@ -63,10 +59,8 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
             <Heart className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-foreground font-medium">Fait par et pour la communauté</p>
-            <p className="text-muted-foreground text-sm">
-              Conçu avec amour pour accompagner ta transition.
-            </p>
+            <p className="text-foreground font-medium">{t('welcome.communityTitle')}</p>
+            <p className="text-muted-foreground text-sm">{t('welcome.communityDesc')}</p>
           </div>
         </div>
       </div>
@@ -76,7 +70,7 @@ export function WelcomeStep({ onNext }: WelcomeStepProps) {
         onClick={onNext}
         className="gradient-trans-glow shadow-trans-glow hover:shadow-trans-glow-lg w-full rounded-xl py-4 text-lg font-semibold text-white transition-all active:scale-[0.98]"
       >
-        Commencer
+        {t('welcome.start')}
       </button>
     </div>
   )
