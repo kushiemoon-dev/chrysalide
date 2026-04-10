@@ -24,6 +24,7 @@ import {
   findOrCreatePractitioner,
   incrementPractitionerUsage,
 } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
@@ -32,6 +33,7 @@ import { PractitionerInput } from '@/components/appointments/practitioner-input'
 import { getModulePreferences } from '@/lib/notifications'
 
 export default function EditAppointmentPage() {
+  const t = useTranslations('appointments')
   const params = useParams()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -178,11 +180,11 @@ export default function EditAppointmentPage() {
                     AppointmentType,
                     { label: string; color: string },
                   ][]
-                ).map(([key, { label, color }]) => (
+                ).map(([key, { color }]) => (
                   <SelectItem key={key} value={key}>
                     <div className="flex items-center gap-2">
                       <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
-                      {label}
+                      {t('types.' + key)}
                     </div>
                   </SelectItem>
                 ))}
@@ -317,9 +319,9 @@ export default function EditAppointmentPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">Pas de rappel</SelectItem>
-                {REMINDER_TIMES.map(({ value, label }) => (
+                {REMINDER_TIMES.map(({ value }) => (
                   <SelectItem key={value} value={value.toString()}>
-                    {label}
+                    {t('reminderTimes.' + value)}
                   </SelectItem>
                 ))}
               </SelectContent>

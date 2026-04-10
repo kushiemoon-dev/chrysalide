@@ -19,11 +19,13 @@ import {
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { getAppointments } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment } from '@/lib/types'
 import { YearCalendar } from '@/components/appointments/year-calendar'
 
 export default function CalendarPage() {
+  const t = useTranslations('appointments')
   const router = useRouter()
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
@@ -166,7 +168,7 @@ export default function CalendarPage() {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <p className="text-foreground font-medium">{typeInfo?.label}</p>
+                            <p className="text-foreground font-medium">{t('types.' + apt.type)}</p>
                             {apt.time && (
                               <Badge variant="outline" className="text-xs">
                                 {apt.time}

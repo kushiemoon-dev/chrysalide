@@ -30,6 +30,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { getAppointments, getTotalAppointmentsCost, getPractitioners } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format, isToday, isTomorrow, differenceInDays } from 'date-fns'
@@ -80,6 +81,7 @@ function getRelativeDate(date: Date, time?: string): string {
 }
 
 export default function AppointmentsPage() {
+  const t = useTranslations('appointments')
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [practitioners, setPractitioners] = useState<Practitioner[]>([])
   const [loading, setLoading] = useState(true)
@@ -285,7 +287,7 @@ export default function AppointmentsPage() {
                     </div>
                     <div className="flex-1">
                       <p className="text-foreground font-medium">
-                        {APPOINTMENT_TYPES[nextAppointment.type]?.label || 'Rendez-vous'}
+                        {t('types.' + nextAppointment.type)}
                       </p>
                       <p className="text-primary text-lg font-bold">
                         {getRelativeDate(new Date(nextAppointment.date))}
@@ -366,6 +368,7 @@ function AppointmentCard({
   appointment: Appointment
   isPast?: boolean
 }) {
+  const t = useTranslations('appointments')
   const typeInfo = APPOINTMENT_TYPES[appointment.type]
 
   return (
@@ -391,7 +394,7 @@ function AppointmentCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <p className="text-foreground truncate font-medium">
-                  {typeInfo?.label || 'Rendez-vous'}
+                  {t('types.' + appointment.type)}
                 </p>
                 {appointment.reminderMinutes && (
                   <Badge variant="outline" className="text-xs">
