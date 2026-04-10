@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { SectionHeader } from '@/components/layout/header'
@@ -16,7 +17,7 @@ import {
   getTodayLogs,
   getYesterdayLogs,
 } from '@/lib/db'
-import { BLOOD_MARKERS, REFERENCE_RANGES } from '@/lib/constants'
+import { REFERENCE_RANGES } from '@/lib/constants'
 import type { BloodTest, UserProfile, Objective, Medication, MedicationLog } from '@/lib/types'
 
 interface RecapData {
@@ -49,6 +50,8 @@ function calculateStreak(
 }
 
 export function RecapCard() {
+  const tBlood = useTranslations('bloodtests')
+  const t = useTranslations('dashboard')
   const [data, setData] = useState<RecapData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -89,7 +92,7 @@ export function RecapCard() {
     return (
       <Card>
         <CardContent className="py-8 text-center">
-          <p className="text-muted-foreground text-sm">Chargement du récapitulatif...</p>
+          <p className="text-muted-foreground text-sm">{t('recap.loading')}</p>
         </CardContent>
       </Card>
     )
@@ -119,7 +122,7 @@ export function RecapCard() {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="from-trans-blue/5 to-trans-pink/5 bg-gradient-to-r pb-2">
-        <SectionHeader title="Récapitulatif" />
+        <SectionHeader title={t('recap.title')} />
       </CardHeader>
 
       <CardContent className="space-y-4 pt-4">
@@ -132,11 +135,11 @@ export function RecapCard() {
             <div className="flex-1">
               <p className="text-foreground text-sm font-medium">
                 {transitionMonths !== null && transitionMonths >= 1
-                  ? `${transitionMonths} mois de transition`
-                  : `${transitionDays} jours de transition`}
+                  ? `${transitionMonths} ${t('recap.transitionMonths')}`
+                  : `${transitionDays} ${t('recap.transitionDays')}`}
               </p>
               <p className="text-muted-foreground text-xs">
-                Depuis le {format(transitionStart, 'd MMMM yyyy', { locale: fr })}
+                {t('recap.since')} {format(transitionStart, 'd MMMM yyyy', { locale: fr })}
               </p>
             </div>
             <Heart className="text-trans-pink/60 h-5 w-5" />
@@ -150,10 +153,12 @@ export function RecapCard() {
               <Zap className="h-4 w-4 text-amber-500" />
             </div>
             <div className="flex-1">
-              <p className="text-foreground text-sm">Série de prises</p>
+              <p className="text-foreground text-sm">{t('recap.streak')}</p>
             </div>
             <Badge variant={streak > 0 ? 'default' : 'outline'}>
-              {streak > 0 ? `${streak}+ jour${streak > 1 ? 's' : ''}` : 'À commencer'}
+              {streak > 0
+                ? `${streak}+ ${streak > 1 ? t('recap.days') : t('recap.day')}`
+                : t('recap.toStart')}
             </Badge>
           </div>
         )}
@@ -163,7 +168,7 @@ export function RecapCard() {
           <div className="space-y-2">
             <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <Droplets className="h-4 w-4" />
-              <span>Derniers dosages</span>
+              <span>{t('recap.lastLevels')}</span>
               {latestBloodTest && (
                 <span className="text-xs">
                   (
@@ -177,7 +182,6 @@ export function RecapCard() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {keyMarkers.map((marker) => {
-                const markerInfo = BLOOD_MARKERS[marker.marker]
                 // Find reference range for feminizing
                 const range = REFERENCE_RANGES.find(
                   (r) => r.marker === marker.marker && r.context === 'feminizing'
@@ -195,7 +199,7 @@ export function RecapCard() {
                   >
                     <p className="text-foreground text-lg font-bold">{marker.value}</p>
                     <p className="text-muted-foreground text-[10px] tracking-wide uppercase">
-                      {markerInfo?.label || marker.marker}
+                      {tBlood('markers.' + marker.marker)}
                     </p>
                     <p className="text-muted-foreground text-[10px]">{marker.unit}</p>
                   </div>
@@ -212,9 +216,10 @@ export function RecapCard() {
               <Target className="h-4 w-4 text-purple-500" />
             </div>
             <div className="flex-1">
-              <p className="text-foreground text-sm">Objectifs</p>
+              <p className="text-foreground text-sm">{t('recap.objectives')}</p>
               <p className="text-muted-foreground text-xs">
-                {activeObjectives.length} en cours, {completedObjectives.length} complétés
+                {activeObjectives.length} {t('recap.inProgress')}, {completedObjectives.length}{' '}
+                {t('recap.completed')}
               </p>
             </div>
             {activeObjectives.length > 0 && (
@@ -229,7 +234,7 @@ export function RecapCard() {
         {medications.length > 0 && (
           <div className="text-muted-foreground flex items-center justify-center gap-2 pt-2 text-xs">
             <TrendingUp className="h-3 w-3" />
-            <span>Continue comme ça, tu gères ! 💪</span>
+            <span>{t('recap.encouragement')}</span>
           </div>
         )}
       </CardContent>

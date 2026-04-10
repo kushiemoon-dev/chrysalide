@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -22,10 +23,12 @@ import { ArrowLeft, Edit, Trash2, Lock, Calendar, Zap, Moon, Sparkles } from 'lu
 import Link from 'next/link'
 import { getJournalEntry, deleteJournalEntry } from '@/lib/db'
 import type { JournalEntry } from '@/lib/types'
-import { MoodDisplay, moodConfig } from '@/components/journal/mood-picker'
+import { MoodDisplay } from '@/components/journal/mood-picker'
 import { TagBadge } from '@/components/journal/tag-input'
 
 export default function JournalEntryPage({ params }: { params: Promise<{ id: string }> }) {
+  const t = useTranslations('journal')
+  const tCommon = useTranslations('common')
   const resolvedParams = use(params)
   const router = useRouter()
   const [entry, setEntry] = useState<JournalEntry | null>(null)
@@ -88,15 +91,13 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold">Entrée introuvable</h1>
+          <h1 className="text-2xl font-bold">{t('detail.notFound')}</h1>
         </div>
         <Card>
           <CardContent className="p-8 text-center">
-            <p className="text-muted-foreground">
-              Cette entrée n&apos;existe pas ou a été supprimée.
-            </p>
+            <p className="text-muted-foreground">{t('detail.notFoundDesc')}</p>
             <Link href="/journal">
-              <Button className="mt-4">Retour au journal</Button>
+              <Button className="mt-4">{t('detail.backToJournal')}</Button>
             </Link>
           </CardContent>
         </Card>
@@ -141,19 +142,17 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Supprimer cette entrée ?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Cette action est irréversible. L&apos;entrée sera définitivement supprimée.
-                </AlertDialogDescription>
+                <AlertDialogTitle>{t('detail.confirmDelete')}</AlertDialogTitle>
+                <AlertDialogDescription>{t('detail.confirmDeleteDesc')}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDelete}
                   disabled={deleting}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
-                  {deleting ? 'Suppression...' : 'Supprimer'}
+                  {deleting ? t('detail.deleting') : tCommon('delete')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -170,10 +169,8 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
                 <div className="flex items-center gap-3">
                   <MoodDisplay mood={entry.mood} size="lg" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Humeur</p>
-                    <p className="font-medium">
-                      {moodConfig.find((m) => m.level === entry.mood)?.label}
-                    </p>
+                    <p className="text-muted-foreground text-xs">{t('detail.mood')}</p>
+                    <p className="font-medium">{t(`moods.${entry.mood}`)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -188,10 +185,8 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
                     <Zap className="h-5 w-5 text-yellow-400" />
                   </div>
                   <div>
-                    <p className="text-muted-foreground text-xs">Énergie</p>
-                    <p className="font-medium">
-                      {moodConfig.find((m) => m.level === entry.energyLevel)?.label}
-                    </p>
+                    <p className="text-muted-foreground text-xs">{t('detail.energy')}</p>
+                    <p className="font-medium">{t(`moods.${entry.energyLevel}`)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -206,10 +201,8 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
                     <Moon className="h-5 w-5 text-blue-400" />
                   </div>
                   <div>
-                    <p className="text-muted-foreground text-xs">Sommeil</p>
-                    <p className="font-medium">
-                      {moodConfig.find((m) => m.level === entry.sleepQuality)?.label}
-                    </p>
+                    <p className="text-muted-foreground text-xs">{t('detail.sleep')}</p>
+                    <p className="font-medium">{t(`moods.${entry.sleepQuality}`)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -229,7 +222,7 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
       {entry.tags.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-muted-foreground text-sm">Tags</CardTitle>
+            <CardTitle className="text-muted-foreground text-sm">{t('detail.tags')}</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <div className="flex flex-wrap gap-2">
@@ -247,7 +240,8 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
           <div className="text-muted-foreground flex items-center gap-2 text-sm">
             <Calendar className="h-4 w-4" />
             <span>
-              Créé le {format(new Date(entry.createdAt), 'dd/MM/yyyy à HH:mm', { locale: fr })}
+              {t('detail.createdAt')}{' '}
+              {format(new Date(entry.createdAt), 'dd/MM/yyyy HH:mm', { locale: fr })}
             </span>
           </div>
           {entry.updatedAt &&
@@ -255,8 +249,8 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
               <div className="text-muted-foreground mt-1 flex items-center gap-2 text-sm">
                 <Edit className="h-4 w-4" />
                 <span>
-                  Modifié le{' '}
-                  {format(new Date(entry.updatedAt), 'dd/MM/yyyy à HH:mm', { locale: fr })}
+                  {t('detail.modifiedAt')}{' '}
+                  {format(new Date(entry.updatedAt), 'dd/MM/yyyy HH:mm', { locale: fr })}
                 </span>
               </div>
             )}

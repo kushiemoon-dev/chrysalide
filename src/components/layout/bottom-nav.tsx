@@ -19,22 +19,30 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getModulePreferences } from '@/lib/notifications'
+import { useTranslations } from 'next-intl'
+
+type NavItem = {
+  href: string
+  icon: typeof Home
+  labelKey: string
+  moduleKey?: 'evolution' | null
+}
 
 // Main nav items (always visible)
-const mainNavItems = [
-  { href: '/', icon: Home, label: 'Accueil' },
-  { href: '/medications', icon: Pill, label: 'Medocs' },
-  { href: '/bloodtests', icon: TestTube, label: 'Analyses' },
+const mainNavItems: NavItem[] = [
+  { href: '/', icon: Home, labelKey: 'home' },
+  { href: '/medications', icon: Pill, labelKey: 'medications' },
+  { href: '/bloodtests', icon: TestTube, labelKey: 'bloodtests' },
 ]
 
 // More menu items (shown in dropdown)
-const moreMenuItems = [
-  { href: '/progress', icon: TrendingUp, label: 'Évolution', moduleKey: 'evolution' as const },
-  { href: '/journal', icon: BookOpen, label: 'Journal', moduleKey: null },
-  { href: '/objectives', icon: Target, label: 'Objectifs', moduleKey: null },
-  { href: '/appointments', icon: Calendar, label: 'Rendez-vous', moduleKey: null },
-  { href: '/practitioners', icon: Users, label: 'Praticien·nes', moduleKey: null },
-  { href: '/resources', icon: ExternalLink, label: 'Ressources', moduleKey: null },
+const moreMenuItems: NavItem[] = [
+  { href: '/progress', icon: TrendingUp, labelKey: 'evolution', moduleKey: 'evolution' },
+  { href: '/journal', icon: BookOpen, labelKey: 'journal', moduleKey: null },
+  { href: '/objectives', icon: Target, labelKey: 'objectives', moduleKey: null },
+  { href: '/appointments', icon: Calendar, labelKey: 'appointments', moduleKey: null },
+  { href: '/practitioners', icon: Users, labelKey: 'practitioners', moduleKey: null },
+  { href: '/resources', icon: ExternalLink, labelKey: 'resources', moduleKey: null },
 ]
 
 function getFilteredMoreItems() {
@@ -48,6 +56,7 @@ function getFilteredMoreItems() {
 export function BottomNav() {
   const pathname = usePathname()
   const router = useRouter()
+  const t = useTranslations('nav')
   const [moreMenuOpen, setMoreMenuOpen] = useState(false)
   const [moreItems, setMoreItems] = useState(getFilteredMoreItems)
 
@@ -96,7 +105,7 @@ export function BottomNav() {
         <div className="animate-slide-up fixed right-4 bottom-[80px] left-4 z-50">
           <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-lg">
             <div className="border-border flex items-center justify-between border-b p-4">
-              <span className="text-foreground font-medium">Plus</span>
+              <span className="text-foreground font-medium">{t('more')}</span>
               <button
                 onClick={() => setMoreMenuOpen(false)}
                 className="hover:bg-muted rounded-lg p-1 transition-colors"
@@ -105,7 +114,7 @@ export function BottomNav() {
               </button>
             </div>
             <div className="grid grid-cols-3 gap-2 p-2">
-              {moreItems.map(({ href, icon: Icon, label }) => {
+              {moreItems.map(({ href, icon: Icon, labelKey }) => {
                 const isActive = pathname === href || pathname.startsWith(href + '/')
                 return (
                   <button
@@ -119,7 +128,7 @@ export function BottomNav() {
                     )}
                   >
                     <Icon className="h-6 w-6" />
-                    <span className="text-xs font-medium">{label}</span>
+                    <span className="text-xs font-medium">{t(labelKey)}</span>
                   </button>
                 )
               })}
@@ -139,7 +148,7 @@ export function BottomNav() {
         {/* Nav content */}
         <div className="relative mx-auto flex h-[72px] max-w-lg items-center justify-around px-2">
           {/* Main nav items */}
-          {mainNavItems.map(({ href, icon: Icon, label }) => {
+          {mainNavItems.map(({ href, icon: Icon, labelKey }) => {
             const isActive = pathname === href || (href !== '/' && pathname.startsWith(href))
 
             return (
@@ -177,7 +186,7 @@ export function BottomNav() {
                     isActive && 'text-primary'
                   )}
                 >
-                  {label}
+                  {t(labelKey)}
                 </span>
               </Link>
             )
@@ -217,7 +226,7 @@ export function BottomNav() {
                 (isMoreActive || moreMenuOpen) && 'text-primary'
               )}
             >
-              Plus
+              {t('more')}
             </span>
           </button>
 
@@ -255,7 +264,7 @@ export function BottomNav() {
                 pathname.startsWith('/settings') && 'text-primary'
               )}
             >
-              Réglages
+              {t('settings')}
             </span>
           </Link>
         </div>

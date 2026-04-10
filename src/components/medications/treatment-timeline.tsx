@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,6 +16,8 @@ interface TreatmentTimelineProps {
 }
 
 export function TreatmentTimeline({ changes, showTitle = true, maxItems }: TreatmentTimelineProps) {
+  const t = useTranslations('objectives')
+  const tMed = useTranslations('medications')
   const displayedChanges = maxItems ? changes.slice(0, maxItems) : changes
 
   // Grouper par date
@@ -46,10 +49,8 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
           </CardHeader>
         )}
         <CardContent className="py-8 text-center">
-          <p className="text-muted-foreground">Aucun changement enregistré pour le moment.</p>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Les modifications de tes médicaments apparaîtront ici.
-          </p>
+          <p className="text-muted-foreground">{tMed('timeline.empty')}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{tMed('timeline.emptyDesc')}</p>
         </CardContent>
       </Card>
     )
@@ -115,7 +116,9 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
                               <div className="flex items-center gap-2">
                                 <Badge variant="outline" className={`${config.bgColor} border-0`}>
                                   <Icon className={`mr-1 h-3 w-3 ${config.color}`} />
-                                  <span className={config.color}>{config.label}</span>
+                                  <span className={config.color}>
+                                    {t(`changeTypes.${change.changeType}`)}
+                                  </span>
                                 </Badge>
                                 <span className="text-sm font-medium">{change.medicationName}</span>
                               </div>
@@ -180,10 +183,16 @@ export function TreatmentTimelineCompact({
   changes: TreatmentChange[]
   maxItems?: number
 }) {
+  const t = useTranslations('objectives')
+  const tMed = useTranslations('medications')
   const displayedChanges = changes.slice(0, maxItems)
 
   if (changes.length === 0) {
-    return <p className="text-muted-foreground py-4 text-center text-sm">Aucun historique</p>
+    return (
+      <p className="text-muted-foreground py-4 text-center text-sm">
+        {tMed('timeline.emptyShort')}
+      </p>
+    )
   }
 
   return (
@@ -197,7 +206,9 @@ export function TreatmentTimelineCompact({
             <Icon className={`h-3.5 w-3.5 ${config.color}`} />
             <span className="truncate font-medium">{change.medicationName}</span>
             <span className="text-muted-foreground">-</span>
-            <span className={`${config.color} shrink-0`}>{config.label}</span>
+            <span className={`${config.color} shrink-0`}>
+              {t(`changeTypes.${change.changeType}`)}
+            </span>
             <span className="text-muted-foreground ml-auto shrink-0 text-xs">
               {format(new Date(change.date), 'd MMM', { locale: fr })}
             </span>

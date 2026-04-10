@@ -27,8 +27,9 @@ import {
   Coins,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { getAppointmentWithPractitioner, deleteAppointment } from '@/lib/db'
-import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
+import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -65,6 +66,7 @@ function AppointmentIcon({
 }
 
 export default function AppointmentDetailPage() {
+  const t = useTranslations('appointments')
   const params = useParams()
   const router = useRouter()
   const [appointment, setAppointment] = useState<Appointment | null>(null)
@@ -97,7 +99,7 @@ export default function AppointmentDetailPage() {
   }, [params.id, router])
 
   async function handleDelete() {
-    if (!appointment?.id || !confirm('Supprimer ce rendez-vous ?')) return
+    if (!appointment?.id || !confirm(t('detail.deleteConfirm'))) return
 
     setDeleting(true)
     try {
@@ -112,7 +114,7 @@ export default function AppointmentDetailPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('detail.loading')}</p>
       </div>
     )
   }
@@ -121,7 +123,6 @@ export default function AppointmentDetailPage() {
 
   const typeInfo = APPOINTMENT_TYPES[appointment.type]
   const isPastAppointment = isAppointmentPast(appointment)
-  const reminderLabel = REMINDER_TIMES.find((r) => r.value === appointment.reminderMinutes)?.label
 
   return (
     <div className="space-y-6 p-4 pb-24">
@@ -134,9 +135,7 @@ export default function AppointmentDetailPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-foreground text-xl font-bold">
-              {typeInfo?.label || 'Rendez-vous'}
-            </h1>
+            <h1 className="text-foreground text-xl font-bold">{t('types.' + appointment.type)}</h1>
             <p className="text-muted-foreground text-sm">
               {format(new Date(appointment.date), 'EEEE d MMMM yyyy', { locale: fr })}
             </p>
@@ -164,7 +163,7 @@ export default function AppointmentDetailPage() {
       {/* Status Badge */}
       {isPastAppointment && (
         <Badge variant="secondary" className="w-fit">
-          Rendez-vous passé
+          {t('detail.pastBadge')}
         </Badge>
       )}
 
@@ -181,7 +180,7 @@ export default function AppointmentDetailPage() {
             </div>
             <div>
               <p className="text-foreground text-lg font-medium">
-                {typeInfo?.label || 'Rendez-vous'}
+                {t('types.' + appointment.type)}
               </p>
               <p className="text-muted-foreground capitalize">{appointment.type}</p>
             </div>
@@ -194,7 +193,7 @@ export default function AppointmentDetailPage() {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <Calendar className="h-4 w-4" />
-            Date et heure
+            {t('detail.dateAndTime')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -223,14 +222,14 @@ export default function AppointmentDetailPage() {
         return (
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Informations</CardTitle>
+              <CardTitle className="text-base">{t('detail.information')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {displayName && (
                 <div className="flex items-center gap-3">
                   <User className="text-muted-foreground h-5 w-5" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Praticien·ne</p>
+                    <p className="text-muted-foreground text-xs">{t('detail.practitionerLabel')}</p>
                     <p className="font-medium">{displayName}</p>
                   </div>
                 </div>
@@ -239,7 +238,7 @@ export default function AppointmentDetailPage() {
                 <div className="flex items-center gap-3">
                   <MapPin className="text-muted-foreground h-5 w-5" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Lieu</p>
+                    <p className="text-muted-foreground text-xs">{t('detail.locationLabel')}</p>
                     <p className="font-medium">{displayLocation}</p>
                   </div>
                 </div>
@@ -255,13 +254,11 @@ export default function AppointmentDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Bell className="h-4 w-4" />
-              Rappel
+              {t('detail.reminderTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge variant="outline">
-              {reminderLabel || `${appointment.reminderMinutes} minutes avant`}
-            </Badge>
+            <Badge variant="outline">{t('reminderTimes.' + appointment.reminderMinutes)}</Badge>
           </CardContent>
         </Card>
       )}
@@ -272,7 +269,7 @@ export default function AppointmentDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Coins className="h-4 w-4" />
-              Reste à charge
+              {t('detail.costTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -293,7 +290,7 @@ export default function AppointmentDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <FileText className="h-4 w-4" />
-              Notes
+              {t('detail.notesTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>

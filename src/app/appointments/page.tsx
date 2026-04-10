@@ -30,6 +30,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { getAppointments, getTotalAppointmentsCost, getPractitioners } from '@/lib/db'
+import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format, isToday, isTomorrow, differenceInDays } from 'date-fns'
@@ -63,23 +64,28 @@ function AppointmentIcon({
   return <IconComponent className={className} style={style} />
 }
 
-function getRelativeDate(date: Date, time?: string): string {
+function getRelativeDate(
+  date: Date,
+  t: (key: string, values?: Record<string, string | number | Date>) => string
+): string {
   const dateOnly = new Date(date)
   dateOnly.setHours(0, 0, 0, 0)
   const todayOnly = new Date()
   todayOnly.setHours(0, 0, 0, 0)
 
-  if (isToday(dateOnly)) return "Aujourd'hui"
-  if (isTomorrow(dateOnly)) return 'Demain'
+  if (isToday(dateOnly)) return t('list.today')
+  if (isTomorrow(dateOnly)) return t('list.tomorrow')
 
   const days = differenceInDays(dateOnly, todayOnly)
-  if (days > 0 && days <= 7) return `Dans ${days} jour${days > 1 ? 's' : ''}`
-  if (days < 0) return 'Passé'
+  if (days > 0 && days <= 7)
+    return days > 1 ? t('list.inDays', { days }) : t('list.inDay', { days })
+  if (days < 0) return t('list.past')
 
   return format(date, 'd MMMM', { locale: fr })
 }
 
 export default function AppointmentsPage() {
+  const t = useTranslations('appointments')
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [practitioners, setPractitioners] = useState<Practitioner[]>([])
   const [loading, setLoading] = useState(true)
@@ -156,7 +162,7 @@ export default function AppointmentsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('list.loading')}</p>
       </div>
     )
   }
@@ -166,20 +172,22 @@ export default function AppointmentsPage() {
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Rendez-vous</h1>
-          <p className="text-muted-foreground text-sm">{upcomingAppointments.length} à venir</p>
+          <h1 className="text-foreground text-2xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground text-sm">
+            {t('list.countUpcoming', { count: upcomingAppointments.length })}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/appointments/calendar">
             <Button variant="outline" size="sm" className="gap-2">
               <CalendarDays className="h-4 w-4" />
-              Calendrier
+              {t('calendar')}
             </Button>
           </Link>
           <Link href="/appointments/new">
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Ajouter
+              {t('add')}
             </Button>
           </Link>
         </div>
@@ -193,9 +201,9 @@ export default function AppointmentsPage() {
               🦈
             </span>
             <div>
-              <p className="text-foreground font-medium">Blahaj dit :</p>
+              <p className="text-foreground font-medium">{t('list.blahajLabel')}</p>
               <p className="text-muted-foreground text-sm">
-                Tu as investi{' '}
+                {t('list.blahajBeforeAmount')}{' '}
                 <span className="text-foreground font-bold">
                   {totalCost.toLocaleString('fr-FR', {
                     minimumFractionDigits: 2,
@@ -203,7 +211,7 @@ export default function AppointmentsPage() {
                   })}{' '}
                   €
                 </span>{' '}
-                dans ton bien-être
+                {t('list.blahajAfterAmount')}
               </p>
             </div>
           </CardContent>
@@ -216,10 +224,10 @@ export default function AppointmentsPage() {
           <Select value={practitionerFilter} onValueChange={setPractitionerFilter}>
             <SelectTrigger className="flex-1">
               <Filter className="text-muted-foreground mr-2 h-4 w-4" />
-              <SelectValue placeholder="Filtrer par praticien·ne" />
+              <SelectValue placeholder={t('list.filterByPractitioner')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les praticien·nes</SelectItem>
+              <SelectItem value="all">{t('list.allPractitioners')}</SelectItem>
               {practitionersWithAppointments.map((p) => (
                 <SelectItem key={p.id} value={p.id!.toString()}>
                   {p.name}
@@ -232,7 +240,7 @@ export default function AppointmentsPage() {
               variant="ghost"
               size="icon"
               onClick={() => setPractitionerFilter('all')}
-              title="Effacer le filtre"
+              title={t('list.clearFilter')}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -246,14 +254,12 @@ export default function AppointmentsPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <Calendar className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucun rendez-vous</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez vos rendez-vous médicaux pour les suivre
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('list.empty')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDesc')}</p>
             <Link href="/appointments/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter un rendez-vous
+                {t('list.emptyCta')}
               </Button>
             </Link>
           </CardContent>
@@ -265,7 +271,7 @@ export default function AppointmentsPage() {
             <Card className="border-trans-pink/30 bg-trans-pink/5">
               <CardHeader className="pb-2">
                 <CardTitle className="text-muted-foreground text-sm">
-                  Prochain rendez-vous
+                  {t('list.nextTitle')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -285,10 +291,10 @@ export default function AppointmentsPage() {
                     </div>
                     <div className="flex-1">
                       <p className="text-foreground font-medium">
-                        {APPOINTMENT_TYPES[nextAppointment.type]?.label || 'Rendez-vous'}
+                        {t('types.' + nextAppointment.type)}
                       </p>
                       <p className="text-primary text-lg font-bold">
-                        {getRelativeDate(new Date(nextAppointment.date))}
+                        {getRelativeDate(new Date(nextAppointment.date), t)}
                       </p>
                       <div className="text-muted-foreground mt-2 flex flex-wrap gap-2 text-sm">
                         <span className="flex items-center gap-1">
@@ -319,8 +325,12 @@ export default function AppointmentsPage() {
           {/* Tabs */}
           <Tabs defaultValue="upcoming" className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="upcoming">À venir ({upcomingAppointments.length})</TabsTrigger>
-              <TabsTrigger value="past">Passés ({pastAppointments.length})</TabsTrigger>
+              <TabsTrigger value="upcoming">
+                {t('list.tabUpcoming', { count: upcomingAppointments.length })}
+              </TabsTrigger>
+              <TabsTrigger value="past">
+                {t('list.tabPast', { count: pastAppointments.length })}
+              </TabsTrigger>
             </TabsList>
 
             {/* Upcoming */}
@@ -328,7 +338,7 @@ export default function AppointmentsPage() {
               {upcomingAppointments.length === 0 ? (
                 <Card>
                   <CardContent className="py-8 text-center">
-                    <p className="text-muted-foreground">Aucun rendez-vous à venir</p>
+                    <p className="text-muted-foreground">{t('list.noneUpcoming')}</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -343,7 +353,7 @@ export default function AppointmentsPage() {
               {pastAppointments.length === 0 ? (
                 <Card>
                   <CardContent className="py-8 text-center">
-                    <p className="text-muted-foreground">Aucun rendez-vous passé</p>
+                    <p className="text-muted-foreground">{t('list.nonePast')}</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -366,6 +376,7 @@ function AppointmentCard({
   appointment: Appointment
   isPast?: boolean
 }) {
+  const t = useTranslations('appointments')
   const typeInfo = APPOINTMENT_TYPES[appointment.type]
 
   return (
@@ -391,11 +402,11 @@ function AppointmentCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <p className="text-foreground truncate font-medium">
-                  {typeInfo?.label || 'Rendez-vous'}
+                  {t('types.' + appointment.type)}
                 </p>
                 {appointment.reminderMinutes && (
                   <Badge variant="outline" className="text-xs">
-                    Rappel
+                    {t('list.reminderBadge')}
                   </Badge>
                 )}
               </div>

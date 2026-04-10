@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
@@ -28,6 +29,7 @@ import { cn } from '@/lib/utils'
 export default function EditObjectivePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
   const router = useRouter()
+  const t = useTranslations('objectives')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [objective, setObjective] = useState<Objective | null>(null)
@@ -149,7 +151,7 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Modifier l&apos;objectif</h1>
+          <h1 className="text-foreground text-2xl font-bold">{t('edit.title')}</h1>
           <p className="text-muted-foreground text-sm">Mets à jour les informations</p>
         </div>
       </div>

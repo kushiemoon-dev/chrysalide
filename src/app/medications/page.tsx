@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -46,13 +47,14 @@ import {
   shouldTakeMedicationOnDate,
 } from '@/lib/notifications'
 import type { Medication, MedicationLog, GelApplicationZone } from '@/lib/types'
-import { MEDICATION_TYPES, ADMINISTRATION_METHODS, GEL_APPLICATION_ZONES } from '@/lib/constants'
+import { MEDICATION_TYPES, GEL_APPLICATION_ZONES } from '@/lib/constants'
 import { TreatmentGanttChart } from '@/components/medications/treatment-gantt-chart'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { useConfetti } from '@/components/objectives/celebration-modal'
 
 export default function MedicationsPage() {
+  const t = useTranslations('medications')
   const [activeMedications, setActiveMedications] = useState<Medication[]>([])
   const [inactiveMedications, setInactiveMedications] = useState<Medication[]>([])
   const [todayLogs, setTodayLogs] = useState<MedicationLog[]>([])
@@ -498,7 +500,7 @@ export default function MedicationsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('list.loading')}</p>
       </div>
     )
   }
@@ -508,10 +510,12 @@ export default function MedicationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Médicaments</h1>
+          <h1 className="text-foreground text-2xl font-bold">{t('list.title')}</h1>
           <p className="text-muted-foreground text-sm">
-            {activeMedications.length} médicament{activeMedications.length > 1 ? 's' : ''} actif
-            {activeMedications.length > 1 ? 's' : ''}
+            {activeMedications.length}{' '}
+            {activeMedications.length > 1
+              ? `${t('list.medicationWordPlural')} ${t('list.activePlural')}`
+              : `${t('list.medicationWord')} ${t('list.active')}`}
           </p>
         </div>
         <div className="flex gap-2">
@@ -528,7 +532,7 @@ export default function MedicationsPage() {
           <Link href="/medications/new">
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Ajouter
+              {t('list.add')}
             </Button>
           </Link>
         </div>
@@ -541,7 +545,7 @@ export default function MedicationsPage() {
             <Button variant="outline" className="w-full justify-between">
               <span className="flex items-center gap-2">
                 <BarChart3 className="h-4 w-4" />
-                Vue chronologique
+                {t('list.ganttTitle')}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${ganttOpen ? 'rotate-180' : ''}`}
@@ -561,14 +565,12 @@ export default function MedicationsPage() {
             <div className="bg-muted/50 mx-auto mb-4 w-fit rounded-full p-4">
               <Pill className="text-muted-foreground h-8 w-8" />
             </div>
-            <h3 className="text-foreground mb-2 font-medium">Aucun médicament</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez vos médicaments THS pour commencer le suivi
-            </p>
+            <h3 className="text-foreground mb-2 font-medium">{t('list.noMedications')}</h3>
+            <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDesc')}</p>
             <Link href="/medications/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter un médicament
+                {t('list.emptyCta')}
               </Button>
             </Link>
           </CardContent>
@@ -601,14 +603,14 @@ export default function MedicationsPage() {
                                 color: typeInfo.color,
                               }}
                             >
-                              {typeInfo.label}
+                              {t(`types.${med.type}`)}
                             </Badge>
                           </div>
                           <p className="text-muted-foreground text-sm">
-                            {med.dosage} {med.unit} - {ADMINISTRATION_METHODS[med.method]}
+                            {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                           </p>
                           <p className="text-muted-foreground text-xs">
-                            {med.frequency} - depuis le{' '}
+                            {med.frequency} - {t('list.sincePrefix')}{' '}
                             {format(new Date(med.startDate), 'd MMM yyyy', { locale: fr })}
                           </p>
                         </div>
@@ -647,7 +649,7 @@ export default function MedicationsPage() {
                             return (
                               <div className="flex items-center gap-2">
                                 <span className="text-muted-foreground text-sm">
-                                  Prochaine prise:{' '}
+                                  {t('list.nextDose')}{' '}
                                   {nextDate ? format(nextDate, 'd MMM', { locale: fr }) : '-'}
                                 </span>
                                 <Button
@@ -656,7 +658,7 @@ export default function MedicationsPage() {
                                   onClick={() => openPastDoseModal(med)}
                                 >
                                   <Clock className="mr-1 h-4 w-4" />
-                                  Rattraper
+                                  {t('list.catchUp')}
                                 </Button>
                               </div>
                             )
@@ -701,7 +703,7 @@ export default function MedicationsPage() {
                                   onClick={() => openPastDoseModal(med)}
                                 >
                                   <Clock className="mr-1 h-4 w-4" />
-                                  Rattraper
+                                  {t('list.catchUp')}
                                 </Button>
                               </div>
                             )
@@ -729,7 +731,7 @@ export default function MedicationsPage() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openPastDoseModal(med)}
-                                title="Ajouter une prise passée"
+                                title={t('list.addPastDoseButton')}
                               >
                                 <Clock className="mr-1 h-3 w-3" />+
                               </Button>
@@ -807,7 +809,7 @@ export default function MedicationsPage() {
                               </Badge>
                             </div>
                             <p className="text-muted-foreground text-sm">
-                              {med.dosage} {med.unit} - {ADMINISTRATION_METHODS[med.method]}
+                              {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                             </p>
                           </div>
 
@@ -842,14 +844,14 @@ export default function MedicationsPage() {
               <span className="text-foreground font-medium">{gelMedName}</span>
             </p>
             <div className="grid gap-2">
-              {Object.entries(GEL_APPLICATION_ZONES).map(([key, label]) => (
+              {Object.keys(GEL_APPLICATION_ZONES).map((key) => (
                 <Button
                   key={key}
                   variant={selectedZone === key ? 'default' : 'outline'}
                   className="justify-start"
                   onClick={() => setSelectedZone(key as GelApplicationZone)}
                 >
-                  {label}
+                  {t(`gelZones.${key}`)}
                 </Button>
               ))}
             </div>
@@ -859,7 +861,7 @@ export default function MedicationsPage() {
                 id="gelNote"
                 value={gelNote}
                 onChange={(e) => setGelNote(e.target.value)}
-                placeholder="Remarques, effets..."
+                placeholder={t('list.notePlaceholder')}
                 rows={2}
               />
             </div>
@@ -879,7 +881,7 @@ export default function MedicationsPage() {
       <Dialog open={pastDoseModal} onOpenChange={setPastDoseModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Ajouter une prise</DialogTitle>
+            <DialogTitle>{t('list.addPastDoseTitle')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <p className="text-muted-foreground text-sm">
@@ -912,7 +914,7 @@ export default function MedicationsPage() {
                 id="pastDoseNote"
                 value={pastDoseNote}
                 onChange={(e) => setPastDoseNote(e.target.value)}
-                placeholder="Remarques, effets..."
+                placeholder={t('list.notePlaceholder')}
                 rows={2}
               />
             </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -33,6 +34,7 @@ interface ObjectiveWithMilestones extends Objective {
 }
 
 export default function ObjectivesPage() {
+  const t = useTranslations('objectives')
   const [objectives, setObjectives] = useState<ObjectiveWithMilestones[]>([])
   const [loading, setLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<FilterStatus>('all')
@@ -111,14 +113,14 @@ export default function ObjectivesPage() {
         <div>
           <h1 className="text-foreground flex items-center gap-2 text-2xl font-bold">
             <Target className="text-trans-pink h-6 w-6" />
-            Mes Objectifs
+            {t('title')}
           </h1>
-          <p className="text-muted-foreground text-sm">Suivi de tes objectifs de transition</p>
+          <p className="text-muted-foreground text-sm">{t('subtitle')}</p>
         </div>
         <Link href="/objectives/new">
           <Button size="sm" className="gap-1">
             <Plus className="h-4 w-4" />
-            Nouveau
+            {t('new')}
           </Button>
         </Link>
       </div>
@@ -130,13 +132,14 @@ export default function ObjectivesPage() {
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <h3 className="text-muted-foreground mb-1 text-sm font-medium">
-                  Progression globale
+                  {t('globalProgress')}
                 </h3>
                 <p className="text-foreground text-lg font-bold">
-                  {stats.milestonesCompleted}/{stats.milestonesTotal} étapes
+                  {stats.milestonesCompleted}/{stats.milestonesTotal} {t('steps')}
                 </p>
                 <p className="text-muted-foreground mt-1 text-xs">
-                  {stats.inProgress} objectif{stats.inProgress > 1 ? 's' : ''} en cours
+                  {stats.inProgress} {stats.inProgress > 1 ? t('objectives') : t('objective')}{' '}
+                  {t('inProgress')}
                 </p>
               </div>
               <BlahajProgress
@@ -198,7 +201,7 @@ export default function ObjectivesPage() {
                   <SelectValue placeholder="Statut" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tous les statuts</SelectItem>
+                  <SelectItem value="all">{t('list.allStatuses')}</SelectItem>
                   <SelectItem value="not_started">Pas commencé</SelectItem>
                   <SelectItem value="in_progress">En cours</SelectItem>
                   <SelectItem value="completed">Terminé</SelectItem>
@@ -219,7 +222,7 @@ export default function ObjectivesPage() {
                   <SelectValue placeholder="Catégorie" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Toutes les catégories</SelectItem>
+                  <SelectItem value="all">{t('list.allCategories')}</SelectItem>
                   {Object.entries(categoryConfig).map(([key, config]) => (
                     <SelectItem key={key} value={key}>
                       {config.label}
@@ -246,7 +249,7 @@ export default function ObjectivesPage() {
               {objectives.length === 0 ? (
                 <>
                   <Target className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                  <h3 className="text-foreground mb-2 font-semibold">Aucun objectif</h3>
+                  <h3 className="text-foreground mb-2 font-semibold">{t('list.empty')}</h3>
                   <p className="text-muted-foreground mb-4 text-sm">
                     Commence par créer ton premier objectif de transition
                   </p>
@@ -260,7 +263,7 @@ export default function ObjectivesPage() {
               ) : (
                 <>
                   <Filter className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                  <h3 className="text-foreground mb-2 font-semibold">Aucun résultat</h3>
+                  <h3 className="text-foreground mb-2 font-semibold">{t('list.noResults')}</h3>
                   <p className="text-muted-foreground text-sm">
                     Aucun objectif ne correspond à ces filtres
                   </p>

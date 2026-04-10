@@ -17,6 +17,7 @@ import {
 import { fr } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType } from '@/lib/types'
@@ -35,6 +36,7 @@ const WEEKDAYS = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
  * Affiche les RDV avec des indicateurs colorés par type
  */
 export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: YearCalendarProps) {
+  const t = useTranslations('appointments')
   const [year, setYear] = useState(new Date().getFullYear())
 
   // Calculer les mois de l'année
@@ -77,7 +79,7 @@ export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: Y
         {Object.entries(APPOINTMENT_TYPES).map(([type, info]) => (
           <div key={type} className="flex items-center gap-1">
             <div className="h-2 w-2 rounded-full" style={{ backgroundColor: info.color }} />
-            <span className="text-muted-foreground">{info.label}</span>
+            <span className="text-muted-foreground">{t('types.' + type)}</span>
           </div>
         ))}
       </div>
