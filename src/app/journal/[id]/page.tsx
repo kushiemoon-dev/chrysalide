@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -29,6 +30,8 @@ import { TagBadge } from '@/components/journal/tag-input'
 export default function JournalEntryPage({ params }: { params: Promise<{ id: string }> }) {
   const t = useTranslations('journal')
   const tCommon = useTranslations('common')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const resolvedParams = use(params)
   const router = useRouter()
   const [entry, setEntry] = useState<JournalEntry | null>(null)
@@ -118,12 +121,12 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-foreground text-xl font-bold">
-                {format(new Date(entry.date), 'EEEE d MMMM', { locale: fr })}
+                {format(new Date(entry.date), 'EEEE d MMMM', { locale: dateLocale })}
               </h1>
               {entry.isPrivate && <Lock className="text-muted-foreground h-4 w-4" />}
             </div>
             <p className="text-muted-foreground text-sm">
-              {format(new Date(entry.date), 'HH:mm', { locale: fr })}
+              {format(new Date(entry.date), 'HH:mm', { locale: dateLocale })}
             </p>
           </div>
         </div>
@@ -241,7 +244,7 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
             <Calendar className="h-4 w-4" />
             <span>
               {t('detail.createdAt')}{' '}
-              {format(new Date(entry.createdAt), 'dd/MM/yyyy HH:mm', { locale: fr })}
+              {format(new Date(entry.createdAt), 'dd/MM/yyyy HH:mm', { locale: dateLocale })}
             </span>
           </div>
           {entry.updatedAt &&
@@ -250,7 +253,7 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
                 <Edit className="h-4 w-4" />
                 <span>
                   {t('detail.modifiedAt')}{' '}
-                  {format(new Date(entry.updatedAt), 'dd/MM/yyyy HH:mm', { locale: fr })}
+                  {format(new Date(entry.updatedAt), 'dd/MM/yyyy HH:mm', { locale: dateLocale })}
                 </span>
               </div>
             )}

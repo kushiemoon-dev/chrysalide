@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -9,7 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TestTube, Plus, TrendingUp, List, ChevronRight, Trash2, Pencil } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { getBloodTests, deleteBloodTest, getUserProfile } from '@/lib/db'
 import type { BloodTest, BloodMarker } from '@/lib/types'
 import { BLOOD_MARKERS, REFERENCE_RANGES } from '@/lib/constants'
@@ -18,6 +19,8 @@ import { ExportButton } from '@/components/ui/export-button'
 
 export default function BloodTestsPage() {
   const t = useTranslations('bloodtests')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [tests, setTests] = useState<BloodTest[]>([])
   const [loading, setLoading] = useState(true)
   const [context, setContext] = useState<'feminizing' | 'masculinizing'>('feminizing')
@@ -271,7 +274,7 @@ export default function BloodTestsPage() {
                   <div className="flex-1">
                     <div className="mb-2 flex items-center gap-2">
                       <span className="text-foreground font-medium">
-                        {format(new Date(test.date), 'dd MMMM yyyy', { locale: fr })}
+                        {format(new Date(test.date), 'dd MMMM yyyy', { locale: dateLocale })}
                       </span>
                       {test.lab && (
                         <Badge variant="secondary" className="text-xs">

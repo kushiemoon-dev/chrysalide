@@ -14,12 +14,16 @@ import { RecapCard } from '@/components/dashboard/recap-card'
 import { getMedicationReminderTimes, shouldTakeMedicationToday } from '@/lib/notifications'
 import type { Medication, MedicationLog, Appointment } from '@/lib/types'
 import { formatDistanceToNow } from 'date-fns'
-import { fr } from 'date-fns/locale'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 
 export default function Dashboard() {
   const t = useTranslations('dashboard')
   const tCommon = useTranslations('common')
   const tMed = useTranslations('medications')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [medications, setMedications] = useState<Medication[]>([])
   const [todayLogs, setTodayLogs] = useState<MedicationLog[]>([])
   const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -212,7 +216,10 @@ export default function Dashboard() {
                         {appt.doctor || appt.type}
                       </p>
                       <p className="text-muted-foreground text-xs">
-                        {formatDistanceToNow(new Date(appt.date), { addSuffix: true, locale: fr })}
+                        {formatDistanceToNow(new Date(appt.date), {
+                          addSuffix: true,
+                          locale: dateLocale,
+                        })}
                       </p>
                     </div>
                     <ChevronRight className="text-muted-foreground h-4 w-4 shrink-0" />

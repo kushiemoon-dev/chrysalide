@@ -1,6 +1,8 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import {
   LineChart,
   Line,
@@ -13,7 +15,6 @@ import {
   Legend,
 } from 'recharts'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import type { BloodTest, BloodMarker } from '@/lib/types'
 import { BLOOD_MARKERS, REFERENCE_RANGES } from '@/lib/constants'
 
@@ -90,13 +91,15 @@ function CustomTooltip({ active, payload, label, context, translateMarker }: Cus
 
 export function HormoneChart({ tests, markers, context, height = 250 }: HormoneChartProps) {
   const t = useTranslations('bloodtests')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   // Transform data for Recharts
   const chartData = tests
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map((test) => {
       const dataPoint: Record<string, number | string> = {
-        date: format(new Date(test.date), 'dd MMM yy', { locale: fr }),
-        fullDate: format(new Date(test.date), 'dd MMMM yyyy', { locale: fr }),
+        date: format(new Date(test.date), 'dd MMM yy', { locale: dateLocale }),
+        fullDate: format(new Date(test.date), 'dd MMMM yyyy', { locale: dateLocale }),
       }
 
       for (const marker of markers) {

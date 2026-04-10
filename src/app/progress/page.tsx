@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -19,7 +21,6 @@ import Link from 'next/link'
 import { getPhysicalProgress, getUserProfile } from '@/lib/db'
 import type { PhysicalProgress, Measurements } from '@/lib/types'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { ExportButton } from '@/components/ui/export-button'
 import {
   LineChart,
@@ -45,6 +46,8 @@ const MEASUREMENT_UNITS: Record<keyof Measurements, string> = {
 export default function ProgressPage() {
   const t = useTranslations('progress')
   const tc = useTranslations('common')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
 
   const MEASUREMENT_LABELS: Record<keyof Measurements, string> = {
     weight: t('measurements.weight'),
@@ -74,8 +77,8 @@ export default function ProgressPage() {
 
   // Prepare chart data (reverse for chronological order)
   const chartData = [...entries].reverse().map((entry) => ({
-    date: format(new Date(entry.date), 'd MMM', { locale: fr }),
-    fullDate: format(new Date(entry.date), 'd MMMM yyyy', { locale: fr }),
+    date: format(new Date(entry.date), 'd MMM', { locale: dateLocale }),
+    fullDate: format(new Date(entry.date), 'd MMMM yyyy', { locale: dateLocale }),
     ...entry.measurements,
   }))
 
@@ -207,7 +210,7 @@ export default function ProgressPage() {
                         <div className="flex flex-1 items-center justify-between p-3">
                           <div className="space-y-1">
                             <p className="text-foreground font-medium">
-                              {format(new Date(entry.date), 'd MMMM yyyy', { locale: fr })}
+                              {format(new Date(entry.date), 'd MMMM yyyy', { locale: dateLocale })}
                             </p>
                             <div className="flex flex-wrap gap-1">
                               {entry.photos && entry.photos.length > 0 && (

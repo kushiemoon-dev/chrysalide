@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -31,7 +33,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { addObjective, addMilestone, getUserProfile } from '@/lib/db'
 import type { ObjectiveCategory, ObjectiveStatus, UserProfile } from '@/lib/types'
 import { categoryConfig } from '@/components/objectives/objective-card'
@@ -50,6 +51,8 @@ interface MilestoneInput {
 export default function NewObjectivePage() {
   const router = useRouter()
   const t = useTranslations('objectives')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const [saving, setSaving] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [activeTab, setActiveTab] = useState<'template' | 'custom'>('template')
@@ -302,7 +305,7 @@ export default function NewObjectivePage() {
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {targetDate
-                          ? format(targetDate, 'd MMMM yyyy', { locale: fr })
+                          ? format(targetDate, 'd MMMM yyyy', { locale: dateLocale })
                           : 'Sélectionner une date'}
                       </Button>
                     </PopoverTrigger>
@@ -311,7 +314,7 @@ export default function NewObjectivePage() {
                         mode="single"
                         selected={targetDate}
                         onSelect={setTargetDate}
-                        locale={fr}
+                        locale={dateLocale}
                         disabled={(date) => date < new Date()}
                       />
                     </PopoverContent>

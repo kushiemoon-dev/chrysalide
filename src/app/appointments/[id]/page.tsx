@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -32,7 +35,6 @@ import { getAppointmentWithPractitioner, deleteAppointment } from '@/lib/db'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { isAppointmentPast } from '@/lib/utils'
 import { getModulePreferences } from '@/lib/notifications'
 
@@ -67,6 +69,8 @@ function AppointmentIcon({
 
 export default function AppointmentDetailPage() {
   const t = useTranslations('appointments')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const params = useParams()
   const router = useRouter()
   const [appointment, setAppointment] = useState<Appointment | null>(null)
@@ -137,7 +141,7 @@ export default function AppointmentDetailPage() {
           <div>
             <h1 className="text-foreground text-xl font-bold">{t('types.' + appointment.type)}</h1>
             <p className="text-muted-foreground text-sm">
-              {format(new Date(appointment.date), 'EEEE d MMMM yyyy', { locale: fr })}
+              {format(new Date(appointment.date), 'EEEE d MMMM yyyy', { locale: dateLocale })}
             </p>
           </div>
         </div>
@@ -201,7 +205,7 @@ export default function AppointmentDetailPage() {
             <CalendarDays className="text-muted-foreground h-5 w-5" />
             <div>
               <p className="font-medium">
-                {format(new Date(appointment.date), 'EEEE d MMMM yyyy', { locale: fr })}
+                {format(new Date(appointment.date), 'EEEE d MMMM yyyy', { locale: dateLocale })}
               </p>
             </div>
           </div>

@@ -17,15 +17,18 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { getAppointments } from '@/lib/db'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getDateLocale } from '@/i18n/date-locale'
+import type { Locale } from '@/i18n/config'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { Appointment } from '@/lib/types'
 import { YearCalendar } from '@/components/appointments/year-calendar'
 
 export default function CalendarPage() {
   const t = useTranslations('appointments')
+  const locale = useLocale()
+  const dateLocale = getDateLocale(locale as Locale)
   const router = useRouter()
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
@@ -130,7 +133,7 @@ export default function CalendarPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <CalendarIcon className="text-primary h-5 w-5" />
-              {selectedDate && format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}
+              {selectedDate && format(selectedDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}
             </DialogTitle>
           </DialogHeader>
 
