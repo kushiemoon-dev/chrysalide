@@ -500,7 +500,7 @@ export default function MedicationsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('list.loading')}</p>
       </div>
     )
   }
@@ -510,10 +510,12 @@ export default function MedicationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
-          <h1 className="text-foreground text-2xl font-bold">Médicaments</h1>
+          <h1 className="text-foreground text-2xl font-bold">{t('list.title')}</h1>
           <p className="text-muted-foreground text-sm">
-            {activeMedications.length} médicament{activeMedications.length > 1 ? 's' : ''} actif
-            {activeMedications.length > 1 ? 's' : ''}
+            {activeMedications.length}{' '}
+            {activeMedications.length > 1
+              ? `${t('list.medicationWordPlural')} ${t('list.activePlural')}`
+              : `${t('list.medicationWord')} ${t('list.active')}`}
           </p>
         </div>
         <div className="flex gap-2">
@@ -530,7 +532,7 @@ export default function MedicationsPage() {
           <Link href="/medications/new">
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Ajouter
+              {t('list.add')}
             </Button>
           </Link>
         </div>
@@ -543,7 +545,7 @@ export default function MedicationsPage() {
             <Button variant="outline" className="w-full justify-between">
               <span className="flex items-center gap-2">
                 <BarChart3 className="h-4 w-4" />
-                Vue chronologique
+                {t('list.ganttTitle')}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${ganttOpen ? 'rotate-180' : ''}`}
@@ -564,13 +566,11 @@ export default function MedicationsPage() {
               <Pill className="text-muted-foreground h-8 w-8" />
             </div>
             <h3 className="text-foreground mb-2 font-medium">{t('list.noMedications')}</h3>
-            <p className="text-muted-foreground mb-4 text-sm">
-              Ajoutez vos médicaments THS pour commencer le suivi
-            </p>
+            <p className="text-muted-foreground mb-4 text-sm">{t('list.emptyDesc')}</p>
             <Link href="/medications/new">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Ajouter un médicament
+                {t('list.emptyCta')}
               </Button>
             </Link>
           </CardContent>
@@ -610,7 +610,7 @@ export default function MedicationsPage() {
                             {med.dosage} {med.unit} - {t(`methods.${med.method}`)}
                           </p>
                           <p className="text-muted-foreground text-xs">
-                            {med.frequency} - depuis le{' '}
+                            {med.frequency} - {t('list.sincePrefix')}{' '}
                             {format(new Date(med.startDate), 'd MMM yyyy', { locale: fr })}
                           </p>
                         </div>
@@ -649,7 +649,7 @@ export default function MedicationsPage() {
                             return (
                               <div className="flex items-center gap-2">
                                 <span className="text-muted-foreground text-sm">
-                                  Prochaine prise:{' '}
+                                  {t('list.nextDose')}{' '}
                                   {nextDate ? format(nextDate, 'd MMM', { locale: fr }) : '-'}
                                 </span>
                                 <Button
@@ -658,7 +658,7 @@ export default function MedicationsPage() {
                                   onClick={() => openPastDoseModal(med)}
                                 >
                                   <Clock className="mr-1 h-4 w-4" />
-                                  Rattraper
+                                  {t('list.catchUp')}
                                 </Button>
                               </div>
                             )
@@ -703,7 +703,7 @@ export default function MedicationsPage() {
                                   onClick={() => openPastDoseModal(med)}
                                 >
                                   <Clock className="mr-1 h-4 w-4" />
-                                  Rattraper
+                                  {t('list.catchUp')}
                                 </Button>
                               </div>
                             )

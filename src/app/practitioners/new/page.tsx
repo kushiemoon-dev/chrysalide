@@ -26,6 +26,7 @@ export default function NewPractitionerPage() {
   const router = useRouter()
   const t = useTranslations('practitioners')
   const tc = useTranslations('common')
+  const tAppt = useTranslations('appointments')
   const [saving, setSaving] = useState(false)
 
   // Form state
@@ -107,9 +108,9 @@ export default function NewPractitionerPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(APPOINTMENT_TYPES).map(([key, info]) => (
+                  {Object.entries(APPOINTMENT_TYPES).map(([key]) => (
                     <SelectItem key={key} value={key}>
-                      {info.label}
+                      {tAppt('types.' + key)}
                     </SelectItem>
                   ))}
                 </SelectContent>
