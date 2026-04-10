@@ -28,29 +28,19 @@ export const DEFAULT_THEME: ThemeConfig = {
 export const COLOR_SCHEMES: Record<
   ColorScheme,
   {
-    label: string
-    description: string
     preview: string[] // 3 colors for preview
   }
 > = {
   trans: {
-    label: 'Trans',
-    description: 'Couleurs du drapeau trans',
     preview: ['#5BCEFA', '#FFFFFF', '#F5A9B8'],
   },
   blue: {
-    label: 'Océan',
-    description: 'Tons bleus apaisants',
     preview: ['#60A5FA', '#93C5FD', '#DBEAFE'],
   },
   pink: {
-    label: 'Rose',
-    description: 'Tons roses chaleureux',
     preview: ['#F472B6', '#FBCFE8', '#FDF2F8'],
   },
   violet: {
-    label: 'Violet',
-    description: 'Tons violets mystiques',
     preview: ['#A78BFA', '#C4B5FD', '#EDE9FE'],
   },
 }
@@ -58,24 +48,16 @@ export const COLOR_SCHEMES: Record<
 export const THEME_MODES: Record<
   ThemeMode,
   {
-    label: string
-    description: string
     icon: string
   }
 > = {
   dark: {
-    label: 'Sombre',
-    description: 'Thème sombre par défaut',
     icon: 'moon',
   },
   light: {
-    label: 'Clair',
-    description: 'Thème clair',
     icon: 'sun',
   },
   system: {
-    label: 'Système',
-    description: 'Suit les préférences système',
     icon: 'monitor',
   },
 }

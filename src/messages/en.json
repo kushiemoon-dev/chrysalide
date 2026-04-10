@@ -849,28 +849,42 @@
     }
   },
   "theme": {
-    "displayMode": "Display mode",
-    "colorPalette": "Color palette",
-    "accessibility": "Accessibility",
-    "reduceAnimations": "Reduce animations",
-    "reduceAnimationsDesc": "Disables animations for a calmer experience",
+    "modeTitle": "Display mode",
+    "paletteTitle": "Color palette",
+    "a11yTitle": "Accessibility",
+    "reducedMotion": "Reduce motion",
+    "reducedMotionDescription": "Disables animations for a calmer experience",
     "modes": {
-      "dark": "Dark",
-      "darkDesc": "Default dark theme",
-      "light": "Light",
-      "lightDesc": "Light theme",
-      "system": "System",
-      "systemDesc": "Follows system preferences"
+      "dark": {
+        "label": "Dark",
+        "description": "Dark theme by default"
+      },
+      "light": {
+        "label": "Light",
+        "description": "Light theme"
+      },
+      "system": {
+        "label": "System",
+        "description": "Follows system preferences"
+      }
     },
-    "colors": {
-      "trans": "Trans",
-      "transDesc": "Trans flag colors",
-      "blue": "Ocean",
-      "blueDesc": "Soothing blue tones",
-      "pink": "Pink",
-      "pinkDesc": "Warm pink tones",
-      "violet": "Violet",
-      "violetDesc": "Deep violet tones"
+    "schemes": {
+      "trans": {
+        "label": "Trans",
+        "description": "Trans flag colors"
+      },
+      "blue": {
+        "label": "Ocean",
+        "description": "Soothing blue tones"
+      },
+      "pink": {
+        "label": "Rose",
+        "description": "Warm rosy tones"
+      },
+      "violet": {
+        "label": "Violet",
+        "description": "Mystical purple tones"
+      }
     }
   },
   "sync": {

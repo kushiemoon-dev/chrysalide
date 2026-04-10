@@ -849,28 +849,42 @@
     }
   },
   "theme": {
-    "displayMode": "Anzeigemodus",
-    "colorPalette": "Farbpalette",
-    "accessibility": "Barrierefreiheit",
-    "reduceAnimations": "Animationen reduzieren",
-    "reduceAnimationsDesc": "Deaktiviert Animationen für eine ruhigere Navigation",
+    "modeTitle": "Anzeigemodus",
+    "paletteTitle": "Farbpalette",
+    "a11yTitle": "Barrierefreiheit",
+    "reducedMotion": "Animationen reduzieren",
+    "reducedMotionDescription": "Deaktiviert Animationen für ein ruhigeres Erlebnis",
     "modes": {
-      "dark": "Dunkel",
-      "darkDesc": "Dunkles Theme (Standard)",
-      "light": "Hell",
-      "lightDesc": "Helles Theme",
-      "system": "System",
-      "systemDesc": "Folgt den Systemeinstellungen"
+      "dark": {
+        "label": "Dunkel",
+        "description": "Standardmäßig dunkles Design"
+      },
+      "light": {
+        "label": "Hell",
+        "description": "Helles Design"
+      },
+      "system": {
+        "label": "System",
+        "description": "Folgt den Systemeinstellungen"
+      }
     },
-    "colors": {
-      "trans": "Trans",
-      "transDesc": "Farben der trans Flagge",
-      "blue": "Ozean",
-      "blueDesc": "Beruhigende Blautöne",
-      "pink": "Rosa",
-      "pinkDesc": "Warme Rosatöne",
-      "violet": "Violett",
-      "violetDesc": "Mystische Violetttöne"
+    "schemes": {
+      "trans": {
+        "label": "Trans",
+        "description": "Farben der Transflagge"
+      },
+      "blue": {
+        "label": "Ozean",
+        "description": "Beruhigende Blautöne"
+      },
+      "pink": {
+        "label": "Rosa",
+        "description": "Warme Rosatöne"
+      },
+      "violet": {
+        "label": "Violett",
+        "description": "Mystische Violetttöne"
+      }
     }
   },
   "sync": {
