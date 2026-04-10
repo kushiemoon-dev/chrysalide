@@ -849,28 +849,42 @@
     }
   },
   "theme": {
-    "displayMode": "Mode d'affichage",
-    "colorPalette": "Palette de couleurs",
-    "accessibility": "Accessibilité",
-    "reduceAnimations": "Réduire les animations",
-    "reduceAnimationsDesc": "Désactive les animations pour une navigation plus calme",
+    "modeTitle": "Mode d'affichage",
+    "paletteTitle": "Palette de couleurs",
+    "a11yTitle": "Accessibilité",
+    "reducedMotion": "Réduire les animations",
+    "reducedMotionDescription": "Désactive les animations pour une navigation plus calme",
     "modes": {
-      "dark": "Sombre",
-      "darkDesc": "Thème sombre par défaut",
-      "light": "Clair",
-      "lightDesc": "Thème clair",
-      "system": "Système",
-      "systemDesc": "Suit les préférences système"
+      "dark": {
+        "label": "Sombre",
+        "description": "Thème sombre par défaut"
+      },
+      "light": {
+        "label": "Clair",
+        "description": "Thème clair"
+      },
+      "system": {
+        "label": "Système",
+        "description": "Suit les préférences système"
+      }
     },
-    "colors": {
-      "trans": "Trans",
-      "transDesc": "Couleurs du drapeau trans",
-      "blue": "Océan",
-      "blueDesc": "Tons bleus apaisants",
-      "pink": "Rose",
-      "pinkDesc": "Tons roses chaleureux",
-      "violet": "Violet",
-      "violetDesc": "Tons violets mystiques"
+    "schemes": {
+      "trans": {
+        "label": "Trans",
+        "description": "Couleurs du drapeau trans"
+      },
+      "blue": {
+        "label": "Océan",
+        "description": "Tons bleus apaisants"
+      },
+      "pink": {
+        "label": "Rose",
+        "description": "Tons roses chaleureux"
+      },
+      "violet": {
+        "label": "Violet",
+        "description": "Tons violets mystiques"
+      }
     }
   },
   "sync": {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Moon, Sun, Monitor, Check } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
@@ -16,6 +17,7 @@ const modeIcons: Record<ThemeMode, typeof Moon> = {
 export function ThemePicker() {
   const [mounted, setMounted] = useState(false)
   const { theme, setMode, setColorScheme, setReducedMotion } = useTheme()
+  const t = useTranslations('theme')
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -32,48 +34,46 @@ export function ThemePicker() {
       {/* Mode Selection */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Mode d&apos;affichage</CardTitle>
+          <CardTitle className="text-base">{t('modeTitle')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {(Object.entries(THEME_MODES) as [ThemeMode, typeof THEME_MODES.dark][]).map(
-            ([mode, config]) => {
-              const Icon = modeIcons[mode]
-              const isActive = theme.mode === mode
+          {(Object.entries(THEME_MODES) as [ThemeMode, typeof THEME_MODES.dark][]).map(([mode]) => {
+            const Icon = modeIcons[mode]
+            const isActive = theme.mode === mode
 
-              return (
-                <button
-                  key={mode}
-                  onClick={() => setMode(mode)}
+            return (
+              <button
+                key={mode}
+                onClick={() => setMode(mode)}
+                className={cn(
+                  'flex w-full items-center gap-3 rounded-xl p-3 transition-all',
+                  'border border-transparent',
+                  isActive ? 'bg-primary/10 border-primary/30' : 'bg-muted/50 hover:bg-muted'
+                )}
+              >
+                <div
                   className={cn(
-                    'flex w-full items-center gap-3 rounded-xl p-3 transition-all',
-                    'border border-transparent',
-                    isActive ? 'bg-primary/10 border-primary/30' : 'bg-muted/50 hover:bg-muted'
+                    'flex h-10 w-10 items-center justify-center rounded-lg',
+                    isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'
                   )}
                 >
-                  <div
-                    className={cn(
-                      'flex h-10 w-10 items-center justify-center rounded-lg',
-                      isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="flex-1 text-left">
-                    <p className="text-foreground font-medium">{config.label}</p>
-                    <p className="text-muted-foreground text-sm">{config.description}</p>
-                  </div>
-                  {isActive && <Check className="text-primary h-5 w-5 flex-shrink-0" />}
-                </button>
-              )
-            }
-          )}
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="flex-1 text-left">
+                  <p className="text-foreground font-medium">{t(`modes.${mode}.label`)}</p>
+                  <p className="text-muted-foreground text-sm">{t(`modes.${mode}.description`)}</p>
+                </div>
+                {isActive && <Check className="text-primary h-5 w-5 flex-shrink-0" />}
+              </button>
+            )
+          })}
         </CardContent>
       </Card>
 
       {/* Color Scheme Selection */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Palette de couleurs</CardTitle>
+          <CardTitle className="text-base">{t('paletteTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
@@ -103,8 +103,12 @@ export function ThemePicker() {
                         />
                       ))}
                     </div>
-                    <p className="text-foreground text-sm font-medium">{config.label}</p>
-                    <p className="text-muted-foreground text-xs">{config.description}</p>
+                    <p className="text-foreground text-sm font-medium">
+                      {t(`schemes.${scheme}.label`)}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {t(`schemes.${scheme}.description`)}
+                    </p>
                     {isActive && (
                       <div className="absolute top-2 right-2">
                         <Check className="text-primary h-4 w-4" />
@@ -121,15 +125,13 @@ export function ThemePicker() {
       {/* Reduced Motion */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Accessibilité</CardTitle>
+          <CardTitle className="text-base">{t('a11yTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-foreground font-medium">Réduire les animations</p>
-              <p className="text-muted-foreground text-sm">
-                Désactive les animations pour une navigation plus calme
-              </p>
+              <p className="text-foreground font-medium">{t('reducedMotion')}</p>
+              <p className="text-muted-foreground text-sm">{t('reducedMotionDescription')}</p>
             </div>
             <Switch checked={theme.reducedMotion} onCheckedChange={setReducedMotion} />
           </div>
@@ -141,11 +143,13 @@ export function ThemePicker() {
 
 // Skeleton for SSR/SSG
 function ThemePickerSkeleton() {
+  const t = useTranslations('theme')
+
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Mode d&apos;affichage</CardTitle>
+          <CardTitle className="text-base">{t('modeTitle')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {[1, 2, 3].map((i) => (
@@ -161,7 +165,7 @@ function ThemePickerSkeleton() {
       </Card>
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Palette de couleurs</CardTitle>
+          <CardTitle className="text-base">{t('paletteTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
@@ -181,7 +185,7 @@ function ThemePickerSkeleton() {
       </Card>
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Accessibilité</CardTitle>
+          <CardTitle className="text-base">{t('a11yTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
@@ -201,6 +205,7 @@ function ThemePickerSkeleton() {
 export function ThemeModeToggle() {
   const [mounted, setMounted] = useState(false)
   const { theme, setMode } = useTheme()
+  const t = useTranslations('theme')
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -223,7 +228,7 @@ export function ThemeModeToggle() {
     <button
       onClick={() => setMode(nextMode())}
       className="bg-muted hover:bg-muted/80 rounded-lg p-2 transition-colors"
-      title={`Mode: ${THEME_MODES[theme.mode].label}`}
+      title={t(`modes.${theme.mode}.label`)}
     >
       <Icon className="h-5 w-5" />
     </button>
