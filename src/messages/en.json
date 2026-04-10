@@ -800,6 +800,64 @@
       "support": "Support",
       "information": "Information"
     },
+    "items": {
+      "partagenre": {
+        "name": "Partagenre",
+        "description": "Historic French-language trans community forum. Discussions, testimonials, advice and peer support. (French-language resource)"
+      },
+      "wiki-trans": {
+        "name": "Wiki Trans",
+        "description": "Collaborative wiki with comprehensive information on trans journeys in France: medical, administrative, social. (French-language resource)"
+      },
+      "carte-associations": {
+        "name": "Trans associations map",
+        "description": "Collaborative map of trans associations in France. Find support groups and associations near you. (French-language resource)"
+      },
+      "fransgenre": {
+        "name": "Fransgenre",
+        "description": "National trans and intersex association. Resources, support and advocacy for the rights of trans people. (French-language resource)"
+      },
+      "sofect-alternatives": {
+        "name": "Independent pathways (outside SOFeRT)",
+        "description": "Information on medical transition pathways outside official hospital teams in France. (French-language resource)"
+      },
+      "ths-feminisant": {
+        "name": "Feminising HRT guide",
+        "description": "Detailed information on feminising hormone therapy: molecules, dosages, effects, monitoring. (French-language resource)"
+      },
+      "ths-masculinisant": {
+        "name": "Masculinising HRT guide",
+        "description": "Detailed information on masculinising hormone therapy: testosterone, effects, medical monitoring. (French-language resource)"
+      },
+      "administrans": {
+        "name": "Administrans",
+        "description": "Comprehensive guide to administrative procedures in France: legal gender marker change, name, civil status. (French-language resource)"
+      },
+      "cec-guide": {
+        "name": "Legal gender marker change (CEC)",
+        "description": "Detailed procedure for changing the gender marker on civil records in France. (French-language resource)"
+      },
+      "droits-travail": {
+        "name": "Workplace rights",
+        "description": "Resources on the rights of trans people at work: discrimination, workplace transition, HR guides. (French-language resource)"
+      },
+      "ligne-ecoute": {
+        "name": "Resources for loved ones",
+        "description": "Guides and resources for family and friends of trans people. Support, advice and practical information. (French-language resource)"
+      },
+      "trans-posez": {
+        "name": "Trans-Posez",
+        "description": "Peer support association for trans people. Discussion groups, activities, peer-to-peer support. (French-language resource)"
+      },
+      "transfemscience": {
+        "name": "Transfeminine Science",
+        "description": "English-language scientific resource on feminising HRT. Detailed articles, research, data."
+      },
+      "folx-health": {
+        "name": "FOLX Health (US)",
+        "description": "Educational resources on trans health. Although US-based, contains useful medical information."
+      }
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Frequently asked questions",

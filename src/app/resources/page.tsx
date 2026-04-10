@@ -36,7 +36,13 @@ const categoryIconMap: Record<ResourceCategory, React.ReactNode> = {
   information: <BookOpen className="h-5 w-5" />,
 }
 
-function ResourceCard({ resource }: { resource: Resource }) {
+function ResourceCard({
+  resource,
+  t,
+}: {
+  resource: Resource
+  t: ReturnType<typeof useTranslations<'resources'>>
+}) {
   return (
     <a href={resource.url} target="_blank" rel="noopener noreferrer" className="block">
       <Card className="hover:bg-muted/30 h-full cursor-pointer transition-colors">
@@ -44,7 +50,9 @@ function ResourceCard({ resource }: { resource: Resource }) {
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
               <div className="mb-1 flex items-center gap-2">
-                <h3 className="text-foreground truncate font-medium">{resource.name}</h3>
+                <h3 className="text-foreground truncate font-medium">
+                  {t(`items.${resource.id}.name`)}
+                </h3>
                 {resource.language !== 'fr' && (
                   <Badge variant="outline" className="shrink-0 text-xs">
                     <Globe className="mr-1 h-3 w-3" />
@@ -52,7 +60,9 @@ function ResourceCard({ resource }: { resource: Resource }) {
                   </Badge>
                 )}
               </div>
-              <p className="text-muted-foreground line-clamp-2 text-sm">{resource.description}</p>
+              <p className="text-muted-foreground line-clamp-2 text-sm">
+                {t(`items.${resource.id}.description`)}
+              </p>
               <div className="mt-2 flex flex-wrap gap-1">
                 {resource.tags.slice(0, 3).map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
@@ -72,9 +82,11 @@ function ResourceCard({ resource }: { resource: Resource }) {
 function CategorySection({
   category,
   categoryLabel,
+  t,
 }: {
   category: ResourceCategory
   categoryLabel: string
+  t: ReturnType<typeof useTranslations<'resources'>>
 }) {
   const categoryResources = getResourcesByCategory(category)
 
@@ -95,7 +107,7 @@ function CategorySection({
       </div>
       <div className="grid gap-3">
         {categoryResources.map((resource) => (
-          <ResourceCard key={resource.id} resource={resource} />
+          <ResourceCard key={resource.id} resource={resource} t={t} />
         ))}
       </div>
     </section>
@@ -192,7 +204,7 @@ export default function ResourcesPage() {
           </p>
           <div className="grid gap-3">
             {filteredResources.map((resource) => (
-              <ResourceCard key={resource.id} resource={resource} />
+              <ResourceCard key={resource.id} resource={resource} t={t} />
             ))}
           </div>
           {filteredResources.length === 0 && (
@@ -212,6 +224,7 @@ export default function ResourcesPage() {
               key={category}
               category={category}
               categoryLabel={t(`categories.${category}`)}
+              t={t}
             />
           ))}
         </div>
