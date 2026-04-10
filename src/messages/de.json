@@ -663,7 +663,7 @@
     "templates": {
       "ths-feminisant": {
         "title": "Feminisierende HRT",
-        "description": "Weibliche Hormontherapie-Reise",
+        "description": "Hormontherapie zur Feminisierung",
         "duration": "5 Jahre",
         "milestones": [
           "Erstberatung",
@@ -675,7 +675,7 @@
       },
       "epilation-visage": {
         "title": "Gesichts-Laserhaarentfernung",
-        "description": "Gesichtslaserhaarentfernung",
+        "description": "Laser-Haarentfernung im Gesicht",
         "duration": "18-24 Monate",
         "milestones": [
           "Dermatologen-Beratung",
@@ -687,7 +687,7 @@
       },
       "epilation-corps": {
         "title": "Körper-Laserhaarentfernung",
-        "description": "Körperlaserhaarentfernung",
+        "description": "Laser-Haarentfernung am Körper",
         "duration": "12-18 Monate",
         "milestones": [
           "Beratung",
@@ -735,7 +735,7 @@
       },
       "ths-masculinisant": {
         "title": "Maskulinisierende HRT",
-        "description": "Männliche Hormontherapie-Reise",
+        "description": "Hormontherapie zur Maskulinisierung",
         "duration": "5 Jahre",
         "milestones": [
           "Erstberatung",
