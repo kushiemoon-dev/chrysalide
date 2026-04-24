@@ -26,10 +26,11 @@ import {
   addReminder,
   findOrCreatePractitioner,
   incrementPractitionerUsage,
+  getActs,
 } from '@/lib/db'
 import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
-import type { AppointmentType, Practitioner } from '@/lib/types'
+import type { Act, AppointmentType, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
 import { PractitionerInput } from '@/components/appointments/practitioner-input'
 import { getModulePreferences } from '@/lib/notifications'
@@ -54,6 +55,14 @@ export default function NewAppointmentPage() {
   const [showCostTracking, setShowCostTracking] = useState(
     () => getModulePreferences().costTrackingEnabled
   )
+  const [actId, setActId] = useState<number | undefined>(undefined)
+  const [acts, setActs] = useState<Act[]>([])
+
+  useEffect(() => {
+    getActs()
+      .then(setActs)
+      .catch(() => {})
+  }, [])
 
   // Handle practitioner text change
   const handlePractitionerChange = (name: string, id?: number) => {
@@ -102,6 +111,7 @@ export default function NewAppointmentPage() {
         notes: notes || undefined,
         reminderMinutes,
         cost: !isNaN(parsedCost) && parsedCost > 0 ? parsedCost : undefined,
+        actId: actId || undefined,
       })
 
       // Create a reminder if set
@@ -262,6 +272,28 @@ export default function NewAppointmentPage() {
                 rows={3}
               />
             </div>
+
+            {acts.length > 0 && (
+              <div className="space-y-2">
+                <Label>Lié à un acte (facultatif)</Label>
+                <Select
+                  value={actId?.toString() || 'none'}
+                  onValueChange={(v) => setActId(v === 'none' ? undefined : parseInt(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Aucun acte" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Aucun acte</SelectItem>
+                    {acts.map((act) => (
+                      <SelectItem key={act.id} value={act.id!.toString()}>
+                        {act.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             {showCostTracking && (
               <div className="space-y-2">

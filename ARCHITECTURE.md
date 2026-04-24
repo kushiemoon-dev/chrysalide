@@ -31,7 +31,7 @@ Medical PWA for HRT transition tracking — 100% local, zero backend.
     |
     +-- IndexedDB (Dexie.js)
     |       |
-    |       +-- 12 versioned tables
+    |       +-- 14 versioned tables
     |       +-- Automatic migrations
     |
     +-- Service Worker (PWA)
@@ -49,35 +49,38 @@ No network requests for user data. The Vercel deployment only serves static asse
 
 ## Database Schema
 
-**12 tables, 6 migration versions** (in `src/lib/db.ts`):
+**14 tables, 7 migration versions** (in `src/lib/db.ts`):
 
 ### Tables
 
-| Table              | Key    | Indexes                                         | Description                  |
-| ------------------ | ------ | ----------------------------------------------- | ---------------------------- |
-| `medications`      | `++id` | name, type, isActive, startDate                 | Active/inactive medications  |
-| `medicationLogs`   | `++id` | medicationId, timestamp, taken, applicationZone | Dose history                 |
-| `bloodTests`       | `++id` | date                                            | Blood test results           |
-| `physicalProgress` | `++id` | date                                            | Photos and measurements      |
-| `appointments`     | `++id` | date, type, practitionerId                      | Medical appointments         |
-| `practitioners`    | `++id` | name, specialty, lastUsed, usageCount           | Practitioner directory       |
-| `journalEntries`   | `++id` | date, mood, \*tags                              | Journal (mood, side effects) |
-| `objectives`       | `++id` | category, status, targetDate                    | Transition objectives        |
-| `milestones`       | `++id` | objectiveId, date                               | Objective milestones         |
-| `treatmentChanges` | `++id` | medicationId, date, changeType                  | Treatment change history     |
-| `reminders`        | `++id` | -                                               | Medication reminders         |
-| `userProfile`      | `++id` | -                                               | User profile                 |
+| Table              | Key    | Indexes                                         | Description                         |
+| ------------------ | ------ | ----------------------------------------------- | ----------------------------------- |
+| `medications`      | `++id` | name, type, isActive, startDate                 | Active/inactive medications         |
+| `medicationLogs`   | `++id` | medicationId, timestamp, taken, applicationZone | Dose history                        |
+| `bloodTests`       | `++id` | date, practitionerId                            | Blood test results + lab link       |
+| `physicalProgress` | `++id` | date                                            | Photos and measurements             |
+| `appointments`     | `++id` | date, type, practitionerId, actId               | Medical appointments + act link     |
+| `practitioners`    | `++id` | name, specialty, lastUsed, usageCount           | Practitioner directory (incl. labs) |
+| `journalEntries`   | `++id` | date, mood, \*tags                              | Journal (mood, side effects)        |
+| `objectives`       | `++id` | category, status, targetDate                    | Transition objectives               |
+| `milestones`       | `++id` | objectiveId, date                               | Objective milestones                |
+| `treatmentChanges` | `++id` | medicationId, date, changeType                  | Treatment change history            |
+| `reminders`        | `++id` | -                                               | Medication reminders                |
+| `userProfile`      | `++id` | -                                               | User profile                        |
+| `acts`             | `++id` | category, status, createdAt                     | Medical act notebook                |
+| `actTodos`         | `++id` | actId, done, order                              | Per-act checklist items             |
 
 ### Schema Versions
 
-| Version | Changes                                                                                     |
-| ------- | ------------------------------------------------------------------------------------------- |
-| v1      | Core tables (medications, logs, bloodTests, progress, appointments, reminders, userProfile) |
-| v2      | `applicationZone` field on medicationLogs (gel tracking)                                    |
-| v3      | journal, objectives, milestones, treatmentChanges tables                                    |
-| v4      | practitioners table                                                                         |
-| v5      | appointments -> practitioners foreign key                                                   |
-| v6      | `cost` field on appointments                                                                |
+| Version | Changes                                                                                                 |
+| ------- | ------------------------------------------------------------------------------------------------------- |
+| v1      | Core tables (medications, logs, bloodTests, progress, appointments, reminders, userProfile)             |
+| v2      | `applicationZone` field on medicationLogs (gel tracking)                                                |
+| v3      | journal, objectives, milestones, treatmentChanges tables                                                |
+| v4      | practitioners table                                                                                     |
+| v5      | appointments -> practitioners foreign key                                                               |
+| v6      | `cost` field on appointments                                                                            |
+| v7      | acts, actTodos tables; `practitionerId` on bloodTests; `actId` on appointments; date normalizer upgrade |
 
 ## App Routes
 
@@ -91,14 +94,15 @@ No network requests for user data. The Vercel deployment only serves static asse
 
 ### "More" Menu
 
-| Route            | Page                  |
-| ---------------- | --------------------- |
-| `/progress`      | Physical progress     |
-| `/journal`       | Personal journal      |
-| `/objectives`    | Transition objectives |
-| `/appointments`  | Appointments          |
-| `/practitioners` | Practitioners         |
-| `/resources`     | Resources & FAQ       |
+| Route            | Page                       |
+| ---------------- | -------------------------- |
+| `/progress`      | Physical progress          |
+| `/journal`       | Personal journal           |
+| `/objectives`    | Transition objectives      |
+| `/acts`          | Medical act notebook       |
+| `/appointments`  | Appointments               |
+| `/practitioners` | Practitioners (incl. labs) |
+| `/resources`     | Resources & FAQ            |
 
 ### Other
 

@@ -29,7 +29,8 @@
     "objectives": "Objectifs",
     "appointments": "Rendez-vous",
     "practitioners": "Praticien·nes",
-    "resources": "Ressources"
+    "resources": "Ressources",
+    "acts": "Actes"
   },
   "settings": {
     "title": "Réglages",
@@ -1294,7 +1295,8 @@
       "tattoo": "Tatoueur·se",
       "aesthetician": "Esthéticien·ne",
       "hairdresser": "Coiffeur·se",
-      "other": "Autre"
+      "other": "Autre",
+      "laboratoire": "Laboratoire"
     },
     "reminderTimes": {
       "15": "15 minutes avant",
@@ -1304,5 +1306,6 @@
       "1440": "1 jour avant",
       "2880": "2 jours avant"
     }
-  }
+  },
+  "appointmentTypes": {}
 }

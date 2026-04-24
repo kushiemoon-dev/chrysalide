@@ -7,8 +7,7 @@ import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { SectionHeader } from '@/components/layout/header'
-import { DecoratedIcon } from '@/components/brand/decorated-icon'
-import { Activity, Calendar, Clock, Droplets, Heart, Target, TrendingUp, Zap } from 'lucide-react'
+import { Clock, Droplets, Heart, Target, TrendingUp, Zap } from 'lucide-react'
 import { format, formatDistanceToNow, differenceInDays, differenceInMonths } from 'date-fns'
 import {
   getBloodTests,
@@ -19,6 +18,7 @@ import {
   getYesterdayLogs,
 } from '@/lib/db'
 import { REFERENCE_RANGES } from '@/lib/constants'
+import { shouldTakeMedicationOnDate } from '@/lib/notifications'
 import type { BloodTest, UserProfile, Objective, Medication, MedicationLog } from '@/lib/types'
 
 interface RecapData {
@@ -36,18 +36,19 @@ function calculateStreak(
   todayLogs: MedicationLog[],
   yesterdayLogs: MedicationLog[]
 ): number {
-  // Simple streak: consecutive days with all doses taken
-  // For now, just check if yesterday was complete
   if (medications.length === 0) return 0
 
-  const yesterdayComplete = medications.every((med) => {
-    const logs = yesterdayLogs.filter((l) => l.medicationId === med.id && l.taken)
-    return logs.length > 0
-  })
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
 
-  // If yesterday was complete, at least 1 day streak
-  // In a full implementation, we'd check more days
-  return yesterdayComplete ? 1 : 0
+  // Uniquement les médicaments dus hier (évite les faux-négatifs pour les hebdo, injections, etc.)
+  const dueYesterday = medications.filter((m) => shouldTakeMedicationOnDate(m, yesterday))
+  if (dueYesterday.length === 0) return 0
+
+  const allTaken = dueYesterday.every((med) =>
+    yesterdayLogs.some((l) => l.medicationId === med.id && l.taken)
+  )
+  return allTaken ? 1 : 0
 }
 
 export function RecapCard() {
