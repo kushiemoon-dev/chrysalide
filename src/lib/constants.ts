@@ -394,6 +394,7 @@ export const APPOINTMENT_TYPES: Record<
   nurse: { label: 'Infirmier·e', color: '#10B981', icon: 'Syringe' },
   speechtherapist: { label: 'Orthophoniste', color: '#06B6D4', icon: 'Mic' },
   bloodtest: { label: 'Prise de sang', color: '#DC2626', icon: 'Droplet' },
+  laboratoire: { label: 'Laboratoire', color: '#7C3AED', icon: 'FlaskConical' },
   laser: { label: 'Épilation laser', color: '#EF4444', icon: 'Zap' },
   electrolysis: { label: 'Électrolyse', color: '#F97316', icon: 'Zap' },
   tattoo: { label: 'Tatoueur·se', color: '#8B5CF6', icon: 'Pen' },
@@ -412,6 +413,26 @@ export const REMINDER_TIMES = [
   { value: 1440, label: '1 jour avant' },
   { value: 2880, label: '2 jours avant' },
 ]
+
+// === ACT CATEGORIES ===
+
+import type { ActCategory } from './types'
+
+export const ACT_CATEGORIES: Record<ActCategory, { label: string; icon: string; color: string }> = {
+  ffs: { label: 'FFS – Féminisation du visage', icon: 'Sparkles', color: '#EC4899' },
+  vaginoplasty: { label: 'Vaginoplastie', icon: 'Heart', color: '#F5A9B8' },
+  hrt: { label: 'THS – Thérapie hormonale', icon: 'Syringe', color: '#5BCEFA' },
+  orchiectomy: { label: 'Orchidectomie', icon: 'Scissors', color: '#E8A0BF' },
+  breast_augmentation: {
+    label: 'Augmentation mammaire',
+    icon: 'Heart',
+    color: '#F9A8D4',
+  },
+  voice: { label: 'Travail de la voix', icon: 'Mic', color: '#06B6D4' },
+  hair_removal: { label: 'Épilation définitive', icon: 'Zap', color: '#F97316' },
+  civil_status: { label: 'État civil', icon: 'FileText', color: '#9CA3AF' },
+  other: { label: 'Autre', icon: 'MoreHorizontal', color: '#6B7280' },
+}
 
 // === OBJECTIVE TEMPLATES ===
 

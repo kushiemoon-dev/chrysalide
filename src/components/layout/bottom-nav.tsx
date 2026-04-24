@@ -16,6 +16,7 @@ import {
   Calendar,
   X,
   Users,
+  NotebookPen,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getModulePreferences } from '@/lib/notifications'
@@ -40,6 +41,7 @@ const moreMenuItems: NavItem[] = [
   { href: '/progress', icon: TrendingUp, labelKey: 'evolution', moduleKey: 'evolution' },
   { href: '/journal', icon: BookOpen, labelKey: 'journal', moduleKey: null },
   { href: '/objectives', icon: Target, labelKey: 'objectives', moduleKey: null },
+  { href: '/acts', icon: NotebookPen, labelKey: 'acts', moduleKey: null },
   { href: '/appointments', icon: Calendar, labelKey: 'appointments', moduleKey: null },
   { href: '/practitioners', icon: Users, labelKey: 'practitioners', moduleKey: null },
   { href: '/resources', icon: ExternalLink, labelKey: 'resources', moduleKey: null },

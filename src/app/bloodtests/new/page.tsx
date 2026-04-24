@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { addBloodTest } from '@/lib/db'
 import type { BloodMarker, BloodTestResult } from '@/lib/types'
 import { BLOOD_MARKERS } from '@/lib/constants'
+import { PractitionerInput } from '@/components/appointments/practitioner-input'
 
 // Groupes de marqueurs pour une meilleure organisation
 const MARKER_GROUPS = {
@@ -47,6 +48,7 @@ export default function NewBloodTestPage() {
   // Form state
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
   const [lab, setLab] = useState('')
+  const [practitionerId, setPractitionerId] = useState<number | undefined>(undefined)
   const [notes, setNotes] = useState('')
 
   // Marker values - using a Record to track which markers have values
@@ -98,6 +100,7 @@ export default function NewBloodTestPage() {
       await addBloodTest({
         date: new Date(date),
         lab: lab || undefined,
+        practitionerId: practitionerId || undefined,
         results,
         notes: notes || undefined,
       })
@@ -141,11 +144,14 @@ export default function NewBloodTestPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lab">{t('new.labLabel')}</Label>
-                <Input
-                  id="lab"
+                <Label>{t('new.labLabel')}</Label>
+                <PractitionerInput
                   value={lab}
-                  onChange={(e) => setLab(e.target.value)}
+                  onChange={(name, pid) => {
+                    setLab(name)
+                    setPractitionerId(pid)
+                  }}
+                  specialty="laboratoire"
                   placeholder={t('new.labOptional')}
                 />
               </div>

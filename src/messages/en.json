@@ -29,7 +29,8 @@
     "objectives": "Goals",
     "appointments": "Appointments",
     "practitioners": "Practitioners",
-    "resources": "Resources"
+    "resources": "Resources",
+    "acts": "Acts"
   },
   "settings": {
     "title": "Settings",
@@ -1289,7 +1290,8 @@
       "tattoo": "Tattoo artist",
       "aesthetician": "Aesthetician",
       "hairdresser": "Hairdresser",
-      "other": "Other"
+      "other": "Other",
+      "laboratoire": "Laboratory"
     },
     "reminderTimes": {
       "15": "15 minutes before",

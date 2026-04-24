@@ -18,6 +18,8 @@ import type {
   Milestone,
   TreatmentChange,
   Practitioner,
+  Act,
+  ActTodo,
 } from './types'
 
 // Définition de la base de données
@@ -36,6 +38,9 @@ const db = new Dexie('ChrysalideDB') as Dexie & {
   treatmentChanges: EntityTable<TreatmentChange, 'id'>
   // v0.2.1 - Annuaire praticien·nes
   practitioners: EntityTable<Practitioner, 'id'>
+  // v1.2.0 - Actes médicaux (bloc-note)
+  acts: EntityTable<Act, 'id'>
+  actTodos: EntityTable<ActTodo, 'id'>
 }
 
 // Schéma de la base de données
@@ -124,6 +129,36 @@ db.version(6).stores({
   treatmentChanges: '++id, medicationId, date, changeType',
   practitioners: '++id, name, specialty, lastUsed, usageCount',
 })
+
+// Version 7: Actes médicaux + lien labo PDS + lien acte RDV
+// Upgrader: normalise les dates bloodTests stockées en string (import/export bugué)
+db.version(7)
+  .stores({
+    medications: '++id, name, type, isActive, startDate',
+    medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
+    bloodTests: '++id, date, practitionerId',
+    physicalProgress: '++id, date',
+    appointments: '++id, date, type, practitionerId, actId',
+    reminders: '++id, type, enabled',
+    userProfile: '++id',
+    journalEntries: '++id, date, mood, *tags',
+    objectives: '++id, category, status, targetDate',
+    milestones: '++id, objectiveId, achieved, order',
+    treatmentChanges: '++id, medicationId, date, changeType',
+    practitioners: '++id, name, specialty, lastUsed, usageCount',
+    acts: '++id, category, status, createdAt',
+    actTodos: '++id, actId, done, order',
+  })
+  .upgrade(async (tx) => {
+    // Normalise bloodTests.date en Date si stockée en string
+    await tx
+      .table('bloodTests')
+      .toCollection()
+      .modify((bt) => {
+        if (typeof bt.date === 'string') bt.date = new Date(bt.date)
+        if (typeof bt.createdAt === 'string') bt.createdAt = new Date(bt.createdAt)
+      })
+  })
 
 export { db }
 
@@ -293,7 +328,8 @@ export async function getGelApplicationHistory(medicationId: number, limit = 20)
 
 // Blood Tests
 export async function getBloodTests(limit = 20) {
-  return db.bloodTests.orderBy('date').reverse().limit(limit).toArray()
+  const all = await db.bloodTests.toArray()
+  return all.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, limit)
 }
 
 export async function addBloodTest(test: Omit<BloodTest, 'id' | 'createdAt'>) {
@@ -416,8 +452,11 @@ export async function exportAllData() {
     treatmentChanges: await db.treatmentChanges.toArray(),
     // v0.2.1+ tables
     practitioners: await db.practitioners.toArray(),
+    // v1.2.0+ tables
+    acts: await db.acts.toArray(),
+    actTodos: await db.actTodos.toArray(),
     exportedAt: new Date().toISOString(),
-    version: 3,
+    version: 4,
   }
 }
 
@@ -449,6 +488,8 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
       db.milestones,
       db.treatmentChanges,
       db.practitioners,
+      db.acts,
+      db.actTodos,
     ],
     async () => {
       // Clear existing data
@@ -464,6 +505,8 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
       await db.milestones.clear()
       await db.treatmentChanges.clear()
       await db.practitioners.clear()
+      await db.acts.clear()
+      await db.actTodos.clear()
 
       // Import data with date deserialization
       // JSON.stringify converts Date objects to ISO strings; we must convert them back
@@ -515,6 +558,11 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
         await db.practitioners.bulkAdd(
           deserializeDates(data.practitioners, ['lastUsed', 'createdAt'])
         )
+      // v1.2.0+ tables
+      if (data.acts?.length)
+        await db.acts.bulkAdd(deserializeDates(data.acts, ['createdAt', 'updatedAt']))
+      if (data.actTodos?.length)
+        await db.actTodos.bulkAdd(deserializeDates(data.actTodos, ['createdAt']))
     }
   )
 }
@@ -1147,4 +1195,52 @@ export async function getTotalAppointmentsCost(): Promise<{
   }
 
   return result
+}
+
+// === ACTES MÉDICAUX ===
+
+export async function getActs() {
+  const all = await db.acts.toArray()
+  return all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+}
+
+export async function getAct(id: number) {
+  return db.acts.get(id)
+}
+
+export async function addAct(act: Omit<Act, 'id' | 'createdAt' | 'updatedAt'>) {
+  const now = new Date()
+  return db.acts.add({ ...act, createdAt: now, updatedAt: now })
+}
+
+export async function updateAct(id: number, updates: Partial<Act>) {
+  return db.acts.update(id, { ...updates, updatedAt: new Date() })
+}
+
+export async function deleteAct(id: number) {
+  await db.actTodos.where('actId').equals(id).delete()
+  return db.acts.delete(id)
+}
+
+// === ACT TODOS ===
+
+export async function getActTodos(actId: number) {
+  const todos = await db.actTodos.where('actId').equals(actId).toArray()
+  return todos.sort((a, b) => a.order - b.order)
+}
+
+export async function addActTodo(todo: Omit<ActTodo, 'id' | 'createdAt'>) {
+  return db.actTodos.add({ ...todo, createdAt: new Date() })
+}
+
+export async function updateActTodo(id: number, updates: Partial<ActTodo>) {
+  return db.actTodos.update(id, updates)
+}
+
+export async function deleteActTodo(id: number) {
+  return db.actTodos.delete(id)
+}
+
+export async function getAppointmentsByAct(actId: number) {
+  return db.appointments.where('actId').equals(actId).sortBy('date')
 }
