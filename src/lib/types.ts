@@ -105,6 +105,7 @@ export interface BloodTest {
   id?: number
   date: Date
   lab?: string
+  practitionerId?: number // Référence au labo dans l'annuaire
   results: BloodTestResult[]
   notes?: string
   documentPhoto?: string // base64 ou blob
@@ -144,6 +145,7 @@ export type AppointmentType =
   | 'nurse'
   | 'speechtherapist'
   | 'bloodtest'
+  | 'laboratoire'
   | 'laser'
   | 'electrolysis'
   | 'tattoo'
@@ -162,6 +164,7 @@ export interface Appointment {
   notes?: string
   reminderMinutes?: number
   cost?: number // Reste à charge en euros (optionnel)
+  actId?: number // Lien vers un acte médical (facultatif)
   createdAt: Date
 }
 
@@ -298,6 +301,43 @@ export interface TreatmentChange {
   reason?: string // Raison du changement
   prescribedBy?: string // Médecin qui a prescrit
   notes?: string
+  createdAt: Date
+}
+
+// === ACTES MÉDICAUX (Bloc-note par acte) ===
+
+export type ActCategory =
+  | 'ffs'
+  | 'vaginoplasty'
+  | 'hrt'
+  | 'orchiectomy'
+  | 'breast_augmentation'
+  | 'voice'
+  | 'hair_removal'
+  | 'civil_status'
+  | 'other'
+
+export type ActStatus = 'planning' | 'in_progress' | 'done' | 'cancelled'
+
+export interface Act {
+  id?: number
+  title: string
+  category: ActCategory
+  status: ActStatus
+  information?: string
+  notes?: string
+  envisagedPractitionerIds: number[]
+  chosenPractitionerIds: number[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ActTodo {
+  id?: number
+  actId: number
+  text: string
+  done: boolean
+  order: number
   createdAt: Date
 }
 
