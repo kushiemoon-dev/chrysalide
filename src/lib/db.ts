@@ -160,6 +160,78 @@ db.version(7)
       })
   })
 
+// Version 8: Fusion acts → objectives, actTodos → milestones, remap appointments.actId → objectiveId
+db.version(8)
+  .stores({
+    medications: '++id, name, type, isActive, startDate',
+    medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
+    bloodTests: '++id, date, practitionerId',
+    physicalProgress: '++id, date',
+    appointments: '++id, date, type, practitionerId, actId, objectiveId',
+    reminders: '++id, type, enabled',
+    userProfile: '++id',
+    journalEntries: '++id, date, mood, *tags',
+    objectives: '++id, category, status, targetDate, actCategory, source',
+    milestones: '++id, objectiveId, achieved, order',
+    treatmentChanges: '++id, medicationId, date, changeType',
+    practitioners: '++id, name, specialty, lastUsed, usageCount',
+    acts: '++id, category, status, createdAt', // conservé — drop en v9
+    actTodos: '++id, actId, done, order', // conservé — drop en v9
+  })
+  .upgrade(async (tx) => {
+    const STATUS_MAP: Record<string, string> = {
+      planning: 'not_started',
+      in_progress: 'in_progress',
+      done: 'completed',
+      cancelled: 'cancelled',
+    }
+
+    const acts = await tx.table('acts').toArray()
+    const actIdToObjectiveId = new Map<number, number>()
+
+    for (const act of acts) {
+      const objId = await tx.table('objectives').add({
+        title: act.title,
+        category: 'medical',
+        actCategory: act.category,
+        status: STATUS_MAP[act.status] ?? 'not_started',
+        information: act.information,
+        notes: act.notes,
+        envisagedPractitionerIds: act.envisagedPractitionerIds ?? [],
+        chosenPractitionerIds: act.chosenPractitionerIds ?? [],
+        source: 'act',
+        progress: 0,
+        createdAt: act.createdAt,
+        updatedAt: act.updatedAt,
+      })
+      if (act.id != null) actIdToObjectiveId.set(act.id, objId as number)
+    }
+
+    // actTodos → milestones
+    const todos = await tx.table('actTodos').toArray()
+    for (const todo of todos) {
+      const objId = todo.actId != null ? actIdToObjectiveId.get(todo.actId) : undefined
+      if (objId == null) continue
+      await tx.table('milestones').add({
+        objectiveId: objId,
+        title: todo.text,
+        achieved: todo.done,
+        order: todo.order,
+        createdAt: todo.createdAt,
+      })
+    }
+
+    // Remap appointments.actId → appointments.objectiveId
+    await tx
+      .table('appointments')
+      .toCollection()
+      .modify((apt: Record<string, unknown>) => {
+        if (apt.actId != null && actIdToObjectiveId.has(apt.actId as number)) {
+          apt.objectiveId = actIdToObjectiveId.get(apt.actId as number)
+        }
+      })
+  })
+
 export { db }
 
 // === HELPERS CRUD ===
