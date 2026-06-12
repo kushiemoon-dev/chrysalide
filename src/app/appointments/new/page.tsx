@@ -61,7 +61,7 @@ export default function NewAppointmentPage() {
   useEffect(() => {
     getActs()
       .then(setActs)
-      .catch(() => {})
+      .catch((error) => console.error('Error loading acts:', error))
   }, [])
 
   // Handle practitioner text change
