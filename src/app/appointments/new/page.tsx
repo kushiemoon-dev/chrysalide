@@ -26,11 +26,11 @@ import {
   addReminder,
   findOrCreatePractitioner,
   incrementPractitionerUsage,
-  getActs,
+  getObjectives,
 } from '@/lib/db'
 import { useTranslations } from 'next-intl'
 import { APPOINTMENT_TYPES, REMINDER_TIMES } from '@/lib/constants'
-import type { Act, AppointmentType, Practitioner } from '@/lib/types'
+import type { AppointmentType, Objective, Practitioner } from '@/lib/types'
 import { format } from 'date-fns'
 import { PractitionerInput } from '@/components/appointments/practitioner-input'
 import { getModulePreferences } from '@/lib/notifications'
@@ -55,13 +55,17 @@ export default function NewAppointmentPage() {
   const [showCostTracking, setShowCostTracking] = useState(
     () => getModulePreferences().costTrackingEnabled
   )
-  const [actId, setActId] = useState<number | undefined>(undefined)
-  const [acts, setActs] = useState<Act[]>([])
+  const [objectiveId, setObjectiveId] = useState<number | undefined>(undefined)
+  const [linkedObjectives, setLinkedObjectives] = useState<Objective[]>([])
 
   useEffect(() => {
-    getActs()
-      .then(setActs)
-      .catch((error) => console.error('Error loading acts:', error))
+    getObjectives()
+      .then((all) =>
+        setLinkedObjectives(
+          all.filter((o) => o.source === 'act' || o.category === 'medical')
+        )
+      )
+      .catch((error) => console.error('Error loading objectives:', error))
   }, [])
 
   // Handle practitioner text change
@@ -111,7 +115,7 @@ export default function NewAppointmentPage() {
         notes: notes || undefined,
         reminderMinutes,
         cost: !isNaN(parsedCost) && parsedCost > 0 ? parsedCost : undefined,
-        actId: actId || undefined,
+        objectiveId: objectiveId || undefined,
       })
 
       // Create a reminder if set
@@ -273,21 +277,21 @@ export default function NewAppointmentPage() {
               />
             </div>
 
-            {acts.length > 0 && (
+            {linkedObjectives.length > 0 && (
               <div className="space-y-2">
-                <Label>Lié à un acte (facultatif)</Label>
+                <Label>{t('form.linkedObjective')}</Label>
                 <Select
-                  value={actId?.toString() || 'none'}
-                  onValueChange={(v) => setActId(v === 'none' ? undefined : parseInt(v))}
+                  value={objectiveId?.toString() || 'none'}
+                  onValueChange={(v) => setObjectiveId(v === 'none' ? undefined : parseInt(v))}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Aucun acte" />
+                    <SelectValue placeholder={t('form.linkedObjective')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">Aucun acte</SelectItem>
-                    {acts.map((act) => (
-                      <SelectItem key={act.id} value={act.id!.toString()}>
-                        {act.title}
+                    <SelectItem value="none">{t('form.noLinkedObjective')}</SelectItem>
+                    {linkedObjectives.map((obj) => (
+                      <SelectItem key={obj.id} value={obj.id!.toString()}>
+                        {obj.title}
                       </SelectItem>
                     ))}
                   </SelectContent>

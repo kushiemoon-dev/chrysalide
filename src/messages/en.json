@@ -1252,7 +1252,9 @@
       "reminderConfig": "Set up a reminder",
       "reminderTitle": "Reminder",
       "selectDateAlert": "Please select a date",
-      "saveError": "Error saving"
+      "saveError": "Error saving",
+      "linkedObjective": "Linked objective (optional)",
+      "noLinkedObjective": "No objective"
     },
     "new": {
       "title": "New appointment",
