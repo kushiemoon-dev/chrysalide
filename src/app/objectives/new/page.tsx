@@ -325,8 +325,12 @@ export default function NewObjectivePage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="not_started">Pas commencé</SelectItem>
-                      <SelectItem value="in_progress">En cours</SelectItem>
+                      <SelectItem value="not_started">
+                        {t('detail.statuses.not_started')}
+                      </SelectItem>
+                      <SelectItem value="in_progress">
+                        {t('detail.statuses.in_progress')}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
