@@ -41,8 +41,10 @@ import {
   deleteMilestone,
   updateMilestone,
   recalculateObjectiveProgress,
+  getAppointmentsByObjective,
+  getPractitioner,
 } from '@/lib/db'
-import type { Objective, Milestone, ObjectiveStatus } from '@/lib/types'
+import type { Objective, Milestone, ObjectiveStatus, Appointment, Practitioner } from '@/lib/types'
 import { categoryConfig, statusConfig } from '@/components/objectives/objective-card'
 import { MilestoneItem } from '@/components/objectives/milestone-item'
 import { TimelineView } from '@/components/objectives/timeline-view'
@@ -58,6 +60,8 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
 
   const [objective, setObjective] = useState<Objective | null>(null)
   const [milestones, setMilestones] = useState<Milestone[]>([])
+  const [linkedAppointments, setLinkedAppointments] = useState<Appointment[]>([])
+  const [practitionerMap, setPractitionerMap] = useState<Record<number, Practitioner>>({})
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState(false)
 
@@ -79,8 +83,28 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
       const obj = await getObjective(Number(resolvedParams.id))
       if (obj) {
         setObjective(obj)
-        const ms = await getMilestones(obj.id!)
+        const [ms, apts] = await Promise.all([
+          getMilestones(obj.id!),
+          getAppointmentsByObjective(obj.id!),
+        ])
         setMilestones(ms)
+        setLinkedAppointments(apts)
+
+        // Resolve practitioner names for envisaged + chosen + appointments
+        const ids = new Set<number>([
+          ...(obj.envisagedPractitionerIds ?? []),
+          ...(obj.chosenPractitionerIds ?? []),
+          ...apts.flatMap((a) => (a.practitionerId ? [a.practitionerId] : [])),
+        ])
+        const entries = await Promise.all(
+          [...ids].map(async (id) => {
+            const p = await getPractitioner(id)
+            return p ? ([id, p] as [number, Practitioner]) : null
+          })
+        )
+        setPractitionerMap(
+          Object.fromEntries(entries.filter((e): e is [number, Practitioner] => e !== null))
+        )
       }
     } finally {
       setLoading(false)
@@ -427,6 +451,84 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
 
       {/* Timeline view */}
       {milestones.length > 0 && <TimelineView objective={objective} milestones={milestones} />}
+
+      {/* Information (act-source only) */}
+      {objective.information && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">{t('act.informationLabel')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground text-sm whitespace-pre-wrap">
+              {objective.information}
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Practitioners (act-source only) */}
+      {((objective.envisagedPractitionerIds?.length ?? 0) > 0 ||
+        (objective.chosenPractitionerIds?.length ?? 0) > 0) && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Praticien·ne·s</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {(objective.envisagedPractitionerIds?.length ?? 0) > 0 && (
+              <div className="space-y-1">
+                <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                  {t('act.envisagedPractitioners')}
+                </p>
+                {objective.envisagedPractitionerIds!.map((id) => (
+                  <p key={id} className="text-sm">
+                    {practitionerMap[id]?.name ?? `#${id}`}
+                  </p>
+                ))}
+              </div>
+            )}
+            {(objective.chosenPractitionerIds?.length ?? 0) > 0 && (
+              <div className="space-y-1">
+                <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                  {t('act.chosenPractitioners')}
+                </p>
+                {objective.chosenPractitionerIds!.map((id) => (
+                  <p key={id} className="text-sm">
+                    {practitionerMap[id]?.name ?? `#${id}`}
+                  </p>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Linked appointments (act-source only) */}
+      {linkedAppointments.length > 0 && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Rendez-vous liés</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {linkedAppointments.map((apt) => {
+              const practitioner = apt.practitionerId ? practitionerMap[apt.practitionerId] : null
+              return (
+                <div key={apt.id} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="text-muted-foreground h-4 w-4 shrink-0" />
+                    <span>
+                      {format(new Date(apt.date), 'd MMM yyyy', { locale: dateLocale })}
+                      {apt.time && ` · ${apt.time}`}
+                    </span>
+                  </div>
+                  <span className="text-muted-foreground truncate">
+                    {practitioner?.name ?? apt.doctor ?? apt.type}
+                  </span>
+                </div>
+              )
+            })}
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
