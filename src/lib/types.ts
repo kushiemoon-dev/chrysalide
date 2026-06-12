@@ -164,7 +164,8 @@ export interface Appointment {
   notes?: string
   reminderMinutes?: number
   cost?: number // Reste à charge en euros (optionnel)
-  actId?: number // Lien vers un acte médical (facultatif)
+  actId?: number // @deprecated — utiliser objectiveId depuis v1.3.0
+  objectiveId?: number // Lien vers un objectif médical (remplace actId)
   createdAt: Date
 }
 
@@ -263,6 +264,12 @@ export interface Objective {
   completedDate?: Date // date de complétion réelle
   progress?: number // 0-100% (calculé depuis milestones ou manuel)
   notes?: string
+  // Champs issus de la fusion avec Act (tous optionnels depuis v1.3.0)
+  actCategory?: ActCategory
+  information?: string
+  envisagedPractitionerIds?: number[]
+  chosenPractitionerIds?: number[]
+  source?: 'act' | 'objective'
   createdAt: Date
   updatedAt: Date
 }
@@ -305,6 +312,7 @@ export interface TreatmentChange {
 }
 
 // === ACTES MÉDICAUX (Bloc-note par acte) ===
+// @deprecated Fusionné dans Objective depuis v1.3.0
 
 export type ActCategory =
   | 'ffs'
@@ -319,6 +327,7 @@ export type ActCategory =
 
 export type ActStatus = 'planning' | 'in_progress' | 'done' | 'cancelled'
 
+/** @deprecated Fusionné dans Objective depuis v1.3.0 */
 export interface Act {
   id?: number
   title: string
@@ -332,6 +341,7 @@ export interface Act {
   updatedAt: Date
 }
 
+/** @deprecated Fusionné dans Milestone depuis v1.3.0 */
 export interface ActTodo {
   id?: number
   actId: number
