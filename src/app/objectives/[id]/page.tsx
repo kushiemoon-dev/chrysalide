@@ -350,11 +350,11 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="not_started">Pas commencé</SelectItem>
-                <SelectItem value="in_progress">En cours</SelectItem>
-                <SelectItem value="completed">Terminé</SelectItem>
-                <SelectItem value="paused">En pause</SelectItem>
-                <SelectItem value="cancelled">Annulé</SelectItem>
+                <SelectItem value="not_started">{t('detail.statuses.not_started')}</SelectItem>
+                <SelectItem value="in_progress">{t('detail.statuses.in_progress')}</SelectItem>
+                <SelectItem value="completed">{t('detail.statuses.completed')}</SelectItem>
+                <SelectItem value="paused">{t('detail.statuses.paused')}</SelectItem>
+                <SelectItem value="cancelled">{t('detail.statuses.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -376,7 +376,7 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
               <div className="flex items-center gap-1 text-green-500">
                 <CheckCircle2 className="h-4 w-4" />
                 <span>
-                  Terminé le{' '}
+                  {t('detail.completedOn')}{' '}
                   {format(new Date(objective.completedDate), 'd MMM yyyy', {
                     locale: dateLocale,
                   })}

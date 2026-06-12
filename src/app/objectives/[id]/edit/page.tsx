@@ -265,11 +265,11 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="not_started">Pas commencé</SelectItem>
-                  <SelectItem value="in_progress">En cours</SelectItem>
-                  <SelectItem value="completed">Terminé</SelectItem>
-                  <SelectItem value="paused">En pause</SelectItem>
-                  <SelectItem value="cancelled">Annulé</SelectItem>
+                  <SelectItem value="not_started">{t('detail.statuses.not_started')}</SelectItem>
+                  <SelectItem value="in_progress">{t('detail.statuses.in_progress')}</SelectItem>
+                  <SelectItem value="completed">{t('detail.statuses.completed')}</SelectItem>
+                  <SelectItem value="paused">{t('detail.statuses.paused')}</SelectItem>
+                  <SelectItem value="cancelled">{t('detail.statuses.cancelled')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
