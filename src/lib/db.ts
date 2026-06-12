@@ -20,6 +20,7 @@ import type {
   Practitioner,
   Act,
   ActTodo,
+  ObjectiveStatus,
 } from './types'
 
 // Définition de la base de données
@@ -157,6 +158,78 @@ db.version(7)
       .modify((bt) => {
         if (typeof bt.date === 'string') bt.date = new Date(bt.date)
         if (typeof bt.createdAt === 'string') bt.createdAt = new Date(bt.createdAt)
+      })
+  })
+
+// Version 8: Fusion acts → objectives, actTodos → milestones, remap appointments.actId → objectiveId
+db.version(8)
+  .stores({
+    medications: '++id, name, type, isActive, startDate',
+    medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
+    bloodTests: '++id, date, practitionerId',
+    physicalProgress: '++id, date',
+    appointments: '++id, date, type, practitionerId, actId, objectiveId',
+    reminders: '++id, type, enabled',
+    userProfile: '++id',
+    journalEntries: '++id, date, mood, *tags',
+    objectives: '++id, category, status, targetDate, actCategory, source',
+    milestones: '++id, objectiveId, achieved, order',
+    treatmentChanges: '++id, medicationId, date, changeType',
+    practitioners: '++id, name, specialty, lastUsed, usageCount',
+    acts: '++id, category, status, createdAt', // conservé — drop en v9
+    actTodos: '++id, actId, done, order', // conservé — drop en v9
+  })
+  .upgrade(async (tx) => {
+    const STATUS_MAP: Record<string, string> = {
+      planning: 'not_started',
+      in_progress: 'in_progress',
+      done: 'completed',
+      cancelled: 'cancelled',
+    }
+
+    const acts = await tx.table('acts').toArray()
+    const actIdToObjectiveId = new Map<number, number>()
+
+    for (const act of acts) {
+      const objId = await tx.table('objectives').add({
+        title: act.title,
+        category: 'medical',
+        actCategory: act.category,
+        status: STATUS_MAP[act.status] ?? 'not_started',
+        information: act.information,
+        notes: act.notes,
+        envisagedPractitionerIds: act.envisagedPractitionerIds ?? [],
+        chosenPractitionerIds: act.chosenPractitionerIds ?? [],
+        source: 'act',
+        progress: 0,
+        createdAt: act.createdAt,
+        updatedAt: act.updatedAt,
+      })
+      if (act.id != null) actIdToObjectiveId.set(act.id, objId as number)
+    }
+
+    // actTodos → milestones
+    const todos = await tx.table('actTodos').toArray()
+    for (const todo of todos) {
+      const objId = todo.actId != null ? actIdToObjectiveId.get(todo.actId) : undefined
+      if (objId == null) continue
+      await tx.table('milestones').add({
+        objectiveId: objId,
+        title: todo.text,
+        achieved: todo.done,
+        order: todo.order,
+        createdAt: todo.createdAt,
+      })
+    }
+
+    // Remap appointments.actId → appointments.objectiveId
+    await tx
+      .table('appointments')
+      .toCollection()
+      .modify((apt: Record<string, unknown>) => {
+        if (apt.actId != null && actIdToObjectiveId.has(apt.actId as number)) {
+          apt.objectiveId = actIdToObjectiveId.get(apt.actId as number)
+        }
       })
   })
 
@@ -456,7 +529,7 @@ export async function exportAllData() {
     acts: await db.acts.toArray(),
     actTodos: await db.actTodos.toArray(),
     exportedAt: new Date().toISOString(),
-    version: 4,
+    version: 5,
   }
 }
 
@@ -563,6 +636,38 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
         await db.acts.bulkAdd(deserializeDates(data.acts, ['createdAt', 'updatedAt']))
       if (data.actTodos?.length)
         await db.actTodos.bulkAdd(deserializeDates(data.actTodos, ['createdAt']))
+
+      // Rétro-compat : si le backup contient des `acts` sans source='act',
+      // les replier en objectives (cas d'un backup v7 importé sur un client v8)
+      if (data.acts?.length) {
+        const STATUS_MAP: Record<string, string> = {
+          planning: 'not_started',
+          in_progress: 'in_progress',
+          done: 'completed',
+          cancelled: 'cancelled',
+        }
+        const existingTitles = new Set(
+          (await db.objectives.toArray()).map((o: Objective) => o.title)
+        )
+        for (const act of data.acts) {
+          // Évite les doublons si le backup est déjà fusionné
+          if (existingTitles.has(act.title)) continue
+          await db.objectives.add({
+            title: act.title,
+            category: 'medical',
+            actCategory: act.category,
+            status: (STATUS_MAP[act.status] ?? 'not_started') as ObjectiveStatus,
+            information: act.information,
+            notes: act.notes,
+            envisagedPractitionerIds: act.envisagedPractitionerIds ?? [],
+            chosenPractitionerIds: act.chosenPractitionerIds ?? [],
+            source: 'act',
+            progress: 0,
+            createdAt: act.createdAt ? new Date(act.createdAt) : new Date(),
+            updatedAt: act.updatedAt ? new Date(act.updatedAt) : new Date(),
+          })
+        }
+      }
     }
   )
 }
@@ -1241,6 +1346,11 @@ export async function deleteActTodo(id: number) {
   return db.actTodos.delete(id)
 }
 
+/** @deprecated Utiliser getAppointmentsByObjective depuis v1.3.0 */
 export async function getAppointmentsByAct(actId: number) {
   return db.appointments.where('actId').equals(actId).sortBy('date')
+}
+
+export async function getAppointmentsByObjective(objectiveId: number): Promise<Appointment[]> {
+  return db.appointments.where('objectiveId').equals(objectiveId).toArray()
 }

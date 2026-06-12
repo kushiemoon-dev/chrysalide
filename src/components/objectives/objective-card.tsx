@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { getDateLocale } from '@/i18n/date-locale'
 import type { Locale } from '@/i18n/config'
 import { format } from 'date-fns'
@@ -66,31 +66,31 @@ export const statusConfig: Record<
   { label: string; icon: typeof Clock; color: string; bgColor: string }
 > = {
   not_started: {
-    label: 'Pas commencé',
+    label: 'not_started',
     icon: Clock,
     color: 'text-muted-foreground',
     bgColor: 'bg-muted',
   },
   in_progress: {
-    label: 'En cours',
+    label: 'in_progress',
     icon: Activity,
     color: 'text-trans-blue',
     bgColor: 'bg-trans-blue/20',
   },
   completed: {
-    label: 'Terminé',
+    label: 'completed',
     icon: CheckCircle2,
     color: 'text-green-500',
     bgColor: 'bg-green-500/20',
   },
   paused: {
-    label: 'En pause',
+    label: 'paused',
     icon: Pause,
     color: 'text-yellow-500',
     bgColor: 'bg-yellow-500/20',
   },
   cancelled: {
-    label: 'Annulé',
+    label: 'cancelled',
     icon: XCircle,
     color: 'text-red-500',
     bgColor: 'bg-red-500/20',
@@ -109,6 +109,7 @@ export function ObjectiveCard({
   milestonesCompleted = 0,
 }: ObjectiveCardProps) {
   const locale = useLocale()
+  const t = useTranslations('objectives')
   const dateLocale = getDateLocale(locale as Locale)
   const category = categoryConfig[objective.category]
   const status = statusConfig[objective.status]
@@ -146,7 +147,7 @@ export function ObjectiveCard({
               <div className="mb-3 flex flex-wrap gap-2">
                 <Badge variant="outline" className={`${status.bgColor} border-0`}>
                   <StatusIcon className={`mr-1 h-3 w-3 ${status.color}`} />
-                  <span className={status.color}>{status.label}</span>
+                  <span className={status.color}>{t(`detail.statuses.${objective.status}`)}</span>
                 </Badge>
 
                 <Badge variant="outline" className="text-muted-foreground">
@@ -185,7 +186,7 @@ export function ObjectiveCard({
                 <div className="mt-2 flex items-center gap-1 text-xs text-green-500">
                   <CheckCircle2 className="h-3 w-3" />
                   <span>
-                    Terminé le{' '}
+                    {t('detail.completedOn')}{' '}
                     {format(new Date(objective.completedDate), 'd MMM yyyy', {
                       locale: dateLocale,
                     })}

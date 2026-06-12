@@ -828,6 +828,44 @@
     },
     "celebration": {
       "continue": "Continue"
+    },
+    "actCategories": {
+      "ffs": "FFS – Facial Feminization Surgery",
+      "vaginoplasty": "Vaginoplasty",
+      "hrt": "HRT – Hormone Replacement Therapy",
+      "orchiectomy": "Orchiectomy",
+      "breast_augmentation": "Breast Augmentation",
+      "voice": "Voice Training",
+      "hair_removal": "Permanent Hair Removal",
+      "civil_status": "Legal Name/Gender Change",
+      "other": "Other"
+    },
+    "act": {
+      "title": "My medical procedures",
+      "subtitle": "Track your transition procedures",
+      "empty": "No procedures",
+      "emptyDescription": "Start your journey by adding your first medical procedure.",
+      "new": "New procedure",
+      "newTitle": "New procedure",
+      "newSubtitle": "Add a medical procedure to track",
+      "editTitle": "Edit procedure",
+      "titleLabel": "Title *",
+      "categoryLabel": "Category *",
+      "statusLabel": "Status",
+      "informationLabel": "Information",
+      "informationPlaceholder": "Practical info, quotes, contacts...",
+      "envisagedPractitioners": "Considered practitioners",
+      "chosenPractitioners": "Chosen practitioners",
+      "todos": "To do",
+      "addTodo": "Add a task...",
+      "noTodos": "No tasks defined.",
+      "noNotes": "No notes.",
+      "statuses": {
+        "planning": "Planning",
+        "in_progress": "In progress",
+        "done": "Done",
+        "cancelled": "Cancelled"
+      }
     }
   },
   "onboarding": {
@@ -1214,7 +1252,9 @@
       "reminderConfig": "Set up a reminder",
       "reminderTitle": "Reminder",
       "selectDateAlert": "Please select a date",
-      "saveError": "Error saving"
+      "saveError": "Error saving",
+      "linkedObjective": "Linked objective (optional)",
+      "noLinkedObjective": "No objective"
     },
     "new": {
       "title": "New appointment",

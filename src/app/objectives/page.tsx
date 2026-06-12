@@ -165,7 +165,7 @@ export default function ObjectivesPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.inProgress}</p>
-                <p className="text-muted-foreground text-xs">En cours</p>
+                <p className="text-muted-foreground text-xs">{t('detail.statuses.in_progress')}</p>
               </div>
             </div>
           </CardContent>
@@ -179,7 +179,7 @@ export default function ObjectivesPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.completed}</p>
-                <p className="text-muted-foreground text-xs">Terminés</p>
+                <p className="text-muted-foreground text-xs">{t('detail.statuses.completed')}</p>
               </div>
             </div>
           </CardContent>
@@ -202,11 +202,11 @@ export default function ObjectivesPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t('list.allStatuses')}</SelectItem>
-                  <SelectItem value="not_started">Pas commencé</SelectItem>
-                  <SelectItem value="in_progress">En cours</SelectItem>
-                  <SelectItem value="completed">Terminé</SelectItem>
-                  <SelectItem value="paused">En pause</SelectItem>
-                  <SelectItem value="cancelled">Annulé</SelectItem>
+                  <SelectItem value="not_started">{t('detail.statuses.not_started')}</SelectItem>
+                  <SelectItem value="in_progress">{t('detail.statuses.in_progress')}</SelectItem>
+                  <SelectItem value="completed">{t('detail.statuses.completed')}</SelectItem>
+                  <SelectItem value="paused">{t('detail.statuses.paused')}</SelectItem>
+                  <SelectItem value="cancelled">{t('detail.statuses.cancelled')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

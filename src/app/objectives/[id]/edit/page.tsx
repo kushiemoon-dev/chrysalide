@@ -23,7 +23,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar'
 import { ArrowLeft, Save, Calendar as CalendarIcon, Target } from 'lucide-react'
 import { getObjective, updateObjective } from '@/lib/db'
-import type { Objective, ObjectiveCategory, ObjectiveStatus } from '@/lib/types'
+import type { Objective, ObjectiveCategory, ObjectiveStatus, ActCategory } from '@/lib/types'
+import { ACT_CATEGORIES } from '@/lib/constants'
 import { categoryConfig } from '@/components/objectives/objective-card'
 import { cn } from '@/lib/utils'
 
@@ -44,6 +45,8 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
   const [status, setStatus] = useState<ObjectiveStatus>('not_started')
   const [targetDate, setTargetDate] = useState<Date | undefined>()
   const [notes, setNotes] = useState('')
+  const [actCategory, setActCategory] = useState<ActCategory | undefined>(undefined)
+  const [information, setInformation] = useState('')
 
   useEffect(() => {
     loadObjective()
@@ -61,6 +64,8 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
         setStatus(data.status)
         setTargetDate(data.targetDate ? new Date(data.targetDate) : undefined)
         setNotes(data.notes || '')
+        setActCategory(data.actCategory)
+        setInformation(data.information ?? '')
       }
     } finally {
       setLoading(false)
@@ -80,6 +85,8 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
         status,
         targetDate,
         notes: notes.trim() || undefined,
+        actCategory: category === 'medical' ? actCategory : undefined,
+        information: category === 'medical' ? information.trim() || undefined : undefined,
       }
 
       // Handle status changes
@@ -218,6 +225,39 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
               </Select>
             </div>
 
+            {category === 'medical' && (
+              <>
+                <div className="space-y-2">
+                  <Label>{t('act.categoryLabel')}</Label>
+                  <Select
+                    value={actCategory ?? ''}
+                    onValueChange={(v) => setActCategory(v as ActCategory)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="—" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(Object.keys(ACT_CATEGORIES) as ActCategory[]).map((key) => (
+                        <SelectItem key={key} value={key}>
+                          {t(`actCategories.${key}`)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>{t('act.informationLabel')}</Label>
+                  <Textarea
+                    value={information}
+                    onChange={(e) => setInformation(e.target.value)}
+                    placeholder={t('act.informationPlaceholder')}
+                    className="min-h-[80px] resize-none"
+                  />
+                </div>
+              </>
+            )}
+
             <div className="space-y-2">
               <Label>Statut</Label>
               <Select value={status} onValueChange={(v) => setStatus(v as ObjectiveStatus)}>
@@ -225,11 +265,11 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="not_started">Pas commencé</SelectItem>
-                  <SelectItem value="in_progress">En cours</SelectItem>
-                  <SelectItem value="completed">Terminé</SelectItem>
-                  <SelectItem value="paused">En pause</SelectItem>
-                  <SelectItem value="cancelled">Annulé</SelectItem>
+                  <SelectItem value="not_started">{t('detail.statuses.not_started')}</SelectItem>
+                  <SelectItem value="in_progress">{t('detail.statuses.in_progress')}</SelectItem>
+                  <SelectItem value="completed">{t('detail.statuses.completed')}</SelectItem>
+                  <SelectItem value="paused">{t('detail.statuses.paused')}</SelectItem>
+                  <SelectItem value="cancelled">{t('detail.statuses.cancelled')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

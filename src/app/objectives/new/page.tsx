@@ -34,7 +34,8 @@ import {
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { addObjective, addMilestone, getUserProfile } from '@/lib/db'
-import type { ObjectiveCategory, ObjectiveStatus, UserProfile } from '@/lib/types'
+import type { ObjectiveCategory, ObjectiveStatus, UserProfile, ActCategory } from '@/lib/types'
+import { ACT_CATEGORIES } from '@/lib/constants'
 import { categoryConfig } from '@/components/objectives/objective-card'
 import { cn } from '@/lib/utils'
 import {
@@ -65,6 +66,8 @@ export default function NewObjectivePage() {
   const [targetDate, setTargetDate] = useState<Date | undefined>()
   const [milestones, setMilestones] = useState<MilestoneInput[]>([])
   const [newMilestoneTitle, setNewMilestoneTitle] = useState('')
+  const [actCategory, setActCategory] = useState<ActCategory | undefined>(undefined)
+  const [information, setInformation] = useState('')
 
   // Load user profile for context-aware templates
   useEffect(() => {
@@ -116,6 +119,9 @@ export default function NewObjectivePage() {
         status,
         targetDate,
         progress: 0,
+        actCategory: category === 'medical' ? actCategory : undefined,
+        information: category === 'medical' ? information.trim() || undefined : undefined,
+        source: 'objective',
       })
 
       // Create milestones
@@ -279,6 +285,39 @@ export default function NewObjectivePage() {
                   </Select>
                 </div>
 
+                {category === 'medical' && (
+                  <>
+                    <div className="space-y-2">
+                      <Label>{t('act.categoryLabel')}</Label>
+                      <Select
+                        value={actCategory ?? ''}
+                        onValueChange={(v) => setActCategory(v as ActCategory)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="—" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {(Object.keys(ACT_CATEGORIES) as ActCategory[]).map((key) => (
+                            <SelectItem key={key} value={key}>
+                              {t(`actCategories.${key}`)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>{t('act.informationLabel')}</Label>
+                      <Textarea
+                        value={information}
+                        onChange={(e) => setInformation(e.target.value)}
+                        placeholder={t('act.informationPlaceholder')}
+                        className="min-h-[80px] resize-none"
+                      />
+                    </div>
+                  </>
+                )}
+
                 <div className="space-y-2">
                   <Label>Statut initial</Label>
                   <Select value={status} onValueChange={(v) => setStatus(v as ObjectiveStatus)}>
@@ -286,8 +325,12 @@ export default function NewObjectivePage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="not_started">Pas commencé</SelectItem>
-                      <SelectItem value="in_progress">En cours</SelectItem>
+                      <SelectItem value="not_started">
+                        {t('detail.statuses.not_started')}
+                      </SelectItem>
+                      <SelectItem value="in_progress">
+                        {t('detail.statuses.in_progress')}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
