@@ -1257,7 +1257,9 @@
       "reminderConfig": "Configurer un rappel",
       "reminderTitle": "Rappel",
       "selectDateAlert": "Veuillez sélectionner une date",
-      "saveError": "Erreur lors de la sauvegarde"
+      "saveError": "Erreur lors de la sauvegarde",
+      "linkedObjective": "Lié à un objectif (facultatif)",
+      "noLinkedObjective": "Aucun objectif"
     },
     "new": {
       "title": "Nouveau rendez-vous",

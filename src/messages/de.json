@@ -1262,7 +1262,9 @@
       "reminderConfig": "Erinnerung einrichten",
       "reminderTitle": "Erinnerung",
       "selectDateAlert": "Bitte wähle ein Datum aus",
-      "saveError": "Fehler beim Speichern"
+      "saveError": "Fehler beim Speichern",
+      "linkedObjective": "Verknüpftes Ziel (optional)",
+      "noLinkedObjective": "Kein Ziel"
     },
     "new": {
       "title": "Neuer Termin",
