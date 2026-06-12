@@ -418,20 +418,16 @@ export const REMINDER_TIMES = [
 
 import type { ActCategory } from './types'
 
-export const ACT_CATEGORIES: Record<ActCategory, { label: string; icon: string; color: string }> = {
-  ffs: { label: 'FFS – Féminisation du visage', icon: 'Sparkles', color: '#EC4899' },
-  vaginoplasty: { label: 'Vaginoplastie', icon: 'Heart', color: '#F5A9B8' },
-  hrt: { label: 'THS – Thérapie hormonale', icon: 'Syringe', color: '#5BCEFA' },
-  orchiectomy: { label: 'Orchidectomie', icon: 'Scissors', color: '#E8A0BF' },
-  breast_augmentation: {
-    label: 'Augmentation mammaire',
-    icon: 'Heart',
-    color: '#F9A8D4',
-  },
-  voice: { label: 'Travail de la voix', icon: 'Mic', color: '#06B6D4' },
-  hair_removal: { label: 'Épilation définitive', icon: 'Zap', color: '#F97316' },
-  civil_status: { label: 'État civil', icon: 'FileText', color: '#9CA3AF' },
-  other: { label: 'Autre', icon: 'MoreHorizontal', color: '#6B7280' },
+export const ACT_CATEGORIES: Record<ActCategory, { icon: string; color: string }> = {
+  ffs: { icon: 'Sparkles', color: '#EC4899' },
+  vaginoplasty: { icon: 'Heart', color: '#F5A9B8' },
+  hrt: { icon: 'Syringe', color: '#5BCEFA' },
+  orchiectomy: { icon: 'Scissors', color: '#E8A0BF' },
+  breast_augmentation: { icon: 'Heart', color: '#F9A8D4' },
+  voice: { icon: 'Mic', color: '#06B6D4' },
+  hair_removal: { icon: 'Zap', color: '#F97316' },
+  civil_status: { icon: 'FileText', color: '#9CA3AF' },
+  other: { icon: 'MoreHorizontal', color: '#6B7280' },
 }
 
 // === OBJECTIVE TEMPLATES ===

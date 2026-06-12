@@ -833,6 +833,44 @@
     },
     "celebration": {
       "continue": "Continuer"
+    },
+    "actCategories": {
+      "ffs": "FFS – Féminisation du visage",
+      "vaginoplasty": "Vaginoplastie",
+      "hrt": "THS – Thérapie hormonale",
+      "orchiectomy": "Orchidectomie",
+      "breast_augmentation": "Augmentation mammaire",
+      "voice": "Travail de la voix",
+      "hair_removal": "Épilation définitive",
+      "civil_status": "État civil",
+      "other": "Autre"
+    },
+    "act": {
+      "title": "Mes démarches médicales",
+      "subtitle": "Suivi de tes démarches de transition",
+      "empty": "Aucune démarche",
+      "emptyDescription": "Commence ton parcours en ajoutant ta première démarche médicale.",
+      "new": "Nouvelle démarche",
+      "newTitle": "Nouvelle démarche",
+      "newSubtitle": "Ajoute une démarche médicale à suivre",
+      "editTitle": "Modifier la démarche",
+      "titleLabel": "Titre *",
+      "categoryLabel": "Catégorie *",
+      "statusLabel": "Statut",
+      "informationLabel": "Informations",
+      "informationPlaceholder": "Informations pratiques, devis, contacts...",
+      "envisagedPractitioners": "Praticien·ne·s envisagé·e·s",
+      "chosenPractitioners": "Praticien·ne·s choisi·e·s",
+      "todos": "À faire",
+      "addTodo": "Ajouter une tâche...",
+      "noTodos": "Aucune tâche définie.",
+      "noNotes": "Aucune note.",
+      "statuses": {
+        "planning": "En préparation",
+        "in_progress": "En cours",
+        "done": "Terminé",
+        "cancelled": "Annulé"
+      }
     }
   },
   "onboarding": {

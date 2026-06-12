@@ -225,7 +225,7 @@ export default function EditActPage({ params }: { params: Promise<{ id: string }
                 <SelectContent>
                   {Object.entries(ACT_CATEGORIES).map(([key, cfg]) => (
                     <SelectItem key={key} value={key}>
-                      {cfg.label}
+                      {(cfg as { icon: string; color: string; label?: string }).label}
                     </SelectItem>
                   ))}
                 </SelectContent>

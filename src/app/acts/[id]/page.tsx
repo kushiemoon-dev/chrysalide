@@ -186,7 +186,7 @@ export default function ActDetailPage({ params }: { params: Promise<{ id: string
                 className="border-0 text-xs"
                 style={{ backgroundColor: catCfg.color + '20', color: catCfg.color }}
               >
-                {catCfg.label}
+                {(catCfg as { icon: string; color: string; label?: string }).label}
               </Badge>
               <Badge
                 variant="outline"
