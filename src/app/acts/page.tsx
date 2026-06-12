@@ -123,7 +123,7 @@ export default function ActsPage() {
                             color: catCfg.color,
                           }}
                         >
-                          {catCfg.label}
+                          {(catCfg as { icon: string; color: string; label?: string }).label}
                         </Badge>
                       </CardContent>
                     </Card>
