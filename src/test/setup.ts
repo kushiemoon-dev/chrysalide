@@ -9,26 +9,32 @@ import '@testing-library/jest-dom'
 //
 // Must use get/set (not value+writable) because the existing Node descriptor
 // is a getter/setter pair — redefining with 'value' would throw TypeError.
-const jsdomWindow = (globalThis as unknown as { jsdom: { window: Window } }).jsdom.window
-Object.defineProperty(globalThis, 'localStorage', {
-  get: () => jsdomWindow.localStorage,
-  set: (v) => {
-    Object.defineProperty(globalThis, 'localStorage', {
-      value: v,
-      writable: true,
-      configurable: true,
-    })
-  },
-  configurable: true,
-})
-Object.defineProperty(globalThis, 'sessionStorage', {
-  get: () => jsdomWindow.sessionStorage,
-  set: (v) => {
-    Object.defineProperty(globalThis, 'sessionStorage', {
-      value: v,
-      writable: true,
-      configurable: true,
-    })
-  },
-  configurable: true,
-})
+//
+// NOTE: globalThis.jsdom is an internal vitest-environment-jsdom detail (not part of the public API).
+// This may break if vitest-environment-jsdom changes its internal structure — verify on jsdom/vitest major updates.
+const jsdomEnv = (globalThis as unknown as { jsdom?: { window: Window } }).jsdom
+if (jsdomEnv) {
+  const jsdomWindow = jsdomEnv.window
+  Object.defineProperty(globalThis, 'localStorage', {
+    get: () => jsdomWindow.localStorage,
+    set: (v) => {
+      Object.defineProperty(globalThis, 'localStorage', {
+        value: v,
+        writable: true,
+        configurable: true,
+      })
+    },
+    configurable: true,
+  })
+  Object.defineProperty(globalThis, 'sessionStorage', {
+    get: () => jsdomWindow.sessionStorage,
+    set: (v) => {
+      Object.defineProperty(globalThis, 'sessionStorage', {
+        value: v,
+        writable: true,
+        configurable: true,
+      })
+    },
+    configurable: true,
+  })
+}
