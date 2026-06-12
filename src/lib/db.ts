@@ -20,6 +20,7 @@ import type {
   Practitioner,
   Act,
   ActTodo,
+  ObjectiveStatus,
 } from './types'
 
 // Définition de la base de données
@@ -528,7 +529,7 @@ export async function exportAllData() {
     acts: await db.acts.toArray(),
     actTodos: await db.actTodos.toArray(),
     exportedAt: new Date().toISOString(),
-    version: 4,
+    version: 5,
   }
 }
 
@@ -635,6 +636,38 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
         await db.acts.bulkAdd(deserializeDates(data.acts, ['createdAt', 'updatedAt']))
       if (data.actTodos?.length)
         await db.actTodos.bulkAdd(deserializeDates(data.actTodos, ['createdAt']))
+
+      // Rétro-compat : si le backup contient des `acts` sans source='act',
+      // les replier en objectives (cas d'un backup v7 importé sur un client v8)
+      if (data.acts?.length) {
+        const STATUS_MAP: Record<string, string> = {
+          planning: 'not_started',
+          in_progress: 'in_progress',
+          done: 'completed',
+          cancelled: 'cancelled',
+        }
+        const existingTitles = new Set(
+          (await db.objectives.toArray()).map((o: Objective) => o.title)
+        )
+        for (const act of data.acts) {
+          // Évite les doublons si le backup est déjà fusionné
+          if (existingTitles.has(act.title)) continue
+          await db.objectives.add({
+            title: act.title,
+            category: 'medical',
+            actCategory: act.category,
+            status: (STATUS_MAP[act.status] ?? 'not_started') as ObjectiveStatus,
+            information: act.information,
+            notes: act.notes,
+            envisagedPractitionerIds: act.envisagedPractitionerIds ?? [],
+            chosenPractitionerIds: act.chosenPractitionerIds ?? [],
+            source: 'act',
+            progress: 0,
+            createdAt: act.createdAt ? new Date(act.createdAt) : new Date(),
+            updatedAt: act.updatedAt ? new Date(act.updatedAt) : new Date(),
+          })
+        }
+      }
     }
   )
 }
@@ -1313,6 +1346,11 @@ export async function deleteActTodo(id: number) {
   return db.actTodos.delete(id)
 }
 
+/** @deprecated Utiliser getAppointmentsByObjective depuis v1.3.0 */
 export async function getAppointmentsByAct(actId: number) {
   return db.appointments.where('actId').equals(actId).sortBy('date')
+}
+
+export async function getAppointmentsByObjective(objectiveId: number): Promise<Appointment[]> {
+  return db.appointments.where('objectiveId').equals(objectiveId).toArray()
 }
