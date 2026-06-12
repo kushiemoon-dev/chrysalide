@@ -61,9 +61,7 @@ export default function NewAppointmentPage() {
   useEffect(() => {
     getObjectives()
       .then((all) =>
-        setLinkedObjectives(
-          all.filter((o) => o.source === 'act' || o.category === 'medical')
-        )
+        setLinkedObjectives(all.filter((o) => o.source === 'act' || o.category === 'medical'))
       )
       .catch((error) => console.error('Error loading objectives:', error))
   }, [])
