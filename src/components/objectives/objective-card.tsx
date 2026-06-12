@@ -66,31 +66,31 @@ export const statusConfig: Record<
   { label: string; icon: typeof Clock; color: string; bgColor: string }
 > = {
   not_started: {
-    label: 'Pas commencé',
+    label: 'not_started',
     icon: Clock,
     color: 'text-muted-foreground',
     bgColor: 'bg-muted',
   },
   in_progress: {
-    label: 'En cours',
+    label: 'in_progress',
     icon: Activity,
     color: 'text-trans-blue',
     bgColor: 'bg-trans-blue/20',
   },
   completed: {
-    label: 'Terminé',
+    label: 'completed',
     icon: CheckCircle2,
     color: 'text-green-500',
     bgColor: 'bg-green-500/20',
   },
   paused: {
-    label: 'En pause',
+    label: 'paused',
     icon: Pause,
     color: 'text-yellow-500',
     bgColor: 'bg-yellow-500/20',
   },
   cancelled: {
-    label: 'Annulé',
+    label: 'cancelled',
     icon: XCircle,
     color: 'text-red-500',
     bgColor: 'bg-red-500/20',
