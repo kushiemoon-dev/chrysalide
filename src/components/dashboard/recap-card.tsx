@@ -161,7 +161,7 @@ export function RecapCard() {
             </div>
             <Badge variant={streak > 0 ? 'default' : 'outline'}>
               {streak > 0
-                ? `${streak}+ ${streak > 1 ? t('recap.days') : t('recap.day')}`
+                ? `${streak} ${streak > 1 ? t('recap.days') : t('recap.day')}`
                 : t('recap.toStart')}
             </Badge>
           </div>
@@ -186,9 +186,11 @@ export function RecapCard() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {keyMarkers.map((marker) => {
-                // Find reference range for feminizing
+                // Find reference range based on profile's target gender
                 const range = REFERENCE_RANGES.find(
-                  (r) => r.marker === marker.marker && r.context === 'feminizing'
+                  (r) =>
+                    r.marker === marker.marker &&
+                    r.context === (profile?.targetGender ?? 'feminizing')
                 )
                 const isInRange = range
                   ? marker.value >= range.min && marker.value <= range.max
