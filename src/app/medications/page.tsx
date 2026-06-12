@@ -162,9 +162,6 @@ export default function MedicationsPage() {
       // Reload today's logs to reflect newly auto-validated doses
       const updatedLogs = await getTodayLogs()
       setTodayLogs(updatedLogs)
-      console.log(
-        `✅ Auto-validation (recheck): ${count} dose${count > 1 ? 's' : ''} validée${count > 1 ? 's' : ''}`
-      )
     }
   }, [activeMedications])
 
@@ -251,11 +248,6 @@ export default function MedicationsPage() {
 
       // Auto-validate yesterday's missed doses first (one-time on load)
       const yesterdayCount = await autoValidateYesterdayDoses(activeMeds)
-      if (yesterdayCount > 0) {
-        console.log(
-          `✅ Auto-validation (veille): ${yesterdayCount} dose${yesterdayCount > 1 ? 's' : ''} rattrapée${yesterdayCount > 1 ? 's' : ''}`
-        )
-      }
 
       // Auto-validate today's past doses if setting is enabled
       const autoCreatedCount = await autoValidatePastDoses(activeMeds, logs)
@@ -280,13 +272,6 @@ export default function MedicationsPage() {
       )
 
       setLastLogs(lastLogsMap)
-
-      // Show subtle notification if doses were auto-validated
-      if (autoCreatedCount > 0) {
-        console.log(
-          `✅ Auto-validation: ${autoCreatedCount} dose${autoCreatedCount > 1 ? 's' : ''} validée${autoCreatedCount > 1 ? 's' : ''}`
-        )
-      }
     } catch (error) {
       console.error('Error loading medications:', error)
     } finally {
