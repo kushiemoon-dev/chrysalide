@@ -12,3 +12,13 @@ export async function skipOnboarding(page: Page) {
     )
   })
 }
+
+/**
+ * Delete the IndexedDB database before the app loads so tests start
+ * from a known empty state (prevents data leaking between test runs).
+ */
+export async function resetDatabase(page: Page) {
+  await page.addInitScript(() => {
+    indexedDB.deleteDatabase('ChrysalideDB')
+  })
+}

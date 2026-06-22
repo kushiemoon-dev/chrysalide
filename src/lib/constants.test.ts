@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import {
-  BLOOD_MARKERS,
-  REFERENCE_RANGES,
-  getFrequenciesForMethod,
-  getTemplatesForContext,
-} from './constants'
+import { BLOOD_MARKERS, REFERENCE_RANGES, getFrequenciesForMethod } from './constants'
+import { getTemplatesForContext } from './objective-templates'
 
 describe('BLOOD_MARKERS', () => {
   it('testostérone utilise ng/mL comme unité', () => {

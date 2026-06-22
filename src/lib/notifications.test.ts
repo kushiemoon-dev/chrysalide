@@ -11,7 +11,6 @@ import {
   setModulePreferences,
   isAutoValidationEnabled,
   isScheduledTimePassed,
-  REMINDER_MESSAGES,
 } from './notifications'
 
 beforeEach(() => {
@@ -159,20 +158,6 @@ describe('shouldTakeMedicationOnDate', () => {
     const med = { frequency: '1x/jour', startDate, endDate: new Date('2024-01-10') }
     expect(shouldTakeMedicationOnDate(med, new Date('2024-01-10'))).toBe(true)
     expect(shouldTakeMedicationOnDate(med, new Date('2024-01-11'))).toBe(false)
-  })
-})
-
-describe('REMINDER_MESSAGES', () => {
-  it('medication body inclut le nom', () => {
-    expect(REMINDER_MESSAGES.medication.body('Estradiol')).toContain('Estradiol')
-  })
-
-  it('refill body inclut le nom', () => {
-    expect(REMINDER_MESSAGES.refill.body('Estradiol')).toContain('Estradiol')
-  })
-
-  it('appointment body inclut les détails', () => {
-    expect(REMINDER_MESSAGES.appointment.body('Dr. Martin demain')).toContain('Dr. Martin demain')
   })
 })
 

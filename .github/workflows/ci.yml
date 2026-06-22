@@ -43,6 +43,13 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: 1
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next/
+          retention-days: 1
+
   e2e:
     name: E2E tests
     runs-on: ubuntu-latest
@@ -69,10 +76,11 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Build
-        run: pnpm run build
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: .next/
 
       - name: Run E2E tests
         run: pnpm run test:e2e

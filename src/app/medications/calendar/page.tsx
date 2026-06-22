@@ -38,7 +38,7 @@ export default function MedicationsCalendarPage() {
   useEffect(() => {
     async function loadData() {
       // Load ALL medications (including inactive/ended) for historical calendar view
-      const meds = await getMedications({ activeOnly: false })
+      const meds = await getMedications(false)
       setMedications(meds)
 
       // Calculate total calendar days since first dose

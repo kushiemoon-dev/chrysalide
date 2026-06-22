@@ -218,38 +218,6 @@ export async function importFromQRData(chunks: DataChunk[]): Promise<{
 }
 
 /**
- * Generate a sync URL for sharing
- * Uses a simple URL scheme for smaller datasets
- */
-export async function generateSyncURL(): Promise<string | null> {
-  const { chunks } = await generateExportQRData()
-
-  // If data fits in one chunk, we can use a simple URL
-  if (chunks.length === 1) {
-    const encodedData = encodeURIComponent(chunks[0].d)
-    return `chrysalide://sync?data=${encodedData}`
-  }
-
-  // Multiple chunks needed - return null (use QR code flow instead)
-  return null
-}
-
-/**
- * Parse a sync URL
- */
-export function parseSyncURL(url: string): string | null {
-  try {
-    const parsed = new URL(url)
-    if (parsed.protocol !== 'chrysalide:') return null
-
-    const data = parsed.searchParams.get('data')
-    return data ? decodeURIComponent(data) : null
-  } catch {
-    return null
-  }
-}
-
-/**
  * QR code scan state manager
  */
 export class QRScanSession {
