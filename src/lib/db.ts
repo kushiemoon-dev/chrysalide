@@ -237,36 +237,12 @@ export { db }
 
 // === HELPERS CRUD ===
 
-// Options pour getMedications
-export interface GetMedicationsOptions {
-  activeOnly?: boolean
-  sortInactiveAtEnd?: boolean
-}
-
 // Medications
-export async function getMedications(options: GetMedicationsOptions | boolean = true) {
-  // Rétrocompatibilité: si on passe un boolean, c'est activeOnly
-  const opts: GetMedicationsOptions =
-    typeof options === 'boolean' ? { activeOnly: options } : options
-
-  const { activeOnly = true, sortInactiveAtEnd = false } = opts
-
+export async function getMedications(activeOnly = true) {
   if (activeOnly) {
-    // Filter by isActive boolean - Dexie stores booleans as true/false
     return db.medications.filter((med) => med.isActive === true).toArray()
   }
-
-  const meds = await db.medications.toArray()
-
-  if (sortInactiveAtEnd) {
-    // Trier: actifs en premier, inactifs à la fin
-    return meds.sort((a, b) => {
-      if (a.isActive === b.isActive) return 0
-      return a.isActive ? -1 : 1
-    })
-  }
-
-  return meds
+  return db.medications.toArray()
 }
 
 export async function getMedication(id: number) {
@@ -982,74 +958,6 @@ export async function recordTreatmentChange(
     newValue,
     reason,
   })
-}
-
-// === EXPORT/IMPORT v0.2.0 ===
-
-export async function exportAllDataV2() {
-  return {
-    medications: await db.medications.toArray(),
-    medicationLogs: await db.medicationLogs.toArray(),
-    bloodTests: await db.bloodTests.toArray(),
-    physicalProgress: await db.physicalProgress.toArray(),
-    appointments: await db.appointments.toArray(),
-    reminders: await db.reminders.toArray(),
-    userProfile: await db.userProfile.toArray(),
-    // Nouvelles tables v0.2.0
-    journalEntries: await db.journalEntries.filter((e) => !e.isPrivate).toArray(),
-    objectives: await db.objectives.toArray(),
-    milestones: await db.milestones.toArray(),
-    treatmentChanges: await db.treatmentChanges.toArray(),
-    exportedAt: new Date().toISOString(),
-    version: 2,
-  }
-}
-
-export async function importAllDataV2(data: Awaited<ReturnType<typeof exportAllDataV2>>) {
-  await db.transaction(
-    'rw',
-    [
-      db.medications,
-      db.medicationLogs,
-      db.bloodTests,
-      db.physicalProgress,
-      db.appointments,
-      db.reminders,
-      db.userProfile,
-      db.journalEntries,
-      db.objectives,
-      db.milestones,
-      db.treatmentChanges,
-    ],
-    async () => {
-      // Clear existing data
-      await db.medications.clear()
-      await db.medicationLogs.clear()
-      await db.bloodTests.clear()
-      await db.physicalProgress.clear()
-      await db.appointments.clear()
-      await db.reminders.clear()
-      await db.userProfile.clear()
-      await db.journalEntries.clear()
-      await db.objectives.clear()
-      await db.milestones.clear()
-      await db.treatmentChanges.clear()
-
-      // Import data
-      if (data.medications?.length) await db.medications.bulkAdd(data.medications)
-      if (data.medicationLogs?.length) await db.medicationLogs.bulkAdd(data.medicationLogs)
-      if (data.bloodTests?.length) await db.bloodTests.bulkAdd(data.bloodTests)
-      if (data.physicalProgress?.length) await db.physicalProgress.bulkAdd(data.physicalProgress)
-      if (data.appointments?.length) await db.appointments.bulkAdd(data.appointments)
-      if (data.reminders?.length) await db.reminders.bulkAdd(data.reminders)
-      if (data.userProfile?.length) await db.userProfile.bulkAdd(data.userProfile)
-      // Nouvelles tables v0.2.0
-      if (data.journalEntries?.length) await db.journalEntries.bulkAdd(data.journalEntries)
-      if (data.objectives?.length) await db.objectives.bulkAdd(data.objectives)
-      if (data.milestones?.length) await db.milestones.bulkAdd(data.milestones)
-      if (data.treatmentChanges?.length) await db.treatmentChanges.bulkAdd(data.treatmentChanges)
-    }
-  )
 }
 
 // === PRACTITIONERS (Annuaire) ===

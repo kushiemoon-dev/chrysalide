@@ -429,15 +429,3 @@ export const ACT_CATEGORIES: Record<ActCategory, { icon: string; color: string }
   civil_status: { icon: 'FileText', color: '#9CA3AF' },
   other: { icon: 'MoreHorizontal', color: '#6B7280' },
 }
-
-// === OBJECTIVE TEMPLATES ===
-
-export type { ObjectiveTemplate } from './objective-templates'
-
-export {
-  FEMINIZING_TEMPLATES,
-  MASCULINIZING_TEMPLATES,
-  COMMON_TEMPLATES,
-  ALL_OBJECTIVE_TEMPLATES,
-  getTemplatesForContext,
-} from './objective-templates'

@@ -346,7 +346,3 @@ export function searchResources(query: string): Resource[] {
       r.tags.some((t) => fuzzySearch(t, query))
   )
 }
-
-export function getFAQByCategory(category: FAQItem['category']): FAQItem[] {
-  return faqItems.filter((f) => f.category === category)
-}

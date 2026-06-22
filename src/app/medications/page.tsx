@@ -230,10 +230,7 @@ export default function MedicationsPage() {
 
   async function loadData() {
     try {
-      const [allMeds, logs] = await Promise.all([
-        getMedications({ activeOnly: false }),
-        getTodayLogs(),
-      ])
+      const [allMeds, logs] = await Promise.all([getMedications(false), getTodayLogs()])
 
       const now = new Date()
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())

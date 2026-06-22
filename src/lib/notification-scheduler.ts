@@ -6,7 +6,7 @@
  */
 
 import { db } from './db'
-import type { Medication, MedicationLog } from './types'
+import type { Medication } from './types'
 
 // Storage keys for notification state
 const STORAGE_KEYS = {
@@ -27,7 +27,7 @@ interface ScheduledReminder {
 /**
  * Check if Service Worker is supported and registered
  */
-export async function getServiceWorker(): Promise<ServiceWorkerRegistration | null> {
+async function getServiceWorker(): Promise<ServiceWorkerRegistration | null> {
   if (!('serviceWorker' in navigator)) {
     console.warn('[NotificationScheduler] Service Worker not supported')
     return null
@@ -76,7 +76,7 @@ export function isNotificationEnabled(): boolean {
 /**
  * Get today's scheduled reminders for all active medications
  */
-export async function getTodayReminders(): Promise<ScheduledReminder[]> {
+async function getTodayReminders(): Promise<ScheduledReminder[]> {
   const medications = await db.medications.toArray()
   const today = new Date()
   const reminders: ScheduledReminder[] = []
@@ -136,7 +136,7 @@ function getMedicationReminderTimes(medication: Medication): string[] {
 /**
  * Check for reminders that should be shown now
  */
-export async function checkReminders(): Promise<void> {
+async function checkReminders(): Promise<void> {
   if (!isNotificationEnabled()) return
 
   const now = Date.now()
@@ -237,57 +237,6 @@ function markReminderShown(reminderId: string): void {
   )
 }
 
-/**
- * Check for missed reminders when app opens
- * Returns list of missed medications
- */
-export async function checkMissedReminders(): Promise<
-  {
-    medication: Medication
-    scheduledTime: string
-  }[]
-> {
-  const now = Date.now()
-  const today = new Date()
-  const reminders = await getTodayReminders()
-  const missed: { medication: Medication; scheduledTime: string }[] = []
-
-  // Get today's dose logs
-  const todayStart = new Date(today)
-  todayStart.setHours(0, 0, 0, 0)
-
-  const logs = await db.medicationLogs
-    .where('timestamp')
-    .aboveOrEqual(todayStart.getTime())
-    .toArray()
-
-  const takenMedTimes = new Set(
-    logs.map((log: MedicationLog) => `${log.medicationId}-${log.scheduledTime || 'taken'}`)
-  )
-
-  for (const reminder of reminders) {
-    // Skip future reminders
-    if (reminder.scheduledTimestamp > now) continue
-
-    // Skip if taken
-    const key = `${reminder.medicationId}-${reminder.scheduledTime}`
-    if (takenMedTimes.has(key)) continue
-
-    // More than 30 minutes late = missed
-    if (now - reminder.scheduledTimestamp > 30 * 60000) {
-      const medication = await db.medications.get(Number(reminder.medicationId))
-      if (medication) {
-        missed.push({
-          medication,
-          scheduledTime: reminder.scheduledTime,
-        })
-      }
-    }
-  }
-
-  return missed
-}
-
 // Singleton interval ID to prevent multiple services
 let reminderIntervalId: ReturnType<typeof setInterval> | null = null
 
@@ -323,24 +272,5 @@ export function stopReminderService(): void {
     console.log('[NotificationScheduler] Stopping reminder service')
     clearInterval(reminderIntervalId)
     reminderIntervalId = null
-  }
-}
-
-/**
- * Listen for Service Worker messages
- */
-export function listenForServiceWorkerMessages(
-  onMedicationTaken: (data: { medicationId: string; scheduledTime?: string }) => void
-): () => void {
-  const handler = (event: MessageEvent) => {
-    if (event.data?.type === 'MEDICATION_TAKEN') {
-      onMedicationTaken(event.data.payload)
-    }
-  }
-
-  navigator.serviceWorker?.addEventListener('message', handler)
-
-  return () => {
-    navigator.serviceWorker?.removeEventListener('message', handler)
   }
 }
