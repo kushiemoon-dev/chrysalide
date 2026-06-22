@@ -7,26 +7,12 @@ import type { Locale } from '@/i18n/config'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
-import { ArrowLeft, Save, Calendar as CalendarIcon, Target } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { getObjective, updateObjective } from '@/lib/db'
 import type { Objective, ObjectiveCategory, ObjectiveStatus, ActCategory } from '@/lib/types'
-import { ACT_CATEGORIES } from '@/lib/constants'
-import { categoryConfig } from '@/components/objectives/objective-card'
-import { cn } from '@/lib/utils'
+import { ObjectiveFormCore } from '@/components/objectives/ObjectiveFormCore'
 
 export default function EditObjectivePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
@@ -167,181 +153,33 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Main info */}
-        <Card>
-          <CardContent className="space-y-4 p-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Titre *</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Ex: Commencer le THS"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Détails sur cet objectif..."
-                className="min-h-[100px] resize-none"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Category & Status */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Target className="text-primary h-4 w-4" />
-              Catégorie & Statut
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>Catégorie</Label>
-              <Select value={category} onValueChange={(v) => setCategory(v as ObjectiveCategory)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(categoryConfig).map(([key, config]) => {
-                    const Icon = config.icon
-                    return (
-                      <SelectItem key={key} value={key}>
-                        <div className="flex items-center gap-2">
-                          <Icon className={`h-4 w-4 ${config.color}`} />
-                          {config.label}
-                        </div>
-                      </SelectItem>
-                    )
-                  })}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {category === 'medical' && (
-              <>
-                <div className="space-y-2">
-                  <Label>{t('act.categoryLabel')}</Label>
-                  <Select
-                    value={actCategory ?? ''}
-                    onValueChange={(v) => setActCategory(v as ActCategory)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="—" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {(Object.keys(ACT_CATEGORIES) as ActCategory[]).map((key) => (
-                        <SelectItem key={key} value={key}>
-                          {t(`actCategories.${key}`)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>{t('act.informationLabel')}</Label>
-                  <Textarea
-                    value={information}
-                    onChange={(e) => setInformation(e.target.value)}
-                    placeholder={t('act.informationPlaceholder')}
-                    className="min-h-[80px] resize-none"
-                  />
-                </div>
-              </>
-            )}
-
-            <div className="space-y-2">
-              <Label>Statut</Label>
-              <Select value={status} onValueChange={(v) => setStatus(v as ObjectiveStatus)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="not_started">{t('detail.statuses.not_started')}</SelectItem>
-                  <SelectItem value="in_progress">{t('detail.statuses.in_progress')}</SelectItem>
-                  <SelectItem value="completed">{t('detail.statuses.completed')}</SelectItem>
-                  <SelectItem value="paused">{t('detail.statuses.paused')}</SelectItem>
-                  <SelectItem value="cancelled">{t('detail.statuses.cancelled')}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Date cible (optionnel)</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      'w-full justify-start text-left font-normal',
-                      !targetDate && 'text-muted-foreground'
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {targetDate
-                      ? format(targetDate, 'd MMMM yyyy', { locale: dateLocale })
-                      : 'Sélectionner une date'}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={targetDate}
-                    onSelect={setTargetDate}
-                    locale={dateLocale}
-                  />
-                </PopoverContent>
-              </Popover>
-              {targetDate && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground"
-                  onClick={() => setTargetDate(undefined)}
-                >
-                  Supprimer la date
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Notes */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Notes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Notes personnelles..."
-              className="min-h-[80px] resize-none"
-            />
-          </CardContent>
-        </Card>
-
-        {/* Submit */}
-        <div className="flex gap-3">
-          <Link href={`/objectives/${objective.id}`} className="flex-1">
-            <Button type="button" variant="outline" className="w-full">
-              Annuler
-            </Button>
-          </Link>
-          <Button type="submit" className="flex-1 gap-2" disabled={!isValid || saving}>
-            <Save className="h-4 w-4" />
-            {saving ? 'Enregistrement...' : 'Enregistrer'}
-          </Button>
-        </div>
+        <ObjectiveFormCore
+          title={title}
+          onTitleChange={setTitle}
+          description={description}
+          onDescriptionChange={setDescription}
+          category={category}
+          onCategoryChange={setCategory}
+          actCategory={actCategory}
+          onActCategoryChange={setActCategory}
+          information={information}
+          onInformationChange={setInformation}
+          status={status}
+          onStatusChange={setStatus}
+          showAllStatuses
+          targetDate={targetDate}
+          onTargetDateChange={setTargetDate}
+          showRemoveDateButton
+          dateLocale={dateLocale}
+          saving={saving}
+          isValid={isValid}
+          backHref={`/objectives/${objective.id}`}
+          cancelLabel="Annuler"
+          saveLabel="Enregistrer"
+          savingLabel="Enregistrement..."
+          notes={notes}
+          onNotesChange={setNotes}
+        />
       </form>
     </div>
   )
