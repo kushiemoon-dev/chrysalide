@@ -4,22 +4,10 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { ArrowLeft, Save, User, MapPin, Phone, Mail, Globe, Star } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { getPractitioner, updatePractitioner } from '@/lib/db'
-import { APPOINTMENT_TYPES } from '@/lib/constants'
+import { PractitionerFormFields } from '@/components/practitioners/PractitionerFormFields'
 import type { AppointmentType, Practitioner } from '@/lib/types'
 
 export default function EditPractitionerPage() {
@@ -93,8 +81,6 @@ export default function EditPractitionerPage() {
     }
   }
 
-  const isValid = name.trim().length > 0
-
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
@@ -119,152 +105,49 @@ export default function EditPractitionerPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Basic info */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <User className="text-primary h-4 w-4" />
-              {t('edit.basicInfo')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">{t('edit.fullName')}</Label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t('edit.namePlaceholder')}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="specialty">{t('edit.specialty')}</Label>
-              <Select value={specialty} onValueChange={(v) => setSpecialty(v as AppointmentType)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(APPOINTMENT_TYPES).map(([key]) => (
-                    <SelectItem key={key} value={key}>
-                      {tAppt('types.' + key)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="trans-friendly" className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-yellow-500" />
-                  {t('edit.transFriendly')}
-                </Label>
-                <p className="text-muted-foreground text-xs">{t('edit.transFriendlyDesc')}</p>
-              </div>
-              <Switch
-                id="trans-friendly"
-                checked={isTransFriendly}
-                onCheckedChange={setIsTransFriendly}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Contact info */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Phone className="text-primary h-4 w-4" />
-              {t('edit.contact')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="location" className="flex items-center gap-2">
-                <MapPin className="h-3 w-3" />
-                {t('edit.address')}
-              </Label>
-              <Input
-                id="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder={t('edit.addressPlaceholder')}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="flex items-center gap-2">
-                <Phone className="h-3 w-3" />
-                {t('edit.phone')}
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder={t('edit.phonePlaceholder')}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email" className="flex items-center gap-2">
-                <Mail className="h-3 w-3" />
-                {t('edit.email')}
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t('edit.emailPlaceholder')}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="website" className="flex items-center gap-2">
-                <Globe className="h-3 w-3" />
-                {t('edit.website')}
-              </Label>
-              <Input
-                id="website"
-                type="text"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-                placeholder={t('edit.websitePlaceholder')}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Notes */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">{t('edit.notes')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder={t('edit.notesPlaceholder')}
-              className="min-h-[100px] resize-none"
-            />
-          </CardContent>
-        </Card>
-
-        {/* Submit */}
-        <div className="flex gap-3">
-          <Link href="/practitioners" className="flex-1">
-            <Button type="button" variant="outline" className="w-full">
-              {t('editPage.cancel')}
-            </Button>
-          </Link>
-          <Button type="submit" className="flex-1 gap-2" disabled={!isValid || saving}>
-            <Save className="h-4 w-4" />
-            {saving ? t('editPage.saving') : t('editPage.save')}
-          </Button>
-        </div>
+        <PractitionerFormFields
+          name={name}
+          onNameChange={setName}
+          specialty={specialty}
+          onSpecialtyChange={setSpecialty}
+          location={location}
+          onLocationChange={setLocation}
+          phone={phone}
+          onPhoneChange={setPhone}
+          email={email}
+          onEmailChange={setEmail}
+          website={website}
+          onWebsiteChange={setWebsite}
+          notes={notes}
+          onNotesChange={setNotes}
+          isTransFriendly={isTransFriendly}
+          onIsTransFriendlyChange={setIsTransFriendly}
+          saving={saving}
+          isValid={name.trim().length > 0}
+          backHref="/practitioners"
+          labels={{
+            basicInfo: t('edit.basicInfo'),
+            fullName: t('edit.fullName'),
+            namePlaceholder: t('edit.namePlaceholder'),
+            specialty: t('edit.specialty'),
+            transFriendly: t('edit.transFriendly'),
+            transFriendlyDesc: t('edit.transFriendlyDesc'),
+            contact: t('edit.contact'),
+            address: t('edit.address'),
+            addressPlaceholder: t('edit.addressPlaceholder'),
+            phone: t('edit.phone'),
+            phonePlaceholder: t('edit.phonePlaceholder'),
+            email: t('edit.email'),
+            emailPlaceholder: t('edit.emailPlaceholder'),
+            website: t('edit.website'),
+            websitePlaceholder: t('edit.websitePlaceholder'),
+            notes: t('edit.notes'),
+            notesPlaceholder: t('edit.notesPlaceholder'),
+            cancel: t('editPage.cancel'),
+            save: t('editPage.save'),
+            saving: t('editPage.saving'),
+          }}
+        />
       </form>
     </div>
   )
