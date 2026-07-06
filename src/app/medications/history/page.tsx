@@ -59,22 +59,22 @@ export default function TreatmentHistoryPage() {
   })
 
   useEffect(() => {
+    async function loadData() {
+      setLoading(true)
+      try {
+        const [changesData, medsData] = await Promise.all([
+          getTreatmentChanges(undefined, 500),
+          getMedications(),
+        ])
+        setChanges(changesData)
+        setMedications(medsData)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadData()
   }, [])
-
-  async function loadData() {
-    setLoading(true)
-    try {
-      const [changesData, medsData] = await Promise.all([
-        getTreatmentChanges(undefined, 500),
-        getMedications(),
-      ])
-      setChanges(changesData)
-      setMedications(medsData)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   // Filtered changes
   const filteredChanges = useMemo(() => {

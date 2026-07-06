@@ -34,27 +34,27 @@ export default function EditJournalEntryPage({ params }: { params: Promise<{ id:
   const [entryDate, setEntryDate] = useState<Date>(new Date())
 
   useEffect(() => {
+    async function loadEntry() {
+      setLoading(true)
+      try {
+        const data = await getJournalEntry(Number(resolvedParams.id))
+        if (data) {
+          setEntry(data)
+          setContent(data.content)
+          setMood(data.mood)
+          setTags(data.tags)
+          setEnergyLevel(data.energyLevel)
+          setSleepQuality(data.sleepQuality)
+          setIsPrivate(data.isPrivate || false)
+          setEntryDate(new Date(data.date))
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadEntry()
   }, [resolvedParams.id])
-
-  async function loadEntry() {
-    setLoading(true)
-    try {
-      const data = await getJournalEntry(Number(resolvedParams.id))
-      if (data) {
-        setEntry(data)
-        setContent(data.content)
-        setMood(data.mood)
-        setTags(data.tags)
-        setEnergyLevel(data.energyLevel)
-        setSleepQuality(data.sleepQuality)
-        setIsPrivate(data.isPrivate || false)
-        setEntryDate(new Date(data.date))
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
