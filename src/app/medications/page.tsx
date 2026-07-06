@@ -277,6 +277,8 @@ export default function MedicationsPage() {
   }
 
   useEffect(() => {
+    // ponytail: mount fetch via the shared loadData (also reused after mutations below) — accepted fetch-on-mount pattern, not a bug
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData()
   }, [])
 

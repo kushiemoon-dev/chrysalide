@@ -64,6 +64,8 @@ export default function SettingsPage() {
   useEffect(() => {
     // Load notification status
     if (isNotificationSupported()) {
+      // ponytail: one-shot read of browser APIs (Notification permission, localStorage) at mount — not a bug
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setNotificationPermission(getNotificationPermission())
       setNotificationsEnabled(getNotificationPreferences().notificationsEnabled)
     }

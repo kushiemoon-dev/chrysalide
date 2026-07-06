@@ -42,50 +42,50 @@ export default function ObjectivesPage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
 
   useEffect(() => {
+    async function loadUserProfile() {
+      const profile = await getUserProfile()
+      setUserProfile(profile)
+    }
+
+    async function loadObjectives() {
+      setLoading(true)
+      try {
+        const data = await getObjectives()
+
+        // Load milestones for each objective
+        const withMilestones = await Promise.all(
+          data.map(async (obj) => {
+            const milestones = obj.id ? await getMilestones(obj.id) : []
+            return { ...obj, milestones }
+          })
+        )
+
+        // Sort by: in_progress first, then by updatedAt
+        withMilestones.sort((a, b) => {
+          // Priority order: in_progress > not_started > paused > completed > cancelled
+          const statusOrder: Record<ObjectiveStatus, number> = {
+            in_progress: 0,
+            not_started: 1,
+            paused: 2,
+            completed: 3,
+            cancelled: 4,
+          }
+          const statusDiff = statusOrder[a.status] - statusOrder[b.status]
+          if (statusDiff !== 0) return statusDiff
+
+          // Then by updatedAt
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        })
+
+        setObjectives(withMilestones)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadObjectives()
     loadUserProfile()
   }, [])
-
-  async function loadUserProfile() {
-    const profile = await getUserProfile()
-    setUserProfile(profile)
-  }
-
-  async function loadObjectives() {
-    setLoading(true)
-    try {
-      const data = await getObjectives()
-
-      // Load milestones for each objective
-      const withMilestones = await Promise.all(
-        data.map(async (obj) => {
-          const milestones = obj.id ? await getMilestones(obj.id) : []
-          return { ...obj, milestones }
-        })
-      )
-
-      // Sort by: in_progress first, then by updatedAt
-      withMilestones.sort((a, b) => {
-        // Priority order: in_progress > not_started > paused > completed > cancelled
-        const statusOrder: Record<ObjectiveStatus, number> = {
-          in_progress: 0,
-          not_started: 1,
-          paused: 2,
-          completed: 3,
-          cancelled: 4,
-        }
-        const statusDiff = statusOrder[a.status] - statusOrder[b.status]
-        if (statusDiff !== 0) return statusDiff
-
-        // Then by updatedAt
-        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      })
-
-      setObjectives(withMilestones)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   // Filter objectives
   const filteredObjectives = objectives.filter((obj) => {

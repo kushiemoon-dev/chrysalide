@@ -56,22 +56,22 @@ export default function PractitionersPage() {
   const [deleteTarget, setDeleteTarget] = useState<Practitioner | null>(null)
 
   useEffect(() => {
+    async function loadPractitioners() {
+      setLoading(true)
+      try {
+        const [data, counts] = await Promise.all([
+          getPractitioners(),
+          countAppointmentsForAllPractitioners(),
+        ])
+        setPractitioners(data)
+        setAppointmentCounts(counts)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadPractitioners()
   }, [])
-
-  async function loadPractitioners() {
-    setLoading(true)
-    try {
-      const [data, counts] = await Promise.all([
-        getPractitioners(),
-        countAppointmentsForAllPractitioners(),
-      ])
-      setPractitioners(data)
-      setAppointmentCounts(counts)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   async function handleDelete() {
     if (!deleteTarget?.id) return

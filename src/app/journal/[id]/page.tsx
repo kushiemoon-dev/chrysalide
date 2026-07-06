@@ -39,18 +39,18 @@ export default function JournalEntryPage({ params }: { params: Promise<{ id: str
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
+    async function loadEntry() {
+      setLoading(true)
+      try {
+        const data = await getJournalEntry(Number(resolvedParams.id))
+        setEntry(data || null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadEntry()
   }, [resolvedParams.id])
-
-  async function loadEntry() {
-    setLoading(true)
-    try {
-      const data = await getJournalEntry(Number(resolvedParams.id))
-      setEntry(data || null)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleDelete = async () => {
     if (!entry?.id) return

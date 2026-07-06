@@ -35,28 +35,28 @@ export default function EditObjectivePage({ params }: { params: Promise<{ id: st
   const [information, setInformation] = useState('')
 
   useEffect(() => {
+    async function loadObjective() {
+      setLoading(true)
+      try {
+        const data = await getObjective(Number(resolvedParams.id))
+        if (data) {
+          setObjective(data)
+          setTitle(data.title)
+          setDescription(data.description || '')
+          setCategory(data.category)
+          setStatus(data.status)
+          setTargetDate(data.targetDate ? new Date(data.targetDate) : undefined)
+          setNotes(data.notes || '')
+          setActCategory(data.actCategory)
+          setInformation(data.information ?? '')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadObjective()
   }, [resolvedParams.id])
-
-  async function loadObjective() {
-    setLoading(true)
-    try {
-      const data = await getObjective(Number(resolvedParams.id))
-      if (data) {
-        setObjective(data)
-        setTitle(data.title)
-        setDescription(data.description || '')
-        setCategory(data.category)
-        setStatus(data.status)
-        setTargetDate(data.targetDate ? new Date(data.targetDate) : undefined)
-        setNotes(data.notes || '')
-        setActCategory(data.actCategory)
-        setInformation(data.information ?? '')
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

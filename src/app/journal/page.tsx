@@ -31,6 +31,20 @@ export default function JournalPage() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
 
   useEffect(() => {
+    async function loadData() {
+      setLoading(true)
+      try {
+        const [entriesData, statsData] = await Promise.all([
+          getJournalEntries(50),
+          getJournalStats(30),
+        ])
+        setEntries(entriesData)
+        setStats(statsData)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadData()
   }, [])
 
@@ -41,20 +55,6 @@ export default function JournalPage() {
       getJournalEntries(50).then(setEntries)
     }
   }, [searchQuery])
-
-  async function loadData() {
-    setLoading(true)
-    try {
-      const [entriesData, statsData] = await Promise.all([
-        getJournalEntries(50),
-        getJournalStats(30),
-      ])
-      setEntries(entriesData)
-      setStats(statsData)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   // Filtrer par tag si sélectionné
   const filteredEntries = selectedTag

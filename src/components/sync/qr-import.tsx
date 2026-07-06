@@ -25,13 +25,6 @@ export function QRImport({ onComplete, onClose }: QRImportProps) {
   const streamRef = useRef<MediaStream | null>(null)
   const animationRef = useRef<number | null>(null)
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      stopCamera()
-    }
-  }, [])
-
   const stopCamera = useCallback(() => {
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current)
@@ -45,6 +38,13 @@ export function QRImport({ onComplete, onClose }: QRImportProps) {
 
     setScanning(false)
   }, [])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera()
+    }
+  }, [stopCamera])
 
   async function startCamera() {
     try {
