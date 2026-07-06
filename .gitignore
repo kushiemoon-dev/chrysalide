@@ -79,3 +79,4 @@ docs/superpowers/
 
 .claude/
 *.claude
+package-lock.json
