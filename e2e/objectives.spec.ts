@@ -22,7 +22,9 @@ test.describe('Objectifs', () => {
   test('crée un objectif standard (non médical) et le retrouve dans la liste', async ({ page }) => {
     const title = 'Refaire mes papiers E2E'
 
-    await page.goto('/objectives/new')
+    // Wait for network idle: this page hydrates a lot of template cards, and
+    // clicking the tab before hydration completes silently no-ops the click.
+    await page.goto('/objectives/new', { waitUntil: 'networkidle' })
 
     // The form lives in the "custom" tab (the page opens on the templates tab).
     await page.getByRole('tab', { name: /Personnalisé|Custom/i }).click()
@@ -58,7 +60,7 @@ test.describe('Objectifs', () => {
     const title = 'Objectif à supprimer E2E'
 
     // Create one objective first.
-    await page.goto('/objectives/new')
+    await page.goto('/objectives/new', { waitUntil: 'networkidle' })
     await page.getByRole('tab', { name: /Personnalisé|Custom/i }).click()
     await page.locator('#title').click()
     await page.locator('#title').pressSequentially(title)

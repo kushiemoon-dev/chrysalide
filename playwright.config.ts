@@ -10,6 +10,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
+    // Headless Chromium defaults Accept-Language to en-US regardless of the host OS locale,
+    // which doesn't match the app's defaultLocale ('fr') that the specs assert against.
+    locale: 'fr',
   },
   projects: [
     {
