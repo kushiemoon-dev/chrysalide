@@ -114,8 +114,9 @@ export function BloodTestFormFields({
               />
             </div>
             <div className="space-y-2">
-              <Label>{labels.labLabel}</Label>
+              <Label htmlFor="lab">{labels.labLabel}</Label>
               <PractitionerInput
+                id="lab"
                 value={lab}
                 onChange={onLabChange}
                 specialty="laboratoire"
