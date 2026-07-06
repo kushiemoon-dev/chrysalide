@@ -190,6 +190,7 @@ export function AppointmentFormFields({
           <div className="space-y-2">
             <Label htmlFor="doctor">{labels.practitionerLabel}</Label>
             <PractitionerInput
+              id="doctor"
               value={doctor}
               onChange={onPractitionerChange}
               onSelect={onPractitionerSelect}

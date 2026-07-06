@@ -17,6 +17,7 @@ interface PractitionerInputProps {
   specialty?: AppointmentType
   placeholder?: string
   className?: string
+  id?: string
 }
 
 /**
@@ -30,9 +31,11 @@ export function PractitionerInput({
   specialty,
   placeholder = 'Nom du/de la praticien·ne...',
   className,
+  id,
 }: PractitionerInputProps) {
   const t = useTranslations('appointments')
   const [inputValue, setInputValue] = useState(value)
+  const [prevValue, setPrevValue] = useState(value)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState<Practitioner[]>([])
   const [recentPractitioners, setRecentPractitioners] = useState<Practitioner[]>([])
@@ -40,10 +43,11 @@ export function PractitionerInput({
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Sync input value with prop
-  useEffect(() => {
+  // Sync input value with prop (derived during render, no extra effect round-trip)
+  if (value !== prevValue) {
+    setPrevValue(value)
     setInputValue(value)
-  }, [value])
+  }
 
   // Load recent practitioners when specialty changes
   useEffect(() => {
@@ -133,6 +137,7 @@ export function PractitionerInput({
         <User className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
           ref={inputRef}
+          id={id}
           value={inputValue}
           onChange={handleInputChange}
           onFocus={() => setShowSuggestions(true)}
