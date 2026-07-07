@@ -38,7 +38,7 @@ export async function deleteTreatmentChange(id: number) {
   return db.treatmentChanges.delete(id)
 }
 
-// Helper pour enregistrer automatiquement un changement de traitement
+// Helper to automatically record a treatment change
 export async function recordTreatmentChange(
   medication: Medication,
   changeType: TreatmentChange['changeType'],

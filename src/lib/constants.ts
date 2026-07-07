@@ -1,6 +1,6 @@
 /**
- * Constantes pour Chrysalide
- * Médicaments THS courants, plages de référence, unités
+ * Constants for Chrysalide
+ * Common HRT medications, reference ranges, units
  */
 
 import type {
@@ -32,7 +32,7 @@ export const ADMINISTRATION_METHODS: Record<AdministrationMethod, string> = {
   implant: 'Implant',
 }
 
-// Routes d'administration spécifiques
+// Specific administration routes
 export const PILL_ROUTES: Record<PillAdministrationRoute, string> = {
   oral: 'Oral',
   sublingual: 'Sublingual',
@@ -45,7 +45,7 @@ export const INJECTION_ROUTES: Record<InjectionAdministrationRoute, string> = {
   intramuscular: 'Intra-musculaire (IM)',
 }
 
-// Zones d'application gel
+// Gel application zones
 export const GEL_APPLICATION_ZONES: Record<GelApplicationZone, string> = {
   forearm_left: 'Avant-bras gauche',
   forearm_right: 'Avant-bras droit',
@@ -66,7 +66,7 @@ export interface CommonMedication {
 }
 
 export const COMMON_MEDICATIONS: CommonMedication[] = [
-  // Œstrogènes
+  // Estrogens
   {
     name: 'Œstradiol (Estrofem)',
     type: 'estrogen',
@@ -156,7 +156,7 @@ export const COMMON_MEDICATIONS: CommonMedication[] = [
     frequency: '1x/jour',
   },
 
-  // Anti-androgènes
+  // Antiandrogens
   {
     name: 'Spironolactone',
     type: 'antiandrogen',
@@ -182,7 +182,7 @@ export const COMMON_MEDICATIONS: CommonMedication[] = [
     frequency: '1x/jour',
   },
 
-  // Progestérone
+  // Progesterone
   {
     name: 'Progestérone (Utrogestan)',
     type: 'progesteron',
@@ -200,7 +200,7 @@ export const COMMON_MEDICATIONS: CommonMedication[] = [
     frequency: '1x/jour (soir)',
   },
 
-  // Testostérone (THS masculinisant)
+  // Testosterone (masculinizing HRT)
   {
     name: 'Testostérone (Androgel)',
     type: 'testosterone',
@@ -337,7 +337,7 @@ export const FREQUENCIES = [
   '1x/6mois',
 ]
 
-// Fréquences adaptées par méthode d'administration
+// Frequencies adapted by administration method
 export const FREQUENCIES_BY_METHOD: Record<AdministrationMethod, string[]> = {
   pill: ['1x/jour', '2x/jour', '3x/jour', '1x/2jours'],
   gel: ['1x/jour', '2x/jour'],
@@ -357,7 +357,7 @@ export const FREQUENCIES_BY_METHOD: Record<AdministrationMethod, string[]> = {
   implant: ['1x/3mois', '1x/6mois'],
 }
 
-// Helper pour obtenir les fréquences selon la méthode
+// Helper to get the frequencies for a given method
 export function getFrequenciesForMethod(method: AdministrationMethod): string[] {
   return FREQUENCIES_BY_METHOD[method] || FREQUENCIES
 }
@@ -366,7 +366,7 @@ export function getFrequenciesForMethod(method: AdministrationMethod): string[] 
 
 export const DOSAGE_UNITS = ['mg', 'µg', 'mL', 'pressions', 'patches']
 
-// Unités pour le stock (différentes de l'unité de dosage)
+// Units for stock (different from the dosage unit)
 export const STOCK_UNITS = [
   'comprimés',
   'tubes',

@@ -2,16 +2,16 @@ import { db } from './db-schema'
 import { fuzzySearch } from './utils'
 import type { AppointmentType, Practitioner } from './types'
 
-// === PRACTITIONERS (Annuaire) ===
+// === PRACTITIONERS (Directory) ===
 
 /**
- * Récupère tous les praticien·nes, triés par dernière utilisation
+ * Gets all practitioners, sorted by last used
  */
 export async function getPractitioners(specialty?: AppointmentType) {
   const all = await db.practitioners.orderBy('lastUsed').reverse().toArray()
 
   if (specialty) {
-    // Trier: spécialité correspondante en premier, puis les autres
+    // Sort: matching specialty first, then the rest
     return all.sort((a, b) => {
       const aMatch = a.specialty === specialty ? 1 : 0
       const bMatch = b.specialty === specialty ? 1 : 0
@@ -22,17 +22,17 @@ export async function getPractitioners(specialty?: AppointmentType) {
 }
 
 /**
- * Récupère un·e praticien·ne par ID
+ * Gets a practitioner by ID
  */
 export async function getPractitioner(id: number) {
   return db.practitioners.get(id)
 }
 
 /**
- * Recherche des praticien·nes par nom (autocomplete)
- * Utilise fuzzySearch pour:
- * - Recherche insensible aux accents (medecin → médecin)
- * - Recherche partielle (Dr Dup → Dr. Dupont)
+ * Searches for practitioners by name (autocomplete)
+ * Uses fuzzySearch for:
+ * - Accent-insensitive search (medecin → médecin)
+ * - Partial matching (Dr Dup → Dr. Dupont)
  */
 export async function searchPractitioners(query: string, specialty?: AppointmentType) {
   const practitioners = await db.practitioners.toArray()
@@ -40,30 +40,30 @@ export async function searchPractitioners(query: string, specialty?: Appointment
   return practitioners
     .filter((p) => fuzzySearch(p.name, query))
     .sort((a, b) => {
-      // Priorité 1: spécialité correspondante (mais on garde tous les résultats)
+      // Priority 1: matching specialty (but we keep all results)
       if (specialty) {
         const aMatchSpecialty = a.specialty === specialty ? 1 : 0
         const bMatchSpecialty = b.specialty === specialty ? 1 : 0
         if (aMatchSpecialty !== bMatchSpecialty) return bMatchSpecialty - aMatchSpecialty
       }
 
-      // Priorité 2: match exact au début
+      // Priority 2: exact match at the start
       const lowerQuery = query.toLowerCase()
       const aStartsWith = a.name.toLowerCase().startsWith(lowerQuery) ? 1 : 0
       const bStartsWith = b.name.toLowerCase().startsWith(lowerQuery) ? 1 : 0
       if (aStartsWith !== bStartsWith) return bStartsWith - aStartsWith
 
-      // Priorité 3: usage
+      // Priority 3: usage
       if (a.usageCount !== b.usageCount) return b.usageCount - a.usageCount
 
-      // Priorité 4: récence
+      // Priority 4: recency
       return new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime()
     })
     .slice(0, 10)
 }
 
 /**
- * Ajoute un·e nouveau·elle praticien·ne
+ * Adds a new practitioner
  */
 export async function addPractitioner(
   practitioner: Omit<Practitioner, 'id' | 'createdAt' | 'lastUsed' | 'usageCount'>
@@ -78,22 +78,22 @@ export async function addPractitioner(
 }
 
 /**
- * Met à jour un·e praticien·ne
+ * Updates a practitioner
  */
 export async function updatePractitioner(id: number, updates: Partial<Practitioner>) {
   return db.practitioners.update(id, updates)
 }
 
 /**
- * Supprime un·e praticien·ne
+ * Deletes a practitioner
  */
 export async function deletePractitioner(id: number) {
   return db.practitioners.delete(id)
 }
 
 /**
- * Compte le nombre de RDV liés à un·e praticien·ne
- * Compte à la fois par practitionerId ET par correspondance de nom
+ * Counts the number of appointments linked to a practitioner
+ * Counts both by practitionerId AND by name match
  */
 export async function countAppointmentsByPractitioner(practitionerId: number): Promise<number> {
   const practitioner = await db.practitioners.get(practitionerId)
@@ -103,12 +103,12 @@ export async function countAppointmentsByPractitioner(practitionerId: number): P
   let count = 0
 
   for (const apt of appointments) {
-    // Compter si practitionerId correspond
+    // Count if practitionerId matches
     if (apt.practitionerId === practitionerId) {
       count++
       continue
     }
-    // Ou si le nom du doctor correspond
+    // Or if the doctor's name matches
     if (
       apt.doctor &&
       practitioner.name &&
@@ -122,9 +122,9 @@ export async function countAppointmentsByPractitioner(practitionerId: number): P
 }
 
 /**
- * Compte les RDV pour tous les praticien·nes (batch)
- * Retourne un Map<practitionerId, count>
- * Compte à la fois les RDV liés par practitionerId ET par correspondance de nom
+ * Counts appointments for all practitioners (batch)
+ * Returns a Map<practitionerId, count>
+ * Counts both appointments linked by practitionerId AND by name match
  */
 export async function countAppointmentsForAllPractitioners(): Promise<Map<number, number>> {
   const [appointments, practitioners] = await Promise.all([
@@ -134,7 +134,7 @@ export async function countAppointmentsForAllPractitioners(): Promise<Map<number
 
   const counts = new Map<number, number>()
 
-  // Créer un index des noms de praticiens (lowercase) -> id
+  // Build an index of practitioner names (lowercase) -> id
   const nameToId = new Map<string, number>()
   for (const p of practitioners) {
     if (p.id && p.name) {
@@ -145,7 +145,7 @@ export async function countAppointmentsForAllPractitioners(): Promise<Map<number
   for (const apt of appointments) {
     let practitionerId: number | undefined = apt.practitionerId
 
-    // Si pas de practitionerId direct, chercher par correspondance de nom
+    // If there's no direct practitionerId, look up by name match
     if (!practitionerId && apt.doctor) {
       practitionerId = nameToId.get(apt.doctor.toLowerCase().trim())
     }
@@ -158,8 +158,8 @@ export async function countAppointmentsForAllPractitioners(): Promise<Map<number
 }
 
 /**
- * Incrémente l'usage et met à jour lastUsed
- * Appelé quand un·e praticien·ne est sélectionné·e pour un RDV
+ * Increments usage and updates lastUsed
+ * Called when a practitioner is selected for an appointment
  */
 export async function incrementPractitionerUsage(id: number) {
   const practitioner = await db.practitioners.get(id)
@@ -172,14 +172,14 @@ export async function incrementPractitionerUsage(id: number) {
 }
 
 /**
- * Trouve ou crée un·e praticien·ne par nom
- * Utile pour l'auto-création depuis le formulaire de RDV
+ * Finds or creates a practitioner by name
+ * Useful for auto-creation from the appointment form
  */
 export async function findOrCreatePractitioner(
   name: string,
   specialty: AppointmentType
 ): Promise<number> {
-  // Cherche un·e praticien·ne existant·e avec ce nom et cette spécialité
+  // Look for an existing practitioner with this name and specialty
   const existing = await db.practitioners
     .where('name')
     .equalsIgnoreCase(name)
@@ -191,7 +191,7 @@ export async function findOrCreatePractitioner(
     return existing.id
   }
 
-  // Crée un·e nouveau·elle praticien·ne
+  // Create a new practitioner
   const id = await addPractitioner({ name, specialty })
   return id as number
 }

@@ -175,14 +175,14 @@ describe('getNotificationPreferences / setNotificationPreferences', () => {
     const prefs = getNotificationPreferences()
     expect(prefs.notificationsEnabled).toBe(true)
     expect(prefs.medicationReminders).toBe(false)
-    expect(prefs.appointmentReminders).toBe(true) // non modifié
+    expect(prefs.appointmentReminders).toBe(true) // unchanged
   })
 
   it('ne modifie que les clés fournies (partial update)', () => {
     setNotificationPreferences({ stockAlerts: false })
     const prefs = getNotificationPreferences()
     expect(prefs.stockAlerts).toBe(false)
-    expect(prefs.medicationReminders).toBe(true) // inchangé
+    expect(prefs.medicationReminders).toBe(true) // unchanged
   })
 })
 
@@ -204,7 +204,7 @@ describe('isScheduledTimePassed', () => {
 
   it('retourne false pour 23:59 (pas encore passé sauf en fin de journée)', () => {
     const now = new Date()
-    // Seulement faux si on n'est pas encore à 23:59
+    // Only false if it's not yet 23:59
     if (now.getHours() < 23 || (now.getHours() === 23 && now.getMinutes() < 59)) {
       expect(isScheduledTimePassed('23:59')).toBe(false)
     }

@@ -21,15 +21,15 @@ interface PractitionerInputProps {
 }
 
 /**
- * Input avec autocomplete pour les praticien·nes
- * Suggère les praticien·nes existant·es et permet d'en créer de nouveaux
+ * Autocomplete input for practitioners
+ * Suggests existing practitioners and allows creating new ones
  */
 export function PractitionerInput({
   value,
   onChange,
   onSelect,
   specialty,
-  placeholder = 'Nom du/de la praticien·ne...',
+  placeholder = 'Practitioner name...',
   className,
   id,
 }: PractitionerInputProps) {
@@ -89,7 +89,7 @@ export function PractitionerInput({
   const selectPractitioner = (practitioner: Practitioner) => {
     setInputValue(practitioner.name)
     onChange(practitioner.name, practitioner.id)
-    // Appeler onSelect avec le praticien complet pour l'auto-remplissage
+    // Call onSelect with the full practitioner for auto-fill
     if (onSelect) {
       onSelect(practitioner)
     }

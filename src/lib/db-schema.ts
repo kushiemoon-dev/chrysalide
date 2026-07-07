@@ -1,6 +1,6 @@
 /**
- * Configuration Dexie.js - Base de données locale IndexedDB
- * Toutes les données restent sur l'appareil de l'utilisateur
+ * Dexie.js configuration - Local IndexedDB database
+ * All data stays on the user's device
  */
 
 import Dexie, { type EntityTable } from 'dexie'
@@ -21,7 +21,7 @@ import type {
   ActTodo,
 } from './types'
 
-// Définition de la base de données
+// Database definition
 const db = new Dexie('ChrysalideDB') as Dexie & {
   medications: EntityTable<Medication, 'id'>
   medicationLogs: EntityTable<MedicationLog, 'id'>
@@ -30,19 +30,19 @@ const db = new Dexie('ChrysalideDB') as Dexie & {
   appointments: EntityTable<Appointment, 'id'>
   reminders: EntityTable<Reminder, 'id'>
   userProfile: EntityTable<UserProfile, 'id'>
-  // v0.2.0 - Nouveaux modules
+  // v0.2.0 - New modules
   journalEntries: EntityTable<JournalEntry, 'id'>
   objectives: EntityTable<Objective, 'id'>
   milestones: EntityTable<Milestone, 'id'>
   treatmentChanges: EntityTable<TreatmentChange, 'id'>
-  // v0.2.1 - Annuaire praticien·nes
+  // v0.2.1 - Practitioners directory
   practitioners: EntityTable<Practitioner, 'id'>
-  // v1.2.0 - Actes médicaux (bloc-note)
+  // v1.2.0 - Medical procedures (notes)
   acts: EntityTable<Act, 'id'>
   actTodos: EntityTable<ActTodo, 'id'>
 }
 
-// Schéma de la base de données
+// Database schema
 db.version(1).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken',
@@ -53,7 +53,7 @@ db.version(1).stores({
   userProfile: '++id',
 })
 
-// Version 2: Ajout de applicationZone pour les gels
+// Version 2: Added applicationZone for gels
 db.version(2).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
@@ -64,7 +64,7 @@ db.version(2).stores({
   userProfile: '++id',
 })
 
-// Version 3: v0.2.0 - Journal, Objectifs, Milestones, Historique Traitements
+// Version 3: v0.2.0 - Journal, Objectives, Milestones, Treatment history
 db.version(3).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
@@ -73,14 +73,14 @@ db.version(3).stores({
   appointments: '++id, date, type',
   reminders: '++id, type, enabled',
   userProfile: '++id',
-  // Nouveaux modules v0.2.0
+  // New modules v0.2.0
   journalEntries: '++id, date, mood, *tags', // *tags = multi-entry index
   objectives: '++id, category, status, targetDate',
   milestones: '++id, objectiveId, achieved, order',
   treatmentChanges: '++id, medicationId, date, changeType',
 })
 
-// Version 4: v0.2.1 - Annuaire praticien·nes
+// Version 4: v0.2.1 - Practitioners directory
 db.version(4).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
@@ -93,17 +93,17 @@ db.version(4).stores({
   objectives: '++id, category, status, targetDate',
   milestones: '++id, objectiveId, achieved, order',
   treatmentChanges: '++id, medicationId, date, changeType',
-  // Nouveau v0.2.1
+  // New in v0.2.1
   practitioners: '++id, name, specialty, lastUsed, usageCount',
 })
 
-// Version 5: Lien RDV <-> Praticien
+// Version 5: Appointment <-> Practitioner link
 db.version(5).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
   bloodTests: '++id, date',
   physicalProgress: '++id, date',
-  appointments: '++id, date, type, practitionerId', // Nouvel index
+  appointments: '++id, date, type, practitionerId', // New index
   reminders: '++id, type, enabled',
   userProfile: '++id',
   journalEntries: '++id, date, mood, *tags',
@@ -113,13 +113,13 @@ db.version(5).stores({
   practitioners: '++id, name, specialty, lastUsed, usageCount',
 })
 
-// Version 6: Suivi des coûts RDV (champ cost ajouté aux appointments)
+// Version 6: Appointment cost tracking (cost field added to appointments)
 db.version(6).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
   bloodTests: '++id, date',
   physicalProgress: '++id, date',
-  appointments: '++id, date, type, practitionerId', // cost n'est pas indexé
+  appointments: '++id, date, type, practitionerId', // cost is not indexed
   reminders: '++id, type, enabled',
   userProfile: '++id',
   journalEntries: '++id, date, mood, *tags',
@@ -129,8 +129,8 @@ db.version(6).stores({
   practitioners: '++id, name, specialty, lastUsed, usageCount',
 })
 
-// Version 7: Actes médicaux + lien labo PDS + lien acte RDV
-// Upgrader: normalise les dates bloodTests stockées en string (import/export bugué)
+// Version 7: Medical procedures + blood test/lab link + procedure/appointment link
+// Upgrader: normalizes bloodTests dates stored as strings (buggy import/export)
 db.version(7)
   .stores({
     medications: '++id, name, type, isActive, startDate',
@@ -149,7 +149,7 @@ db.version(7)
     actTodos: '++id, actId, done, order',
   })
   .upgrade(async (tx) => {
-    // Normalise bloodTests.date en Date si stockée en string
+    // Normalize bloodTests.date to a Date if stored as a string
     await tx
       .table('bloodTests')
       .toCollection()
@@ -159,7 +159,7 @@ db.version(7)
       })
   })
 
-// Version 8: Fusion acts → objectives, actTodos → milestones, remap appointments.actId → objectiveId
+// Version 8: Merge acts → objectives, actTodos → milestones, remap appointments.actId → objectiveId
 db.version(8)
   .stores({
     medications: '++id, name, type, isActive, startDate',
@@ -174,8 +174,8 @@ db.version(8)
     milestones: '++id, objectiveId, achieved, order',
     treatmentChanges: '++id, medicationId, date, changeType',
     practitioners: '++id, name, specialty, lastUsed, usageCount',
-    acts: '++id, category, status, createdAt', // conservé — drop en v9
-    actTodos: '++id, actId, done, order', // conservé — drop en v9
+    acts: '++id, category, status, createdAt', // kept — dropped in v9
+    actTodos: '++id, actId, done, order', // kept — dropped in v9
   })
   .upgrade(async (tx) => {
     const STATUS_MAP: Record<string, string> = {

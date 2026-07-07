@@ -56,12 +56,12 @@ export default function JournalPage() {
     }
   }, [searchQuery])
 
-  // Filtrer par tag si sélectionné
+  // Filter by tag if one is selected
   const filteredEntries = selectedTag
     ? entries.filter((e) => e.tags.includes(selectedTag))
     : entries
 
-  // Top 5 tags les plus utilisés
+  // Top 5 most used tags
   const topTags = stats?.tagFrequency
     ? Object.entries(stats.tagFrequency)
         .sort((a, b) => b[1] - a[1])

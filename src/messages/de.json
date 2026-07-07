@@ -179,9 +179,12 @@
       "noTreatments": "Keine Behandlungen zum Anzeigen."
     },
     "timeline": {
+      "title": "Behandlungsverlauf",
       "empty": "Noch keine Änderungen erfasst.",
       "emptyShort": "Keine Historie",
-      "emptyDesc": "Deine Medikamentenänderungen werden hier angezeigt."
+      "emptyDesc": "Deine Medikamentenänderungen werden hier angezeigt.",
+      "moreChanges": "+{count} weitere Änderungen",
+      "more": "+{count} weitere"
     },
     "stockUnits": {
       "comprimés": "Tabletten",
@@ -223,12 +226,28 @@
       "stockTitle": "Bestandsverwaltung (optional)"
     },
     "edit": {
-      "title": "Medikament bearbeiten"
+      "title": "Medikament bearbeiten",
+      "statusActive": "Aktiv",
+      "statusStopped": "Gestoppt"
     },
     "detail": {
       "startDate": "Startdatum",
       "endDate": "Enddatum",
-      "lowStockAlert": "Warnung wenn unter"
+      "lowStockAlert": "Warnung wenn unter",
+      "deleteConfirm": "Dieses Medikament löschen?",
+      "deleteLogConfirm": "Diese Einnahme löschen?",
+      "activeBadge": "Aktiv",
+      "lowStockBadge": "Niedriger Bestand",
+      "frequencyTitle": "Häufigkeit",
+      "scheduledTimesLabel": "Geplante Uhrzeiten:",
+      "periodTitle": "Zeitraum",
+      "durationLabel": "Dauer",
+      "daysSuffix": "Tage",
+      "stockTitle": "Bestand",
+      "currentStockLabel": "Aktueller Bestand",
+      "notesTitle": "Notizen",
+      "gelZonesRecentTitle": "Kürzliche Auftragsbereiche",
+      "recentDosesTitle": "Letzte Einnahmen"
     },
     "list": {
       "loading": "Wird geladen...",
@@ -256,6 +275,8 @@
       "addPastDoseTitle": "Einnahme hinzufügen",
       "addPastDoseButton": "Vergangene Einnahme hinzufügen",
       "notePlaceholder": "Bemerkungen, Nebenwirkungen...",
+      "autoValidated": "Automatisch bestätigt",
+      "autoValidatedYesterday": "Automatisch bestätigt (Vortag)",
       "gelZoneDialogTitle": "Auftragsbereich",
       "gelZoneDialogDesc": "Wähle den Auftragsbereich für",
       "noteLabel": "Notiz (optional)",
@@ -280,6 +301,7 @@
     "target": "Zielwert",
     "othersSuffix": "weitere",
     "confirmDelete": "Diesen Test löschen?",
+    "notEnoughForChart": "Nicht genug Daten, um ein Diagramm anzuzeigen",
     "list": {
       "subtitle": "Verfolge deine Blutwerte",
       "safetyMarkers": "Sicherheits-Marker",
@@ -606,6 +628,7 @@
       "method_change": "Methode geändert",
       "frequency_change": "Häufigkeit geändert"
     },
+    "prescribedByPrefix": "Verschrieben von",
     "detail": {
       "notFound": "Ziel nicht gefunden",
       "notFoundDesc": "Dieses Ziel existiert nicht oder wurde gelöscht.",
@@ -1224,6 +1247,7 @@
     "statusHigh": "Hoch",
     "patient": "Patient·in",
     "date": "Datum",
+    "atConnector": "um",
     "generatedBy": "Erstellt mit Chrysalide – chrysalide.app",
     "disclaimer": "Dieses Dokument dient nur der Information und ersetzt keine ärztliche Beratung."
   },

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import type { TreatmentChange, TreatmentChangeType } from '@/lib/types'
 
-// Configuration des types de changements (sans labels - utiliser les traductions)
+// Configuration of change types (without labels - use the translations)
 export const changeTypeConfig: Record<
   TreatmentChangeType,
   {
@@ -126,7 +126,9 @@ export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryPr
         {change.prescribedBy && (
           <div className="text-muted-foreground flex items-center gap-1 text-xs">
             <User className="h-3 w-3" />
-            <span>Prescrit par {change.prescribedBy}</span>
+            <span>
+              {t('prescribedByPrefix')} {change.prescribedBy}
+            </span>
           </div>
         )}
 
@@ -142,7 +144,7 @@ export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryPr
   )
 }
 
-// Version compacte pour timeline
+// Compact version for the timeline
 export function ChangeEntryCompact({ change }: { change: TreatmentChange }) {
   const t = useTranslations('objectives')
   const config = changeTypeConfig[change.changeType]
@@ -164,7 +166,7 @@ export function ChangeEntryCompact({ change }: { change: TreatmentChange }) {
   )
 }
 
-// Skeleton de chargement
+// Loading skeleton
 export function ChangeEntrySkeleton() {
   return (
     <div className="bg-card flex animate-pulse gap-3 rounded-lg border p-3">

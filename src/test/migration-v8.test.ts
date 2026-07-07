@@ -139,7 +139,7 @@ async function seedV7AndUpgradeToV8(): Promise<TestDBV8> {
   ])
   dbV7.close()
 
-  // Upgrade vers v8 — rejouer la MÊME migration que db.ts
+  // Upgrade to v8 — replay the SAME migration as db.ts
   const dbV8 = new TestDBV8(dbName, { indexedDB, IDBKeyRange })
   dbV8.version(7).stores({
     objectives: '++id, category, status, targetDate',

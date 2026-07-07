@@ -180,9 +180,12 @@
       "noTreatments": "Aucun traitement à afficher."
     },
     "timeline": {
+      "title": "Historique des traitements",
       "empty": "Aucun changement enregistré pour le moment.",
       "emptyShort": "Aucun historique",
-      "emptyDesc": "Les modifications de tes médicaments apparaîtront ici."
+      "emptyDesc": "Les modifications de tes médicaments apparaîtront ici.",
+      "moreChanges": "+{count} autres changements",
+      "more": "+{count} autres"
     },
     "stockUnits": {
       "comprimés": "comprimés",
@@ -224,12 +227,28 @@
       "stockTitle": "Gestion du stock (optionnel)"
     },
     "edit": {
-      "title": "Modifier le médicament"
+      "title": "Modifier le médicament",
+      "statusActive": "Actif",
+      "statusStopped": "Arrêté"
     },
     "detail": {
       "startDate": "Date de début",
       "endDate": "Date de fin",
-      "lowStockAlert": "Alerte si sous"
+      "lowStockAlert": "Alerte si sous",
+      "deleteConfirm": "Supprimer ce médicament ?",
+      "deleteLogConfirm": "Supprimer cette prise ?",
+      "activeBadge": "Actif",
+      "lowStockBadge": "Stock bas",
+      "frequencyTitle": "Fréquence",
+      "scheduledTimesLabel": "Horaires programmés :",
+      "periodTitle": "Période",
+      "durationLabel": "Durée",
+      "daysSuffix": "jours",
+      "stockTitle": "Stock",
+      "currentStockLabel": "Stock actuel",
+      "notesTitle": "Notes",
+      "gelZonesRecentTitle": "Zones d'application récentes",
+      "recentDosesTitle": "Dernières prises"
     },
     "list": {
       "loading": "Chargement...",
@@ -257,6 +276,8 @@
       "addPastDoseTitle": "Ajouter une prise",
       "addPastDoseButton": "Ajouter une prise passée",
       "notePlaceholder": "Remarques, effets...",
+      "autoValidated": "Auto-validé",
+      "autoValidatedYesterday": "Auto-validé (veille)",
       "gelZoneDialogTitle": "Zone d'application",
       "gelZoneDialogDesc": "Sélectionnez la zone d'application pour",
       "noteLabel": "Note (optionnel)",
@@ -281,6 +302,7 @@
     "target": "cible",
     "othersSuffix": "autres",
     "confirmDelete": "Supprimer cette analyse?",
+    "notEnoughForChart": "Pas assez de données pour afficher un graphique",
     "list": {
       "subtitle": "Suivi de vos bilans sanguins",
       "safetyMarkers": "Marqueurs de sécurité",
@@ -607,6 +629,7 @@
       "method_change": "Méthode modifiée",
       "frequency_change": "Fréquence modifiée"
     },
+    "prescribedByPrefix": "Prescrit par",
     "detail": {
       "notFound": "Objectif introuvable",
       "notFoundDesc": "Cet objectif n'existe pas ou a été supprimé.",
@@ -1219,6 +1242,7 @@
     "statusHigh": "Élevé",
     "patient": "Patient·e",
     "date": "Date",
+    "atConnector": "à",
     "generatedBy": "Généré par Chrysalide - chrysalide.app",
     "disclaimer": "Ce document est informatif et ne remplace pas un avis médical."
   },

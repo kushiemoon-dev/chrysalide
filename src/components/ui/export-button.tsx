@@ -1,19 +1,19 @@
 'use client'
 
 /**
- * Limitation connue v0.2.2:
- * L'export d'image des graphiques Recharts (SVG) ne fonctionne pas correctement
- * avec les bibliothèques de capture DOM (html2canvas, dom-to-image, modern-screenshot).
- * Le tableau de données dans le PDF fonctionne, mais l'image du graphique est corrompue.
+ * Known limitation as of v0.2.2:
+ * Exporting Recharts (SVG) charts as images doesn't work correctly
+ * with DOM capture libraries (html2canvas, dom-to-image, modern-screenshot).
+ * The data table in the PDF works, but the chart image is corrupted.
  *
- * Solutions futures possibles:
- * - Utiliser une API serveur avec Puppeteer/Playwright
- * - Implémenter un rendu Canvas natif dans Recharts
- * - Attendre une meilleure compatibilité des libs de capture avec les CSS modernes (lab(), oklch())
+ * Possible future solutions:
+ * - Use a server-side API with Puppeteer/Playwright
+ * - Implement native Canvas rendering in Recharts
+ * - Wait for better compatibility of capture libs with modern CSS (lab(), oklch())
  */
 
 import { useState } from 'react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { getDateLocale } from '@/i18n/date-locale'
 import type { Locale } from '@/i18n/config'
 import { Button } from '@/components/ui/button'
@@ -42,6 +42,7 @@ interface ExportButtonProps {
 }
 
 export function ExportButton({ chartRef, title, subtitle, data, userName }: ExportButtonProps) {
+  const t = useTranslations('export')
   const locale = useLocale()
   const dateLocale = getDateLocale(locale as Locale)
   const [exporting, setExporting] = useState<'png' | 'pdf' | null>(null)
@@ -57,7 +58,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
       })
       return dataUrl
     } catch (error) {
-      console.error('Erreur capture graphique:', error)
+      console.error('Chart capture error:', error)
       return null
     }
   }
@@ -68,7 +69,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
     try {
       const dataUrl = await captureChart()
       if (!dataUrl) {
-        alert('Erreur lors de la capture du graphique')
+        alert(t('captureError'))
         return
       }
 
@@ -87,7 +88,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
     try {
       const dataUrl = await captureChart()
       if (!dataUrl) {
-        alert('Erreur lors de la capture du graphique')
+        alert(t('captureError'))
         return
       }
 
@@ -100,7 +101,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
       const pageWidth = pdf.internal.pageSize.getWidth()
       const margin = 15
 
-      // En-tête
+      // Header
       pdf.setFontSize(18)
       pdf.setTextColor(40, 40, 40)
       pdf.text(title, margin, 20)
@@ -111,18 +112,20 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
         pdf.text(subtitle, margin, 28)
       }
 
-      // Nom + Date
+      // Name + Date
       pdf.setFontSize(10)
       pdf.setTextColor(80, 80, 80)
-      const dateStr = format(new Date(), "dd MMMM yyyy 'à' HH:mm", { locale: dateLocale })
+      const dateStr = format(new Date(), `dd MMMM yyyy '${t('atConnector')}' HH:mm`, {
+        locale: dateLocale,
+      })
       if (userName) {
-        pdf.text(`Patient·e : ${userName}`, margin, 38)
-        pdf.text(`Date : ${dateStr}`, margin, 44)
+        pdf.text(`${t('patient')} : ${userName}`, margin, 38)
+        pdf.text(`${t('date')} : ${dateStr}`, margin, 44)
       } else {
-        pdf.text(`Date : ${dateStr}`, margin, 38)
+        pdf.text(`${t('date')} : ${dateStr}`, margin, 38)
       }
 
-      // Graphique - calculer les dimensions
+      // Chart - compute dimensions
       const img = new Image()
       img.src = dataUrl
       await new Promise((resolve) => {
@@ -130,25 +133,25 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
       })
 
       const imgWidth = pageWidth - margin * 2
-      const imgHeight = (img.height * imgWidth) / img.width / 2 // /2 car scale: 2
+      const imgHeight = (img.height * imgWidth) / img.width / 2 // /2 because scale: 2
       const imgY = userName ? 52 : 46
 
       pdf.addImage(dataUrl, 'PNG', margin, imgY, imgWidth, imgHeight)
 
-      // Tableau des valeurs
+      // Values table
       if (data && data.length > 0) {
         const tableY = imgY + imgHeight + 15
 
         pdf.setFontSize(12)
         pdf.setTextColor(40, 40, 40)
-        pdf.text('Dernières valeurs', margin, tableY)
+        pdf.text(t('lastValues'), margin, tableY)
 
         pdf.setFontSize(9)
         const colWidths = [50, 35, 50, 30]
-        const headers = ['Marqueur', 'Valeur', 'Cible', 'Statut']
+        const headers = [t('marker'), t('value'), t('target'), t('statusLabel')]
         let y = tableY + 8
 
-        // En-têtes du tableau
+        // Table headers
         pdf.setTextColor(100, 100, 100)
         let x = margin
         headers.forEach((header, i) => {
@@ -160,7 +163,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
         pdf.setDrawColor(200, 200, 200)
         pdf.line(margin, y - 2, pageWidth - margin, y - 2)
 
-        // Données
+        // Data
         pdf.setTextColor(40, 40, 40)
         for (const row of data) {
           x = margin
@@ -179,13 +182,13 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
 
           if (row.status === 'normal') {
             pdf.setTextColor(34, 197, 94)
-            pdf.text('Normal', x, y)
+            pdf.text(t('statusNormal'), x, y)
           } else if (row.status === 'low') {
             pdf.setTextColor(234, 179, 8)
-            pdf.text('Bas', x, y)
+            pdf.text(t('statusLow'), x, y)
           } else if (row.status === 'high') {
             pdf.setTextColor(239, 68, 68)
-            pdf.text('Élevé', x, y)
+            pdf.text(t('statusHigh'), x, y)
           } else {
             pdf.setTextColor(150, 150, 150)
             pdf.text('-', x, y)
@@ -196,18 +199,14 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
         }
       }
 
-      // Pied de page
+      // Footer
       const pageHeight = pdf.internal.pageSize.getHeight()
       pdf.setFontSize(8)
       pdf.setTextColor(150, 150, 150)
-      pdf.text('Généré par Chrysalide - chrysalide.app', margin, pageHeight - 10)
-      pdf.text(
-        'Ce document est informatif et ne remplace pas un avis médical.',
-        margin,
-        pageHeight - 6
-      )
+      pdf.text(t('generatedBy'), margin, pageHeight - 10)
+      pdf.text(t('disclaimer'), margin, pageHeight - 6)
 
-      // Télécharger
+      // Download
       pdf.save(
         `${title.replace(/\s+/g, '-').toLowerCase()}-${format(new Date(), 'yyyy-MM-dd')}.pdf`
       )
@@ -225,7 +224,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
           ) : (
             <Download className="h-4 w-4" />
           )}
-          Exporter
+          {t('button')}
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-48 p-1">
@@ -235,7 +234,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
           className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-sm transition-colors disabled:opacity-50"
         >
           <FileImage className="mr-2 h-4 w-4" />
-          Exporter en PNG
+          {t('asPNG')}
         </button>
         <button
           onClick={exportPDF}
@@ -243,7 +242,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
           className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-sm transition-colors disabled:opacity-50"
         >
           <FileText className="mr-2 h-4 w-4" />
-          Exporter en PDF
+          {t('asPDF')}
         </button>
       </PopoverContent>
     </Popover>

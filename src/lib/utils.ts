@@ -8,29 +8,29 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Normalise une chaîne pour la recherche:
- * - Minuscules
- * - Supprime les accents (é → e, ç → c, etc.)
- * - Supprime la ponctuation
+ * Normalizes a string for search:
+ * - Lowercase
+ * - Strips accents (é → e, ç → c, etc.)
+ * - Strips punctuation
  */
 export function normalizeString(str: string): string {
   return str
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Supprime les accents
-    .replace(/[^\w\s]/g, '') // Supprime la ponctuation
+    .replace(/[\u0300-\u036f]/g, '') // Strip accents
+    .replace(/[^\w\s]/g, '') // Strip punctuation
 }
 
 /**
- * Recherche fuzzy/partielle:
- * - Insensible à la casse
- * - Insensible aux accents
- * - Tous les mots de la requête doivent être trouvés (dans n'importe quel ordre)
+ * Fuzzy/partial search:
+ * - Case-insensitive
+ * - Accent-insensitive
+ * - All words in the query must be found (in any order)
  *
- * Exemples:
- * - "Dr Dup" trouve "Dr. Dupont" ✓
- * - "medecin" trouve "médecin" ✓
- * - "test sang" trouve "test sanguin" ✓
+ * Examples:
+ * - "Dr Dup" finds "Dr. Dupont" ✓
+ * - "medecin" finds "médecin" ✓
+ * - "test sang" finds "test sanguin" ✓
  */
 export function fuzzySearch(text: string, query: string): boolean {
   const normalizedText = normalizeString(text)
@@ -39,9 +39,9 @@ export function fuzzySearch(text: string, query: string): boolean {
 }
 
 /**
- * Vérifie si un rendez-vous est passé en combinant date + heure
- * - Si une heure est définie, utilise date + heure
- * - Sinon, considère le RDV passé à la fin de la journée (23:59:59)
+ * Checks whether an appointment is in the past by combining date + time
+ * - If a time is set, uses date + time
+ * - Otherwise, considers the appointment past at the end of the day (23:59:59)
  */
 export function isAppointmentPast(appointment: Appointment): boolean {
   const aptDate = new Date(appointment.date)
@@ -50,7 +50,7 @@ export function isAppointmentPast(appointment: Appointment): boolean {
     const [hours, minutes] = appointment.time.split(':').map(Number)
     aptDate.setHours(hours, minutes, 0, 0)
   } else {
-    // Pas d'heure spécifiée = fin de journée
+    // No time specified = end of day
     aptDate.setHours(23, 59, 59, 999)
   }
 
@@ -58,7 +58,7 @@ export function isAppointmentPast(appointment: Appointment): boolean {
 }
 
 /**
- * Retourne la date/heure effective d'un RDV pour le tri
+ * Returns the effective date/time of an appointment for sorting
  */
 export function getAppointmentDateTime(appointment: Appointment): Date {
   const aptDate = new Date(appointment.date)

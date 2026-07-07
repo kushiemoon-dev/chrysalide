@@ -69,7 +69,7 @@ export default function MedicationDetailPage() {
     setMedication(med)
     setRecentLogs(logs)
 
-    // Charger l'historique des zones gel si c'est un gel
+    // Load gel application zone history if it's a gel
     if (med.method === 'gel') {
       const gelLogs = await getGelApplicationHistory(id, 10)
       setGelHistory(gelLogs)
@@ -86,7 +86,7 @@ export default function MedicationDetailPage() {
   }, [params.id])
 
   async function handleDelete() {
-    if (!medication?.id || !confirm('Supprimer ce médicament ?')) return
+    if (!medication?.id || !confirm(t('detail.deleteConfirm'))) return
 
     setDeleting(true)
     try {
@@ -126,7 +126,7 @@ export default function MedicationDetailPage() {
   }
 
   async function handleDeleteLog(logId: number) {
-    if (!confirm('Supprimer cette prise ?')) return
+    if (!confirm(t('detail.deleteLogConfirm'))) return
 
     try {
       await deleteMedicationLog(logId)
@@ -139,7 +139,7 @@ export default function MedicationDetailPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('list.loading')}</p>
       </div>
     )
   }
@@ -158,7 +158,7 @@ export default function MedicationDetailPage() {
     medication.stockAlert !== undefined &&
     medication.stock <= medication.stockAlert
 
-  // Construire la description complète de la méthode d'administration
+  // Build the full administration method description
   const getFullMethodDescription = () => {
     const baseMethod = t(`methods.${medication.method}`)
     if (medication.method === 'pill' && medication.pillRoute) {
@@ -213,15 +213,15 @@ export default function MedicationDetailPage() {
         </Badge>
         {medication.isActive ? (
           <Badge variant="default" className="bg-green-600">
-            Actif
+            {t('detail.activeBadge')}
           </Badge>
         ) : (
-          <Badge variant="secondary">Inactif</Badge>
+          <Badge variant="secondary">{t('list.inactiveBadge')}</Badge>
         )}
         {isLowStock && (
           <Badge variant="destructive" className="gap-1">
             <AlertTriangle className="h-3 w-3" />
-            Stock bas
+            {t('detail.lowStockBadge')}
           </Badge>
         )}
       </div>
@@ -248,16 +248,16 @@ export default function MedicationDetailPage() {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <Clock className="h-4 w-4" />
-            Fréquence
+            {t('detail.frequencyTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-foreground font-medium">{t('frequencies.' + medication.frequency)}</p>
 
-          {/* Mode avancé: afficher les horaires */}
+          {/* Advanced mode: display the scheduled times */}
           {medication.schedulingMode === 'advanced' && medication.scheduledTimes?.length && (
             <div className="border-border space-y-2 border-t pt-2">
-              <p className="text-muted-foreground text-sm">Horaires programmés :</p>
+              <p className="text-muted-foreground text-sm">{t('detail.scheduledTimesLabel')}</p>
               <div className="flex flex-wrap gap-2">
                 {medication.scheduledTimes.map((time) => (
                   <Badge key={time} variant="outline" className="text-sm">
@@ -275,7 +275,7 @@ export default function MedicationDetailPage() {
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <Calendar className="h-4 w-4" />
-            Période
+            {t('detail.periodTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -286,8 +286,10 @@ export default function MedicationDetailPage() {
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Durée</span>
-            <span className="font-medium">{daysSinceStart} jours</span>
+            <span className="text-muted-foreground">{t('detail.durationLabel')}</span>
+            <span className="font-medium">
+              {daysSinceStart} {t('detail.daysSuffix')}
+            </span>
           </div>
           {medication.endDate && (
             <div className="flex justify-between text-sm">
@@ -312,13 +314,13 @@ export default function MedicationDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Package className="h-4 w-4" />
-              Stock
+              {t('detail.stockTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {medication.stock !== undefined && (
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Stock actuel</span>
+                <span className="text-muted-foreground">{t('detail.currentStockLabel')}</span>
                 <span className={`font-medium ${isLowStock ? 'text-destructive' : ''}`}>
                   {medication.stock} {medication.stockUnit || medication.unit}
                 </span>
@@ -342,7 +344,7 @@ export default function MedicationDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <FileText className="h-4 w-4" />
-              Notes
+              {t('detail.notesTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -351,13 +353,13 @@ export default function MedicationDetailPage() {
         </Card>
       )}
 
-      {/* Zones d'application récentes (gel uniquement) */}
+      {/* Recent application zones (gel only) */}
       {medication.method === 'gel' && gelHistory.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Droplet className="h-4 w-4" />
-              Zones d&apos;application récentes
+              {t('detail.gelZonesRecentTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -391,7 +393,7 @@ export default function MedicationDetailPage() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <Syringe className="h-4 w-4" />
-              Dernières prises
+              {t('detail.recentDosesTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -402,7 +404,7 @@ export default function MedicationDetailPage() {
                   className="border-border flex items-center justify-between border-b py-2 text-sm last:border-0"
                 >
                   {editingLogId === log.id ? (
-                    // Mode édition
+                    // Edit mode
                     <div className="flex flex-1 items-center gap-2">
                       <Input
                         type="date"
@@ -434,7 +436,7 @@ export default function MedicationDetailPage() {
                       </Button>
                     </div>
                   ) : (
-                    // Mode affichage
+                    // Display mode
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">

@@ -43,8 +43,8 @@ describe('Acts CRUD (deprecated, conservé jusqu’à drop en v9)', () => {
   })
 
   it('getActs trie par createdAt décroissant', async () => {
-    // createdAt n'est pas injectable via addAct (généré en interne) : on passe par
-    // db.acts.add directement pour contrôler des timestamps distincts et déterministes.
+    // createdAt isn't injectable via addAct (generated internally): we go through
+    // db.acts.add directly to control distinct, deterministic timestamps.
     await db.acts.add({
       ...baseAct,
       title: 'Premier',

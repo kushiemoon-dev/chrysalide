@@ -70,7 +70,7 @@ describe('reassembleChunks', () => {
   it('retourne null si les sessions sont mélangées', () => {
     const chunksA = makeChunks('aaaa', 2)
     const chunksB = makeChunks('bbbb', 2)
-    // Mélanger les sessions
+    // Shuffle the sessions
     const mixed = [chunksA[0], { ...chunksB[1], s: chunksA[0].s + 'x' }]
     expect(reassembleChunks(mixed)).toBeNull()
   })

@@ -41,7 +41,7 @@ function calculateStreak(
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
 
-  // Uniquement les médicaments dus hier (évite les faux-négatifs pour les hebdo, injections, etc.)
+  // Only medications due yesterday (avoids false negatives for weekly doses, injections, etc.)
   const dueYesterday = medications.filter((m) => shouldTakeMedicationOnDate(m, yesterday))
   if (dueYesterday.length === 0) return 0
 

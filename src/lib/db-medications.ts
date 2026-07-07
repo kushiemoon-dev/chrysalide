@@ -39,7 +39,7 @@ export async function deleteMedication(id: number) {
 export async function getMedicationLogs(medicationId: number, limit = 30) {
   const logs = await db.medicationLogs.where('medicationId').equals(medicationId).toArray()
 
-  // Trier par timestamp (date de prise), pas par ordre d'insertion
+  // Sort by timestamp (dose date), not by insertion order
   return logs
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     .slice(0, limit)
@@ -50,7 +50,7 @@ export async function getLastMedicationLog(medicationId: number) {
 
   if (logs.length === 0) return null
 
-  // Retourner le log le plus récent
+  // Return the most recent log
   return logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0]
 }
 
@@ -64,8 +64,8 @@ export async function getTodayLogs() {
 }
 
 /**
- * Récupère les logs d'hier
- * Utilisé pour auto-valider les doses manquées de la veille
+ * Gets yesterday's logs
+ * Used to auto-validate doses missed the previous day
  */
 export async function getYesterdayLogs() {
   const yesterday = new Date()
@@ -78,8 +78,8 @@ export async function getYesterdayLogs() {
 }
 
 /**
- * Récupère les logs d'aujourd'hui pour un médicament spécifique
- * Utile pour le mode avancé: savoir quelles doses ont déjà été prises
+ * Gets today's logs for a specific medication
+ * Useful for advanced mode: knowing which doses have already been taken
  */
 export async function getTodayLogsForMedication(medicationId: number) {
   const today = new Date()
@@ -125,7 +125,7 @@ export async function getMedicationLog(id: number) {
   return db.medicationLogs.get(id)
 }
 
-// Historique des zones d'application pour les gels
+// History of application zones for gels
 export async function getGelApplicationHistory(medicationId: number, limit = 20) {
   const logs = await db.medicationLogs
     .where('medicationId')
@@ -133,7 +133,7 @@ export async function getGelApplicationHistory(medicationId: number, limit = 20)
     .filter((log) => log.applicationZone !== undefined)
     .toArray()
 
-  // Trier par timestamp (date de prise)
+  // Sort by timestamp (dose date)
   return logs
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
     .slice(0, limit)

@@ -37,7 +37,7 @@ export default function CalendarPage() {
 
   useEffect(() => {
     async function loadAppointments() {
-      // Charger tous les RDV (limite haute pour vue annuelle)
+      // Load all appointments (high limit for the yearly view)
       const data = await getAppointments(500)
       setAppointments(data)
       setLoading(false)
@@ -127,7 +127,7 @@ export default function CalendarPage() {
         </Card>
       )}
 
-      {/* Dialog pour les RDV du jour sélectionné */}
+      {/* Dialog for the selected day's appointments */}
       <Dialog open={!!selectedDate} onOpenChange={() => setSelectedDate(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>

@@ -1,7 +1,7 @@
 import { db } from './db-schema'
 import type { Act, ActTodo } from './types'
 
-// === ACTES MÉDICAUX ===
+// === MEDICAL PROCEDURES ===
 
 export async function getActs() {
   const all = await db.acts.toArray()

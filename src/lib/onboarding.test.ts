@@ -65,7 +65,7 @@ describe('completeOnboarding', () => {
     saveOnboardingState({ completed: false, currentStep: 2 })
     completeOnboarding()
     expect(getOnboardingState().completed).toBe(true)
-    expect(getOnboardingState().currentStep).toBe(2) // préserve le reste
+    expect(getOnboardingState().currentStep).toBe(2) // preserves the rest
   })
 })
 

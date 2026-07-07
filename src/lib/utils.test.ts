@@ -46,7 +46,7 @@ describe('isAppointmentPast', () => {
 
   it("avec une heure passée aujourd'hui, retourne true", () => {
     const today = new Date()
-    today.setHours(0, 1, 0, 0) // 00:01 — toujours passé
+    today.setHours(0, 1, 0, 0) // 00:01 — always in the past
     expect(isAppointmentPast(makeAppointment(today, '00:01'))).toBe(true)
   })
 
@@ -147,16 +147,16 @@ describe('fuzzySearch', () => {
   })
 
   it('gère les chaînes vides', () => {
-    expect(fuzzySearch('quelque chose', '')).toBe(true) // Pas de mots à chercher
+    expect(fuzzySearch('quelque chose', '')).toBe(true) // No words to search for
     expect(fuzzySearch('', 'quelque chose')).toBe(false)
   })
 
   it('combine insensibilité accents + casse + partiel', () => {
-    // Cas d'usage réel: "Dr Dup" trouve "Dr. Dupont"
+    // Real-world use case: "Dr Dup" finds "Dr. Dupont"
     expect(fuzzySearch('Dr. Dupont', 'dr dup')).toBe(true)
-    // Cas d'usage réel: "medecin" trouve "médecin"
+    // Real-world use case: "medecin" finds "médecin"
     expect(fuzzySearch('médecin généraliste', 'medecin')).toBe(true)
-    // Cas d'usage réel: "test sang" trouve "test sanguin"
+    // Real-world use case: "test sang" finds "test sanguin"
     expect(fuzzySearch('test sanguin', 'test sang')).toBe(true)
   })
 })

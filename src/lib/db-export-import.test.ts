@@ -64,11 +64,11 @@ describe('importAllData', () => {
     })
     const exported = await exportAllData()
 
-    // Simule un backup persisté en JSON (Date -> string) puis rechargé
+    // Simulate a backup persisted as JSON (Date -> string) then reloaded
     const roundTripped = JSON.parse(JSON.stringify(exported)) as typeof exported
 
     await db.medications.clear()
-    // Ajout d'une donnée pré-existante qui doit être effacée par l'import
+    // Add pre-existing data that must be cleared by the import
     await db.bloodTests.add({ date: new Date(), results: [], createdAt: new Date() })
 
     await importAllData(roundTripped)

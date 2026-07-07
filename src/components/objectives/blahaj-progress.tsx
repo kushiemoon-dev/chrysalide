@@ -13,11 +13,11 @@ interface BlahajProgressProps {
   className?: string
 }
 
-// Couleurs selon le contexte (drapeau trans)
+// Colors based on context (trans flag)
 const FILL_COLORS = {
-  feminizing: '#F5A9B8', // Rose trans
-  masculinizing: '#5BCEFA', // Bleu trans
-  neutral: '#FFFFFF', // Blanc (centre du drapeau)
+  feminizing: '#F5A9B8', // Trans pink
+  masculinizing: '#5BCEFA', // Trans blue
+  neutral: '#FFFFFF', // White (center of the flag)
 }
 
 const SIZES = {
@@ -28,8 +28,8 @@ const SIZES = {
 }
 
 /**
- * Composant de progression BLAHAJ
- * Affiche un BLAHAJ qui se remplit progressivement
+ * BLAHAJ progress component
+ * Displays a BLAHAJ that fills up progressively
  */
 export function BlahajProgress({
   progress,
@@ -41,7 +41,7 @@ export function BlahajProgress({
 }: BlahajProgressProps) {
   const [animatedProgress, setAnimatedProgress] = useState(animate ? 0 : progress)
 
-  // Animation du remplissage
+  // Fill animation
   useEffect(() => {
     if (!animate) {
       // ponytail: sync to final value when animation is disabled — not a bug
@@ -50,7 +50,7 @@ export function BlahajProgress({
       return
     }
 
-    // Animation progressive
+    // Progressive animation
     const duration = 1000 // ms
     const steps = 60
     const increment = progress / steps
@@ -85,7 +85,7 @@ export function BlahajProgress({
           className="text-foreground/70 transition-all duration-300"
         />
 
-        {/* Pourcentage superposé au centre */}
+        {/* Percentage overlaid in the center */}
         {showPercentage && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <span
@@ -95,7 +95,7 @@ export function BlahajProgress({
                 size === 'md' && 'text-sm',
                 size === 'lg' && 'text-lg',
                 size === 'xl' && 'text-2xl',
-                // Texte contrasté selon le remplissage
+                // Contrasting text based on fill level
                 displayProgress > 50 ? 'text-white drop-shadow-md' : 'text-foreground'
               )}
             >
@@ -109,7 +109,7 @@ export function BlahajProgress({
 }
 
 /**
- * Version compacte pour les cards d'objectifs
+ * Compact version for objective cards
  */
 export function BlahajProgressCompact({
   progress,

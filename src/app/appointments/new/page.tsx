@@ -59,7 +59,7 @@ export default function NewAppointmentPage() {
 
   // Handle practitioner selection - auto-fill location
   const handlePractitionerSelect = (practitioner: Practitioner) => {
-    // Auto-remplir le lieu si le praticien a une adresse et que le champ est vide
+    // Auto-fill the location if the practitioner has an address and the field is empty
     if (practitioner.location && !location) {
       setLocation(practitioner.location)
     }

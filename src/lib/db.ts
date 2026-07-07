@@ -1,11 +1,11 @@
 /**
- * Configuration Dexie.js - Base de données locale IndexedDB
- * Toutes les données restent sur l'appareil de l'utilisateur
+ * Dexie.js configuration - Local IndexedDB database
+ * All data stays on the user's device
  *
- * Ce fichier ré-exporte l'ensemble des helpers CRUD, désormais organisés
- * par domaine dans des fichiers dédiés (db-*.ts), pour conserver une
- * API publique stable (`import ... from '@/lib/db'`) sans impacter les
- * appelants existants.
+ * This file re-exports all the CRUD helpers, now organized
+ * by domain in dedicated files (db-*.ts), to keep a
+ * stable public API (`import ... from '@/lib/db'`) without impacting
+ * existing callers.
  */
 
 export { db } from './db-schema'

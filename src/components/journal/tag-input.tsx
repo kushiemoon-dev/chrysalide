@@ -16,27 +16,27 @@ interface TagInputProps {
   maxTags?: number
 }
 
-// Tags prédéfinis par catégorie
+// Predefined tags by category
 export const predefinedTags: { name: string; category: JournalTagCategory }[] = [
-  // Humeur
+  // Mood
   { name: 'heureux', category: 'mood' },
   { name: 'triste', category: 'mood' },
   { name: 'anxieux', category: 'mood' },
   { name: 'calme', category: 'mood' },
   { name: 'irrité', category: 'mood' },
   { name: 'euphorique', category: 'mood' },
-  // Effets secondaires
+  // Side effects
   { name: 'fatigue', category: 'side_effects' },
   { name: 'nausées', category: 'side_effects' },
   { name: 'maux de tête', category: 'side_effects' },
   { name: 'bouffées de chaleur', category: 'side_effects' },
   { name: 'sensibilité', category: 'side_effects' },
-  // Énergie
+  // Energy
   { name: "plein d'énergie", category: 'energy' },
   { name: 'énergie normale', category: 'energy' },
   { name: 'fatigué', category: 'energy' },
   { name: 'épuisé', category: 'energy' },
-  // Sommeil
+  // Sleep
   { name: 'bien dormi', category: 'sleep' },
   { name: 'sommeil moyen', category: 'sleep' },
   { name: 'mal dormi', category: 'sleep' },
@@ -81,7 +81,7 @@ export function TagInput({ value, onChange, placeholder, maxTags = 10 }: TagInpu
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Filtrer les suggestions basées sur l'input
+  // Filter suggestions based on the input
   const suggestions = predefinedTags
     .filter(
       (tag) =>
@@ -111,7 +111,7 @@ export function TagInput({ value, onChange, placeholder, maxTags = 10 }: TagInpu
     }
   }
 
-  // Fermer les suggestions quand on clique ailleurs
+  // Close suggestions when clicking elsewhere
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -122,7 +122,7 @@ export function TagInput({ value, onChange, placeholder, maxTags = 10 }: TagInpu
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Grouper les suggestions par catégorie
+  // Group suggestions by category
   const groupedSuggestions = suggestions.reduce(
     (acc, tag) => {
       if (!acc[tag.category]) acc[tag.category] = []
@@ -134,7 +134,7 @@ export function TagInput({ value, onChange, placeholder, maxTags = 10 }: TagInpu
 
   return (
     <div ref={containerRef} className="space-y-2">
-      {/* Tags sélectionnés */}
+      {/* Selected tags */}
       {value.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {value.map((tag) => {
@@ -159,7 +159,7 @@ export function TagInput({ value, onChange, placeholder, maxTags = 10 }: TagInpu
         </div>
       )}
 
-      {/* Input avec suggestions */}
+      {/* Input with suggestions */}
       <div className="relative">
         <Input
           ref={inputRef}

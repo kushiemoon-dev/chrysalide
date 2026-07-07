@@ -8,7 +8,7 @@ export async function getObjectives(status?: Objective['status']) {
     ? db.objectives.where('status').equals(status)
     : db.objectives.toCollection()
 
-  // Tri par updatedAt décroissant (plus récent en premier)
+  // Sort by updatedAt descending (most recent first)
   const objectives = await collection.toArray()
   return objectives.sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -40,7 +40,7 @@ export async function updateObjective(id: number, updates: Partial<Objective>) {
 }
 
 export async function deleteObjective(id: number) {
-  // Supprimer aussi les milestones associés
+  // Also delete the associated milestones
   await db.milestones.where('objectiveId').equals(id).delete()
   return db.objectives.delete(id)
 }
@@ -77,7 +77,7 @@ export async function toggleMilestone(id: number, achieved: boolean) {
   })
 }
 
-// Recalculer le progress d'un objectif basé sur ses milestones
+// Recalculate an objective's progress based on its milestones
 export async function recalculateObjectiveProgress(objectiveId: number) {
   const milestones = await getMilestones(objectiveId)
   if (milestones.length === 0) return

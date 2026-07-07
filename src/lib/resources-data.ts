@@ -1,16 +1,16 @@
 /**
- * Ressources communautaires trans - Données statiques
- * Pour Chrysalide v0.2.0
+ * Trans community resources - Static data
+ * For Chrysalide v0.2.0
  */
 
 import { fuzzySearch } from './utils'
 
 export type ResourceCategory =
-  | 'community' // Communauté et entraide
-  | 'medical' // Santé et médical
-  | 'legal' // Démarches administratives et légales
-  | 'support' // Soutien psychologique
-  | 'information' // Information générale
+  | 'community' // Community and mutual aid
+  | 'medical' // Health and medical
+  | 'legal' // Administrative and legal procedures
+  | 'support' // Psychological support
+  | 'information' // General information
 
 export interface Resource {
   id: string
@@ -22,7 +22,7 @@ export interface Resource {
   language: 'fr' | 'en' | 'multi'
   isFree: boolean
   isOnline: boolean
-  location?: string // Si ressource locale
+  location?: string // If the resource is local
 }
 
 export interface FAQItem {
@@ -32,10 +32,10 @@ export interface FAQItem {
   category: 'app' | 'medical' | 'general'
 }
 
-// === RESSOURCES COMMUNAUTAIRES ===
+// === COMMUNITY RESOURCES ===
 
 export const resources: Resource[] = [
-  // Communauté
+  // Community
   {
     id: 'partagenre',
     name: 'Partagenre',
@@ -85,7 +85,7 @@ export const resources: Resource[] = [
     isOnline: true,
   },
 
-  // Médical
+  // Medical
   {
     id: 'sofect-alternatives',
     name: 'Parcours libres (hors SOFeRT)',
@@ -123,7 +123,7 @@ export const resources: Resource[] = [
     isOnline: true,
   },
 
-  // Légal / Administratif
+  // Legal / Administrative
   {
     id: 'administrans',
     name: 'Administrans',
@@ -161,7 +161,7 @@ export const resources: Resource[] = [
     isOnline: true,
   },
 
-  // Soutien psychologique
+  // Psychological support
   {
     id: 'ligne-ecoute',
     name: 'Ressources pour les proches',
@@ -187,7 +187,7 @@ export const resources: Resource[] = [
     isOnline: true,
   },
 
-  // Information internationale
+  // International information
   {
     id: 'transfemscience',
     name: 'Transfeminine Science',
@@ -214,10 +214,10 @@ export const resources: Resource[] = [
   },
 ]
 
-// === FAQ APPLICATION ===
+// === APP FAQ ===
 
 export const faqItems: FAQItem[] = [
-  // Application
+  // App
   {
     id: 'app-data-privacy',
     question: 'Mes données sont-elles sécurisées ?',
@@ -261,7 +261,7 @@ export const faqItems: FAQItem[] = [
     category: 'app',
   },
 
-  // Médical
+  // Medical
   {
     id: 'med-ranges',
     question: 'Que signifient les plages de référence sur les graphiques ?',
@@ -284,7 +284,7 @@ export const faqItems: FAQItem[] = [
     category: 'medical',
   },
 
-  // Général
+  // General
   {
     id: 'gen-name',
     question: 'Pourquoi le nom "Chrysalide" ?',

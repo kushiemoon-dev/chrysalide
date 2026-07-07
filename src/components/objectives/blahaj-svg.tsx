@@ -5,14 +5,14 @@ import { cn } from '@/lib/utils'
 
 interface BlahajSvgProps {
   fillPercent?: number // 0-100
-  fillColor?: string // Couleur de remplissage (défaut: trans-blue)
-  outlineColor?: string // Couleur du contour
+  fillColor?: string // Fill color (default: trans-blue)
+  outlineColor?: string // Outline color
   className?: string
 }
 
 /**
- * BLAHAJ SVG - Silhouette du requin IKEA emblématique de la communauté trans
- * Se remplit de bas en haut selon le pourcentage de progression
+ * BLAHAJ SVG - Silhouette of the IKEA shark plush emblematic of the trans community
+ * Fills from bottom to top based on the progress percentage
  */
 export function BlahajSvg({
   fillPercent = 0,
@@ -20,7 +20,7 @@ export function BlahajSvg({
   outlineColor = 'currentColor',
   className,
 }: BlahajSvgProps) {
-  // Clip path pour le remplissage progressif (de bas en haut)
+  // Clip path for the progressive fill (bottom to top)
   const clipId = `blahaj-clip-${useId().replace(/:/g, '')}`
   const fillHeight = Math.max(0, Math.min(100, fillPercent))
 
@@ -29,18 +29,18 @@ export function BlahajSvg({
       viewBox="0 0 200 100"
       className={cn('h-auto w-full', className)}
       role="img"
-      aria-label={`BLAHAJ rempli à ${fillPercent}%`}
+      aria-label={`BLAHAJ filled to ${fillPercent}%`}
     >
       <defs>
-        {/* Clip path pour le remplissage progressif */}
+        {/* Clip path for the progressive fill */}
         <clipPath id={clipId}>
           <rect x="0" y={100 - fillHeight} width="200" height={fillHeight} />
         </clipPath>
       </defs>
 
-      {/* Corps principal du BLAHAJ (silhouette de requin stylisée) */}
+      {/* Main body of the BLAHAJ (stylized shark silhouette) */}
       <g>
-        {/* Fond rempli selon le pourcentage */}
+        {/* Background filled based on the percentage */}
         <path
           d="
             M 20 60
@@ -69,7 +69,7 @@ export function BlahajSvg({
           opacity="0.9"
         />
 
-        {/* Contour du corps */}
+        {/* Body outline */}
         <path
           d="
             M 20 60
@@ -100,7 +100,7 @@ export function BlahajSvg({
           strokeLinejoin="round"
         />
 
-        {/* Nageoire dorsale */}
+        {/* Dorsal fin */}
         <path
           d="M 90 20 Q 92 15 95 20"
           fill="none"
@@ -109,10 +109,10 @@ export function BlahajSvg({
           strokeLinecap="round"
         />
 
-        {/* Oeil (petit cercle) */}
+        {/* Eye (small circle) */}
         <circle cx="40" cy="55" r="4" fill={outlineColor} />
 
-        {/* Sourire doux */}
+        {/* Gentle smile */}
         <path
           d="M 35 65 Q 42 70 50 66"
           fill="none"
@@ -121,7 +121,7 @@ export function BlahajSvg({
           strokeLinecap="round"
         />
 
-        {/* Nageoire pectorale */}
+        {/* Pectoral fin */}
         <path
           d="M 70 65 Q 80 72 75 78"
           fill="none"
@@ -130,7 +130,7 @@ export function BlahajSvg({
           strokeLinecap="round"
         />
 
-        {/* Queue (nageoire caudale) */}
+        {/* Tail (caudal fin) */}
         <path
           d="M 170 75 Q 175 80 185 78 Q 180 82 175 82"
           fill="none"
@@ -139,7 +139,7 @@ export function BlahajSvg({
           strokeLinecap="round"
         />
 
-        {/* Branchies */}
+        {/* Gills */}
         <path
           d="M 55 55 L 55 62"
           fill="none"

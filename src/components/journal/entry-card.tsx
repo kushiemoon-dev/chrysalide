@@ -18,7 +18,7 @@ interface EntryCardProps {
 export function EntryCard({ entry }: EntryCardProps) {
   const locale = useLocale()
   const dateLocale = getDateLocale(locale as Locale)
-  // Tronquer le contenu pour l'aperçu
+  // Truncate the content for the preview
   const preview = entry.content.length > 150 ? entry.content.slice(0, 150) + '...' : entry.content
 
   return (

@@ -96,8 +96,8 @@ export default function EditMedicationPage() {
     try {
       const newDosage = parseFloat(dosage)
 
-      // Auto-tracking: détecter les changements
-      // Changement de dosage
+      // Auto-tracking: detect changes
+      // Dosage change
       if (medication.dosage !== newDosage || medication.unit !== unit) {
         await recordTreatmentChange(
           medication,
@@ -107,7 +107,7 @@ export default function EditMedicationPage() {
         )
       }
 
-      // Changement de méthode d'administration
+      // Administration method change
       if (medication.method !== method) {
         await recordTreatmentChange(
           medication,
@@ -117,19 +117,29 @@ export default function EditMedicationPage() {
         )
       }
 
-      // Changement de fréquence
+      // Frequency change
       if (medication.frequency !== frequency) {
         await recordTreatmentChange(medication, 'frequency_change', medication.frequency, frequency)
       }
 
-      // Arrêt ou pause du médicament
+      // Medication stopped or paused
       if (medication.isActive && !isActive) {
-        await recordTreatmentChange(medication, 'stopped', 'Actif', 'Arrêté')
+        await recordTreatmentChange(
+          medication,
+          'stopped',
+          t('edit.statusActive'),
+          t('edit.statusStopped')
+        )
       }
 
-      // Reprise du médicament
+      // Medication resumed
       if (!medication.isActive && isActive) {
-        await recordTreatmentChange(medication, 'resumed', 'Arrêté', 'Actif')
+        await recordTreatmentChange(
+          medication,
+          'resumed',
+          t('edit.statusStopped'),
+          t('edit.statusActive')
+        )
       }
 
       await updateMedication(medication.id, {
@@ -163,7 +173,7 @@ export default function EditMedicationPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{tc('loading')}</p>
       </div>
     )
   }

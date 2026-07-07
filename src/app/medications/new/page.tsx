@@ -43,11 +43,11 @@ export default function NewMedicationPage() {
   const [stockUnit, setStockUnit] = useState('')
   const [stockAlert, setStockAlert] = useState('')
 
-  // Mode avancé: doses multiples avec horaires précis
+  // Advanced mode: multiple doses with precise times
   const [schedulingMode, setSchedulingMode] = useState<SchedulingMode>('simple')
   const [scheduledTimes, setScheduledTimes] = useState<string[]>(['09:00'])
 
-  // Routes d'administration spécifiques
+  // Specific administration routes
   const [pillRoute, setPillRoute] = useState<PillAdministrationRoute | undefined>(undefined)
   const [injectionRoute, setInjectionRoute] = useState<InjectionAdministrationRoute | undefined>(
     undefined
@@ -93,7 +93,7 @@ export default function NewMedicationPage() {
         injectionRoute: method === 'injection' ? injectionRoute : undefined,
       })
 
-      // Auto-track: enregistrer le début du traitement
+      // Auto-track: record the start of the treatment
       const newMed = await getMedication(medicationId as number)
       if (newMed) {
         await recordTreatmentChange(newMed, 'started', undefined, `${dosage}${unit} ${frequency}`)

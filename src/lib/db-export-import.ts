@@ -1,7 +1,7 @@
 import { db } from './db-schema'
 import type { Objective, ObjectiveStatus } from './types'
 
-// Export/Import pour backup
+// Export/Import for backup
 export async function exportAllData() {
   return {
     medications: await db.medications.toArray(),
@@ -130,8 +130,8 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
       if (data.actTodos?.length)
         await db.actTodos.bulkAdd(deserializeDates(data.actTodos, ['createdAt']))
 
-      // Rétro-compat : si le backup contient des `acts` sans source='act',
-      // les replier en objectives (cas d'un backup v7 importé sur un client v8)
+      // Backward compat: if the backup contains `acts` without source='act',
+      // fold them into objectives (case of a v7 backup imported on a v8 client)
       if (data.acts?.length) {
         const STATUS_MAP: Record<string, string> = {
           planning: 'not_started',
@@ -143,7 +143,7 @@ export async function importAllData(data: Awaited<ReturnType<typeof exportAllDat
           (await db.objectives.toArray()).map((o: Objective) => o.title)
         )
         for (const act of data.acts) {
-          // Évite les doublons si le backup est déjà fusionné
+          // Avoid duplicates if the backup has already been merged
           if (existingTitles.has(act.title)) continue
           await db.objectives.add({
             title: act.title,

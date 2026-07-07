@@ -25,7 +25,7 @@ interface HormoneChartProps {
   height?: number
 }
 
-// Couleurs pour les différents marqueurs
+// Colors for the different markers
 const MARKER_COLORS: Partial<Record<BloodMarker, string>> = {
   estradiol: '#F5A9B8', // Trans pink
   testosterone: '#5BCEFA', // Trans blue
@@ -120,15 +120,15 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
   if (chartData.length === 0) {
     return (
       <div className="text-muted-foreground flex h-[200px] items-center justify-center">
-        Pas assez de données pour afficher un graphique
+        {t('notEnoughForChart')}
       </div>
     )
   }
 
   /**
-   * Calcule le domaine Y en s'adaptant aux données réelles
-   * Priorité aux données pour éviter d'écraser les valeurs
-   * quand l'échelle de référence est très différente
+   * Computes the Y domain by adapting to the actual data.
+   * Prioritizes the data to avoid squashing values
+   * when the reference scale is very different.
    */
   function getYDomain(marker: BloodMarker): [number, number] {
     const values = chartData.map((d) => d[marker] as number).filter((v) => v !== undefined)
@@ -136,7 +136,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
     const range = getReferenceRange(marker)
 
     if (values.length === 0) {
-      // Pas de données: utiliser la plage de référence avec marge
+      // No data: use the reference range with some margin
       if (range) {
         return [0, Math.ceil(range.max * 1.5)]
       }
@@ -146,34 +146,34 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
     const dataMin = Math.min(...values)
     const dataMax = Math.max(...values)
 
-    // Cas spécial: testostérone - échelle cliniquement pertinente selon le contexte
+    // Special case: testosterone - clinically relevant scale depending on context
     if (marker === 'testosterone') {
       if (context === 'masculinizing') {
-        // Plage cis-male: 3-10 ng/mL, on utilise le max comme référence
+        // Cis-male range: 3-10 ng/mL, we use the max as a reference point
         const cisMaleMax = 10.0 // ng/mL
         const yMax = Math.max(dataMax, cisMaleMax) * 1.1
         return [0, Math.ceil(yMax * 10) / 10]
       }
       if (context === 'feminizing') {
-        // Plage cis-female: 0.15-0.70 ng/mL, on utilise le max comme référence
+        // Cis-female range: 0.15-0.70 ng/mL, we use the max as a reference point
         const cisFemaleMax = 0.7 // ng/mL
         const yMax = Math.max(dataMax, cisFemaleMax) * 1.2
         return [0, Math.ceil(yMax * 100) / 100]
       }
     }
 
-    // Calculer le domaine basé sur les données RÉELLES
-    // avec une marge pour la lisibilité
+    // Compute the domain based on the ACTUAL data
+    // with a margin for readability
     const dataRange = dataMax - dataMin
     const padding = dataRange > 0 ? dataRange * 0.3 : dataMax * 0.2
 
     let min = Math.max(0, dataMin - padding)
     let max = dataMax + padding
 
-    // Si on a une plage de référence, l'inclure seulement si elle est proche des données
-    // (évite d'écraser les valeurs féminisant quand l'échelle masculinisant est très différente)
+    // If we have a reference range, only include it if it's close to the data
+    // (avoids squashing feminizing values when the masculinizing scale is very different)
     if (range) {
-      // Inclure la plage de référence uniquement si elle chevauche ou est proche des données
+      // Only include the reference range if it overlaps with or is close to the data
       const rangeIsRelevant =
         (range.min <= dataMax * 2 && range.max >= dataMin * 0.5) ||
         (dataMin >= range.min * 0.5 && dataMax <= range.max * 2)
@@ -184,24 +184,24 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
       }
     }
 
-    // Arrondir intelligemment selon l'échelle
+    // Round intelligently based on the scale
     if (max < 10) {
-      // Petites valeurs (ng/mL): arrondir à 1 décimale
+      // Small values (ng/mL): round to 1 decimal place
       return [Math.floor(min * 10) / 10, Math.ceil(max * 10) / 10]
     }
     return [Math.floor(min), Math.ceil(max)]
   }
 
-  // Détecter si on a besoin d'axes Y séparés (E2 et T ont des échelles incompatibles)
+  // Detect whether separate Y axes are needed (E2 and T have incompatible scales)
   const hasEstradiol = markers.includes('estradiol')
   const hasTestosterone = markers.includes('testosterone')
   const needsDualAxis = hasEstradiol && hasTestosterone
 
-  // Calculer le domaine Y optimal pour tous les marqueurs affichés
+  // Compute the optimal Y domain for all displayed markers
   function getOptimalYDomain(): [number, number] {
     if (markers.length === 0) return [0, 100]
 
-    // Si dual axis, on calcule le domaine pour les marqueurs NON-testostérone sur l'axe gauche
+    // If dual axis, compute the domain for the NON-testosterone markers on the left axis
     if (needsDualAxis) {
       const leftMarkers = markers.filter((m) => m !== 'testosterone')
       if (leftMarkers.length === 0) return [0, 100]
@@ -213,19 +213,19 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
       return [minVal, maxVal]
     }
 
-    // Si un seul marqueur, utiliser son domaine
+    // If there's only one marker, use its domain
     if (markers.length === 1) {
       return getYDomain(markers[0])
     }
 
-    // Si plusieurs marqueurs, vérifier s'ils ont des échelles similaires
+    // If there are multiple markers, check whether they have similar scales
     const domains = markers.map((m) => getYDomain(m))
 
-    // Trouver le domaine qui englobe toutes les données
+    // Find the domain that encompasses all the data
     const minVal = Math.min(...domains.map((d) => d[0]))
     const maxVal = Math.max(...domains.map((d) => d[1]))
 
-    // Si les échelles sont très différentes (ratio > 5), on utilise juste le premier marqueur
+    // If the scales are very different (ratio > 5), just use the first marker
     const ratio = maxVal / (minVal || 1)
     if (ratio > 5 && markers.length > 1) {
       return getYDomain(markers[0])
@@ -307,7 +307,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
           const range = getReferenceRange(marker)
           if (!range) return null
 
-          // Déterminer quel axe Y utiliser pour cette référence
+          // Determine which Y axis to use for this reference
           const axisId = needsDualAxis && marker === 'testosterone' ? 'right' : 'left'
 
           return (
@@ -327,7 +327,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
 
         {/* Lines for each marker */}
         {markers.map((marker) => {
-          // Déterminer quel axe Y utiliser pour cette ligne
+          // Determine which Y axis to use for this line
           const axisId = needsDualAxis && marker === 'testosterone' ? 'right' : 'left'
 
           return (

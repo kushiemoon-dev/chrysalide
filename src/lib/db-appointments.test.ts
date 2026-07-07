@@ -115,7 +115,7 @@ describe('Appointments CRUD', () => {
 
 describe('getUpcomingAppointments', () => {
   it('ne retourne que les RDV dont date+heure sont dans le futur, triés chronologiquement', async () => {
-    await addAppointment({ ...baseAppointment, date: new Date('2000-01-01') }) // passé
+    await addAppointment({ ...baseAppointment, date: new Date('2000-01-01') }) // past
     await addAppointment({ ...baseAppointment, date: new Date('2099-03-01'), time: '09:00' })
     await addAppointment({ ...baseAppointment, date: new Date('2099-02-01'), time: '09:00' })
 
@@ -132,15 +132,15 @@ describe('getTotalAppointmentsCost', () => {
 
     await addAppointment({ ...baseAppointment, date: now, cost: 50, type: 'endocrinologist' })
     await addAppointment({ ...baseAppointment, date: now, cost: 30, type: 'surgeon' })
-    // hors année — compte quand même dans total/byType (non filtré par date), mais pas dans thisYear/thisMonth
+    // outside the year — still counted in total/byType (not filtered by date), but not in thisYear/thisMonth
     await addAppointment({
       ...baseAppointment,
       date: new Date('2000-01-01'),
       cost: 20,
       type: 'psychiatrist',
     })
-    await addAppointment({ ...baseAppointment, date: now, cost: 0 }) // ignoré
-    await addAppointment({ ...baseAppointment, date: now }) // pas de coût
+    await addAppointment({ ...baseAppointment, date: now, cost: 0 }) // ignored
+    await addAppointment({ ...baseAppointment, date: now }) // no cost
 
     const result = await getTotalAppointmentsCost()
     expect(result.total).toBe(100)

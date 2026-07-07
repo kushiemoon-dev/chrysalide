@@ -1,19 +1,19 @@
 /**
- * Système de notifications pour Chrysalide
- * Utilise l'API Web Notifications (local, pas de serveur)
+ * Notification system for Chrysalide
+ * Uses the Web Notifications API (local only, no server)
  */
 
 export type NotificationPermission = 'default' | 'granted' | 'denied'
 
 /**
- * Vérifie si les notifications sont supportées
+ * Checks whether notifications are supported
  */
 export function isNotificationSupported(): boolean {
   return typeof window !== 'undefined' && 'Notification' in window
 }
 
 /**
- * Récupère le statut actuel de la permission
+ * Gets the current permission status
  */
 export function getNotificationPermission(): NotificationPermission {
   if (!isNotificationSupported()) return 'denied'
@@ -21,7 +21,7 @@ export function getNotificationPermission(): NotificationPermission {
 }
 
 /**
- * Demande la permission pour les notifications
+ * Requests permission for notifications
  */
 export async function requestNotificationPermission(): Promise<NotificationPermission> {
   if (!isNotificationSupported()) {
@@ -39,7 +39,7 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
 }
 
 /**
- * Affiche une notification
+ * Displays a notification
  */
 export function showNotification(
   title: string,
@@ -65,7 +65,7 @@ export function showNotification(
       badge: '/icon-192.png',
     })
 
-    // Auto-close après 10 secondes si pas requireInteraction
+    // Auto-close after 10 seconds unless requireInteraction is set
     if (!options?.requireInteraction) {
       setTimeout(() => notification.close(), 10000)
     }
@@ -78,7 +78,7 @@ export function showNotification(
 }
 
 /**
- * Storage keys pour les préférences de notification
+ * Storage keys for notification preferences
  */
 const STORAGE_KEYS = {
   notificationsEnabled: 'chrysalide_notifications_enabled',
@@ -90,7 +90,7 @@ const STORAGE_KEYS = {
 }
 
 /**
- * Récupère les préférences de notifications depuis localStorage
+ * Gets notification preferences from localStorage
  */
 export function getNotificationPreferences(): {
   notificationsEnabled: boolean
@@ -116,7 +116,7 @@ export function getNotificationPreferences(): {
 }
 
 /**
- * Sauvegarde les préférences de notifications
+ * Saves notification preferences
  */
 export function setNotificationPreferences(
   prefs: Partial<{
@@ -143,13 +143,13 @@ export function setNotificationPreferences(
 }
 
 /**
- * Vérifie si une fréquence est périodique (non-quotidienne)
- * Ex: "1x/mois", "1x/2semaines", "1x/3jours" -> true
- * Ex: "1x/jour", "2x/jour", "3x/jour" -> false
+ * Checks whether a frequency is periodic (non-daily)
+ * E.g.: "1x/mois", "1x/2semaines", "1x/3jours" -> true
+ * E.g.: "1x/jour", "2x/jour", "3x/jour" -> false
  */
 export function isPeriodicFrequency(frequency: string): boolean {
   const lower = frequency.toLowerCase()
-  // Fréquences qui NE sont PAS quotidiennes
+  // Frequencies that are NOT daily
   return (
     lower.includes('semaine') ||
     lower.includes('mois') ||
@@ -169,8 +169,8 @@ export function isPeriodicFrequency(frequency: string): boolean {
 }
 
 /**
- * Calcule l'intervalle en jours pour une fréquence
- * Ex: "1x/mois" -> 28, "1x/2semaines" -> 14, "1x/3jours" -> 3
+ * Computes the interval in days for a frequency
+ * E.g.: "1x/mois" -> 28, "1x/2semaines" -> 14, "1x/3jours" -> 3
  */
 export function getFrequencyIntervalDays(frequency: string): number {
   const lower = frequency.toLowerCase()
@@ -181,7 +181,7 @@ export function getFrequencyIntervalDays(frequency: string): number {
   if (lower.includes('1x/5jours') || lower.includes('5 jours')) return 5
   if (lower.includes('1x/6jours') || lower.includes('6 jours')) return 6
   if (lower.includes('1x/10jours') || lower.includes('10 jours')) return 10
-  if (lower.includes('2x/semaine')) return 3.5 // ~2 fois par semaine
+  if (lower.includes('2x/semaine')) return 3.5 // ~2 times per week
   if (lower.includes('1x/semaine') || lower.includes('hebdomadaire')) return 7
   if (lower.includes('1x/2semaines') || lower.includes('2 semaines')) return 14
   if (lower.includes('1x/mois') || lower.includes('mensuel')) return 28
@@ -190,12 +190,12 @@ export function getFrequencyIntervalDays(frequency: string): number {
   if (lower.includes('1x/6mois') || lower.includes('6 mois') || lower.includes('semestriel'))
     return 168
 
-  return 1 // quotidien par défaut
+  return 1 // daily by default
 }
 
 /**
- * Vérifie si un médicament doit être pris un jour donné
- * Basé sur la fréquence, la date de début et la date de fin
+ * Checks whether a medication should be taken on a given day
+ * Based on the frequency, start date, and end date
  */
 export function shouldTakeMedicationOnDate(
   medication: { frequency: string; startDate: Date | string; endDate?: Date | string },
@@ -204,7 +204,7 @@ export function shouldTakeMedicationOnDate(
   const interval = getFrequencyIntervalDays(medication.frequency)
 
   const start = new Date(medication.startDate)
-  // Normaliser les dates pour ignorer les heures
+  // Normalize the dates to ignore the time portion
   const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate())
   const targetDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
 
@@ -212,26 +212,26 @@ export function shouldTakeMedicationOnDate(
     (targetDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24)
   )
 
-  // Si la date est avant le début, ne pas prendre
+  // If the date is before the start date, don't take it
   if (daysSinceStart < 0) return false
 
-  // Si le médicament a une date de fin et la date cible est après, ne pas prendre
+  // If the medication has an end date and the target date is after it, don't take it
   if (medication.endDate) {
     const end = new Date(medication.endDate)
     const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate())
     if (targetDay > endDay) return false
   }
 
-  // Si quotidien, prendre tous les jours
+  // If daily, take every day
   if (interval === 1) return true
 
-  // Pour les intervalles fractionnaires (2x/semaine), arrondir
+  // For fractional intervals (2x/week), round
   const roundedInterval = Math.round(interval)
   return daysSinceStart % roundedInterval === 0
 }
 
 /**
- * Vérifie si un médicament doit être pris aujourd'hui
+ * Checks whether a medication should be taken today
  */
 export function shouldTakeMedicationToday(medication: {
   frequency: string
@@ -242,58 +242,58 @@ export function shouldTakeMedicationToday(medication: {
 }
 
 /**
- * Parse une fréquence en heures de rappel (mode simple legacy)
- * Ex: "1x/jour" -> [9] (9h du matin)
- * Ex: "2x/jour" -> [9, 21]
- * Retourne null pour les fréquences périodiques (non-quotidiennes)
+ * Parses a frequency into reminder hours (legacy simple mode)
+ * E.g.: "1x/jour" -> [9] (9am)
+ * E.g.: "2x/jour" -> [9, 21]
+ * Returns null for periodic (non-daily) frequencies
  */
 export function parseFrequencyToHours(frequency: string): number[] | null {
   const lower = frequency.toLowerCase()
 
-  // Fréquences périodiques: retourner null
+  // Periodic frequencies: return null
   if (isPeriodicFrequency(frequency)) {
     return null
   }
 
   if (lower.includes('2x/jour') || lower.includes('2 fois')) {
-    return [9, 21] // 9h et 21h
+    return [9, 21] // 9am and 9pm
   }
   if (lower.includes('3x/jour') || lower.includes('3 fois')) {
-    return [8, 14, 20] // 8h, 14h, 20h
+    return [8, 14, 20] // 8am, 2pm, 8pm
   }
   if (
     lower.includes('1x/jour') ||
     lower.includes('quotidien') ||
     lower.includes('tous les jours')
   ) {
-    return [9] // 9h
+    return [9] // 9am
   }
 
-  // Par défaut: 9h (quotidien)
+  // Default: 9am (daily)
   return [9]
 }
 
 /**
- * Extrait les horaires de notification d'un médicament
- * En mode avancé, utilise les scheduledTimes explicites
- * En mode simple, parse la fréquence
- * Retourne un tableau vide pour les fréquences périodiques sans horaires explicites
+ * Extracts the notification times for a medication
+ * In advanced mode, uses the explicit scheduledTimes
+ * In simple mode, parses the frequency
+ * Returns an empty array for periodic frequencies without explicit times
  */
 export function getMedicationReminderTimes(medication: {
   schedulingMode?: 'simple' | 'advanced'
   scheduledTimes?: string[]
   frequency: string
 }): string[] {
-  // Mode avancé: utiliser les horaires explicites
+  // Advanced mode: use the explicit times
   if (medication.schedulingMode === 'advanced' && medication.scheduledTimes?.length) {
     return medication.scheduledTimes
   }
 
-  // Mode simple: parser la fréquence en horaires par défaut
+  // Simple mode: parse the frequency into default times
   const hours = parseFrequencyToHours(medication.frequency)
 
-  // Fréquences périodiques: retourner un horaire par défaut de 9h
-  // (la logique de "quel jour" est gérée par shouldTakeMedicationOnDate)
+  // Periodic frequencies: return a default time of 9am
+  // (the "which day" logic is handled by shouldTakeMedicationOnDate)
   if (hours === null) {
     return ['09:00']
   }
@@ -304,7 +304,7 @@ export function getMedicationReminderTimes(medication: {
 // === MODULE PREFERENCES ===
 
 /**
- * Récupère les préférences de visibilité des modules
+ * Gets the module visibility preferences
  */
 export function getModulePreferences(): {
   evolutionEnabled: boolean
@@ -316,13 +316,13 @@ export function getModulePreferences(): {
 
   return {
     evolutionEnabled: localStorage.getItem(STORAGE_KEYS.evolutionModuleEnabled) !== 'false',
-    // Suivi des coûts désactivé par défaut
+    // Cost tracking disabled by default
     costTrackingEnabled: localStorage.getItem(STORAGE_KEYS.costTrackingEnabled) === 'true',
   }
 }
 
 /**
- * Sauvegarde les préférences de visibilité des modules
+ * Saves the module visibility preferences
  */
 export function setModulePreferences(
   prefs: Partial<{
@@ -343,7 +343,7 @@ export function setModulePreferences(
 // === AUTO-VALIDATION ===
 
 /**
- * Vérifie si l'auto-validation est activée
+ * Checks whether auto-validation is enabled
  */
 export function isAutoValidationEnabled(): boolean {
   if (typeof window === 'undefined') return false
@@ -351,9 +351,9 @@ export function isAutoValidationEnabled(): boolean {
 }
 
 /**
- * Vérifie si un horaire prévu est déjà passé aujourd'hui
- * @param scheduledTime Horaire au format "HH:MM"
- * @returns true si l'horaire est passé
+ * Checks whether a scheduled time has already passed today
+ * @param scheduledTime Time in "HH:MM" format
+ * @returns true if the time has passed
  */
 export function isScheduledTimePassed(scheduledTime: string): boolean {
   const now = new Date()

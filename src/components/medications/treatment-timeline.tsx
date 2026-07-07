@@ -19,11 +19,12 @@ interface TreatmentTimelineProps {
 export function TreatmentTimeline({ changes, showTitle = true, maxItems }: TreatmentTimelineProps) {
   const t = useTranslations('objectives')
   const tMed = useTranslations('medications')
+  const tc = useTranslations('common')
   const locale = useLocale()
   const dateLocale = getDateLocale(locale as Locale)
   const displayedChanges = maxItems ? changes.slice(0, maxItems) : changes
 
-  // Grouper par date
+  // Group by date
   const groupedByDate = displayedChanges.reduce(
     (acc, change) => {
       const dateKey = format(new Date(change.date), 'yyyy-MM-dd')
@@ -47,7 +48,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <History className="text-primary h-4 w-4" />
-              Historique des traitements
+              {tMed('timeline.title')}
             </CardTitle>
           </CardHeader>
         )}
@@ -82,7 +83,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
                 <div className="bg-card/95 sticky top-0 z-10 border-b px-4 py-2 backdrop-blur-sm">
                   <time className="text-muted-foreground text-sm font-medium">
                     {isToday
-                      ? "Aujourd'hui"
+                      ? tc('today')
                       : format(date, 'EEEE d MMMM yyyy', { locale: dateLocale })}
                   </time>
                 </div>
@@ -171,7 +172,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
         {maxItems && changes.length > maxItems && (
           <div className="border-t px-4 py-3 text-center">
             <span className="text-muted-foreground text-sm">
-              +{changes.length - maxItems} autres changements
+              {tMed('timeline.moreChanges', { count: changes.length - maxItems })}
             </span>
           </div>
         )}
@@ -180,7 +181,7 @@ export function TreatmentTimeline({ changes, showTitle = true, maxItems }: Treat
   )
 }
 
-// Version compacte pour le dashboard ou les détails médicament
+// Compact version for the dashboard or medication details
 export function TreatmentTimelineCompact({
   changes,
   maxItems = 3,
@@ -224,14 +225,14 @@ export function TreatmentTimelineCompact({
       })}
       {changes.length > maxItems && (
         <p className="text-muted-foreground pt-1 text-center text-xs">
-          +{changes.length - maxItems} autres
+          {tMed('timeline.more', { count: changes.length - maxItems })}
         </p>
       )}
     </div>
   )
 }
 
-// Skeleton
+// Skeleton loader
 export function TreatmentTimelineSkeleton() {
   return (
     <Card>

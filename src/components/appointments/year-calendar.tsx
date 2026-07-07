@@ -29,23 +29,23 @@ interface YearCalendarProps {
   onAppointmentClick?: (appointment: Appointment) => void
 }
 
-// Jours de la semaine (commence lundi)
+// Days of the week (starts Monday)
 const WEEKDAYS = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
 
 /**
- * Calendrier annuel - grille 12 mois (4x3)
- * Affiche les RDV avec des indicateurs colorés par type
+ * Year calendar - 12-month grid (4x3)
+ * Displays appointments with color-coded indicators by type
  */
 export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: YearCalendarProps) {
   const t = useTranslations('appointments')
   const [year, setYear] = useState(new Date().getFullYear())
 
-  // Calculer les mois de l'année
+  // Compute the months of the year
   const yearStart = startOfYear(new Date(year, 0, 1))
   const yearEnd = endOfYear(new Date(year, 0, 1))
   const months = eachMonthOfInterval({ start: yearStart, end: yearEnd })
 
-  // Indexer les RDV par date pour un accès rapide
+  // Index appointments by date for fast access
   const appointmentsByDate = useMemo(() => {
     const map = new Map<string, Appointment[]>()
     appointments.forEach((apt) => {
@@ -64,7 +64,7 @@ export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: Y
 
   return (
     <div className="space-y-4">
-      {/* Navigation année */}
+      {/* Year navigation */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="icon" onClick={() => navigateYear(-1)} className="shrink-0">
           <ChevronLeft className="h-5 w-5" />
@@ -75,7 +75,7 @@ export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: Y
         </Button>
       </div>
 
-      {/* Légende */}
+      {/* Legend */}
       <div className="flex flex-wrap gap-2 text-xs">
         {Object.entries(APPOINTMENT_TYPES).map(([type, info]) => (
           <div key={type} className="flex items-center gap-1">
@@ -85,7 +85,7 @@ export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: Y
         ))}
       </div>
 
-      {/* Grille des mois (4 colonnes x 3 lignes) */}
+      {/* Month grid (4 columns x 3 rows) */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {months.map((month) => (
           <MonthMiniCalendar
@@ -100,7 +100,7 @@ export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: Y
   )
 }
 
-// Mini calendrier pour un mois
+// Mini calendar for a month
 function MonthMiniCalendar({
   month,
   appointmentsByDate,
@@ -116,17 +116,17 @@ function MonthMiniCalendar({
   const monthEnd = endOfMonth(month)
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
 
-  // Décalage pour le premier jour (0 = dimanche, on veut commencer lundi)
+  // Offset for the first day (0 = Sunday, we want to start on Monday)
   const firstDayOffset = (getDay(monthStart) + 6) % 7
 
   return (
     <div className="bg-card border-border rounded-lg border p-2">
-      {/* Nom du mois */}
+      {/* Month name */}
       <h3 className="text-foreground mb-2 text-center text-sm font-medium capitalize">
         {format(month, 'MMMM', { locale: dateLocale })}
       </h3>
 
-      {/* En-têtes jours de la semaine */}
+      {/* Weekday headers */}
       <div className="mb-1 grid grid-cols-7 gap-0.5">
         {WEEKDAYS.map((day, i) => (
           <div key={i} className="text-muted-foreground text-center text-[9px] font-medium">
@@ -135,26 +135,26 @@ function MonthMiniCalendar({
         ))}
       </div>
 
-      {/* Jours */}
+      {/* Days */}
       <div className="grid grid-cols-7 gap-0.5">
-        {/* Cases vides pour le décalage */}
+        {/* Empty cells for the offset */}
         {Array.from({ length: firstDayOffset }).map((_, i) => (
           <div key={`empty-${i}`} className="aspect-square" />
         ))}
 
-        {/* Jours du mois */}
+        {/* Days of the month */}
         {days.map((day) => {
           const dateKey = format(day, 'yyyy-MM-dd')
           const dayAppointments = appointmentsByDate.get(dateKey) || []
           const hasAppointments = dayAppointments.length > 0
           const today = isToday(day)
 
-          // Obtenir les couleurs uniques des RDV du jour
+          // Get the unique colors of the day's appointments
           const appointmentColors = [
             ...new Set(
               dayAppointments.map((apt) => APPOINTMENT_TYPES[apt.type]?.color || '#6B7280')
             ),
-          ].slice(0, 3) // Max 3 indicateurs
+          ].slice(0, 3) // Max 3 indicators
 
           return (
             <button
@@ -174,7 +174,7 @@ function MonthMiniCalendar({
                 {format(day, 'd')}
               </span>
 
-              {/* Indicateurs de RDV */}
+              {/* Appointment indicators */}
               {hasAppointments && (
                 <div className="mt-0.5 flex gap-0.5">
                   {appointmentColors.map((color, i) => (

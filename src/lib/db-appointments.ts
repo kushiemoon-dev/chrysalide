@@ -3,18 +3,18 @@ import type { Appointment, AppointmentType, Practitioner } from './types'
 
 // Appointments
 /**
- * Récupère les RDV à venir (date+heure > maintenant)
- * Utilise un filtrage JS pour combiner date et time correctement
+ * Gets upcoming appointments (date+time > now)
+ * Uses JS filtering to correctly combine date and time
  */
 export async function getUpcomingAppointments() {
   const now = new Date()
   const todayStart = new Date()
   todayStart.setHours(0, 0, 0, 0)
 
-  // Récupérer tous les RDV d'aujourd'hui et futur
+  // Get all of today's and future appointments
   const appointments = await db.appointments.where('date').aboveOrEqual(todayStart).toArray()
 
-  // Filtrer ceux qui sont réellement dans le futur (en tenant compte de l'heure)
+  // Filter to those that are actually in the future (accounting for the time)
   return appointments
     .filter((apt) => {
       const aptDate = new Date(apt.date)
@@ -22,7 +22,7 @@ export async function getUpcomingAppointments() {
         const [hours, minutes] = apt.time.split(':').map(Number)
         aptDate.setHours(hours, minutes, 0, 0)
       } else {
-        // Pas d'heure = considéré en début de journée
+        // No time set = treated as start of day
         aptDate.setHours(0, 0, 0, 0)
       }
       return aptDate > now
@@ -60,8 +60,8 @@ export async function getAppointment(id: number) {
 }
 
 /**
- * Récupère un RDV avec son praticien lié (si présent)
- * Utilisé pour l'affichage avec les infos à jour du praticien
+ * Gets an appointment along with its linked practitioner (if any)
+ * Used for display with up-to-date practitioner info
  */
 export async function getAppointmentWithPractitioner(id: number) {
   const appointment = await db.appointments.get(id)
@@ -100,8 +100,8 @@ export async function deleteAppointment(id: number) {
 // === COST TRACKING ===
 
 /**
- * Calcule le total des coûts de RDV
- * Retourne le total global, ce mois-ci, cette année, et par type
+ * Computes the total appointment costs
+ * Returns the overall total, this month, this year, and by type
  */
 export async function getTotalAppointmentsCost(): Promise<{
   total: number
@@ -134,24 +134,24 @@ export async function getTotalAppointmentsCost(): Promise<{
     // Round to 2 decimal places to avoid floating-point precision issues
     result.total = Math.round((result.total + apt.cost) * 100) / 100
 
-    // Cette année
+    // This year
     if (aptDate.getFullYear() === thisYear) {
       result.thisYear = Math.round((result.thisYear + apt.cost) * 100) / 100
 
-      // Ce mois-ci
+      // This month
       if (aptDate.getMonth() === thisMonth) {
         result.thisMonth = Math.round((result.thisMonth + apt.cost) * 100) / 100
       }
     }
 
-    // Par type
+    // By type
     result.byType[apt.type] = Math.round(((result.byType[apt.type] || 0) + apt.cost) * 100) / 100
   }
 
   return result
 }
 
-/** @deprecated Utiliser getAppointmentsByObjective depuis v1.3.0 */
+/** @deprecated Use getAppointmentsByObjective since v1.3.0 */
 export async function getAppointmentsByAct(actId: number) {
   return db.appointments.where('actId').equals(actId).sortBy('date')
 }

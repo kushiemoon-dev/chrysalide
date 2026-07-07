@@ -66,7 +66,7 @@ export default function MedicationsPage() {
   const [inactiveOpen, setInactiveOpen] = useState(false)
   const [ganttOpen, setGanttOpen] = useState(false)
 
-  // Modal pour prise passée
+  // Modal for logging a past dose
   const [pastDoseModal, setPastDoseModal] = useState(false)
   const [selectedMedId, setSelectedMedId] = useState<number | null>(null)
   const [selectedMedName, setSelectedMedName] = useState('')
@@ -76,7 +76,7 @@ export default function MedicationsPage() {
   const [pastDoseIndex, setPastDoseIndex] = useState<number | undefined>(undefined)
   const [pastDoseNote, setPastDoseNote] = useState('')
 
-  // Modal pour zone d'application gel
+  // Modal for gel application zone
   const [gelZoneModal, setGelZoneModal] = useState(false)
   const [gelMedId, setGelMedId] = useState<number | null>(null)
   const [gelMedName, setGelMedName] = useState('')
@@ -133,7 +133,7 @@ export default function MedicationsPage() {
             taken: true,
             scheduledTime: time,
             doseIndex: i,
-            notes: 'Auto-validé',
+            notes: t('list.autoValidated'),
           })
           autoCreatedCount++
         } catch (error) {
@@ -216,7 +216,7 @@ export default function MedicationsPage() {
             taken: true,
             scheduledTime: time,
             doseIndex: i,
-            notes: 'Auto-validé (veille)',
+            notes: t('list.autoValidatedYesterday'),
           })
           autoCreatedCount++
         } catch (error) {
@@ -253,7 +253,7 @@ export default function MedicationsPage() {
       const finalLogs = autoCreatedCount > 0 ? await getTodayLogs() : logs
       setTodayLogs(finalLogs)
 
-      // Charger les dernières prises pour les médicaments périodiques
+      // Load the last doses for periodic medications
       const periodicMeds = activeMeds.filter((med) => isPeriodicFrequency(med.frequency))
       const lastLogsMap: Record<number, MedicationLog> = {}
 
@@ -297,7 +297,7 @@ export default function MedicationsPage() {
     return () => clearInterval(interval)
   }, [recheckAutoValidation])
 
-  // Ouvrir modal gel zone
+  // Open the gel zone modal
   function openGelZoneModal(med: Medication, scheduledTime?: string, doseIndex?: number) {
     setGelMedId(med.id!)
     setGelMedName(med.name)
@@ -338,7 +338,7 @@ export default function MedicationsPage() {
     }
   }
 
-  // Mode simple: une seule prise par jour
+  // Simple mode: a single dose per day
   async function handleTakeMedication(
     medicationId: number,
     isGel: boolean = false,
@@ -348,7 +348,7 @@ export default function MedicationsPage() {
 
     if (alreadyTaken) return
 
-    // Si c'est un gel, ouvrir le modal de zone
+    // If it's a gel, open the zone modal
     if (isGel && med) {
       openGelZoneModal(med)
       return
@@ -367,7 +367,7 @@ export default function MedicationsPage() {
     }
   }
 
-  // Mode avancé: prise par dose spécifique
+  // Advanced mode: logging a specific dose
   async function handleTakeDose(
     medicationId: number,
     scheduledTime: string,
@@ -375,14 +375,14 @@ export default function MedicationsPage() {
     isGel: boolean = false,
     med?: Medication
   ) {
-    // Vérifier si cette dose spécifique a déjà été prise
+    // Check whether this specific dose has already been taken
     const alreadyTaken = todayLogs.some(
       (log) => log.medicationId === medicationId && log.scheduledTime === scheduledTime && log.taken
     )
 
     if (alreadyTaken) return
 
-    // Si c'est un gel, ouvrir le modal de zone
+    // If it's a gel, open the zone modal
     if (isGel && med) {
       openGelZoneModal(med, scheduledTime, doseIndex)
       return
@@ -403,14 +403,14 @@ export default function MedicationsPage() {
     }
   }
 
-  // Vérifie si une dose spécifique a été prise aujourd'hui
+  // Check whether a specific dose has already been taken today
   function isDoseTaken(medicationId: number, scheduledTime: string): boolean {
     return todayLogs.some(
       (log) => log.medicationId === medicationId && log.scheduledTime === scheduledTime && log.taken
     )
   }
 
-  // Calcule la prochaine date de prise pour un médicament périodique
+  // Compute the next dose date for a periodic medication
   function getNextDoseDate(med: Medication): Date | null {
     if (!isPeriodicFrequency(med.frequency)) return null
 
@@ -419,7 +419,7 @@ export default function MedicationsPage() {
     const today = new Date()
     const todayDay = new Date(today.getFullYear(), today.getMonth(), today.getDate())
 
-    // Utiliser la dernière prise si disponible, sinon la date de début
+    // Use the last dose if available, otherwise the start date
     const lastLog = med.id ? lastLogs[med.id] : null
     const referenceDate = lastLog ? new Date(lastLog.timestamp) : new Date(med.startDate)
 
@@ -429,23 +429,23 @@ export default function MedicationsPage() {
       referenceDate.getDate()
     )
 
-    // Calculer la prochaine date: dernière prise + intervalle
+    // Compute the next date: last dose + interval
     const nextDate = new Date(refDay)
     nextDate.setDate(nextDate.getDate() + roundedInterval)
 
-    // Si la prochaine date est aujourd'hui ou dans le passé, c'est aujourd'hui
+    // If the next date is today or in the past, it's today
     if (nextDate <= todayDay) return todayDay
 
     return nextDate
   }
 
-  // Ouvrir le modal pour prise passée
+  // Open the modal for logging a past dose
   function openPastDoseModal(med: Medication, scheduledTime?: string, doseIndex?: number) {
     setSelectedMedId(med.id!)
     setSelectedMedName(med.name)
     setPastScheduledTime(scheduledTime)
     setPastDoseIndex(doseIndex)
-    // Pré-remplir avec la date/heure actuelle
+    // Pre-fill with the current date/time
     const now = new Date()
     setPastDate(now.toISOString().split('T')[0])
     setPastTime(format(now, 'HH:mm'))
@@ -525,7 +525,7 @@ export default function MedicationsPage() {
         </div>
       </div>
 
-      {/* Vue chronologique Gantt */}
+      {/* Gantt timeline view */}
       {(activeMedications.length > 0 || inactiveMedications.length > 0) && (
         <Collapsible open={ganttOpen} onOpenChange={setGanttOpen}>
           <CollapsibleTrigger asChild>
@@ -611,13 +611,13 @@ export default function MedicationsPage() {
                         </div>
                       </div>
 
-                      {/* Boutons de prise - Auto-détection des doses multiples */}
+                      {/* Dose-taking buttons - auto-detection of multiple doses */}
                       <div className="border-border mt-3 border-t pt-3">
                         {(() => {
-                          // Vérifier si c'est un médicament périodique
+                          // Check whether this is a periodic medication
                           const isPeriodic = isPeriodicFrequency(med.frequency)
 
-                          // Pour les périodiques, calculer si on doit prendre aujourd'hui basé sur la dernière prise
+                          // For periodic medications, compute whether it should be taken today based on the last dose
                           let shouldTakeToday = true
                           if (isPeriodic && med.id) {
                             const nextDate = getNextDoseDate(med)
@@ -630,7 +630,7 @@ export default function MedicationsPage() {
                             shouldTakeToday = nextDate ? nextDate <= todayDay : true
                           }
 
-                          // Si périodique et pas à prendre aujourd'hui, afficher la prochaine date
+                          // If periodic and not due today, show the next date
                           if (isPeriodic && !shouldTakeToday) {
                             const nextDate = getNextDoseDate(med)
                             return (
@@ -653,12 +653,12 @@ export default function MedicationsPage() {
                             )
                           }
 
-                          // Récupérer les horaires (explicites ou déduits de la fréquence)
+                          // Get the dose times (explicit or derived from the frequency)
                           const doseTimes = getMedicationReminderTimes(med)
                           const hasMultipleDoses = doseTimes.length > 1
 
                           if (hasMultipleDoses) {
-                            // Multi-doses: afficher un bouton par horaire
+                            // Multiple doses: show one button per time slot
                             return (
                               <div className="flex flex-wrap gap-2">
                                 {doseTimes.map((time, index) => {
@@ -698,7 +698,7 @@ export default function MedicationsPage() {
                             )
                           }
 
-                          // Dose unique: un seul bouton + bouton prise passée
+                          // Single dose: one button + a "log past dose" button
                           return (
                             <div className="flex gap-2">
                               <Button
@@ -756,7 +756,7 @@ export default function MedicationsPage() {
         </div>
       )}
 
-      {/* Section médicaments inactifs */}
+      {/* Inactive medications section */}
       {inactiveMedications.length > 0 && (
         <Collapsible open={inactiveOpen} onOpenChange={setInactiveOpen}>
           <CollapsibleTrigger asChild>
@@ -765,8 +765,10 @@ export default function MedicationsPage() {
               className="text-muted-foreground hover:text-foreground w-full justify-between"
             >
               <span>
-                {inactiveMedications.length} médicament{inactiveMedications.length > 1 ? 's' : ''}{' '}
-                inactif{inactiveMedications.length > 1 ? 's' : ''}
+                {inactiveMedications.length}{' '}
+                {inactiveMedications.length > 1
+                  ? `${t('list.medicationWordPlural')} ${t('list.inactivePlural')}`
+                  : `${t('list.medicationWord')} ${t('list.inactive')}`}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${inactiveOpen ? 'rotate-180' : ''}`}
@@ -818,18 +820,18 @@ export default function MedicationsPage() {
         </Collapsible>
       )}
 
-      {/* Modal pour zone d'application gel */}
+      {/* Modal for gel application zone */}
       <Dialog open={gelZoneModal} onOpenChange={setGelZoneModal}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Droplet className="text-primary h-5 w-5" />
-              Zone d&apos;application
+              {t('list.gelZoneDialogTitle')}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <p className="text-muted-foreground text-sm">
-              Sélectionnez la zone d&apos;application pour{' '}
+              {t('list.gelZoneDialogDesc')}{' '}
               <span className="text-foreground font-medium">{gelMedName}</span>
             </p>
             <div className="grid gap-2">
@@ -866,7 +868,7 @@ export default function MedicationsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Modal pour prise passée */}
+      {/* Modal for logging a past dose */}
       <Dialog open={pastDoseModal} onOpenChange={setPastDoseModal}>
         <DialogContent>
           <DialogHeader>

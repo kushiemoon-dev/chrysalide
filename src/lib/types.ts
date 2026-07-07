@@ -1,37 +1,33 @@
 /**
- * Types pour Chrysalide - Suivi médical trans
+ * Types for Chrysalide - Trans medical tracking
  */
 
 // === MEDICATIONS ===
 
 export type MedicationType =
-  | 'estrogen' // Œstradiol, EV, etc.
+  | 'estrogen' // Estradiol, EV, etc.
   | 'antiandrogen' // Spiro, Cypro, Bica
-  | 'progesteron' // Progestérone
-  | 'testosterone' // Testostérone
-  | 'gnrh' // Agonistes GnRH
+  | 'progesteron' // Progesterone
+  | 'testosterone' // Testosterone
+  | 'gnrh' // GnRH agonists
   | 'other'
 
 export type AdministrationMethod =
-  | 'pill' // Comprimé oral/sublingual
-  | 'injection' // IM ou SC
-  | 'patch' // Transdermique
-  | 'gel' // Topique
-  | 'implant' // Sous-cutané
+  | 'pill' // Oral/sublingual tablet
+  | 'injection' // IM or SC
+  | 'patch' // Transdermal
+  | 'gel' // Topical
+  | 'implant' // Subcutaneous
 
 export type SchedulingMode = 'simple' | 'advanced'
 
-// Routes d'administration spécifiques
+// Specific administration routes
 export type PillAdministrationRoute = 'oral' | 'sublingual' | 'vaginal' | 'rectal'
 export type InjectionAdministrationRoute = 'subcutaneous' | 'intramuscular'
 
-// Zones d'application gel
+// Gel application zones
 export type GelApplicationZone =
-  | 'forearm_left'
-  | 'forearm_right'
-  | 'inner_thigh_left'
-  | 'inner_thigh_right'
-  | 'scrotal'
+  'forearm_left' | 'forearm_right' | 'inner_thigh_left' | 'inner_thigh_right' | 'scrotal'
 
 export interface Medication {
   id?: number
@@ -44,16 +40,16 @@ export interface Medication {
   startDate: Date
   endDate?: Date
   stock?: number
-  stockUnit?: string // Unité pour le stock (comprimés, tubes, boîtes, etc.)
+  stockUnit?: string // Unit for stock (tablets, tubes, boxes, etc.)
   stockAlert?: number
   notes?: string
   isActive: boolean
-  // Mode avancé pour doses multiples
-  schedulingMode?: SchedulingMode // 'simple' = 1 bouton, 'advanced' = multi-doses
-  scheduledTimes?: string[] // ["08:00", "14:00", "20:00"] - horaires précis
-  // Routes d'administration spécifiques
-  pillRoute?: PillAdministrationRoute // oral | sublingual (pour method === 'pill')
-  injectionRoute?: InjectionAdministrationRoute // subcutaneous | intramuscular (pour method === 'injection')
+  // Advanced mode for multiple doses
+  schedulingMode?: SchedulingMode // 'simple' = 1 button, 'advanced' = multiple doses
+  scheduledTimes?: string[] // ["08:00", "14:00", "20:00"] - precise times
+  // Specific administration routes
+  pillRoute?: PillAdministrationRoute // oral | sublingual (for method === 'pill')
+  injectionRoute?: InjectionAdministrationRoute // subcutaneous | intramuscular (for method === 'injection')
   // Medication history tracking
   replacedById?: number // ID of the medication that replaced this one
   replacesId?: number // ID of the medication this one replaced
@@ -68,12 +64,12 @@ export interface MedicationLog {
   medicationId: number
   timestamp: Date
   taken: boolean
-  // Mode avancé: quelle dose a été prise
-  scheduledTime?: string // "08:00" - l'horaire prévu de cette dose
-  doseIndex?: number // 0, 1, 2... - index dans scheduledTimes
+  // Advanced mode: which dose was taken
+  scheduledTime?: string // "08:00" - the scheduled time for this dose
+  doseIndex?: number // 0, 1, 2... - index within scheduledTimes
   notes?: string
   sideEffects?: string
-  // Zone d'application pour les gels
+  // Application zone for gels
   applicationZone?: GelApplicationZone
 }
 
@@ -88,9 +84,9 @@ export type BloodMarker =
   | 'shbg' // SHBG (nmol/L)
   | 'hematocrit' // %
   | 'hemoglobin' // g/dL
-  | 'alt' // Foie (U/L)
-  | 'ast' // Foie (U/L)
-  | 'creatinine' // Reins (mg/dL)
+  | 'alt' // Liver (U/L)
+  | 'ast' // Liver (U/L)
+  | 'creatinine' // Kidneys (mg/dL)
   | 'potassium' // K+ (mEq/L)
   | 'dheas' // DHEA-S
   | 'progesterone' // P4
@@ -105,10 +101,10 @@ export interface BloodTest {
   id?: number
   date: Date
   lab?: string
-  practitionerId?: number // Référence au labo dans l'annuaire
+  practitionerId?: number // Reference to the lab in the directory
   results: BloodTestResult[]
   notes?: string
-  documentPhoto?: string // base64 ou blob
+  documentPhoto?: string // base64 or blob
   createdAt: Date
 }
 
@@ -128,7 +124,7 @@ export interface PhysicalProgress {
   id?: number
   date: Date
   measurements?: Measurements
-  photos?: string[] // base64 ou blob IDs
+  photos?: string[] // base64 or blob IDs
   notes?: string
   tags?: string[]
   createdAt: Date
@@ -158,14 +154,14 @@ export interface Appointment {
   date: Date
   time?: string
   type: AppointmentType
-  practitionerId?: number // Référence au praticien dans l'annuaire
-  doctor?: string // Fallback si pas de praticien lié
-  location?: string // Fallback si pas de praticien lié
+  practitionerId?: number // Reference to the practitioner in the directory
+  doctor?: string // Fallback if no practitioner is linked
+  location?: string // Fallback if no practitioner is linked
   notes?: string
   reminderMinutes?: number
-  cost?: number // Reste à charge en euros (optionnel)
-  actId?: number // @deprecated — utiliser objectiveId depuis v1.3.0
-  objectiveId?: number // Lien vers un objectif médical (remplace actId)
+  cost?: number // Out-of-pocket cost in euros (optional)
+  actId?: number // @deprecated — use objectiveId since v1.3.0
+  objectiveId?: number // Link to a medical objective (replaces actId)
   createdAt: Date
 }
 
@@ -176,10 +172,10 @@ export type ReminderType = 'medication' | 'appointment' | 'refill' | 'bloodtest'
 export interface Reminder {
   id?: number
   type: ReminderType
-  referenceId?: number // ID du médicament ou RDV associé
+  referenceId?: number // ID of the associated medication or appointment
   title: string
   message?: string
-  schedule: string // Format cron-like ou simple
+  schedule: string // Cron-like or simple format
   enabled: boolean
   lastTriggered?: Date
   createdAt: Date
@@ -209,15 +205,15 @@ export interface ReferenceRange {
 
 // === JOURNAL ENTRIES ===
 
-export type MoodLevel = 1 | 2 | 3 | 4 | 5 // 1 = très mal, 5 = très bien
+export type MoodLevel = 1 | 2 | 3 | 4 | 5 // 1 = very bad, 5 = very good
 
 export type JournalTagCategory =
-  | 'mood' // humeur générale
-  | 'side_effects' // effets secondaires
-  | 'energy' // niveau d'énergie
-  | 'sleep' // qualité du sommeil
-  | 'social' // interactions sociales
-  | 'custom' // tags personnalisés
+  | 'mood' // general mood
+  | 'side_effects' // side effects
+  | 'energy' // energy level
+  | 'sleep' // sleep quality
+  | 'social' // social interactions
+  | 'custom' // custom tags
 
 export interface JournalTag {
   name: string
@@ -227,13 +223,13 @@ export interface JournalTag {
 export interface JournalEntry {
   id?: number
   date: Date
-  content: string // texte libre de l'entrée
-  mood?: MoodLevel // niveau d'humeur 1-5
-  tags: string[] // liste des tags (noms)
-  sideEffects?: string[] // effets secondaires notés
-  energyLevel?: MoodLevel // niveau d'énergie 1-5
-  sleepQuality?: MoodLevel // qualité du sommeil 1-5
-  isPrivate?: boolean // entrée privée (future: chiffrement)
+  content: string // free-form entry text
+  mood?: MoodLevel // mood level 1-5
+  tags: string[] // list of tag names
+  sideEffects?: string[] // noted side effects
+  energyLevel?: MoodLevel // energy level 1-5
+  sleepQuality?: MoodLevel // sleep quality 1-5
+  isPrivate?: boolean // private entry (future: encryption)
   createdAt: Date
   updatedAt: Date
 }
@@ -241,18 +237,18 @@ export interface JournalEntry {
 // === OBJECTIVES & MILESTONES ===
 
 export type ObjectiveCategory =
-  | 'medical' // Médical (hormones, chirurgies, etc.)
-  | 'administrative' // Administratif (changement d'état civil, etc.)
-  | 'social' // Social (coming out, relations, etc.)
-  | 'physical' // Physique (exercice, corps, etc.)
-  | 'mental' // Mental (bien-être, thérapie, etc.)
+  | 'medical' // Medical (hormones, surgeries, etc.)
+  | 'administrative' // Administrative (legal name/gender change, etc.)
+  | 'social' // Social (coming out, relationships, etc.)
+  | 'physical' // Physical (exercise, body, etc.)
+  | 'mental' // Mental (well-being, therapy, etc.)
 
 export type ObjectiveStatus =
-  | 'not_started' // Pas encore commencé
-  | 'in_progress' // En cours
-  | 'completed' // Terminé
-  | 'paused' // En pause
-  | 'cancelled' // Annulé
+  | 'not_started' // Not started yet
+  | 'in_progress' // In progress
+  | 'completed' // Completed
+  | 'paused' // Paused
+  | 'cancelled' // Cancelled
 
 export interface Objective {
   id?: number
@@ -260,11 +256,11 @@ export interface Objective {
   description?: string
   category: ObjectiveCategory
   status: ObjectiveStatus
-  targetDate?: Date // date cible optionnelle
-  completedDate?: Date // date de complétion réelle
-  progress?: number // 0-100% (calculé depuis milestones ou manuel)
+  targetDate?: Date // optional target date
+  completedDate?: Date // actual completion date
+  progress?: number // 0-100% (computed from milestones or manual)
   notes?: string
-  // Champs issus de la fusion avec Act (tous optionnels depuis v1.3.0)
+  // Fields from the merge with Act (all optional since v1.3.0)
   actCategory?: ActCategory
   information?: string
   envisagedPractitionerIds?: number[]
@@ -276,43 +272,43 @@ export interface Objective {
 
 export interface Milestone {
   id?: number
-  objectiveId: number // lié à un objectif
+  objectiveId: number // linked to an objective
   title: string
   description?: string
-  date?: Date // date cible du milestone
+  date?: Date // target date of the milestone
   achieved: boolean
   achievedDate?: Date
-  order: number // ordre d'affichage
+  order: number // display order
   createdAt: Date
 }
 
-// === TREATMENT CHANGES (Historique) ===
+// === TREATMENT CHANGES (History) ===
 
 export type TreatmentChangeType =
-  | 'started' // Nouveau médicament commencé
-  | 'stopped' // Médicament arrêté
-  | 'paused' // Médicament mis en pause
-  | 'resumed' // Médicament repris
-  | 'dosage_change' // Changement de dosage
-  | 'method_change' // Changement de méthode d'administration
-  | 'frequency_change' // Changement de fréquence
+  | 'started' // New medication started
+  | 'stopped' // Medication stopped
+  | 'paused' // Medication paused
+  | 'resumed' // Medication resumed
+  | 'dosage_change' // Dosage change
+  | 'method_change' // Administration method change
+  | 'frequency_change' // Frequency change
 
 export interface TreatmentChange {
   id?: number
-  medicationId: number // ID du médicament concerné
-  medicationName: string // Nom stocké pour historique même si supprimé
+  medicationId: number // ID of the affected medication
+  medicationName: string // Name stored for history even if deleted
   changeType: TreatmentChangeType
-  date: Date // Date du changement
-  oldValue?: string // Ancienne valeur (ex: "2mg")
-  newValue?: string // Nouvelle valeur (ex: "4mg")
-  reason?: string // Raison du changement
-  prescribedBy?: string // Médecin qui a prescrit
+  date: Date // Date of the change
+  oldValue?: string // Old value (e.g., "2mg")
+  newValue?: string // New value (e.g., "4mg")
+  reason?: string // Reason for the change
+  prescribedBy?: string // Prescribing doctor
   notes?: string
   createdAt: Date
 }
 
-// === ACTES MÉDICAUX (Bloc-note par acte) ===
-// @deprecated Fusionné dans Objective depuis v1.3.0
+// === MEDICAL PROCEDURES (Notes per procedure) ===
+// @deprecated Merged into Objective since v1.3.0
 
 export type ActCategory =
   | 'ffs'
@@ -327,7 +323,7 @@ export type ActCategory =
 
 export type ActStatus = 'planning' | 'in_progress' | 'done' | 'cancelled'
 
-/** @deprecated Fusionné dans Objective depuis v1.3.0 */
+/** @deprecated Merged into Objective since v1.3.0 */
 export interface Act {
   id?: number
   title: string
@@ -341,7 +337,7 @@ export interface Act {
   updatedAt: Date
 }
 
-/** @deprecated Fusionné dans Milestone depuis v1.3.0 */
+/** @deprecated Merged into Milestone since v1.3.0 */
 export interface ActTodo {
   id?: number
   actId: number
@@ -351,19 +347,19 @@ export interface ActTodo {
   createdAt: Date
 }
 
-// === PRACTITIONERS (Annuaire) ===
+// === PRACTITIONERS (Directory) ===
 
 export interface Practitioner {
   id?: number
-  name: string // Nom complet
-  specialty: AppointmentType // Type de praticien·ne
-  location?: string // Adresse/lieu
-  phone?: string // Téléphone
+  name: string // Full name
+  specialty: AppointmentType // Practitioner type
+  location?: string // Address/location
+  phone?: string // Phone number
   email?: string // Email
-  website?: string // Site web
-  notes?: string // Notes personnelles
-  lastUsed: Date // Dernière utilisation (pour tri par récence)
-  usageCount: number // Nombre d'utilisations (pour suggestions)
-  isTransFriendly?: boolean // Praticien·ne trans-friendly connu·e
+  website?: string // Website
+  notes?: string // Personal notes
+  lastUsed: Date // Last used (for sorting by recency)
+  usageCount: number // Number of uses (for suggestions)
+  isTransFriendly?: boolean // Known trans-friendly practitioner
   createdAt: Date
 }

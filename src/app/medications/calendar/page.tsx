@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { getDateLocale } from '@/i18n/date-locale'
 import type { Locale } from '@/i18n/config'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -24,6 +24,8 @@ import { getMedicationReminderTimes, shouldTakeMedicationOnDate } from '@/lib/no
 import type { Medication, MedicationLog } from '@/lib/types'
 
 export default function MedicationsCalendarPage() {
+  const t = useTranslations('medications')
+  const tc = useTranslations('common')
   const locale = useLocale()
   const dateLocale = getDateLocale(locale as Locale)
   const [medications, setMedications] = useState<Medication[]>([])
@@ -132,7 +134,9 @@ export default function MedicationsCalendarPage() {
   async function validateMonth() {
     if (
       !confirm(
-        `Valider toutes les prises pour ${format(currentMonth, 'MMMM yyyy', { locale: dateLocale })} ?\n\nCela marquera automatiquement toutes les doses prévues comme prises.`
+        t('calendar.validateConfirm', {
+          month: format(currentMonth, 'MMMM yyyy', { locale: dateLocale }),
+        })
       )
     ) {
       return
@@ -184,10 +188,10 @@ export default function MedicationsCalendarPage() {
       const monthLogs = await db.medicationLogs.where('timestamp').between(start, end).toArray()
       setLogs(monthLogs)
 
-      alert(`✅ Mois validé avec succès !\n${totalAdded} prises ajoutées/mises à jour.`)
+      alert(`✅ ${t('calendar.validateSuccess', { count: totalAdded })}`)
     } catch (error) {
       console.error('Error validating month:', error)
-      alert('❌ Erreur lors de la validation du mois')
+      alert(`❌ ${t('calendar.validateError')}`)
     } finally {
       setValidating(false)
     }
@@ -197,12 +201,12 @@ export default function MedicationsCalendarPage() {
   const selectedDayLogs = getLogsForDay(selectedDate)
   const takenCount = selectedDayLogs.filter((l) => l.taken).length
 
-  // Médicaments à prendre pour le jour sélectionné (strictement dans leur période de prise)
+  // Medications to take for the selected day (strictly within their treatment period)
   const medicationsForSelectedDay = medications.filter((med) =>
     shouldTakeMedicationOnDate(med, selectedDate)
   )
 
-  // Total doses: compte les doses individuelles pour les médocs à prendre ce jour
+  // Total doses: counts the individual doses for the medications to take that day
   const totalDoses = medicationsForSelectedDay.reduce((sum, med) => {
     const doseTimes = getMedicationReminderTimes(med)
     return sum + doseTimes.length
@@ -214,7 +218,7 @@ export default function MedicationsCalendarPage() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{tc('loading')}</p>
       </div>
     )
   }
@@ -229,8 +233,8 @@ export default function MedicationsCalendarPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-foreground text-xl font-bold">Calendrier des prises</h1>
-          <p className="text-muted-foreground text-sm">Historique de vos prises</p>
+          <h1 className="text-foreground text-xl font-bold">{t('calendar.title')}</h1>
+          <p className="text-muted-foreground text-sm">{t('calendar.subtitle')}</p>
         </div>
       </div>
 
@@ -266,19 +270,17 @@ export default function MedicationsCalendarPage() {
             <span>{format(selectedDate, 'EEEE d MMMM yyyy', { locale: dateLocale })}</span>
             {takenCount > 0 && (
               <Badge variant="secondary">
-                {takenCount}/{totalDoses} pris
+                {takenCount}/{totalDoses} {t('calendar.taken')}
               </Badge>
             )}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {medications.length === 0 ? (
-            <p className="text-muted-foreground py-4 text-center text-sm">
-              Aucun médicament configuré
-            </p>
+            <p className="text-muted-foreground py-4 text-center text-sm">{t('calendar.noMeds')}</p>
           ) : medicationsForSelectedDay.length === 0 ? (
             <p className="text-muted-foreground py-4 text-center text-sm">
-              Aucune prise prévue ce jour
+              {t('calendar.noDoses')}
             </p>
           ) : (
             <div className="space-y-2">
@@ -287,7 +289,7 @@ export default function MedicationsCalendarPage() {
                 const doseTimes = getMedicationReminderTimes(med)
                 const hasMultipleDoses = doseTimes.length > 1
 
-                // Multi-doses: afficher chaque dose séparément
+                // Multiple doses: display each dose separately
                 if (hasMultipleDoses) {
                   return (
                     <div key={med.id} className="space-y-1.5">
@@ -331,7 +333,7 @@ export default function MedicationsCalendarPage() {
                   )
                 }
 
-                // Dose unique: une seule entrée
+                // Single dose: one entry
                 const taken = medLogs.some((l) => l.taken)
                 const takenAt = medLogs.find((l) => l.taken)
                 const time = doseTimes[0] || '00:00'
@@ -379,27 +381,27 @@ export default function MedicationsCalendarPage() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">
-            Statistiques - {format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}
+            {t('calendar.stats')} - {format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-muted/30 rounded-lg p-3 text-center">
               <p className="text-primary text-2xl font-bold">{daysWithLogs.length}</p>
-              <p className="text-muted-foreground text-xs">Jours avec prises</p>
+              <p className="text-muted-foreground text-xs">{t('calendar.daysWithDoses')}</p>
             </div>
             <div className="bg-muted/30 rounded-lg p-3 text-center">
               <p className="text-foreground text-2xl font-bold">
                 {logs.filter((l) => l.taken).length}
               </p>
-              <p className="text-muted-foreground text-xs">Prises totales</p>
+              <p className="text-muted-foreground text-xs">{t('calendar.totalDoses')}</p>
             </div>
           </div>
 
           {totalDaysWithLogs > 0 && (
             <div className="bg-primary/10 rounded-lg p-3 text-center">
               <p className="text-primary text-2xl font-bold">{totalDaysWithLogs}</p>
-              <p className="text-muted-foreground text-xs">jours depuis le début</p>
+              <p className="text-muted-foreground text-xs">{t('calendar.daysSinceStart')}</p>
             </div>
           )}
 
@@ -410,11 +412,9 @@ export default function MedicationsCalendarPage() {
             className="w-full"
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {validating ? 'Validation en cours...' : 'Valider le mois entier'}
+            {validating ? t('calendar.validating') : t('calendar.validateMonth')}
           </Button>
-          <p className="text-muted-foreground text-center text-xs">
-            Marque toutes les prises prévues comme effectuées
-          </p>
+          <p className="text-muted-foreground text-center text-xs">{t('calendar.validateHelp')}</p>
         </CardContent>
       </Card>
     </div>
