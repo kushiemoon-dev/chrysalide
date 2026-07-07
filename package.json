@@ -73,20 +73,6 @@
     "vite": "8.0.16",
     "vitest": "^4.1.9"
   },
-  "pnpm": {
-    "overrides": {
-      "picomatch": ">=4.0.4",
-      "flatted": ">=3.3.4",
-      "yaml": ">=2.8.3",
-      "vite": ">=8.0.16",
-      "dompurify": ">=3.4.7",
-      "ws": ">=8.21.0",
-      "postcss": "8.5.15",
-      "next>postcss": "8.5.15",
-      "js-yaml": ">=4.1.2",
-      "@babel/core": ">=7.29.1"
-    }
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
