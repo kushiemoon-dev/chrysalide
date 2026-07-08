@@ -9,7 +9,11 @@ import {
 
 export function ServiceWorkerRegister() {
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+    if (
+      process.env.NODE_ENV === 'production' &&
+      typeof window !== 'undefined' &&
+      'serviceWorker' in navigator
+    ) {
       // Register service worker
       navigator.serviceWorker
         .register('/sw.js')
