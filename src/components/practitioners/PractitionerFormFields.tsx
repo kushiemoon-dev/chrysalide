@@ -19,7 +19,7 @@ import { Save, User, MapPin, Phone, Mail, Globe, Star } from 'lucide-react'
 import { APPOINTMENT_TYPES } from '@/lib/constants'
 import type { AppointmentType } from '@/lib/types'
 
-export interface PractitionerLabels {
+interface PractitionerLabels {
   basicInfo: string
   fullName: string
   namePlaceholder: string

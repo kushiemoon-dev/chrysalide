@@ -7,7 +7,7 @@ export interface ObjectiveTemplate {
   estimatedDuration?: string
 }
 
-export const FEMINIZING_TEMPLATES: ObjectiveTemplate[] = [
+const FEMINIZING_TEMPLATES: ObjectiveTemplate[] = [
   { id: 'ths-feminisant', category: 'medical', context: 'feminizing', estimatedDuration: '5 ans' },
   {
     id: 'epilation-visage',
@@ -26,7 +26,7 @@ export const FEMINIZING_TEMPLATES: ObjectiveTemplate[] = [
   { id: 'chirurgie-ffs', category: 'medical', context: 'feminizing' },
 ]
 
-export const MASCULINIZING_TEMPLATES: ObjectiveTemplate[] = [
+const MASCULINIZING_TEMPLATES: ObjectiveTemplate[] = [
   {
     id: 'ths-masculinisant',
     category: 'medical',
@@ -39,7 +39,7 @@ export const MASCULINIZING_TEMPLATES: ObjectiveTemplate[] = [
   { id: 'chirurgie-metoidioplastie', category: 'medical', context: 'masculinizing' },
 ]
 
-export const COMMON_TEMPLATES: ObjectiveTemplate[] = [
+const COMMON_TEMPLATES: ObjectiveTemplate[] = [
   { id: 'changement-etat-civil', category: 'administrative', context: 'common' },
   { id: 'changement-prenom', category: 'administrative', context: 'common' },
   { id: 'parcours-psy', category: 'mental', context: 'common' },

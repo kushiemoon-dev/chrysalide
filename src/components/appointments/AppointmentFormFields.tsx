@@ -23,7 +23,7 @@ import { format } from 'date-fns'
 import type { Locale as DateFnsLocale } from 'date-fns'
 import { PractitionerInput } from '@/components/appointments/practitioner-input'
 
-export interface AppointmentLabels {
+interface AppointmentLabels {
   typeLabel: string
   selectType: string
   dateAndTime: string

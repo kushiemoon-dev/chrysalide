@@ -319,7 +319,7 @@ export const REFERENCE_RANGES: ReferenceRange[] = [
 
 // === FREQUENCIES ===
 
-export const FREQUENCIES = [
+const FREQUENCIES = [
   '1x/jour',
   '2x/jour',
   '3x/jour',
@@ -338,7 +338,7 @@ export const FREQUENCIES = [
 ]
 
 // Frequencies adapted by administration method
-export const FREQUENCIES_BY_METHOD: Record<AdministrationMethod, string[]> = {
+const FREQUENCIES_BY_METHOD: Record<AdministrationMethod, string[]> = {
   pill: ['1x/jour', '2x/jour', '3x/jour', '1x/2jours'],
   gel: ['1x/jour', '2x/jour'],
   patch: ['2x/semaine', '1x/semaine', '1x/3jours'],

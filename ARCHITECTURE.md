@@ -122,7 +122,7 @@ src/components/
   brand/           # logo.tsx, decorated-icon.tsx
   onboarding/      # Wizard steps (welcome, profile, medication, tour)
   dashboard/       # recap-card.tsx
-  medications/     # change-entry.tsx, treatment-timeline.tsx
+  medications/     # change-entry.tsx
   bloodtests/      # hormone-chart.tsx (Recharts visualization)
   objectives/      # blahaj-progress.tsx, celebration-modal.tsx, ...
   journal/         # entry-card.tsx, mood-picker.tsx, tag-input.tsx

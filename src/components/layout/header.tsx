@@ -69,40 +69,6 @@ export function Header({
   )
 }
 
-// Simplified page header for inner pages
-export function PageHeader({
-  title,
-  subtitle,
-  backHref,
-  children,
-}: {
-  title: string
-  subtitle?: string
-  backHref?: string
-  children?: React.ReactNode
-}) {
-  return (
-    <header className="px-4 pt-2 pb-4">
-      <div className="flex items-center gap-3">
-        {backHref && (
-          <Link href={backHref}>
-            <Button variant="ghost" size="icon" className="-ml-2">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-        )}
-
-        <div className="min-w-0 flex-1">
-          <h1 className="text-foreground truncate text-xl font-bold">{title}</h1>
-          {subtitle && <p className="text-muted-foreground truncate text-sm">{subtitle}</p>}
-        </div>
-
-        {children && <div className="flex shrink-0 items-center gap-2">{children}</div>}
-      </div>
-    </header>
-  )
-}
-
 // Section header within pages
 export function SectionHeader({
   title,

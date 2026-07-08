@@ -107,32 +107,3 @@ export function BlahajProgress({
     </div>
   )
 }
-
-/**
- * Compact version for objective cards
- */
-export function BlahajProgressCompact({
-  progress,
-  context = 'feminizing',
-  className,
-}: {
-  progress: number
-  context?: 'feminizing' | 'masculinizing' | 'neutral'
-  className?: string
-}) {
-  const fillColor = FILL_COLORS[context]
-
-  return (
-    <div className={cn('flex items-center gap-2', className)}>
-      <div className="w-12 flex-shrink-0">
-        <BlahajSvg
-          fillPercent={progress}
-          fillColor={fillColor}
-          outlineColor="currentColor"
-          className="text-foreground/60"
-        />
-      </div>
-      <span className="text-sm font-medium tabular-nums">{Math.round(progress)}%</span>
-    </div>
-  )
-}

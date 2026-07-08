@@ -138,34 +138,3 @@ export function ChrysalideLogo({
     </svg>
   )
 }
-
-// Export a simple icon version for favicons/small sizes
-export function ChrysalideIcon({
-  size = 24,
-  className = '',
-}: {
-  size?: number
-  className?: string
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#5BCEFA" />
-          <stop offset="100%" stopColor="#F5A9B8" />
-        </linearGradient>
-      </defs>
-      <path d="M12 6 C8 4, 2 6, 4 12 C6 18, 10 16, 12 12" fill="#5BCEFA" fillOpacity="0.8" />
-      <path d="M12 6 C16 4, 22 6, 20 12 C18 18, 14 16, 12 12" fill="#F5A9B8" fillOpacity="0.8" />
-      <ellipse cx="12" cy="12" rx="1.5" ry="6" fill="url(#icon-gradient)" />
-    </svg>
-  )
-}

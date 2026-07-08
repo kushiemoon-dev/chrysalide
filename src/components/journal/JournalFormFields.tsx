@@ -17,7 +17,7 @@ import type { MoodLevel } from '@/lib/types'
 import { MoodPicker } from '@/components/journal/mood-picker'
 import { TagInput } from '@/components/journal/tag-input'
 
-export interface JournalLabels {
+interface JournalLabels {
   dateLabel: string
   contentLabel: string
   contentPlaceholder: string

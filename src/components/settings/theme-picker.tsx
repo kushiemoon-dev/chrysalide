@@ -200,37 +200,3 @@ function ThemePickerSkeleton() {
     </div>
   )
 }
-
-// Compact version for quick settings
-export function ThemeModeToggle() {
-  const [mounted, setMounted] = useState(false)
-  const { theme, setMode } = useTheme()
-  const t = useTranslations('theme')
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true)
-  }, [])
-
-  const nextMode = (): ThemeMode => {
-    const modes: ThemeMode[] = ['dark', 'light', 'system']
-    const currentIndex = modes.indexOf(theme.mode)
-    return modes[(currentIndex + 1) % modes.length]
-  }
-
-  const Icon = modeIcons[theme.mode]
-
-  if (!mounted) {
-    return <div className="bg-muted h-9 w-9 animate-pulse rounded-lg p-2" />
-  }
-
-  return (
-    <button
-      onClick={() => setMode(nextMode())}
-      className="bg-muted hover:bg-muted/80 rounded-lg p-2 transition-colors"
-      title={t(`modes.${theme.mode}.label`)}
-    >
-      <Icon className="h-5 w-5" />
-    </button>
-  )
-}

@@ -144,28 +144,6 @@ export function ChangeEntry({ change, showMedicationName = true }: ChangeEntryPr
   )
 }
 
-// Compact version for the timeline
-export function ChangeEntryCompact({ change }: { change: TreatmentChange }) {
-  const t = useTranslations('objectives')
-  const config = changeTypeConfig[change.changeType]
-  const Icon = config.icon
-  const label = t(`changeTypes.${change.changeType}`)
-
-  return (
-    <div className="flex items-center gap-2 text-sm">
-      <Icon className={`h-3.5 w-3.5 ${config.color}`} />
-      <span className="font-medium">{change.medicationName}</span>
-      <span className="text-muted-foreground">-</span>
-      <span className={config.color}>{label}</span>
-      {change.oldValue && change.newValue && (
-        <span className="text-muted-foreground">
-          ({change.oldValue} → {change.newValue})
-        </span>
-      )}
-    </div>
-  )
-}
-
 // Loading skeleton
 export function ChangeEntrySkeleton() {
   return (

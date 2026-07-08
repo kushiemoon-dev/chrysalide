@@ -12,7 +12,7 @@ import { BLOOD_MARKERS } from '@/lib/constants'
 import type { BloodMarker } from '@/lib/types'
 import { PractitionerInput } from '@/components/appointments/practitioner-input'
 
-export const MARKER_GROUPS = {
+const MARKER_GROUPS = {
   hormones: {
     icon: FlaskConical,
     markers: [
@@ -53,7 +53,7 @@ export const EMPTY_MARKER_VALUES: Record<BloodMarker, string> = {
   progesterone: '',
 }
 
-export interface BloodTestLabels {
+interface BloodTestLabels {
   generalInfo: string
   dateLabel: string
   labLabel: string

@@ -43,25 +43,6 @@ async function getServiceWorker(): Promise<ServiceWorkerRegistration | null> {
 }
 
 /**
- * Request notification permission from user
- */
-export async function requestPermission(): Promise<NotificationPermission> {
-  if (!('Notification' in window)) {
-    return 'denied'
-  }
-
-  if (Notification.permission === 'granted') {
-    return 'granted'
-  }
-
-  if (Notification.permission === 'denied') {
-    return 'denied'
-  }
-
-  return await Notification.requestPermission()
-}
-
-/**
  * Check if notifications are enabled and permitted
  */
 export function isNotificationEnabled(): boolean {

@@ -16,7 +16,6 @@ import {
   Trash2,
   GripVertical,
   CheckCircle2,
-  Circle,
   Edit2,
   Check,
   X,
@@ -195,59 +194,6 @@ export function MilestoneItem({
           )}
         </div>
       )}
-    </div>
-  )
-}
-
-// Compact version for timeline
-export function MilestoneTimelineItem({
-  milestone,
-  isLast = false,
-}: {
-  milestone: Milestone
-  isLast?: boolean
-}) {
-  const locale = useLocale()
-  const dateLocale = getDateLocale(locale as Locale)
-  return (
-    <div className="flex gap-3">
-      {/* Timeline connector */}
-      <div className="flex flex-col items-center">
-        <div
-          className={cn(
-            'flex h-6 w-6 shrink-0 items-center justify-center rounded-full',
-            milestone.achieved
-              ? 'bg-green-500 text-white'
-              : 'bg-muted border-muted-foreground/30 border-2'
-          )}
-        >
-          {milestone.achieved ? (
-            <CheckCircle2 className="h-4 w-4" />
-          ) : (
-            <Circle className="text-muted-foreground h-3 w-3" />
-          )}
-        </div>
-        {!isLast && (
-          <div
-            className={cn(
-              'min-h-8 w-0.5 flex-1',
-              milestone.achieved ? 'bg-green-500/50' : 'bg-muted-foreground/20'
-            )}
-          />
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 pb-6">
-        <p className={cn('font-medium', milestone.achieved && 'text-green-500')}>
-          {milestone.title}
-        </p>
-        {milestone.achievedDate && (
-          <p className="text-muted-foreground mt-1 text-xs">
-            {format(new Date(milestone.achievedDate), 'd MMM yyyy', { locale: dateLocale })}
-          </p>
-        )}
-      </div>
     </div>
   )
 }

@@ -39,45 +39,6 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
 }
 
 /**
- * Displays a notification
- */
-export function showNotification(
-  title: string,
-  options?: {
-    body?: string
-    icon?: string
-    tag?: string
-    requireInteraction?: boolean
-    actions?: { action: string; title: string }[]
-  }
-): Notification | null {
-  if (!isNotificationSupported() || Notification.permission !== 'granted') {
-    console.warn('Notifications not available or not permitted')
-    return null
-  }
-
-  try {
-    const notification = new Notification(title, {
-      body: options?.body,
-      icon: options?.icon || '/icon-192.png',
-      tag: options?.tag,
-      requireInteraction: options?.requireInteraction ?? false,
-      badge: '/icon-192.png',
-    })
-
-    // Auto-close after 10 seconds unless requireInteraction is set
-    if (!options?.requireInteraction) {
-      setTimeout(() => notification.close(), 10000)
-    }
-
-    return notification
-  } catch (error) {
-    console.error('Error showing notification:', error)
-    return null
-  }
-}
-
-/**
  * Storage keys for notification preferences
  */
 const STORAGE_KEYS = {

@@ -167,7 +167,7 @@ export interface Appointment {
 
 // === REMINDERS ===
 
-export type ReminderType = 'medication' | 'appointment' | 'refill' | 'bloodtest'
+type ReminderType = 'medication' | 'appointment' | 'refill' | 'bloodtest'
 
 export interface Reminder {
   id?: number
@@ -214,11 +214,6 @@ export type JournalTagCategory =
   | 'sleep' // sleep quality
   | 'social' // social interactions
   | 'custom' // custom tags
-
-export interface JournalTag {
-  name: string
-  category: JournalTagCategory
-}
 
 export interface JournalEntry {
   id?: number
@@ -321,7 +316,7 @@ export type ActCategory =
   | 'civil_status'
   | 'other'
 
-export type ActStatus = 'planning' | 'in_progress' | 'done' | 'cancelled'
+type ActStatus = 'planning' | 'in_progress' | 'done' | 'cancelled'
 
 /** @deprecated Merged into Objective since v1.3.0 */
 export interface Act {
