@@ -53,7 +53,7 @@ _Local-first web app to manage HRT, blood tests, and physical progress_
 
 <div align="center">
 
-![Chrysalide Screenshot](screenshot.jpg)
+![Chrysalide Screenshot](docs/screenshot.jpg)
 
 </div>
 
