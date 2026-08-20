@@ -2,10 +2,10 @@
 
 # Chrysalide
 
-[![PWA](https://img.shields.io/badge/PWA-Ready-5BCEFA?style=for-the-badge&logo=pwa)]()
+[![PWA](https://img.shields.io/badge/PWA-Ready-5BCEFA?style=for-the-badge&logo=pwa)](<>)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Local-First](https://img.shields.io/badge/Privacy-100%25_Local-F5A9B8?style=for-the-badge)]()
-[![i18n](https://img.shields.io/badge/Languages-FR_%7C_EN_%7C_DE-white?style=for-the-badge)]()
+[![Local-First](https://img.shields.io/badge/Privacy-100%25_Local-F5A9B8?style=for-the-badge)](<>)
+[![i18n](https://img.shields.io/badge/Languages-FR_%7C_EN_%7C_DE-white?style=for-the-badge)](<>)
 
 **Personal medical tracking for trans people**
 
