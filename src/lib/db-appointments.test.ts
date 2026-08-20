@@ -44,7 +44,7 @@ describe('Appointments CRUD', () => {
 
     const apts = await getAppointments(2)
     expect(apts).toHaveLength(2)
-    expect(apts[0].date.toISOString()).toBe(new Date('2024-03-01').toISOString())
+    expect(apts[0]!.date.toISOString()).toBe(new Date('2024-03-01').toISOString())
   })
 
   it('getAppointmentsInRange filtre par intervalle inclusif triée par date', async () => {
@@ -121,8 +121,8 @@ describe('getUpcomingAppointments', () => {
 
     const upcoming = await getUpcomingAppointments()
     expect(upcoming).toHaveLength(2)
-    expect(upcoming[0].date.toISOString()).toBe(new Date('2099-02-01').toISOString())
-    expect(upcoming[1].date.toISOString()).toBe(new Date('2099-03-01').toISOString())
+    expect(upcoming[0]!.date.toISOString()).toBe(new Date('2099-02-01').toISOString())
+    expect(upcoming[1]!.date.toISOString()).toBe(new Date('2099-03-01').toISOString())
   })
 })
 

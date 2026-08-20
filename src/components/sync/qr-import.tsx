@@ -102,7 +102,7 @@ export function QRImport({ onComplete, onClose }: QRImportProps) {
         const barcodes = await detector.detect(canvas)
 
         if (barcodes.length > 0) {
-          const qrData = barcodes[0].rawValue
+          const qrData = barcodes[0]!.rawValue
           await handleQRData(qrData)
         }
       }

@@ -41,7 +41,7 @@ describe('exportAllData', () => {
     const data = await exportAllData()
 
     expect(data.journalEntries).toHaveLength(1)
-    expect(data.journalEntries[0].content).toBe('Public')
+    expect(data.journalEntries[0]!.content).toBe('Public')
     expect(data.medications).toHaveLength(1)
     expect(data.version).toBe(5)
     expect(typeof data.exportedAt).toBe('string')
@@ -75,8 +75,8 @@ describe('importAllData', () => {
 
     const meds = await db.medications.toArray()
     expect(meds).toHaveLength(1)
-    expect(meds[0].startDate).toBeInstanceOf(Date)
-    expect(meds[0].startDate.toISOString()).toBe(new Date('2024-01-01').toISOString())
+    expect(meds[0]!.startDate).toBeInstanceOf(Date)
+    expect(meds[0]!.startDate.toISOString()).toBe(new Date('2024-01-01').toISOString())
     expect(await db.bloodTests.count()).toBe(0)
   })
 

@@ -48,7 +48,7 @@ export function isAppointmentPast(appointment: Appointment): boolean {
 
   if (appointment.time) {
     const [hours, minutes] = appointment.time.split(':').map(Number)
-    aptDate.setHours(hours, minutes, 0, 0)
+    aptDate.setHours(hours!, minutes!, 0, 0)
   } else {
     // No time specified = end of day
     aptDate.setHours(23, 59, 59, 999)
@@ -65,7 +65,7 @@ export function getAppointmentDateTime(appointment: Appointment): Date {
 
   if (appointment.time) {
     const [hours, minutes] = appointment.time.split(':').map(Number)
-    aptDate.setHours(hours, minutes, 0, 0)
+    aptDate.setHours(hours!, minutes!, 0, 0)
   } else {
     aptDate.setHours(0, 0, 0, 0)
   }

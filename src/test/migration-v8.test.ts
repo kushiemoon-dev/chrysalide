@@ -244,8 +244,8 @@ describe('Migration Dexie v7→v8 — fusion acts→objectives', () => {
   it('remplace actId par objectiveId dans appointments', async () => {
     const db = await seedV7AndUpgradeToV8()
     const apts = await db.appointments.toArray()
-    expect(apts[0].objectiveId).toBeDefined()
-    expect(typeof apts[0].objectiveId).toBe('number')
+    expect(apts[0]!.objectiveId).toBeDefined()
+    expect(typeof apts[0]!.objectiveId).toBe('number')
     db.close()
   })
 

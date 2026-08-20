@@ -106,8 +106,8 @@ describe('ONBOARDING_STEPS', () => {
   })
 
   it('commence par welcome et finit par tour', () => {
-    expect(ONBOARDING_STEPS[0].id).toBe('welcome')
-    expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1].id).toBe('tour')
+    expect(ONBOARDING_STEPS[0]!.id).toBe('welcome')
+    expect(ONBOARDING_STEPS[ONBOARDING_STEPS.length - 1]!.id).toBe('tour')
   })
 
   it('toutes les étapes ont id, title, description et optional', () => {

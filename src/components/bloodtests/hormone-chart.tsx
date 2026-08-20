@@ -205,7 +205,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
     if (needsDualAxis) {
       const leftMarkers = markers.filter((m) => m !== 'testosterone')
       if (leftMarkers.length === 0) return [0, 100]
-      if (leftMarkers.length === 1) return getYDomain(leftMarkers[0])
+      if (leftMarkers.length === 1) return getYDomain(leftMarkers[0]!)
 
       const domains = leftMarkers.map((m) => getYDomain(m))
       const minVal = Math.min(...domains.map((d) => d[0]))
@@ -215,7 +215,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
 
     // If there's only one marker, use its domain
     if (markers.length === 1) {
-      return getYDomain(markers[0])
+      return getYDomain(markers[0]!)
     }
 
     // If there are multiple markers, check whether they have similar scales
@@ -228,7 +228,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
     // If the scales are very different (ratio > 5), just use the first marker
     const ratio = maxVal / (minVal || 1)
     if (ratio > 5 && markers.length > 1) {
-      return getYDomain(markers[0])
+      return getYDomain(markers[0]!)
     }
 
     return [minVal, maxVal]

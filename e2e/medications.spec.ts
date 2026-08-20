@@ -45,7 +45,7 @@ test.describe('Ajout de médicament', () => {
 
   test("le champ date de début est pré-rempli avec aujourd'hui", async ({ page }) => {
     await page.goto('/medications/new')
-    const today = new Date().toISOString().split('T')[0]
+    const today = new Date().toISOString().split('T')[0]!
     const startDateInput = page.locator('input[type="date"]').first()
     await expect(startDateInput).toHaveValue(today)
   })

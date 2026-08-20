@@ -248,7 +248,7 @@ export default function CompareProgressPage() {
                 const closestToToday = entries.reduce(
                   (prev, curr, idx) =>
                     Math.abs(new Date(curr.date).getTime() - today.getTime()) <
-                    Math.abs(new Date(entries[prev].date).getTime() - today.getTime())
+                    Math.abs(new Date(entries[prev]!.date).getTime() - today.getTime())
                       ? idx
                       : prev,
                   0
@@ -257,7 +257,7 @@ export default function CompareProgressPage() {
                 const closestToMonthAgo = entries.reduce(
                   (prev, curr, idx) =>
                     Math.abs(new Date(curr.date).getTime() - monthAgo.getTime()) <
-                    Math.abs(new Date(entries[prev].date).getTime() - monthAgo.getTime())
+                    Math.abs(new Date(entries[prev]!.date).getTime() - monthAgo.getTime())
                       ? idx
                       : prev,
                   0
@@ -284,7 +284,7 @@ export default function CompareProgressPage() {
                 const closestToToday = entries.reduce(
                   (prev, curr, idx) =>
                     Math.abs(new Date(curr.date).getTime() - today.getTime()) <
-                    Math.abs(new Date(entries[prev].date).getTime() - today.getTime())
+                    Math.abs(new Date(entries[prev]!.date).getTime() - today.getTime())
                       ? idx
                       : prev,
                   0
@@ -293,7 +293,7 @@ export default function CompareProgressPage() {
                 const closestTo3Months = entries.reduce(
                   (prev, curr, idx) =>
                     Math.abs(new Date(curr.date).getTime() - threeMonthsAgo.getTime()) <
-                    Math.abs(new Date(entries[prev].date).getTime() - threeMonthsAgo.getTime())
+                    Math.abs(new Date(entries[prev]!.date).getTime() - threeMonthsAgo.getTime())
                       ? idx
                       : prev,
                   0
@@ -321,8 +321,8 @@ export default function CompareProgressPage() {
           <CardContent>
             <div className="space-y-2">
               {commonMeasurements.map((key) => {
-                const left = leftEntry.measurements![key]!
-                const right = rightEntry.measurements![key]!
+                const left = leftEntry!.measurements![key]!
+                const right = rightEntry!.measurements![key]!
                 const diff = right - left
                 const sign = diff > 0 ? '+' : ''
 

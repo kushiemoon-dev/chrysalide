@@ -408,7 +408,7 @@ export default function TreatmentHistoryPage() {
           </p>
 
           {sortedMonths.map((monthKey) => {
-            const monthChanges = groupedByMonth[monthKey]
+            const monthChanges = groupedByMonth[monthKey]!
             const monthDate = new Date(monthKey + '-01')
 
             return (

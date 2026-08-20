@@ -20,7 +20,7 @@ export default function NewBloodTestPage() {
   const [loading, setLoading] = useState(false)
 
   // Form state
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]!)
   const [lab, setLab] = useState('')
   const [practitionerId, setPractitionerId] = useState<number | undefined>(undefined)
   const [notes, setNotes] = useState('')

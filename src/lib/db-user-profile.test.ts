@@ -25,6 +25,6 @@ describe('User profile', () => {
 
     const all = await db.userProfile.toArray()
     expect(all).toHaveLength(1)
-    expect(all[0].firstName).toBe('Sam')
+    expect(all[0]!.firstName).toBe('Sam')
   })
 })

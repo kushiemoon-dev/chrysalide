@@ -156,7 +156,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
         let x = margin
         headers.forEach((header, i) => {
           pdf.text(header, x, y)
-          x += colWidths[i]
+          x += colWidths[i]!
         })
 
         y += 6
@@ -168,17 +168,17 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
         for (const row of data) {
           x = margin
           pdf.text(row.label, x, y)
-          x += colWidths[0]
+          x += colWidths[0]!
 
           pdf.text(`${row.value} ${row.unit}`, x, y)
-          x += colWidths[1]
+          x += colWidths[1]!
 
           if (row.targetMin !== undefined && row.targetMax !== undefined) {
             pdf.text(`${row.targetMin} - ${row.targetMax} ${row.unit}`, x, y)
           } else {
             pdf.text('-', x, y)
           }
-          x += colWidths[2]
+          x += colWidths[2]!
 
           if (row.status === 'normal') {
             pdf.setTextColor(34, 197, 94)

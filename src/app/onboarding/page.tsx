@@ -69,7 +69,7 @@ export default function OnboardingPage() {
     )
   }
 
-  const currentStep = ONBOARDING_STEPS[state.currentStep]
+  const currentStep = ONBOARDING_STEPS[state.currentStep]!
 
   return (
     <div className="bg-background flex min-h-screen flex-col">

@@ -321,7 +321,7 @@ export function isScheduledTimePassed(scheduledTime: string): boolean {
   const [hours, minutes] = scheduledTime.split(':').map(Number)
 
   const scheduledDateTime = new Date()
-  scheduledDateTime.setHours(hours, minutes, 0, 0)
+  scheduledDateTime.setHours(hours!, minutes!, 0, 0)
 
   return now >= scheduledDateTime
 }

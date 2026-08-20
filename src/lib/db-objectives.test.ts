@@ -51,7 +51,7 @@ describe('Objectives CRUD', () => {
     expect(await getObjectives()).toHaveLength(2)
     const completed = await getObjectives('completed')
     expect(completed).toHaveLength(1)
-    expect(completed[0].title).toBe('Autre')
+    expect(completed[0]!.title).toBe('Autre')
   })
 
   it('getObjectivesByCategory filtre par catégorie', async () => {
@@ -60,7 +60,7 @@ describe('Objectives CRUD', () => {
 
     const medical = await getObjectivesByCategory('medical')
     expect(medical).toHaveLength(1)
-    expect(medical[0].title).toBe('Commencer le THS')
+    expect(medical[0]!.title).toBe('Commencer le THS')
   })
 
   it('updateObjective met à jour les champs et updatedAt', async () => {

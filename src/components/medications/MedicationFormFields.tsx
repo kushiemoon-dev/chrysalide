@@ -122,7 +122,7 @@ export function MedicationFormFields({
   function handleMethodChange(newMethod: AdministrationMethod) {
     onMethodChange(newMethod)
     const valid = getFrequenciesForMethod(newMethod)
-    if (!valid.includes(frequency)) onFrequencyChange(valid[0])
+    if (!valid.includes(frequency)) onFrequencyChange(valid[0]!)
   }
 
   function handleAddTime() {

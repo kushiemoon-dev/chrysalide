@@ -7,24 +7,24 @@ describe('splitIntoChunks', () => {
     const data = 'hello'
     const chunks = splitIntoChunks(data, 100)
     expect(chunks).toHaveLength(1)
-    expect(chunks[0].i).toBe(0)
-    expect(chunks[0].t).toBe(1)
-    expect(chunks[0].d).toBe('hello')
+    expect(chunks[0]!.i).toBe(0)
+    expect(chunks[0]!.t).toBe(1)
+    expect(chunks[0]!.d).toBe('hello')
   })
 
   it('découpe en plusieurs chunks si les données dépassent la taille', () => {
     const data = 'abcdefghij' // 10 chars
     const chunks = splitIntoChunks(data, 3)
     expect(chunks).toHaveLength(4) // ceil(10/3) = 4
-    expect(chunks[0].d).toBe('abc')
-    expect(chunks[1].d).toBe('def')
-    expect(chunks[2].d).toBe('ghi')
-    expect(chunks[3].d).toBe('j')
+    expect(chunks[0]!.d).toBe('abc')
+    expect(chunks[1]!.d).toBe('def')
+    expect(chunks[2]!.d).toBe('ghi')
+    expect(chunks[3]!.d).toBe('j')
   })
 
   it('tous les chunks partagent le même sessionId', () => {
     const chunks = splitIntoChunks('abcdefghij', 3)
-    const sessionId = chunks[0].s
+    const sessionId = chunks[0]!.s
     expect(chunks.every((c) => c.s === sessionId)).toBe(true)
   })
 
@@ -71,7 +71,7 @@ describe('reassembleChunks', () => {
     const chunksA = makeChunks('aaaa', 2)
     const chunksB = makeChunks('bbbb', 2)
     // Shuffle the sessions
-    const mixed = [chunksA[0], { ...chunksB[1], s: chunksA[0].s + 'x' }]
+    const mixed = [chunksA[0]!, { ...chunksB[1]!, s: chunksA[0]!.s + 'x' }]
     expect(reassembleChunks(mixed)).toBeNull()
   })
 
@@ -105,10 +105,10 @@ describe('QRScanSession', () => {
     const chunks = splitIntoChunks('abcdefghij', 5)
     expect(chunks).toHaveLength(2)
 
-    session.addChunk(chunks[0])
+    session.addChunk(chunks[0]!)
     expect(session.isComplete()).toBe(false)
 
-    session.addChunk(chunks[1])
+    session.addChunk(chunks[1]!)
     expect(session.isComplete()).toBe(true)
   })
 

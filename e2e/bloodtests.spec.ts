@@ -14,7 +14,7 @@ test.describe('Ajout de résultat sanguin', () => {
 
   test("la date est pré-remplie avec aujourd'hui", async ({ page }) => {
     await page.goto('/bloodtests/new')
-    const today = new Date().toISOString().split('T')[0]
+    const today = new Date().toISOString().split('T')[0]!
     await expect(page.getByLabel("Date de l'analyse")).toHaveValue(today)
   })
 

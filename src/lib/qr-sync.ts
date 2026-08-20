@@ -121,14 +121,14 @@ export function reassembleChunks(chunks: DataChunk[]): string | null {
   if (chunks.length === 0) return null
 
   // Verify all chunks are from same session
-  const sessionId = chunks[0].s
+  const sessionId = chunks[0]!.s
   if (!chunks.every((c) => c.s === sessionId)) {
     console.error('[QRSync] Chunks from different sessions')
     return null
   }
 
   // Verify we have all chunks
-  const totalExpected = chunks[0].t
+  const totalExpected = chunks[0]!.t
   if (chunks.length !== totalExpected) {
     console.warn(`[QRSync] Missing chunks: have ${chunks.length}/${totalExpected}`)
     return null

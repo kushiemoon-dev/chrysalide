@@ -54,7 +54,7 @@ describe('Medications CRUD', () => {
     const all = await getMedications(false)
 
     expect(active).toHaveLength(1)
-    expect(active[0].name).toBe('Estradiol')
+    expect(active[0]!.name).toBe('Estradiol')
     expect(all).toHaveLength(2)
   })
 
@@ -125,8 +125,8 @@ describe('Medication logs', () => {
 
     const logs = await getMedicationLogs(medId as number, 2)
     expect(logs).toHaveLength(2)
-    expect(logs[0].timestamp.toISOString()).toBe(new Date('2024-01-03').toISOString())
-    expect(logs[1].timestamp.toISOString()).toBe(new Date('2024-01-02').toISOString())
+    expect(logs[0]!.timestamp.toISOString()).toBe(new Date('2024-01-03').toISOString())
+    expect(logs[1]!.timestamp.toISOString()).toBe(new Date('2024-01-02').toISOString())
   })
 
   it('getLastMedicationLog retourne null si aucun log', async () => {
@@ -167,9 +167,9 @@ describe('Medication logs', () => {
     const yesterday = await getYesterdayLogs()
 
     expect(today).toHaveLength(1)
-    expect(today[0].timestamp.toISOString()).toBe(todayNoon.toISOString())
+    expect(today[0]!.timestamp.toISOString()).toBe(todayNoon.toISOString())
     expect(yesterday).toHaveLength(1)
-    expect(yesterday[0].timestamp.toISOString()).toBe(yesterdayNoon.toISOString())
+    expect(yesterday[0]!.timestamp.toISOString()).toBe(yesterdayNoon.toISOString())
   })
 
   it("getTodayLogsForMedication filtre par médicament et par aujourd'hui", async () => {
@@ -187,7 +187,7 @@ describe('Medication logs', () => {
 
     const logs = await getTodayLogsForMedication(medId as number)
     expect(logs).toHaveLength(1)
-    expect(logs[0].medicationId).toBe(medId)
+    expect(logs[0]!.medicationId).toBe(medId)
   })
 
   it('updateMedicationLog / deleteMedicationLog / getMedicationLog', async () => {
@@ -219,7 +219,7 @@ describe('Medication logs', () => {
 
     const history = await getGelApplicationHistory(medId as number)
     expect(history).toHaveLength(1)
-    expect(history[0].applicationZone).toBe('forearm_left')
+    expect(history[0]!.applicationZone).toBe('forearm_left')
   })
 })
 
@@ -237,6 +237,6 @@ describe('Stock alerts', () => {
 
     const lowStock = await getMedicationsWithLowStock()
     expect(lowStock).toHaveLength(1)
-    expect(lowStock[0].name).toBe('Bas')
+    expect(lowStock[0]!.name).toBe('Bas')
   })
 })

@@ -113,7 +113,7 @@ export default function MedicationsPage() {
       const doseTimes = getMedicationReminderTimes(med)
 
       for (let i = 0; i < doseTimes.length; i++) {
-        const time = doseTimes[i]
+        const time = doseTimes[i]!
 
         // Skip if the scheduled time hasn't passed yet
         if (!isScheduledTimePassed(time)) continue
@@ -195,7 +195,7 @@ export default function MedicationsPage() {
       const doseTimes = getMedicationReminderTimes(med)
 
       for (let i = 0; i < doseTimes.length; i++) {
-        const time = doseTimes[i]
+        const time = doseTimes[i]!
 
         // Check if this dose was already logged yesterday
         const alreadyLogged = yesterdayLogs.some(
@@ -208,7 +208,7 @@ export default function MedicationsPage() {
         try {
           const [hours, minutes] = time.split(':').map(Number)
           const yesterdayTimestamp = new Date(yesterday)
-          yesterdayTimestamp.setHours(hours, minutes, 0, 0)
+          yesterdayTimestamp.setHours(hours!, minutes!, 0, 0)
 
           await addMedicationLog({
             medicationId: med.id,
@@ -447,7 +447,7 @@ export default function MedicationsPage() {
     setPastDoseIndex(doseIndex)
     // Pre-fill with the current date/time
     const now = new Date()
-    setPastDate(now.toISOString().split('T')[0])
+    setPastDate(now.toISOString().split('T')[0]!)
     setPastTime(format(now, 'HH:mm'))
     setPastDoseModal(true)
   }

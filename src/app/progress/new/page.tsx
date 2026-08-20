@@ -61,7 +61,7 @@ export default function NewProgressPage() {
     const newPhotos: string[] = []
 
     for (let i = 0; i < files.length; i++) {
-      const file = files[i]
+      const file = files[i]!
       if (!file.type.startsWith('image/')) continue
 
       // Convert to base64 for local storage

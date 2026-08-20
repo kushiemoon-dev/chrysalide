@@ -38,7 +38,7 @@ export default function NewMedicationPage() {
   const [unit, setUnit] = useState('mg')
   const [frequency, setFrequency] = useState('1x/jour')
   const [method, setMethod] = useState<AdministrationMethod>('pill')
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0])
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]!)
   const [stock, setStock] = useState('')
   const [stockUnit, setStockUnit] = useState('')
   const [stockAlert, setStockAlert] = useState('')

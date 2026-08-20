@@ -102,7 +102,7 @@ export default function MedicationDetailPage() {
     if (!log.id) return
     const date = new Date(log.timestamp)
     setEditingLogId(log.id)
-    setEditingLogDate(date.toISOString().split('T')[0])
+    setEditingLogDate(date.toISOString().split('T')[0]!)
     setEditingLogTime(format(date, 'HH:mm'))
   }
 

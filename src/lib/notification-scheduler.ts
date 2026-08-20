@@ -71,7 +71,7 @@ async function getTodayReminders(): Promise<ScheduledReminder[]> {
     for (const time of times) {
       const [hours, minutes] = time.split(':').map(Number)
       const scheduledDate = new Date(today)
-      scheduledDate.setHours(hours, minutes, 0, 0)
+      scheduledDate.setHours(hours!, minutes!, 0, 0)
 
       reminders.push({
         id: `${med.id}-${time}`,

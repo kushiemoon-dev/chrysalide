@@ -49,7 +49,7 @@ export default function MedicationsCalendarPage() {
         const firstDose = allLogs.reduce((earliest, log) => {
           const logDate = new Date(log.timestamp)
           return logDate < earliest ? logDate : earliest
-        }, new Date(allLogs[0].timestamp))
+        }, new Date(allLogs[0]!.timestamp))
         setTotalDaysWithLogs(differenceInDays(new Date(), firstDose) + 1)
       }
 

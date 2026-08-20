@@ -100,8 +100,8 @@ export default function NewObjectivePage() {
       for (let i = 0; i < milestones.length; i++) {
         await addMilestone({
           objectiveId: objectiveId as number,
-          title: milestones[i].title,
-          date: milestones[i].date,
+          title: milestones[i]!.title,
+          date: milestones[i]!.date,
           achieved: false,
           order: i,
         })

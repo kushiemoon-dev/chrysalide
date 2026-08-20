@@ -40,10 +40,10 @@ describe('Practitioners CRUD', () => {
     await addPractitioner({ ...basePractitioner, name: 'Récent', specialty: 'surgeon' })
 
     const all = await getPractitioners()
-    expect(all[0].name).toBe('Récent')
+    expect(all[0]!.name).toBe('Récent')
 
     const bySpecialty = await getPractitioners('endocrinologist')
-    expect(bySpecialty[0].name).toBe('Ancien')
+    expect(bySpecialty[0]!.name).toBe('Ancien')
   })
 
   it('searchPractitioners trouve par nom (fuzzy) et priorise la spécialité correspondante', async () => {
@@ -52,7 +52,7 @@ describe('Practitioners CRUD', () => {
 
     const results = await searchPractitioners('martin', 'endocrinologist')
     expect(results.length).toBeGreaterThanOrEqual(1)
-    expect(results[0].name).toBe('Dr Martineau')
+    expect(results[0]!.name).toBe('Dr Martineau')
   })
 
   it('updatePractitioner met à jour les champs', async () => {

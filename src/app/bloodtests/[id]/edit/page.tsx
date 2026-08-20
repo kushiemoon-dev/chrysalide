@@ -44,7 +44,7 @@ export default function EditBloodTestPage() {
       }
 
       // Populate form
-      setDate(new Date(test.date).toISOString().split('T')[0])
+      setDate(new Date(test.date).toISOString().split('T')[0]!)
       setLab(test.lab || '')
       setPractitionerId(test.practitionerId)
       setNotes(test.notes || '')

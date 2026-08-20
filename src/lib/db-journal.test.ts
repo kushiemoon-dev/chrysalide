@@ -39,7 +39,7 @@ describe('Journal entries CRUD', () => {
 
     const entries = await getJournalEntries(2)
     expect(entries).toHaveLength(2)
-    expect(entries[0].date.toISOString()).toBe(new Date('2024-03-01').toISOString())
+    expect(entries[0]!.date.toISOString()).toBe(new Date('2024-03-01').toISOString())
   })
 
   it('getJournalEntriesByDateRange filtre par intervalle inclusif', async () => {
@@ -52,7 +52,7 @@ describe('Journal entries CRUD', () => {
       new Date('2024-02-15')
     )
     expect(entries).toHaveLength(1)
-    expect(entries[0].date.toISOString()).toBe(new Date('2024-02-01').toISOString())
+    expect(entries[0]!.date.toISOString()).toBe(new Date('2024-02-01').toISOString())
   })
 
   it('getJournalEntriesByTag filtre par tag', async () => {

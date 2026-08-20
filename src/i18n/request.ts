@@ -6,7 +6,7 @@ function resolveFromAcceptLanguage(acceptLanguage: string | null): Locale | unde
   if (!acceptLanguage) return undefined
 
   for (const part of acceptLanguage.split(',')) {
-    const lang = part.split(';')[0].trim().split('-')[0].toLowerCase()
+    const lang = part.split(';')[0]!.trim().split('-')[0]!.toLowerCase()
     if (locales.includes(lang as Locale)) {
       return lang as Locale
     }

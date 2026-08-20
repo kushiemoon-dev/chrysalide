@@ -45,7 +45,7 @@ describe('Reminders CRUD', () => {
 
     const appointmentReminders = await getRemindersByType('appointment')
     expect(appointmentReminders).toHaveLength(1)
-    expect(appointmentReminders[0].title).toBe('RDV')
+    expect(appointmentReminders[0]!.title).toBe('RDV')
   })
 
   it('updateReminder met à jour les champs', async () => {

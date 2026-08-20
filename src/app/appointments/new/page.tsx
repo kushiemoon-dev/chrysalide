@@ -106,7 +106,7 @@ export default function NewAppointmentPage() {
         const reminderTime = new Date(date)
         if (time) {
           const [hours, minutes] = time.split(':').map(Number)
-          reminderTime.setHours(hours, minutes)
+          reminderTime.setHours(hours!, minutes!)
         }
         reminderTime.setMinutes(reminderTime.getMinutes() - reminderMinutes)
 

@@ -46,7 +46,7 @@ function fireParticles(opts: {
       y: oy,
       vx: Math.cos(a) * v,
       vy: -Math.sin(a) * v,
-      color: TRANS_COLORS[Math.floor(Math.random() * TRANS_COLORS.length)],
+      color: TRANS_COLORS[Math.floor(Math.random() * TRANS_COLORS.length)]!,
       w: 6 + Math.random() * 5,
       r: Math.random() * Math.PI * 2,
       rs: (Math.random() - 0.5) * 0.3,

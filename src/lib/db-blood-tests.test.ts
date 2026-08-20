@@ -23,7 +23,7 @@ describe('Blood tests CRUD', () => {
   it('addBloodTest crée un test avec createdAt', async () => {
     const id = await addBloodTest(baseTest)
     const test = await getBloodTest(id as number)
-    expect(test?.results[0].marker).toBe('estradiol')
+    expect(test?.results[0]!.marker).toBe('estradiol')
     expect(test?.createdAt).toBeInstanceOf(Date)
   })
 
@@ -34,8 +34,8 @@ describe('Blood tests CRUD', () => {
 
     const tests = await getBloodTests(2)
     expect(tests).toHaveLength(2)
-    expect(tests[0].date.toISOString()).toBe(new Date('2024-03-01').toISOString())
-    expect(tests[1].date.toISOString()).toBe(new Date('2024-02-01').toISOString())
+    expect(tests[0]!.date.toISOString()).toBe(new Date('2024-03-01').toISOString())
+    expect(tests[1]!.date.toISOString()).toBe(new Date('2024-02-01').toISOString())
   })
 
   it('updateBloodTest met à jour les champs', async () => {

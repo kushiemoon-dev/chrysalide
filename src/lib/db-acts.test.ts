@@ -59,7 +59,7 @@ describe('Acts CRUD (deprecated, conservé jusqu’à drop en v9)', () => {
     })
 
     const acts = await getActs()
-    expect(acts[0].title).toBe('Second')
+    expect(acts[0]!.title).toBe('Second')
   })
 
   it('updateAct met à jour les champs et updatedAt', async () => {
@@ -84,8 +84,8 @@ describe('Act todos CRUD', () => {
     const actId = await addAct(baseAct)
     const id = await addActTodo(baseTodo(actId as number))
     const todos = await getActTodos(actId as number)
-    expect(todos[0].id).toBe(id)
-    expect(todos[0].createdAt).toBeInstanceOf(Date)
+    expect(todos[0]!.id).toBe(id)
+    expect(todos[0]!.createdAt).toBeInstanceOf(Date)
   })
 
   it('getActTodos trie par order', async () => {
@@ -103,7 +103,7 @@ describe('Act todos CRUD', () => {
 
     await updateActTodo(id as number, { done: true })
     let todos = await getActTodos(actId as number)
-    expect(todos[0].done).toBe(true)
+    expect(todos[0]!.done).toBe(true)
 
     await deleteActTodo(id as number)
     todos = await getActTodos(actId as number)

@@ -15,7 +15,7 @@ beforeEach(async () => {
 describe('Physical progress', () => {
   it('addPhysicalProgress crée une entrée avec createdAt', async () => {
     await addPhysicalProgress(baseProgress)
-    const [entry] = await getPhysicalProgress()
+    const entry = (await getPhysicalProgress())[0]!
     expect(entry.measurements?.weight).toBe(65)
     expect(entry.createdAt).toBeInstanceOf(Date)
   })
@@ -27,7 +27,7 @@ describe('Physical progress', () => {
 
     const entries = await getPhysicalProgress(2)
     expect(entries).toHaveLength(2)
-    expect(entries[0].date.toISOString()).toBe(new Date('2024-03-01').toISOString())
-    expect(entries[1].date.toISOString()).toBe(new Date('2024-02-01').toISOString())
+    expect(entries[0]!.date.toISOString()).toBe(new Date('2024-03-01').toISOString())
+    expect(entries[1]!.date.toISOString()).toBe(new Date('2024-02-01').toISOString())
   })
 })

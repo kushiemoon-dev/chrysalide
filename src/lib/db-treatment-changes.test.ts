@@ -53,7 +53,7 @@ describe('Treatment changes CRUD', () => {
 
     const all = await getTreatmentChanges()
     expect(all).toHaveLength(2)
-    expect(all[0].medicationId).toBe(2)
+    expect(all[0]!.medicationId).toBe(2)
   })
 
   it('getTreatmentChangesByDateRange filtre par intervalle inclusif', async () => {

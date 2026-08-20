@@ -20,7 +20,7 @@ export async function getUpcomingAppointments() {
       const aptDate = new Date(apt.date)
       if (apt.time) {
         const [hours, minutes] = apt.time.split(':').map(Number)
-        aptDate.setHours(hours, minutes, 0, 0)
+        aptDate.setHours(hours!, minutes!, 0, 0)
       } else {
         // No time set = treated as start of day
         aptDate.setHours(0, 0, 0, 0)
@@ -32,11 +32,11 @@ export async function getUpcomingAppointments() {
       const dateB = new Date(b.date)
       if (a.time) {
         const [h, m] = a.time.split(':').map(Number)
-        dateA.setHours(h, m)
+        dateA.setHours(h!, m!)
       }
       if (b.time) {
         const [h, m] = b.time.split(':').map(Number)
-        dateB.setHours(h, m)
+        dateB.setHours(h!, m!)
       }
       return dateA.getTime() - dateB.getTime()
     })
