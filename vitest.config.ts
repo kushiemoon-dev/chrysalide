@@ -24,9 +24,6 @@ export default defineConfig({
         'src/test/',
         '**/*.d.ts',
         '**/*.config.*',
-        // Requires real IndexedDB / Service Worker — not unit-testable
-        'src/lib/db.ts',
-        'src/lib/notification-scheduler.ts',
         // Static data files — no logic to test
         'src/lib/resources-data.ts',
         'src/lib/types.ts',

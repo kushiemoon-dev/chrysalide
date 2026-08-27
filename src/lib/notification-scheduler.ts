@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
   snoozedReminders: 'chrysalide_snoozed_reminders',
 } as const
 
-interface ScheduledReminder {
+export interface ScheduledReminder {
   id: string
   medicationId: string
   medicationName: string
@@ -57,7 +57,7 @@ export function isNotificationEnabled(): boolean {
 /**
  * Get today's scheduled reminders for all active medications
  */
-async function getTodayReminders(): Promise<ScheduledReminder[]> {
+export async function getTodayReminders(): Promise<ScheduledReminder[]> {
   const medications = await db.medications.toArray()
   const today = new Date()
   const reminders: ScheduledReminder[] = []
@@ -91,7 +91,7 @@ async function getTodayReminders(): Promise<ScheduledReminder[]> {
 /**
  * Get reminder times for a medication
  */
-function getMedicationReminderTimes(medication: Medication): string[] {
+export function getMedicationReminderTimes(medication: Medication): string[] {
   // Advanced mode: use explicit scheduled times
   if (medication.schedulingMode === 'advanced' && medication.scheduledTimes?.length) {
     return medication.scheduledTimes
@@ -114,10 +114,21 @@ function getMedicationReminderTimes(medication: Medication): string[] {
   return ['09:00']
 }
 
+export function shouldShowReminder(
+  reminder: ScheduledReminder,
+  shownIds: string[],
+  now: number
+): boolean {
+  if (shownIds.includes(reminder.id)) return false
+  if (reminder.scheduledTimestamp > now + 60000) return false
+  if (now - reminder.scheduledTimestamp > 30 * 60000) return false
+  return true
+}
+
 /**
  * Check for reminders that should be shown now
  */
-async function checkReminders(): Promise<void> {
+export async function checkReminders(): Promise<void> {
   if (!isNotificationEnabled()) return
 
   const now = Date.now()
@@ -125,16 +136,8 @@ async function checkReminders(): Promise<void> {
   const shownIds = getShownReminderIds()
 
   for (const reminder of reminders) {
-    // Skip if already shown
-    if (shownIds.includes(reminder.id)) continue
+    if (!shouldShowReminder(reminder, shownIds, now)) continue
 
-    // Skip if not yet time (with 1 minute tolerance)
-    if (reminder.scheduledTimestamp > now + 60000) continue
-
-    // Skip if more than 30 minutes late (will be caught by "missed" check)
-    if (now - reminder.scheduledTimestamp > 30 * 60000) continue
-
-    // Show the reminder
     await showReminder(reminder)
     markReminderShown(reminder.id)
   }
@@ -179,7 +182,7 @@ async function showReminder(reminder: ScheduledReminder): Promise<void> {
 /**
  * Get IDs of reminders already shown today
  */
-function getShownReminderIds(): string[] {
+export function getShownReminderIds(): string[] {
   const today = new Date().toDateString()
   const stored = localStorage.getItem(STORAGE_KEYS.pendingReminders)
 
@@ -201,7 +204,7 @@ function getShownReminderIds(): string[] {
 /**
  * Mark a reminder as shown
  */
-function markReminderShown(reminderId: string): void {
+export function markReminderShown(reminderId: string): void {
   const today = new Date().toDateString()
   const shownIds = getShownReminderIds()
 
