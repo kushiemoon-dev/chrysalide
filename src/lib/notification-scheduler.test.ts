@@ -25,6 +25,8 @@ const baseMedication: Medication = {
   updatedAt: new Date('2024-01-01'),
 }
 
+const { id: _baseMedicationId, ...baseMedicationInput } = baseMedication
+
 describe('getMedicationReminderTimes', () => {
   it('mode avancé retourne les horaires explicites', () => {
     const result = getMedicationReminderTimes({
@@ -131,8 +133,8 @@ describe('getTodayReminders', () => {
   })
 
   it('exclut les médicaments inactifs', async () => {
-    await addMedication({ ...baseMedication, id: undefined, isActive: false })
-    const activeId = await addMedication({ ...baseMedication, id: undefined, isActive: true })
+    await addMedication({ ...baseMedicationInput, isActive: false })
+    const activeId = await addMedication({ ...baseMedicationInput, isActive: true })
 
     const reminders = await getTodayReminders()
     expect(reminders).toHaveLength(1)
@@ -141,15 +143,13 @@ describe('getTodayReminders', () => {
 
   it('trie les rappels par horaire croissant', async () => {
     await addMedication({
-      ...baseMedication,
-      id: undefined,
+      ...baseMedicationInput,
       isActive: true,
       schedulingMode: 'advanced',
       scheduledTimes: ['15:00'],
     })
     await addMedication({
-      ...baseMedication,
-      id: undefined,
+      ...baseMedicationInput,
       isActive: true,
       schedulingMode: 'advanced',
       scheduledTimes: ['08:00'],
@@ -180,8 +180,7 @@ describe('checkReminders', () => {
     const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
 
     const medId = await addMedication({
-      ...baseMedication,
-      id: undefined,
+      ...baseMedicationInput,
       isActive: true,
       schedulingMode: 'advanced',
       scheduledTimes: [currentTime],
