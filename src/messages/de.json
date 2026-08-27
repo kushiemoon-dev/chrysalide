@@ -1364,7 +1364,8 @@
       "tattoo": "Tätowierer·in",
       "aesthetician": "Kosmetiker·in",
       "hairdresser": "Friseur·in",
-      "other": "Sonstige"
+      "other": "Sonstige",
+      "laboratoire": "Labor"
     },
     "reminderTimes": {
       "15": "15 Minuten vorher",
