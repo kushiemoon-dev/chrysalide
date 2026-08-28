@@ -1,6 +1,6 @@
 # Chrysalide Architecture
 
-Medical PWA for HRT transition tracking — 100% local, zero backend.
+Medical PWA for HRT transition tracking, 100% local, zero backend.
 
 ## Tech Stack
 
@@ -86,11 +86,11 @@ No network requests for user data. The Vercel deployment only serves static asse
 
 ### Main Navigation (bottom nav)
 
-| Route          | Page                        |
-| -------------- | --------------------------- |
-| `/`            | Dashboard — today's summary |
-| `/medications` | Medications list            |
-| `/bloodtests`  | Blood tests list            |
+| Route          | Page                       |
+| -------------- | -------------------------- |
+| `/`            | Dashboard, today's summary |
+| `/medications` | Medications list           |
+| `/bloodtests`  | Blood tests list           |
 
 ### "More" Menu
 
@@ -117,7 +117,7 @@ Each section follows the CRUD pattern: `/{section}`, `/{section}/new`, `/{sectio
 
 ```
 src/components/
-  ui/              # shadcn/ui — generated, do not edit manually
+  ui/              # shadcn/ui, generated, do not edit manually
   layout/          # bottom-nav.tsx, header.tsx
   brand/           # logo.tsx, decorated-icon.tsx
   onboarding/      # Wizard steps (welcome, profile, medication, tour)
@@ -163,7 +163,7 @@ Each marker has **reference ranges** configured per context (feminizing, masculi
 
 ### Administration
 
-5 methods: pill, injection, patch, gel, implant — each with specific frequencies and routes.
+5 methods: pill, injection, patch, gel, implant, each with specific frequencies and routes.
 
 ## Theme & Design
 

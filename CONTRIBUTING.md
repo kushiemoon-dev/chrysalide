@@ -105,7 +105,7 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for details.
 
 ### Database
 
-- Dexie.js (IndexedDB) — no backend
+- Dexie.js (IndexedDB), no backend
 - All data stays on the user's device
 - Versioned schema in `src/lib/db.ts`
 

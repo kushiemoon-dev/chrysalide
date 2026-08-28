@@ -22,18 +22,18 @@ _Local-first web app to manage HRT, blood tests, and physical progress_
 
 ## Features
 
-- **HRT Tracking** — Medications, doses, daily intake, stock management
-- **Blood Tests** — Hormone results with context-aware evolution charts
-- **Reference Ranges** — Visualization of hormone targets (feminizing/masculinizing)
-- **Physical Progress** — Secure photos, measurements, comparative timeline
-- **Appointments** — Annual calendar, reminders, practitioner management
-- **Practitioner Directory** — Contact info, autocomplete, history
-- **Journal** — Mood tracking, side effects, custom tags
-- **Objectives** — BLAHAJ visual progress, pre-configured templates (HRT, surgeries, legal documents)
-- **Multilingual** — Available in French, English and German — auto-detected from browser
-- **100% Local** — Data stored only on your device
-- **PWA** — Installable on mobile/desktop, works offline
-- **Dark Mode** — Dark theme by default, trans flag colors
+- **HRT Tracking**: Medications, doses, daily intake, stock management
+- **Blood Tests**: Hormone results with context-aware evolution charts
+- **Reference Ranges**: Visualization of hormone targets (feminizing/masculinizing)
+- **Physical Progress**: Secure photos, measurements, comparative timeline
+- **Appointments**: Annual calendar, reminders, practitioner management
+- **Practitioner Directory**: Contact info, autocomplete, history
+- **Journal**: Mood tracking, side effects, custom tags
+- **Objectives**: BLAHAJ visual progress, pre-configured templates (HRT, surgeries, legal documents)
+- **Multilingual**: available in French, English and German, auto-detected from the browser
+- **100% Local**: Data stored only on your device
+- **PWA**: Installable on mobile/desktop, works offline
+- **Dark Mode**: Dark theme by default, trans flag colors
 
 ---
 
@@ -122,11 +122,11 @@ Firefox doesn't natively support PWA installation. You can:
 
 A Progressive Web App combines the best of web and native apps:
 
-- ✅ **No store** — Direct installation from browser
-- ✅ **Offline** — Works without internet connection
-- ✅ **Lightweight** — No heavy download
-- ✅ **Auto-update** — Always latest version
-- ✅ **Privacy** — Your data stays on your device
+- ✅ **No store**: Direct installation from browser
+- ✅ **Offline**: Works without internet connection
+- ✅ **Lightweight**: No heavy download
+- ✅ **Auto-update**: Always latest version
+- ✅ **Privacy**: Your data stays on your device
 
 ---
 
@@ -208,7 +208,7 @@ src/
 
 ## License
 
-MIT License — see [LICENSE](LICENSE)
+MIT License. See [LICENSE](LICENSE).
 
 ---
 
