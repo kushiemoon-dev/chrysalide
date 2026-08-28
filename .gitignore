@@ -83,3 +83,7 @@ PLAN.md
 .claude/
 *.claude
 package-lock.json
+
+TICKET.md
+TICKET.PLAN.md
+TICKET.REQUIREMENTS.md
