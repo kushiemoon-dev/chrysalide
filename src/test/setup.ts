@@ -8,10 +8,10 @@ import '@testing-library/jest-dom'
 // globals with a get/set pair that delegates to jsdom's Storage.
 //
 // Must use get/set (not value+writable) because the existing Node descriptor
-// is a getter/setter pair — redefining with 'value' would throw TypeError.
+// is a getter/setter pair, redefining with 'value' would throw TypeError.
 //
 // NOTE: globalThis.jsdom is an internal vitest-environment-jsdom detail (not part of the public API).
-// This may break if vitest-environment-jsdom changes its internal structure — verify on jsdom/vitest major updates.
+// This may break if vitest-environment-jsdom changes its internal structure: verify on jsdom/vitest major updates.
 const jsdomEnv = (globalThis as unknown as { jsdom?: { window: Window } }).jsdom
 if (jsdomEnv) {
   const jsdomWindow = jsdomEnv.window

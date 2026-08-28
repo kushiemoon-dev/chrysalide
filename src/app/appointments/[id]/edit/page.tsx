@@ -79,7 +79,7 @@ export default function EditAppointmentPage() {
     setPractitionerId(id)
   }
 
-  // Handle practitioner selection - auto-fill location
+  // Handle practitioner selection: auto-fill location
   const handlePractitionerSelect = (practitioner: Practitioner) => {
     if (practitioner.location && !location) {
       setLocation(practitioner.location)

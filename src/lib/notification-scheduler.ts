@@ -227,7 +227,7 @@ let reminderIntervalId: ReturnType<typeof setInterval> | null = null
 /**
  * Start the reminder check interval
  * Should be called when app loads
- * Safe to call multiple times - only one interval will run
+ * Safe to call multiple times: only one interval will run
  */
 export function startReminderService(): () => void {
   // Prevent multiple intervals

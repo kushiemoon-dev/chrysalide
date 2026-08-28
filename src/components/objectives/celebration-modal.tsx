@@ -13,7 +13,7 @@ import { PartyPopper, Sparkles } from 'lucide-react'
 
 const TRANS_COLORS = ['#5BCEFA', '#F5A9B8', '#FFFFFF']
 
-// ponytail: inline confetti — drops canvas-confetti dep (rAF canvas, auto-cleanup)
+// ponytail: inline confetti, drops canvas-confetti dep (rAF canvas, auto-cleanup)
 function fireParticles(opts: {
   particleCount?: number
   spread?: number

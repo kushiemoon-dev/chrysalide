@@ -74,7 +74,7 @@
     },
     "about": {
       "title": "Über",
-      "description": "Chrysalide ist eine persönliche App zum medizinischen Tracking für trans Personen. Alle deine Daten bleiben auf deinem Gerät – keine Server, maximale Privatsphäre."
+      "description": "Chrysalide ist eine persönliche App zum medizinischen Tracking für trans Personen. Alle deine Daten bleiben auf deinem Gerät, keine Server, maximale Privatsphäre."
     },
     "dangerZone": {
       "title": "Gefahrenzone",
@@ -1145,7 +1145,7 @@
         },
         "med-ranges": {
           "q": "Was bedeuten die Referenzbereiche in den Diagrammen?",
-          "a": "Die farbigen Bereiche in den Testdiagrammen stellen die Zielbereiche einer HRT dar. Werte im grünen Bereich sind meist optimal. Diese Bereiche sind Richtwerte – nur dein·e Ärzt·in kann deine Ergebnisse im persönlichen Kontext interpretieren."
+          "a": "Die farbigen Bereiche in den Testdiagrammen stellen die Zielbereiche einer HRT dar. Werte im grünen Bereich sind meist optimal. Diese Bereiche sind Richtwerte, nur dein·e Ärzt·in kann deine Ergebnisse im persönlichen Kontext interpretieren."
         },
         "med-tracking": {
           "q": "Warum soll ich meine Medikamenteneinnahmen verfolgen?",

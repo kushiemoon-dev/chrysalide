@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { skipOnboarding } from './helpers'
 
 // Note: Playwright gives each test an isolated browser context, so IndexedDB
-// starts empty for every test (same approach as medications.spec.ts — no
+// starts empty for every test (same approach as medications.spec.ts, no
 // manual DB reset needed). Default locale is `fr`, so French UI strings apply.
 
 test.describe('Objectifs', () => {
@@ -29,7 +29,7 @@ test.describe('Objectifs', () => {
     // The form lives in the "custom" tab (the page opens on the templates tab).
     await page.getByRole('tab', { name: /Personnalisé|Custom/i }).click()
 
-    // Title (React-controlled input — type sequentially like medications spec).
+    // Title (React-controlled input, type sequentially like medications spec).
     await page.locator('#title').click()
     await page.locator('#title').pressSequentially(title)
     await expect(page.locator('#title')).toHaveValue(title)

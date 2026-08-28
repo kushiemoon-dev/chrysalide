@@ -11,7 +11,7 @@ interface BlahajSvgProps {
 }
 
 /**
- * BLAHAJ SVG - Silhouette of the IKEA shark plush emblematic of the trans community
+ * BLAHAJ SVG: silhouette of the IKEA shark plush emblematic of the trans community
  * Fills from bottom to top based on the progress percentage
  */
 export function BlahajSvg({

@@ -277,7 +277,7 @@ export default function MedicationsPage() {
   }
 
   useEffect(() => {
-    // ponytail: mount fetch via the shared loadData (also reused after mutations below) — accepted fetch-on-mount pattern, not a bug
+    // ponytail: mount fetch via the shared loadData (also reused after mutations below), accepted fetch-on-mount pattern, not a bug
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData()
   }, [])
@@ -611,7 +611,7 @@ export default function MedicationsPage() {
                         </div>
                       </div>
 
-                      {/* Dose-taking buttons - auto-detection of multiple doses */}
+                      {/* Dose-taking buttons: auto-detection of multiple doses */}
                       <div className="border-border mt-3 border-t pt-3">
                         {(() => {
                           // Check whether this is a periodic medication

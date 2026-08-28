@@ -120,7 +120,7 @@ export default function ObjectiveDetailPage({ params }: { params: Promise<{ id: 
       updates.completedDate = new Date()
       updates.progress = 100
     } else if (objective.status === 'completed') {
-      // Was completed, now changing to another status - clear completedDate
+      // Was completed, now changing to another status: clear completedDate
       updates.completedDate = undefined
     }
 

@@ -57,7 +57,7 @@ export default function NewAppointmentPage() {
     setPractitionerId(id)
   }
 
-  // Handle practitioner selection - auto-fill location
+  // Handle practitioner selection: auto-fill location
   const handlePractitionerSelect = (practitioner: Practitioner) => {
     // Auto-fill the location if the practitioner has an address and the field is empty
     if (practitioner.location && !location) {

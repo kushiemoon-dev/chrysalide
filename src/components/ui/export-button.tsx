@@ -125,7 +125,7 @@ export function ExportButton({ chartRef, title, subtitle, data, userName }: Expo
         pdf.text(`${t('date')} : ${dateStr}`, margin, 38)
       }
 
-      // Chart - compute dimensions
+      // Chart: compute dimensions
       const img = new Image()
       img.src = dataUrl
       await new Promise((resolve) => {

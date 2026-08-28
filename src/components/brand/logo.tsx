@@ -23,7 +23,7 @@ export function ChrysalideLogo({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn(animated && 'animate-flutter', className)}
-      aria-label="Chrysalide - Logo papillon"
+      aria-label="Chrysalide, logo papillon"
       role="img"
     >
       <defs>
@@ -63,7 +63,7 @@ export function ChrysalideLogo({
       </defs>
 
       {variant === 'minimal' ? (
-        /* Minimal variant - simple butterfly silhouette */
+        /* Minimal variant: simple butterfly silhouette */
         <g filter="url(#glow)">
           <path
             d="M32 20 C24 12, 8 16, 12 32 C16 48, 28 44, 32 32"
@@ -76,7 +76,7 @@ export function ChrysalideLogo({
           <ellipse cx="32" cy="32" rx="3" ry="14" fill="url(#trans-gradient-body)" />
         </g>
       ) : (
-        /* Full variant - detailed butterfly */
+        /* Full variant: detailed butterfly */
         <g filter="url(#glow)">
           {/* Left upper wing */}
           <path
@@ -102,7 +102,7 @@ export function ChrysalideLogo({
             fillOpacity="0.7"
           />
 
-          {/* Wing details - subtle patterns */}
+          {/* Wing details: subtle patterns */}
           <circle cx="18" cy="28" r="3" fill="#91DEFF" fillOpacity="0.4" />
           <circle cx="46" cy="28" r="3" fill="#FFD4E0" fillOpacity="0.4" />
           <circle cx="16" cy="46" r="2" fill="#5BCEFA" fillOpacity="0.3" />

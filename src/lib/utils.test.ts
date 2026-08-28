@@ -46,7 +46,7 @@ describe('isAppointmentPast', () => {
 
   it("avec une heure passée aujourd'hui, retourne true", () => {
     const today = new Date()
-    today.setHours(0, 1, 0, 0) // 00:01 — always in the past
+    today.setHours(0, 1, 0, 0) // 00:01, always in the past
     expect(isAppointmentPast(makeAppointment(today, '00:01'))).toBe(true)
   })
 

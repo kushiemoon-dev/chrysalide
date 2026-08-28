@@ -44,8 +44,8 @@ export function BlahajProgress({
   // Fill animation
   useEffect(() => {
     if (!animate) {
-      // ponytail: sync to final value when animation is disabled — not a bug
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      // ponytail: sync to final value when animation is disabled, not a bug
+
       setAnimatedProgress(progress)
       return
     }

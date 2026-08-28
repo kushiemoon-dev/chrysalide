@@ -25,7 +25,7 @@ export default function NewBloodTestPage() {
   const [practitionerId, setPractitionerId] = useState<number | undefined>(undefined)
   const [notes, setNotes] = useState('')
 
-  // Marker values - using a Record to track which markers have values
+  // Marker values: using a Record to track which markers have values
   const [markerValues, setMarkerValues] = useState<Record<BloodMarker, string>>(EMPTY_MARKER_VALUES)
 
   function updateMarkerValue(marker: BloodMarker, value: string) {

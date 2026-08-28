@@ -74,7 +74,7 @@
     },
     "about": {
       "title": "À propos",
-      "description": "Chrysalide est une application de suivi médical personnel pour les personnes trans. Toutes vos données restent sur votre appareil - aucun serveur, confidentialité maximale."
+      "description": "Chrysalide est une application de suivi médical personnel pour les personnes trans. Toutes vos données restent sur votre appareil, aucun serveur, confidentialité maximale."
     },
     "dangerZone": {
       "title": "Zone de danger",
@@ -1139,7 +1139,7 @@
         },
         "med-ranges": {
           "q": "Que signifient les plages de référence sur les graphiques ?",
-          "a": "Les zones colorées sur les graphiques d'analyses représentent les plages cibles pour un THS. Les valeurs dans la zone verte sont généralement optimales. Ces plages sont indicatives - seul·e votre médecin peut interpréter vos résultats dans votre contexte personnel."
+          "a": "Les zones colorées sur les graphiques d'analyses représentent les plages cibles pour un THS. Les valeurs dans la zone verte sont généralement optimales. Ces plages sont indicatives, seul·e votre médecin peut interpréter vos résultats dans votre contexte personnel."
         },
         "med-tracking": {
           "q": "Pourquoi suivre mes prises de médicaments ?",

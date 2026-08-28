@@ -21,7 +21,7 @@ describe('BLOOD_MARKERS', () => {
   })
 })
 
-describe('REFERENCE_RANGES - Testosterone (ng/mL)', () => {
+describe('REFERENCE_RANGES: Testosterone (ng/mL)', () => {
   const getTestosteroneRange = (context: string) =>
     REFERENCE_RANGES.find((r) => r.marker === 'testosterone' && r.context === context)
 
@@ -66,7 +66,7 @@ describe('REFERENCE_RANGES - Testosterone (ng/mL)', () => {
   })
 })
 
-describe('REFERENCE_RANGES - Estradiol (pg/mL)', () => {
+describe('REFERENCE_RANGES: Estradiol (pg/mL)', () => {
   const getEstradiolRange = (context: string) =>
     REFERENCE_RANGES.find((r) => r.marker === 'estradiol' && r.context === context)
 
@@ -85,7 +85,7 @@ describe('REFERENCE_RANGES - Estradiol (pg/mL)', () => {
   })
 })
 
-describe('REFERENCE_RANGES - Cohérence', () => {
+describe('REFERENCE_RANGES: Cohérence', () => {
   it('toutes les plages ont min < max', () => {
     REFERENCE_RANGES.forEach((range) => {
       expect(range.min).toBeLessThan(range.max)

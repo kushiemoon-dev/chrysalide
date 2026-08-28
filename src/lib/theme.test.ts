@@ -108,7 +108,7 @@ describe('saveTheme', () => {
 })
 
 describe('getSystemPrefersDark / getSystemPrefersReducedMotion', () => {
-  // jsdom ne fournit pas matchMedia — on doit le stubber globalement
+  // jsdom ne fournit pas matchMedia, on doit le stubber globalement
   beforeEach(() => {
     vi.stubGlobal('matchMedia', (query: string) => ({
       matches: false,

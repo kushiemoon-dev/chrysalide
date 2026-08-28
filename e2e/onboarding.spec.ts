@@ -10,19 +10,19 @@ test.describe('Onboarding', () => {
   test('compléter le flux onboarding complet', async ({ page }) => {
     await page.goto('/onboarding')
 
-    // Step 0 — Welcome
+    // Step 0: Welcome
     await expect(page.getByRole('button', { name: /Commencer/i })).toBeVisible()
     await page.getByRole('button', { name: 'Commencer' }).click()
 
-    // Step 1 — Profile (optional, click Continuer)
+    // Step 1: Profile (optional, click Continuer)
     await expect(page.getByRole('button', { name: /Continuer/i })).toBeVisible()
     await page.getByRole('button', { name: /Continuer/i }).click()
 
-    // Step 2 — Medication (optional, click Plus tard)
+    // Step 2: Medication (optional, click Plus tard)
     await expect(page.getByRole('button', { name: /Plus tard/i })).toBeVisible()
     await page.getByRole('button', { name: /Plus tard/i }).click()
 
-    // Step 3 — Tour, click "Commencer mon suivi"
+    // Step 3: Tour, click "Commencer mon suivi"
     await expect(page.getByRole('button', { name: /Commencer mon suivi/i })).toBeVisible()
     await page.getByRole('button', { name: /Commencer mon suivi/i }).click()
 

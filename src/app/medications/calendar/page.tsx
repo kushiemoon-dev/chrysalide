@@ -130,7 +130,7 @@ export default function MedicationsCalendarPage() {
     }
   }
 
-  // Validate entire month - mark all doses as taken
+  // Validate entire month: mark all doses as taken
   async function validateMonth() {
     if (
       !confirm(

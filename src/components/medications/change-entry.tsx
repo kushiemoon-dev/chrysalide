@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import type { TreatmentChange, TreatmentChangeType } from '@/lib/types'
 
-// Configuration of change types (without labels - use the translations)
+// Configuration of change types (without labels, use the translations)
 export const changeTypeConfig: Record<
   TreatmentChangeType,
   {

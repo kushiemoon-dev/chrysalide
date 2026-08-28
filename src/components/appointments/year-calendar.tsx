@@ -33,7 +33,7 @@ interface YearCalendarProps {
 const WEEKDAYS = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
 
 /**
- * Year calendar - 12-month grid (4x3)
+ * Year calendar: 12-month grid (4x3)
  * Displays appointments with color-coded indicators by type
  */
 export function YearCalendar({ appointments, onDayClick, onAppointmentClick }: YearCalendarProps) {

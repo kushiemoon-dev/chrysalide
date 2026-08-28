@@ -1,5 +1,5 @@
 /**
- * Dexie.js configuration - Local IndexedDB database
+ * Dexie.js configuration: local IndexedDB database
  * All data stays on the user's device
  *
  * This file re-exports all the CRUD helpers, now organized

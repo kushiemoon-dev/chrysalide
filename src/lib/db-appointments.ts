@@ -85,7 +85,7 @@ export async function updateAppointment(id: number, updates: Partial<Appointment
 }
 
 export async function deleteAppointment(id: number) {
-  // Delete associated reminders (using filter - no index on referenceId)
+  // Delete associated reminders (using filter, no index on referenceId)
   const remindersToDelete = await db.reminders
     .filter((r) => r.type === 'appointment' && r.referenceId === id)
     .toArray()

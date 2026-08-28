@@ -132,7 +132,7 @@ describe('getTotalAppointmentsCost', () => {
 
     await addAppointment({ ...baseAppointment, date: now, cost: 50, type: 'endocrinologist' })
     await addAppointment({ ...baseAppointment, date: now, cost: 30, type: 'surgeon' })
-    // outside the year — still counted in total/byType (not filtered by date), but not in thisYear/thisMonth
+    // outside the year, still counted in total/byType (not filtered by date), but not in thisYear/thisMonth
     await addAppointment({
       ...baseAppointment,
       date: new Date('2000-01-01'),

@@ -218,7 +218,7 @@ export default function AppointmentDetailPage() {
         </CardContent>
       </Card>
 
-      {/* Doctor & Location - prioritize the linked practitioner */}
+      {/* Doctor & Location: prioritize the linked practitioner */}
       {(() => {
         const displayName = practitioner?.name || appointment.doctor
         const displayLocation = practitioner?.location || appointment.location

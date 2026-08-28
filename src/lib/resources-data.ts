@@ -1,5 +1,5 @@
 /**
- * Trans community resources - Static data
+ * Trans community resources: static data
  * For Chrysalide v0.2.0
  */
 

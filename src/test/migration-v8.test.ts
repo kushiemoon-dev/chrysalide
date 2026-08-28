@@ -139,7 +139,7 @@ async function seedV7AndUpgradeToV8(): Promise<TestDBV8> {
   ])
   dbV7.close()
 
-  // Upgrade to v8 — replay the SAME migration as db.ts
+  // Upgrade to v8, replay the SAME migration as db.ts
   const dbV8 = new TestDBV8(dbName, { indexedDB, IDBKeyRange })
   dbV8.version(7).stores({
     objectives: '++id, category, status, targetDate',
@@ -208,7 +208,7 @@ async function seedV7AndUpgradeToV8(): Promise<TestDBV8> {
   return dbV8
 }
 
-describe('Migration Dexie v7→v8 — fusion acts→objectives', () => {
+describe('Migration Dexie v7→v8: fusion acts→objectives', () => {
   it('migre 2 actes en 2 objectifs avec source="act"', async () => {
     const db = await seedV7AndUpgradeToV8()
     const objectives = await db.objectives.toArray()

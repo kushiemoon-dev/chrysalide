@@ -1,5 +1,5 @@
 /**
- * Dexie.js configuration - Local IndexedDB database
+ * Dexie.js configuration: local IndexedDB database
  * All data stays on the user's device
  */
 
@@ -30,14 +30,14 @@ const db = new Dexie('ChrysalideDB') as Dexie & {
   appointments: EntityTable<Appointment, 'id'>
   reminders: EntityTable<Reminder, 'id'>
   userProfile: EntityTable<UserProfile, 'id'>
-  // v0.2.0 - New modules
+  // v0.2.0: New modules
   journalEntries: EntityTable<JournalEntry, 'id'>
   objectives: EntityTable<Objective, 'id'>
   milestones: EntityTable<Milestone, 'id'>
   treatmentChanges: EntityTable<TreatmentChange, 'id'>
-  // v0.2.1 - Practitioners directory
+  // v0.2.1: Practitioners directory
   practitioners: EntityTable<Practitioner, 'id'>
-  // v1.2.0 - Medical procedures (notes)
+  // v1.2.0: Medical procedures (notes)
   acts: EntityTable<Act, 'id'>
   actTodos: EntityTable<ActTodo, 'id'>
 }
@@ -64,7 +64,7 @@ db.version(2).stores({
   userProfile: '++id',
 })
 
-// Version 3: v0.2.0 - Journal, Objectives, Milestones, Treatment history
+// Version 3: v0.2.0, Journal, Objectives, Milestones, Treatment history
 db.version(3).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
@@ -80,7 +80,7 @@ db.version(3).stores({
   treatmentChanges: '++id, medicationId, date, changeType',
 })
 
-// Version 4: v0.2.1 - Practitioners directory
+// Version 4: v0.2.1, Practitioners directory
 db.version(4).stores({
   medications: '++id, name, type, isActive, startDate',
   medicationLogs: '++id, medicationId, timestamp, taken, applicationZone',
@@ -174,8 +174,8 @@ db.version(8)
     milestones: '++id, objectiveId, achieved, order',
     treatmentChanges: '++id, medicationId, date, changeType',
     practitioners: '++id, name, specialty, lastUsed, usageCount',
-    acts: '++id, category, status, createdAt', // kept — dropped in v9
-    actTodos: '++id, actId, done, order', // kept — dropped in v9
+    acts: '++id, category, status, createdAt', // kept, dropped in v9
+    actTodos: '++id, actId, done, order', // kept, dropped in v9
   })
   .upgrade(async (tx) => {
     const STATUS_MAP: Record<string, string> = {

@@ -79,7 +79,7 @@ export default function MedicationDetailPage() {
   }
 
   useEffect(() => {
-    // ponytail: mount/id-change fetch via the shared loadData (also reused after mutations below) — accepted fetch-on-mount pattern, not a bug
+    // ponytail: mount/id-change fetch via the shared loadData (also reused after mutations below), accepted fetch-on-mount pattern, not a bug
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,7 +148,7 @@ export default function MedicationDetailPage() {
 
   const typeInfo = MEDICATION_TYPES[medication.type]
 
-  // Defensive date parsing - handle both Date objects and strings
+  // Defensive date parsing: handle both Date objects and strings
   const startDate =
     medication.startDate instanceof Date ? medication.startDate : new Date(medication.startDate)
 

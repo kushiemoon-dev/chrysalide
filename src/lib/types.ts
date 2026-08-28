@@ -1,5 +1,5 @@
 /**
- * Types for Chrysalide - Trans medical tracking
+ * Types for Chrysalide: trans medical tracking
  */
 
 // === MEDICATIONS ===
@@ -46,7 +46,7 @@ export interface Medication {
   isActive: boolean
   // Advanced mode for multiple doses
   schedulingMode?: SchedulingMode // 'simple' = 1 button, 'advanced' = multiple doses
-  scheduledTimes?: string[] // ["08:00", "14:00", "20:00"] - precise times
+  scheduledTimes?: string[] // ["08:00", "14:00", "20:00"], precise times
   // Specific administration routes
   pillRoute?: PillAdministrationRoute // oral | sublingual (for method === 'pill')
   injectionRoute?: InjectionAdministrationRoute // subcutaneous | intramuscular (for method === 'injection')
@@ -65,8 +65,8 @@ export interface MedicationLog {
   timestamp: Date
   taken: boolean
   // Advanced mode: which dose was taken
-  scheduledTime?: string // "08:00" - the scheduled time for this dose
-  doseIndex?: number // 0, 1, 2... - index within scheduledTimes
+  scheduledTime?: string // "08:00", the scheduled time for this dose
+  doseIndex?: number // 0, 1, 2... index within scheduledTimes
   notes?: string
   sideEffects?: string
   // Application zone for gels
@@ -160,7 +160,7 @@ export interface Appointment {
   notes?: string
   reminderMinutes?: number
   cost?: number // Out-of-pocket cost in euros (optional)
-  actId?: number // @deprecated — use objectiveId since v1.3.0
+  actId?: number // @deprecated: use objectiveId since v1.3.0
   objectiveId?: number // Link to a medical objective (replaces actId)
   createdAt: Date
 }

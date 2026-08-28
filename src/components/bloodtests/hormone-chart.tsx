@@ -41,7 +41,7 @@ const MARKER_COLORS: Partial<Record<BloodMarker, string>> = {
   potassium: '#98FB98',
 }
 
-// Custom tooltip - defined outside component to avoid recreation on each render
+// Custom tooltip: defined outside component to avoid recreation on each render
 interface TooltipPayloadEntry {
   dataKey: string
   value: number
@@ -146,7 +146,7 @@ export function HormoneChart({ tests, markers, context, height = 250 }: HormoneC
     const dataMin = Math.min(...values)
     const dataMax = Math.max(...values)
 
-    // Special case: testosterone - clinically relevant scale depending on context
+    // Special case: testosterone, clinically relevant scale depending on context
     if (marker === 'testosterone') {
       if (context === 'masculinizing') {
         // Cis-male range: 3-10 ng/mL, we use the max as a reference point
