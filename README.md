@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/banner.png" alt="Chrysalide" width="600">
+
 # Chrysalide
 
 [![PWA](https://img.shields.io/badge/PWA-Ready-5BCEFA?style=for-the-badge&logo=pwa)](<>)
