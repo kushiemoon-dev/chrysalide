@@ -1,0 +1,8 @@
+hits=$(grep -nE "—| – | - " "$1" 2>/dev/null || true)
+if [ -n "$hits" ]; then
+  echo "commit-msg: em dash / en dash / spaced hyphen used as punctuation:" >&2
+  echo "$hits" >&2
+  echo "" >&2
+  echo "Rewrite with a comma, colon, semicolon, or period. False positive? git commit --no-verify." >&2
+  exit 1
+fi
