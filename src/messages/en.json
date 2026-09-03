@@ -16,6 +16,7 @@
     "back": "Back",
     "confirm": "Confirm",
     "close": "Close",
+    "edit": "Edit",
     "saving": "Saving..."
   },
   "nav": {
@@ -118,6 +119,12 @@
       "inner_thigh_right": "Right inner thigh",
       "scrotal": "Scrotal"
     },
+    "patchZones": {
+      "thigh_left": "Left thigh",
+      "abdomen": "Abdomen",
+      "thigh_right": "Right thigh",
+      "buttock": "Buttock"
+    },
     "frequencies": {
       "1x/jour": "1x/day",
       "2x/jour": "2x/day",
@@ -164,6 +171,7 @@
       "filters": "Filters",
       "allTypes": "All types",
       "allMeds": "All medications",
+      "medicationFilterPlaceholder": "Medication",
       "start": "Start",
       "end": "End",
       "lastMonth": "Last month",
@@ -211,7 +219,11 @@
       "pillRoute": "Administration route (optional)",
       "injectionRoute": "Injection type (optional)",
       "frequency": "Frequency",
-      "stock": "Current stock"
+      "stock": "Current stock",
+      "activeLabel": "Active medication",
+      "activeDescription": "Show in the list of medications to take",
+      "notesTitle": "Notes (optional)",
+      "notesPlaceholder": "Personal notes, observed side effects, etc."
     },
     "new": {
       "title": "New medication",
@@ -285,7 +297,8 @@
       "save": "Save",
       "pastDoseDesc": "Record a dose of",
       "dateLabel": "Date",
-      "timeLabel": "Time"
+      "timeLabel": "Time",
+      "detailsLabel": "Details"
     }
   },
   "bloodtests": {

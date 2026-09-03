@@ -16,6 +16,7 @@
     "back": "Retour",
     "confirm": "Confirmer",
     "close": "Fermer",
+    "edit": "Modifier",
     "saving": "Enregistrement..."
   },
   "nav": {
@@ -118,6 +119,12 @@
       "inner_thigh_right": "Intérieur cuisse droite",
       "scrotal": "Scrotale"
     },
+    "patchZones": {
+      "thigh_left": "Cuisse gauche",
+      "abdomen": "Abdomen",
+      "thigh_right": "Cuisse droite",
+      "buttock": "Fessier"
+    },
     "frequencies": {
       "1x/jour": "1x/jour",
       "2x/jour": "2x/jour",
@@ -164,6 +171,7 @@
       "filters": "Filtres",
       "allTypes": "Tous les types",
       "allMeds": "Tous les médicaments",
+      "medicationFilterPlaceholder": "Médicament",
       "start": "Début",
       "end": "Fin",
       "lastMonth": "Dernier mois",
@@ -211,7 +219,11 @@
       "pillRoute": "Voie d'administration (optionnel)",
       "injectionRoute": "Type d'injection (optionnel)",
       "frequency": "Fréquence",
-      "stock": "Stock actuel"
+      "stock": "Stock actuel",
+      "activeLabel": "Médicament actif",
+      "activeDescription": "Afficher dans la liste des médicaments à prendre",
+      "notesTitle": "Notes (optionnel)",
+      "notesPlaceholder": "Notes personnelles, effets secondaires observés, etc."
     },
     "new": {
       "title": "Nouveau médicament",
@@ -285,7 +297,8 @@
       "save": "Enregistrer",
       "pastDoseDesc": "Enregistrer une prise de",
       "dateLabel": "Date",
-      "timeLabel": "Heure"
+      "timeLabel": "Heure",
+      "detailsLabel": "Détails"
     }
   },
   "bloodtests": {
