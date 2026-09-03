@@ -1,26 +1,43 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
-import nextVitals from 'eslint-config-next/core-web-vitals'
-import nextTs from 'eslint-config-next/typescript'
+import js from '@eslint/js'
+import ts from 'typescript-eslint'
+import svelte from 'eslint-plugin-svelte'
+import globals from 'globals'
 import localeKeysMatch from './eslint-rules/locale-keys-match.mjs'
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
+export default ts.config(
+  js.configs.recommended,
+  ...ts.configs.recommended,
+  ...svelte.configs.recommended,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+      // adapter-static + plain hrefs, not opting into SvelteKit's typed-routes resolve() helper
+      'svelte/no-navigation-without-resolve': 'off',
+    },
+  },
+  {
+    files: ['**/*.svelte', '**/*.svelte.ts'],
+    languageOptions: {
+      parserOptions: {
+        parser: ts.parser,
+      },
+    },
+  },
   {
     files: ['src/lib/locale-keys.mjs'],
     plugins: { local: { rules: { 'locale-keys-match': localeKeysMatch } } },
     rules: { 'local/locale-keys-match': 'error' },
   },
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    '.next/**',
-    'out/**',
-    'build/**',
-    'next-env.d.ts',
-    // Git worktrees
-    '.worktrees/**',
-  ]),
-])
-
-export default eslintConfig
+  {
+    ignores: ['build/', '.svelte-kit/', 'dist/', 'coverage/', 'static/', '.remember/'],
+  }
+)

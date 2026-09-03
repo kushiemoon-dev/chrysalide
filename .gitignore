@@ -3,13 +3,10 @@
 /.pnp
 .pnp.*
 
-# Next.js
-/.next/
-/out/
-next-env.d.ts
-
-# Build outputs
+# SvelteKit
+/.svelte-kit/
 /build
+/out/
 /dist
 
 # Testing
@@ -56,12 +53,6 @@ Thumbs.db
 *.swo
 *~
 
-# Vercel
-.vercel
-
-# Turbo
-.turbo
-
 # IDE
 .vscode/
 .idea/
@@ -72,6 +63,7 @@ findings.md
 progress.md
 notes.md
 docs/superpowers/
+.superpowers/
 TICKET.md
 REQUIREMENTS.md
 PLAN.md

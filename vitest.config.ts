@@ -1,10 +1,9 @@
 import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { svelteTesting } from '@testing-library/svelte/vite'
+import { sveltekit } from '@sveltejs/kit/vite'
 
 export default defineConfig({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  plugins: [react() as any],
+  plugins: [sveltekit(), svelteTesting()],
   test: {
     environment: 'jsdom',
     environmentOptions: {
@@ -14,7 +13,7 @@ export default defineConfig({
     },
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.{test,spec}.{js,ts,tsx}'],
+    include: ['src/**/*.{test,spec}.{js,ts}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
@@ -24,7 +23,6 @@ export default defineConfig({
         'src/test/',
         '**/*.d.ts',
         '**/*.config.*',
-        // Static data files — no logic to test
         'src/lib/resources-data.ts',
         'src/lib/types.ts',
       ],
@@ -33,11 +31,6 @@ export default defineConfig({
         functions: 60,
         branches: 50,
       },
-    },
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
     },
   },
 })

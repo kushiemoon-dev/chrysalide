@@ -4,7 +4,6 @@ import {
   getMedicationReminderTimes,
   shouldShowReminder,
   getShownReminderIds,
-  markReminderShown,
   getTodayReminders,
   checkReminders,
 } from './notification-scheduler'

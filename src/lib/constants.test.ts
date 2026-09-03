@@ -12,7 +12,7 @@ describe('BLOOD_MARKERS', () => {
   })
 
   it('tous les marqueurs ont un label et une unité', () => {
-    Object.entries(BLOOD_MARKERS).forEach(([key, marker]) => {
+    Object.entries(BLOOD_MARKERS).forEach(([, marker]) => {
       expect(marker.label).toBeDefined()
       expect(marker.label.length).toBeGreaterThan(0)
       expect(marker.unit).toBeDefined()

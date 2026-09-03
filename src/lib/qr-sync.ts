@@ -33,7 +33,7 @@ async function compressData(data: string): Promise<string> {
 
       return base64
     }
-  } catch (error) {
+  } catch {
     console.warn('[QRSync] CompressionStream not available, using raw data')
   }
 
@@ -63,7 +63,7 @@ async function decompressData(compressed: string): Promise<string> {
       const decoder = new TextDecoder()
       return decoder.decode(decompressedBytes)
     }
-  } catch (error) {
+  } catch {
     // Fall through to base64 decode
   }
 

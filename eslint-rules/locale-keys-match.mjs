@@ -1,7 +1,11 @@
 import { diffLocaleKeys } from '../src/lib/locale-keys.mjs'
 
 const localeKeysMatchRule = {
-  meta: { type: 'problem', docs: { description: 'fr/en/de locale files must share the same key set' }, schema: [] },
+  meta: {
+    type: 'problem',
+    docs: { description: 'fr/en/de locale files must share the same key set' },
+    schema: [],
+  },
   create(context) {
     return {
       Program(node) {

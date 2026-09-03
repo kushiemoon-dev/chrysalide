@@ -6,11 +6,16 @@ export const LOCALES = ['fr', 'en', 'de']
 
 const messagesDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'messages')
 
+/**
+ * @param {Record<string, unknown>} obj
+ * @param {string} [prefix]
+ * @returns {string[]}
+ */
 export function flattenKeys(obj, prefix = '') {
   return Object.entries(obj).flatMap(([key, value]) => {
     const path = prefix ? `${prefix}.${key}` : key
     return value !== null && typeof value === 'object' && !Array.isArray(value)
-      ? flattenKeys(value, path)
+      ? flattenKeys(/** @type {Record<string, unknown>} */ (value), path)
       : [path]
   })
 }
@@ -19,7 +24,9 @@ export function diffLocaleKeys(locales = LOCALES) {
   const keysByLocale = Object.fromEntries(
     locales.map((locale) => {
       const raw = fs.readFileSync(path.join(messagesDir, `${locale}.json`), 'utf-8')
-      return [locale, new Set(flattenKeys(JSON.parse(raw)))]
+      /** @type {Record<string, unknown>} */
+      const parsed = JSON.parse(raw)
+      return [locale, new Set(flattenKeys(parsed))]
     })
   )
 
@@ -28,7 +35,7 @@ export function diffLocaleKeys(locales = LOCALES) {
   const missingByLocale = Object.fromEntries(
     locales.map((locale) => [
       locale,
-      [...unionKeys].filter((key) => !keysByLocale[locale].has(key)).sort(),
+      [...unionKeys].filter((key) => !keysByLocale[locale]?.has(key)).sort(),
     ])
   )
 

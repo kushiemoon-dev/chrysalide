@@ -1,5 +1,5 @@
 # Build output
-.next/
+.svelte-kit/
 out/
 build/
 
@@ -8,7 +8,6 @@ node_modules/
 
 # Generated files
 *.tsbuildinfo
-next-env.d.ts
 pnpm-lock.yaml
 
 # Planning files (local only)

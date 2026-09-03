@@ -1,7 +1,3 @@
-'use client'
-
-import { createContext, useContext } from 'react'
-
 // ═══════════════════════════════════════════════════════════════════════════
 // THEME TYPES
 // ═══════════════════════════════════════════════════════════════════════════
@@ -60,35 +56,6 @@ export const THEME_MODES: Record<
   system: {
     icon: 'monitor',
   },
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// THEME CONTEXT
-// ═══════════════════════════════════════════════════════════════════════════
-
-export interface ThemeContextValue {
-  theme: ThemeConfig
-  setMode: (mode: ThemeMode) => void
-  setColorScheme: (scheme: ColorScheme) => void
-  setReducedMotion: (reduced: boolean) => void
-  resolvedMode: 'light' | 'dark' // Actual mode after resolving 'system'
-}
-
-export const ThemeContext = createContext<ThemeContextValue | null>(null)
-
-export function useTheme() {
-  const context = useContext(ThemeContext)
-  // Return default values if no context (e.g., during SSG)
-  if (!context) {
-    return {
-      theme: DEFAULT_THEME,
-      setMode: () => {},
-      setColorScheme: () => {},
-      setReducedMotion: () => {},
-      resolvedMode: 'dark' as const,
-    }
-  }
-  return context
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
