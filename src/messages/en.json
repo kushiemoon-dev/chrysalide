@@ -325,7 +325,8 @@
       "recorded": "test recorded",
       "recordedPlural": "tests recorded",
       "chartsTab": "Charts",
-      "historyTab": "History"
+      "historyTab": "History",
+      "detailsLabel": "Details"
     },
     "groups": {
       "hormones": "Hormones",
@@ -344,7 +345,8 @@
       "cancel": "Cancel",
       "saving": "Saving...",
       "save": "Save",
-      "noResultAlert": "Please enter at least one result"
+      "noResultAlert": "Please enter at least one result",
+      "sourcePrefix": "Source:"
     },
     "edit": {
       "title": "Edit test",

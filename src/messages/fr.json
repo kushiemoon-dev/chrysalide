@@ -325,7 +325,8 @@
       "recorded": "bilan enregistré",
       "recordedPlural": "bilans enregistrés",
       "chartsTab": "Graphiques",
-      "historyTab": "Historique"
+      "historyTab": "Historique",
+      "detailsLabel": "Détails"
     },
     "groups": {
       "hormones": "Hormones",
@@ -344,7 +345,8 @@
       "cancel": "Annuler",
       "saving": "Enregistrement...",
       "save": "Enregistrer",
-      "noResultAlert": "Veuillez entrer au moins un résultat"
+      "noResultAlert": "Veuillez entrer au moins un résultat",
+      "sourcePrefix": "Source :"
     },
     "edit": {
       "title": "Modifier l'analyse",

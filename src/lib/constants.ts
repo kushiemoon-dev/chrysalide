@@ -76,6 +76,7 @@ export const PATCH_APPLICATION_ZONE_ORDER: PatchApplicationZone[] = [
 // target, and is never presented as an alert until the watch threshold.
 export const HEMATOCRIT_WATCH_THRESHOLD = 52
 export const HEMATOCRIT_ALERT_THRESHOLD = 54
+export const HEMATOCRIT_ALERT_THRESHOLD_SOURCE = 'HAS France 2025 (R72)'
 
 export function getHematocritStatus(value: number): 'ok' | 'watch' | 'alert' {
   if (value >= HEMATOCRIT_ALERT_THRESHOLD) return 'alert'
@@ -310,6 +311,51 @@ export const BLOOD_MARKERS: Record<
   potassium: { label: 'Potassium', unit: 'mEq/L', description: 'Important avec spironolactone' },
   dheas: { label: 'DHEA-S', unit: 'µg/dL', description: 'Précurseur hormonal surrénalien' },
   progesterone: { label: 'Progestérone', unit: 'µg/L', description: 'Hormone progestative' },
+}
+
+// === BLOOD MARKER UNIT CONVERSION ===
+// Community-reported friction (2 independent tickets on a competing app + a patient
+// testimony doing manual tracking): labs report testosterone/estradiol in units the
+// app doesn't expect (ng/dL, nmol/L, pmol/L). Canonical storage stays
+// BLOOD_MARKERS[marker].unit; these let the entry form accept an alternate unit and
+// convert to canonical before saving, so trends and reference ranges stay comparable.
+interface AlternateUnit {
+  unit: string
+  toCanonical: (value: number) => number
+}
+
+const BLOOD_MARKER_ALTERNATE_UNITS: Partial<Record<BloodMarker, AlternateUnit[]>> = {
+  estradiol: [
+    // pmol/L -> pg/mL (molar mass 272.38 g/mol)
+    { unit: 'pmol/L', toCanonical: (v) => v / 3.671 },
+  ],
+  testosterone: [
+    // ng/dL -> ng/mL
+    { unit: 'ng/dL', toCanonical: (v) => v / 100 },
+    // nmol/L -> ng/mL (molar mass 288.42 g/mol)
+    { unit: 'nmol/L', toCanonical: (v) => v / 3.467 },
+  ],
+}
+
+export function getMarkerUnitOptions(marker: BloodMarker): string[] {
+  const alternates = BLOOD_MARKER_ALTERNATE_UNITS[marker] ?? []
+  return [BLOOD_MARKERS[marker].unit, ...alternates.map((a) => a.unit)]
+}
+
+export function convertToCanonicalUnit(marker: BloodMarker, value: number, unit: string): number {
+  const alt = BLOOD_MARKER_ALTERNATE_UNITS[marker]?.find((a) => a.unit === unit)
+  return alt ? alt.toCanonical(value) : value
+}
+
+// === REFERENCE RANGE SOURCES ===
+// Only the pair actually verified against a primary source during chantier 0 research
+// gets a citation: Callen-Lorde's masculinizing testosterone range matches the app's
+// figures exactly. HAS France 2025 explicitly declines a universal numeric target for
+// masculinizing HRT (R69/R70), so every other combination stays uncited rather than
+// fabricated (see wiki/tickets/chrysalide-v2/sources-medicales.md).
+export function getReferenceRangeSource(marker: BloodMarker, context: string): string | undefined {
+  if (marker === 'testosterone' && context === 'masculinizing') return 'Callen-Lorde'
+  return undefined
 }
 
 // === REFERENCE RANGES ===

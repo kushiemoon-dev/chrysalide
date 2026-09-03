@@ -8,6 +8,9 @@ import {
   HEMATOCRIT_ALERT_THRESHOLD,
   PATCH_APPLICATION_ZONE_ORDER,
   PATCH_APPLICATION_ZONES,
+  getMarkerUnitOptions,
+  convertToCanonicalUnit,
+  getReferenceRangeSource,
 } from './constants'
 import { getTemplatesForContext } from './objective-templates'
 
@@ -178,6 +181,57 @@ describe('getHematocritStatus', () => {
   it('alert à partir de 54 %', () => {
     expect(getHematocritStatus(HEMATOCRIT_ALERT_THRESHOLD)).toBe('alert')
     expect(getHematocritStatus(58)).toBe('alert')
+  })
+})
+
+describe('getMarkerUnitOptions', () => {
+  it("l'estradiol propose pg/mL puis pmol/L", () => {
+    expect(getMarkerUnitOptions('estradiol')).toEqual(['pg/mL', 'pmol/L'])
+  })
+
+  it('la testostérone propose ng/mL puis ng/dL et nmol/L', () => {
+    expect(getMarkerUnitOptions('testosterone')).toEqual(['ng/mL', 'ng/dL', 'nmol/L'])
+  })
+
+  it('un marqueur sans conversion ne propose que son unité canonique', () => {
+    expect(getMarkerUnitOptions('prolactin')).toEqual(['µg/L'])
+  })
+})
+
+describe('convertToCanonicalUnit', () => {
+  it("l'unité canonique passe telle quelle", () => {
+    expect(convertToCanonicalUnit('testosterone', 5, 'ng/mL')).toBe(5)
+  })
+
+  it('convertit la testostérone ng/dL vers ng/mL (÷100)', () => {
+    expect(convertToCanonicalUnit('testosterone', 500, 'ng/dL')).toBeCloseTo(5, 5)
+  })
+
+  it('convertit la testostérone nmol/L vers ng/mL, cohérent avec le seuil Endocrine Society (50 ng/dL = 1.7 nmol/L)', () => {
+    const fromNmol = convertToCanonicalUnit('testosterone', 1.7335, 'nmol/L')
+    const fromNgDl = convertToCanonicalUnit('testosterone', 50, 'ng/dL')
+    expect(fromNmol).toBeCloseTo(fromNgDl, 2)
+  })
+
+  it("convertit l'estradiol pmol/L vers pg/mL, cohérent avec la plage féminisante sourcée (100-200 pg/mL = 367-734 pmol/L)", () => {
+    expect(convertToCanonicalUnit('estradiol', 367, 'pmol/L')).toBeCloseTo(100, 0)
+    expect(convertToCanonicalUnit('estradiol', 734, 'pmol/L')).toBeCloseTo(200, 0)
+  })
+
+  it('une unité inconnue repasse la valeur sans la modifier', () => {
+    expect(convertToCanonicalUnit('estradiol', 42, 'nope')).toBe(42)
+  })
+})
+
+describe('getReferenceRangeSource', () => {
+  it('testostérone masculinisante est sourcée Callen-Lorde (correspondance exacte 400-700 ng/dL)', () => {
+    expect(getReferenceRangeSource('testosterone', 'masculinizing')).toBe('Callen-Lorde')
+  })
+
+  it('les autres combinaisons ne sont pas sourcées (HAS 2025 refuse une cible chiffrée universelle)', () => {
+    expect(getReferenceRangeSource('estradiol', 'feminizing')).toBeUndefined()
+    expect(getReferenceRangeSource('testosterone', 'feminizing')).toBeUndefined()
+    expect(getReferenceRangeSource('hematocrit', 'masculinizing')).toBeUndefined()
   })
 })
 
