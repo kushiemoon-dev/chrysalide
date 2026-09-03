@@ -29,6 +29,11 @@ export type InjectionAdministrationRoute = 'subcutaneous' | 'intramuscular'
 export type GelApplicationZone =
   'forearm_left' | 'forearm_right' | 'inner_thigh_left' | 'inner_thigh_right' | 'scrotal'
 
+// Patch application zones
+export type PatchApplicationZone = 'thigh_left' | 'abdomen' | 'thigh_right' | 'buttock'
+
+export type ApplicationZone = GelApplicationZone | PatchApplicationZone
+
 export interface Medication {
   id?: number
   name: string
@@ -69,8 +74,8 @@ export interface MedicationLog {
   doseIndex?: number // 0, 1, 2... index within scheduledTimes
   notes?: string
   sideEffects?: string
-  // Application zone for gels
-  applicationZone?: GelApplicationZone
+  // Application zone for gels and patches
+  applicationZone?: ApplicationZone
 }
 
 // === BLOOD TESTS ===

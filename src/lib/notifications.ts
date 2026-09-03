@@ -262,6 +262,29 @@ export function getMedicationReminderTimes(medication: {
   return hours.map((h) => `${h.toString().padStart(2, '0')}:00`)
 }
 
+/**
+ * Estimates how many days of stock remain, from the dose count per
+ * dosing day (getMedicationReminderTimes) and how often dosing days occur
+ * (getFrequencyIntervalDays). Each reminder time consumes one stock unit.
+ * Returns null when stock isn't tracked or consumption is zero.
+ */
+export function estimateStockDaysRemaining(medication: {
+  stock?: number
+  schedulingMode?: 'simple' | 'advanced'
+  scheduledTimes?: string[]
+  frequency: string
+}): number | null {
+  if (medication.stock === undefined) return null
+
+  const dosesPerEvent = getMedicationReminderTimes(medication).length
+  const intervalDays = getFrequencyIntervalDays(medication.frequency)
+  const consumptionPerDay = dosesPerEvent / intervalDays
+
+  if (consumptionPerDay <= 0) return null
+
+  return Math.floor(medication.stock / consumptionPerDay)
+}
+
 // === MODULE PREFERENCES ===
 
 /**

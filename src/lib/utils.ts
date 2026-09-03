@@ -72,3 +72,21 @@ export function getAppointmentDateTime(appointment: Appointment): Date {
 
   return aptDate
 }
+
+/**
+ * Suggests the next application zone in a fixed rotation, given the last
+ * zone used. Unknown or missing last zone starts the rotation from the top.
+ */
+export function getNextApplicationZone<Zone extends string>(
+  order: readonly Zone[],
+  lastUsed: Zone | undefined
+): Zone {
+  const first = order[0]
+  if (first === undefined) {
+    throw new Error('getNextApplicationZone: order must not be empty')
+  }
+  if (lastUsed === undefined) return first
+  const index = order.indexOf(lastUsed)
+  if (index === -1) return first
+  return order[(index + 1) % order.length]!
+}

@@ -11,6 +11,7 @@ import {
   setModulePreferences,
   isAutoValidationEnabled,
   isScheduledTimePassed,
+  estimateStockDaysRemaining,
 } from './notifications'
 
 beforeEach(() => {
@@ -225,5 +226,34 @@ describe('getModulePreferences / setModulePreferences', () => {
     const prefs = getModulePreferences()
     expect(prefs.evolutionEnabled).toBe(false)
     expect(prefs.costTrackingEnabled).toBe(true)
+  })
+})
+
+describe('estimateStockDaysRemaining', () => {
+  it('null si le stock n’est pas suivi', () => {
+    expect(estimateStockDaysRemaining({ frequency: '1x/jour' })).toBeNull()
+  })
+
+  it('1 dose/jour: stock = jours restants', () => {
+    expect(estimateStockDaysRemaining({ stock: 12, frequency: '1x/jour' })).toBe(12)
+  })
+
+  it('2 doses/jour: divise le stock par 2', () => {
+    expect(estimateStockDaysRemaining({ stock: 12, frequency: '2x/jour' })).toBe(6)
+  })
+
+  it('hebdomadaire: étale le stock sur 7 jours par dose', () => {
+    expect(estimateStockDaysRemaining({ stock: 4, frequency: '1x/semaine' })).toBe(28)
+  })
+
+  it('mode avancé: compte les temps explicites', () => {
+    expect(
+      estimateStockDaysRemaining({
+        stock: 10,
+        frequency: '1x/jour',
+        schedulingMode: 'advanced',
+        scheduledTimes: ['08:00', '14:00'],
+      })
+    ).toBe(5)
   })
 })

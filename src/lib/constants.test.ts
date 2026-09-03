@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { BLOOD_MARKERS, REFERENCE_RANGES, getFrequenciesForMethod } from './constants'
+import {
+  BLOOD_MARKERS,
+  REFERENCE_RANGES,
+  getFrequenciesForMethod,
+  getHematocritStatus,
+  HEMATOCRIT_WATCH_THRESHOLD,
+  HEMATOCRIT_ALERT_THRESHOLD,
+  PATCH_APPLICATION_ZONE_ORDER,
+  PATCH_APPLICATION_ZONES,
+} from './constants'
 import { getTemplatesForContext } from './objective-templates'
 
 describe('BLOOD_MARKERS', () => {
@@ -151,5 +160,31 @@ describe('getTemplatesForContext', () => {
     // @ts-expect-error test de la branche default
     const result = getTemplatesForContext('unknown')
     expect(result.length).toBeGreaterThan(0)
+  })
+})
+
+describe('getHematocritStatus', () => {
+  it('ok sous le seuil de vigilance (52 %)', () => {
+    expect(getHematocritStatus(45)).toBe('ok')
+    expect(getHematocritStatus(HEMATOCRIT_WATCH_THRESHOLD - 0.1)).toBe('ok')
+  })
+
+  it('watch entre 52 % et 54 %', () => {
+    expect(getHematocritStatus(HEMATOCRIT_WATCH_THRESHOLD)).toBe('watch')
+    expect(getHematocritStatus(53)).toBe('watch')
+    expect(getHematocritStatus(HEMATOCRIT_ALERT_THRESHOLD - 0.1)).toBe('watch')
+  })
+
+  it('alert à partir de 54 %', () => {
+    expect(getHematocritStatus(HEMATOCRIT_ALERT_THRESHOLD)).toBe('alert')
+    expect(getHematocritStatus(58)).toBe('alert')
+  })
+})
+
+describe('PATCH_APPLICATION_ZONES', () => {
+  it("l'ordre de rotation couvre toutes les zones sans doublon", () => {
+    const zones = Object.keys(PATCH_APPLICATION_ZONES)
+    expect(new Set(PATCH_APPLICATION_ZONE_ORDER)).toEqual(new Set(zones))
+    expect(PATCH_APPLICATION_ZONE_ORDER.length).toBe(zones.length)
   })
 })

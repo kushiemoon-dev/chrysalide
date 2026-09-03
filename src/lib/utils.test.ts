@@ -5,6 +5,7 @@ import {
   fuzzySearch,
   isAppointmentPast,
   getAppointmentDateTime,
+  getNextApplicationZone,
 } from './utils'
 import type { Appointment } from './types'
 
@@ -158,5 +159,28 @@ describe('fuzzySearch', () => {
     expect(fuzzySearch('médecin généraliste', 'medecin')).toBe(true)
     // Real-world use case: "test sang" finds "test sanguin"
     expect(fuzzySearch('test sanguin', 'test sang')).toBe(true)
+  })
+})
+
+describe('getNextApplicationZone', () => {
+  const order = ['thigh_left', 'abdomen', 'thigh_right', 'buttock'] as const
+
+  it('démarre au premier élément sans zone précédente', () => {
+    expect(getNextApplicationZone(order, undefined)).toBe('thigh_left')
+  })
+
+  it('tourne vers la zone suivante', () => {
+    expect(getNextApplicationZone(order, 'thigh_left')).toBe('abdomen')
+    expect(getNextApplicationZone(order, 'abdomen')).toBe('thigh_right')
+  })
+
+  it('boucle après la dernière zone', () => {
+    expect(getNextApplicationZone(order, 'buttock')).toBe('thigh_left')
+  })
+
+  it('redémarre au premier élément si la dernière zone est inconnue (ancien schéma)', () => {
+    expect(getNextApplicationZone(order, 'forearm_left' as (typeof order)[number])).toBe(
+      'thigh_left'
+    )
   })
 })

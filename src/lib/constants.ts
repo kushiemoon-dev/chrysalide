@@ -11,6 +11,7 @@ import type {
   PillAdministrationRoute,
   InjectionAdministrationRoute,
   GelApplicationZone,
+  PatchApplicationZone,
 } from './types'
 
 // === MEDICATION TYPES ===
@@ -52,6 +53,34 @@ export const GEL_APPLICATION_ZONES: Record<GelApplicationZone, string> = {
   inner_thigh_left: 'Intérieur cuisse gauche',
   inner_thigh_right: 'Intérieur cuisse droite',
   scrotal: 'Scrotale',
+}
+
+// Patch application zones (rotation site)
+export const PATCH_APPLICATION_ZONES: Record<PatchApplicationZone, string> = {
+  thigh_left: 'Cuisse gauche',
+  abdomen: 'Abdomen',
+  thigh_right: 'Cuisse droite',
+  buttock: 'Fessier',
+}
+
+export const PATCH_APPLICATION_ZONE_ORDER: PatchApplicationZone[] = [
+  'thigh_left',
+  'abdomen',
+  'thigh_right',
+  'buttock',
+]
+
+// === HEMATOCRIT SAFETY THRESHOLD ===
+// Distinct from the comfort range in REFERENCE_RANGES (37-52%): this is a
+// safety signal (HAS 2025 + French literature 2004-2023), not a hormone
+// target, and is never presented as an alert until the watch threshold.
+export const HEMATOCRIT_WATCH_THRESHOLD = 52
+export const HEMATOCRIT_ALERT_THRESHOLD = 54
+
+export function getHematocritStatus(value: number): 'ok' | 'watch' | 'alert' {
+  if (value >= HEMATOCRIT_ALERT_THRESHOLD) return 'alert'
+  if (value >= HEMATOCRIT_WATCH_THRESHOLD) return 'watch'
+  return 'ok'
 }
 
 // === COMMON MEDICATIONS ===
