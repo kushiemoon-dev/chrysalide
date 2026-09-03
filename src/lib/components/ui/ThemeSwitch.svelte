@@ -1,5 +1,6 @@
 <script lang="ts">
   import { theme } from '$lib/theme.svelte'
+  import { i18n } from '$lib/i18n.svelte'
 </script>
 
 <div class="theme-switch">
@@ -8,14 +9,14 @@
     class:active={theme.resolvedMode === 'light'}
     onclick={() => theme.setMode('light')}
   >
-    Clair
+    {i18n.t('theme.modes.light.label')}
   </button>
   <button
     class="ts-btn"
     class:active={theme.resolvedMode === 'dark'}
     onclick={() => theme.setMode('dark')}
   >
-    Sombre
+    {i18n.t('theme.modes.dark.label')}
   </button>
 </div>
 

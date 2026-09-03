@@ -9,36 +9,44 @@
   import Users from '@lucide/svelte/icons/users'
   import ExternalLink from '@lucide/svelte/icons/external-link'
   import { getModulePreferences } from '$lib/notifications'
+  import { i18n } from '$lib/i18n.svelte'
 
-  const mainItems = [
-    { href: '/', label: 'Accueil' },
-    { href: '/medications', label: 'Medocs' },
-    { href: '/bloodtests', label: 'Analyses' },
+  const mainItemDefs = [
+    { href: '/', key: 'nav.home' },
+    { href: '/medications', key: 'nav.medications' },
+    { href: '/bloodtests', key: 'nav.bloodtests' },
+  ] as const
+
+  const mainItems = $derived(
+    mainItemDefs.map((item) => ({ href: item.href, label: i18n.t(item.key) }))
+  )
+
+  const allMoreItemDefs = [
+    { href: '/progress', icon: TrendingUp, key: 'nav.evolution', moduleKey: 'evolution' as const },
+    { href: '/journal', icon: BookOpen, key: 'nav.journal', moduleKey: null },
+    { href: '/objectives', icon: Target, key: 'nav.objectives', moduleKey: null },
+    { href: '/appointments', icon: Calendar, key: 'nav.appointments', moduleKey: null },
+    { href: '/practitioners', icon: Users, key: 'nav.practitioners', moduleKey: null },
+    { href: '/resources', icon: ExternalLink, key: 'nav.resources', moduleKey: null },
   ]
 
-  const allMoreItems = [
-    { href: '/progress', icon: TrendingUp, label: 'Évolution', moduleKey: 'evolution' as const },
-    { href: '/journal', icon: BookOpen, label: 'Journal', moduleKey: null },
-    { href: '/objectives', icon: Target, label: 'Objectifs', moduleKey: null },
-    { href: '/appointments', icon: Calendar, label: 'Rendez-vous', moduleKey: null },
-    { href: '/practitioners', icon: Users, label: 'Praticien·nes', moduleKey: null },
-    { href: '/resources', icon: ExternalLink, label: 'Ressources', moduleKey: null },
-  ]
+  let moduleFilter = $state(getModulePreferences())
 
-  let moreItems = $state(allMoreItems)
+  const moreItems = $derived(
+    allMoreItemDefs
+      .filter((item) => (item.moduleKey === 'evolution' ? moduleFilter.evolutionEnabled : true))
+      .map((item) => ({ ...item, label: i18n.t(item.key) }))
+  )
+
   let moreMenuOpen = $state(false)
 
-  function refreshMoreItems() {
-    const prefs = getModulePreferences()
-    moreItems = allMoreItems.filter((item) =>
-      item.moduleKey === 'evolution' ? prefs.evolutionEnabled : true
-    )
+  function refreshModuleFilter() {
+    moduleFilter = getModulePreferences()
   }
 
   onMount(() => {
-    refreshMoreItems()
-    window.addEventListener('modulePrefsChanged', refreshMoreItems)
-    return () => window.removeEventListener('modulePrefsChanged', refreshMoreItems)
+    window.addEventListener('modulePrefsChanged', refreshModuleFilter)
+    return () => window.removeEventListener('modulePrefsChanged', refreshModuleFilter)
   })
 
   function isActive(href: string) {
@@ -49,12 +57,16 @@
 </script>
 
 {#if moreMenuOpen}
-  <button class="overlay" aria-label="Fermer le menu" onclick={() => (moreMenuOpen = false)}
+  <button class="overlay" aria-label={i18n.t('common.close')} onclick={() => (moreMenuOpen = false)}
   ></button>
   <div class="sheet">
     <div class="sheet-head">
-      <span>Plus</span>
-      <button class="sheet-close" onclick={() => (moreMenuOpen = false)} aria-label="Fermer">
+      <span>{i18n.t('nav.more')}</span>
+      <button
+        class="sheet-close"
+        onclick={() => (moreMenuOpen = false)}
+        aria-label={i18n.t('common.close')}
+      >
         <X size={18} />
       </button>
     </div>
@@ -82,11 +94,11 @@
     onclick={() => (moreMenuOpen = !moreMenuOpen)}
   >
     <span class="nav-dot"></span>
-    <span class="nav-lbl">Plus</span>
+    <span class="nav-lbl">{i18n.t('nav.more')}</span>
   </button>
   <a href="/settings" class="nav-item" class:active={isActive('/settings')}>
     <span class="nav-dot"></span>
-    <span class="nav-lbl">Réglages</span>
+    <span class="nav-lbl">{i18n.t('nav.settings')}</span>
   </a>
 </nav>
 
