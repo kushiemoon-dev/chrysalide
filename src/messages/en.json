@@ -544,6 +544,13 @@
     }
   },
   "practitioners": {
+    "input": {
+      "recentHeader": "Recent practitioners",
+      "searching": "Searching...",
+      "resultsCount": "{count} result(s)",
+      "addOption": "Add \"{value}\"",
+      "emptyResults": "No practitioner found"
+    },
     "title": "Practitioners",
     "add": "Add",
     "addPractitioner": "Add a practitioner",

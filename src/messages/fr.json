@@ -544,6 +544,13 @@
     }
   },
   "practitioners": {
+    "input": {
+      "recentHeader": "Praticien·ne·s récent·e·s",
+      "searching": "Recherche...",
+      "resultsCount": "{count} résultat·s",
+      "addOption": "Ajouter « {value} »",
+      "emptyResults": "Aucun·e praticien·ne trouvé·e"
+    },
     "title": "Praticien·nes",
     "add": "Ajouter",
     "addPractitioner": "Ajouter un·e praticien·ne",

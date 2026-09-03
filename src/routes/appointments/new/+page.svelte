@@ -2,7 +2,12 @@
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
   import { i18n } from '$lib/i18n.svelte'
-  import { addAppointment, getObjectives } from '$lib/db'
+  import {
+    addAppointment,
+    getObjectives,
+    findOrCreatePractitioner,
+    incrementPractitionerUsage,
+  } from '$lib/db'
   import type { AppointmentType, Objective } from '$lib/types'
   import AppointmentFormFields from '$lib/components/appointments/AppointmentFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
@@ -14,6 +19,7 @@
   let time = $state('')
   let type = $state<AppointmentType>('general')
   let doctor = $state('')
+  let practitionerId = $state<number | undefined>(undefined)
   let location = $state('')
   let notes = $state('')
   let cost = $state('')
@@ -33,11 +39,19 @@
 
     loading = true
     try {
+      let finalPractitionerId = practitionerId
+      if (doctor && !practitionerId) {
+        finalPractitionerId = await findOrCreatePractitioner(doctor, type)
+      } else if (practitionerId) {
+        await incrementPractitionerUsage(practitionerId)
+      }
+
       await addAppointment({
         date: new Date(date),
         time: time || undefined,
         type,
         doctor: doctor || undefined,
+        practitionerId: finalPractitionerId,
         location: location || undefined,
         notes: notes || undefined,
         cost: cost ? parseFloat(cost) : undefined,
@@ -69,6 +83,7 @@
     bind:time
     bind:type
     bind:doctor
+    bind:practitionerId
     bind:location
     bind:notes
     bind:cost

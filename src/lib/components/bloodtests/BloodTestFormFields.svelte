@@ -17,6 +17,7 @@
   import { i18n } from '$lib/i18n.svelte'
   import { BLOOD_MARKERS, getMarkerUnitOptions, getReferenceRangeSource } from '$lib/constants'
   import type { BloodMarker } from '$lib/types'
+  import PractitionerInput from '$lib/components/practitioners/PractitionerInput.svelte'
   import FlaskConical from '@lucide/svelte/icons/flask-conical'
   import Heart from '@lucide/svelte/icons/heart'
   import Activity from '@lucide/svelte/icons/activity'
@@ -43,6 +44,7 @@
   let {
     date = $bindable(),
     lab = $bindable(),
+    practitionerId = $bindable(),
     notes = $bindable(),
     markerValues = $bindable(),
     markerUnits = $bindable(),
@@ -52,6 +54,7 @@
   }: {
     date: string
     lab: string
+    practitionerId: number | undefined
     notes: string
     markerValues: Record<BloodMarker, string>
     markerUnits: Record<BloodMarker, string>
@@ -70,10 +73,11 @@
     </div>
     <div class="field">
       <label for="lab">{i18n.t('bloodtests.new.labLabel')}</label>
-      <input
+      <PractitionerInput
         id="lab"
-        type="text"
         bind:value={lab}
+        bind:practitionerId
+        specialty="laboratoire"
         placeholder={i18n.t('bloodtests.new.labOptional')}
       />
     </div>

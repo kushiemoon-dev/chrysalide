@@ -18,6 +18,7 @@
 
   let date = $state('')
   let lab = $state('')
+  let practitionerId = $state<number | undefined>(undefined)
   let notes = $state('')
   let markerValues = $state<Record<BloodMarker, string>>({ ...EMPTY_MARKER_VALUES })
   let markerUnits = $state<Record<BloodMarker, string>>({ ...DEFAULT_MARKER_UNITS })
@@ -42,6 +43,7 @@
 
     date = new Date(test.date).toISOString().split('T')[0]!
     lab = test.lab ?? ''
+    practitionerId = test.practitionerId
     notes = test.notes ?? ''
 
     const values = { ...EMPTY_MARKER_VALUES }
@@ -84,6 +86,7 @@
       await updateBloodTest(testId, {
         date: new Date(date),
         lab: lab || undefined,
+        practitionerId,
         results,
         notes: notes || undefined,
       })
@@ -108,6 +111,7 @@
     <BloodTestFormFields
       bind:date
       bind:lab
+      bind:practitionerId
       bind:notes
       bind:markerValues
       bind:markerUnits

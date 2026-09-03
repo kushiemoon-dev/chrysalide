@@ -2,6 +2,7 @@
   import { i18n } from '$lib/i18n.svelte'
   import { APPOINTMENT_TYPES, REMINDER_TIMES } from '$lib/constants'
   import type { AppointmentType, Objective } from '$lib/types'
+  import PractitionerInput from '$lib/components/practitioners/PractitionerInput.svelte'
 
   const TYPES = Object.keys(APPOINTMENT_TYPES) as AppointmentType[]
 
@@ -10,6 +11,7 @@
     time = $bindable(),
     type = $bindable(),
     doctor = $bindable(),
+    practitionerId = $bindable(),
     location = $bindable(),
     notes = $bindable(),
     cost = $bindable(),
@@ -23,6 +25,7 @@
     time: string
     type: AppointmentType
     doctor: string
+    practitionerId: number | undefined
     location: string
     notes: string
     cost: string
@@ -60,7 +63,16 @@
   <p class="card-title">{i18n.t('appointments.form.details')}</p>
   <div class="field">
     <label for="doctor">{i18n.t('appointments.form.practitionerLabel')}</label>
-    <input id="doctor" type="text" bind:value={doctor} />
+    <PractitionerInput
+      id="doctor"
+      bind:value={doctor}
+      bind:practitionerId
+      specialty={type}
+      placeholder={i18n.t('appointments.form.practitionerPlaceholder')}
+      onSelect={(practitioner) => {
+        if (practitioner.location && !location) location = practitioner.location
+      }}
+    />
   </div>
   <div class="field">
     <label for="location">{i18n.t('appointments.form.locationLabel')}</label>

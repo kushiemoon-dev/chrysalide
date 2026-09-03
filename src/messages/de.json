@@ -544,6 +544,13 @@
     }
   },
   "practitioners": {
+    "input": {
+      "recentHeader": "Zuletzt verwendete Behandler·innen",
+      "searching": "Suche...",
+      "resultsCount": "{count} Ergebnis(se)",
+      "addOption": "\"{value}\" hinzufügen",
+      "emptyResults": "Keine·n Behandler·in gefunden"
+    },
     "title": "Behandler·innen",
     "add": "Hinzufügen",
     "addPractitioner": "Behandler·in hinzufügen",
