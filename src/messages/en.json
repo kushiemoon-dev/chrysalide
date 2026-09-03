@@ -85,6 +85,7 @@
     "importError": "Error importing file"
   },
   "medications": {
+    "siteRotation": "Site rotation",
     "types": {
       "estrogen": "Estrogen",
       "antiandrogen": "Anti-androgen",
@@ -401,6 +402,13 @@
     "addAppt": "Add an appointment",
     "newMed": "New medication",
     "newTest": "New test",
+    "greeting": "Hello",
+    "targetRange": "Target range",
+    "targetRangeSourceMasculinizing": "per Callen-Lorde",
+    "nextDose": "Next dose",
+    "thisWeek": "This week",
+    "stockEstimate": "Estimated to run out in {days} days",
+    "mood": "Mood:",
     "recap": {
       "title": "Summary",
       "loading": "Loading summary...",

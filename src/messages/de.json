@@ -85,6 +85,7 @@
     "importError": "Fehler beim Import der Datei"
   },
   "medications": {
+    "siteRotation": "Rotationsstelle",
     "types": {
       "estrogen": "Östrogen",
       "antiandrogen": "Anti-Androgen",
@@ -401,6 +402,13 @@
     "addAppt": "Termin hinzufügen",
     "newMed": "Neues Medikament",
     "newTest": "Neuer Test",
+    "greeting": "Hallo",
+    "targetRange": "Zielbereich",
+    "targetRangeSourceMasculinizing": "laut Callen-Lorde",
+    "nextDose": "Nächste Einnahme",
+    "thisWeek": "Diese Woche",
+    "stockEstimate": "Voraussichtlich leer in {days} Tagen",
+    "mood": "Stimmung:",
     "recap": {
       "title": "Überblick",
       "loading": "Überblick wird geladen...",

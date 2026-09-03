@@ -85,6 +85,7 @@
     "importError": "Erreur lors de l'import du fichier"
   },
   "medications": {
+    "siteRotation": "Rotation de site",
     "types": {
       "estrogen": "Œstrogène",
       "antiandrogen": "Anti-androgène",
@@ -401,6 +402,13 @@
     "addAppt": "Ajouter un RDV",
     "newMed": "Nouveau médicament",
     "newTest": "Nouvelle analyse",
+    "greeting": "Bonjour",
+    "targetRange": "Plage cible",
+    "targetRangeSourceMasculinizing": "selon Callen-Lorde",
+    "nextDose": "Prochaine prise",
+    "thisWeek": "Cette semaine",
+    "stockEstimate": "Rupture estimée dans {days} jours",
+    "mood": "Humeur :",
     "recap": {
       "title": "Récapitulatif",
       "loading": "Chargement du récapitulatif...",

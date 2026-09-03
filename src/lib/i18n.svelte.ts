@@ -1,4 +1,6 @@
 import { browser } from '$app/environment'
+import { fr as frDateLocale, enUS as enDateLocale, de as deDateLocale } from 'date-fns/locale'
+import type { Locale as DateFnsLocale } from 'date-fns'
 import fr from '../messages/fr.json'
 import en from '../messages/en.json'
 import de from '../messages/de.json'
@@ -55,3 +57,13 @@ class I18n {
 }
 
 export const i18n = new I18n()
+
+const dateLocales: Record<Locale, DateFnsLocale> = {
+  fr: frDateLocale,
+  en: enDateLocale,
+  de: deDateLocale,
+}
+
+export function getDateLocale(locale: Locale): DateFnsLocale {
+  return dateLocales[locale] ?? frDateLocale
+}
