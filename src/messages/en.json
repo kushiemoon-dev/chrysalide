@@ -1341,6 +1341,7 @@
       "emptyDesc": "Add your medical appointments to track them",
       "emptyCta": "Add an appointment",
       "nextTitle": "Next appointment",
+      "detailsLabel": "Details",
       "tabUpcoming": "Upcoming ({count})",
       "tabPast": "Past ({count})",
       "noneUpcoming": "No upcoming appointments",

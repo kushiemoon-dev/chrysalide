@@ -1346,6 +1346,7 @@
       "emptyDesc": "Ajoutez vos rendez-vous médicaux pour les suivre",
       "emptyCta": "Ajouter un rendez-vous",
       "nextTitle": "Prochain rendez-vous",
+      "detailsLabel": "Détails",
       "tabUpcoming": "À venir ({count})",
       "tabPast": "Passés ({count})",
       "noneUpcoming": "Aucun rendez-vous à venir",

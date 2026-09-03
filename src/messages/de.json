@@ -1352,6 +1352,7 @@
       "emptyDesc": "Füge deine Arzttermine hinzu, um sie zu verfolgen",
       "emptyCta": "Termin hinzufügen",
       "nextTitle": "Nächster Termin",
+      "detailsLabel": "Details",
       "tabUpcoming": "Anstehend ({count})",
       "tabPast": "Vergangen ({count})",
       "noneUpcoming": "Keine anstehenden Termine",
