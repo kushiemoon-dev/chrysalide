@@ -2,9 +2,10 @@
   import { onMount } from 'svelte'
   import { format, differenceInDays } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { getPhysicalProgress } from '$lib/db'
+  import { getPhysicalProgress, getUserProfile } from '$lib/db'
   import type { PhysicalProgress } from '$lib/types'
   import ProgressChart from '$lib/components/progress/ProgressChart.svelte'
+  import ExportButton from '$lib/components/ui/ExportButton.svelte'
   import {
     availableMeasurements,
     measurementDiff,
@@ -25,9 +26,15 @@
   let entries = $state<PhysicalProgress[]>([])
   let loading = $state(true)
   let activeTab = $state<'timeline' | 'charts' | 'photos'>('timeline')
+  let userName = $state<string | undefined>()
+  let chartRef = $state<HTMLDivElement>()
 
   onMount(async () => {
-    entries = await getPhysicalProgress(50)
+    const [entriesData, profile] = await Promise.all([getPhysicalProgress(50), getUserProfile()])
+    entries = entriesData
+    if (profile?.firstName) {
+      userName = profile.firstName
+    }
     loading = false
   })
 
@@ -45,6 +52,21 @@
     firstEntry && lastEntry && firstEntry !== lastEntry
       ? differenceInDays(new Date(lastEntry.date), new Date(firstEntry.date))
       : 0
+  )
+
+  let bodyExportData = $derived(
+    bodyMeasurements
+      .map((key) => {
+        const last = lastEntry?.measurements?.[key]
+        if (last === undefined) return null
+        return {
+          marker: key,
+          label: i18n.t(MEASUREMENT_LABEL_KEY[key]),
+          value: last,
+          unit: MEASUREMENT_UNITS[key],
+        }
+      })
+      .filter((d): d is NonNullable<typeof d> => d !== null)
   )
 </script>
 
@@ -161,16 +183,27 @@
     {:else}
       {#if bodyMeasurements.length > 0}
         <div class="card">
-          <p class="card-title">{i18n.t('progress.bodyMeasurements')}</p>
-          <ProgressChart
-            {entries}
-            series={bodyMeasurements.map((key) => ({
-              key,
-              label: i18n.t(MEASUREMENT_LABEL_KEY[key]),
-              unit: MEASUREMENT_UNITS[key],
-              color: MEASUREMENT_CHART_COLOR[key]!,
-            }))}
-          />
+          <div class="card-head">
+            <p class="card-title">{i18n.t('progress.bodyMeasurements')}</p>
+            <ExportButton
+              {chartRef}
+              title={i18n.t('progress.bodyEvolution')}
+              subtitle={i18n.t('progress.measurementsLabel')}
+              {userName}
+              data={bodyExportData}
+            />
+          </div>
+          <div bind:this={chartRef}>
+            <ProgressChart
+              {entries}
+              series={bodyMeasurements.map((key) => ({
+                key,
+                label: i18n.t(MEASUREMENT_LABEL_KEY[key]),
+                unit: MEASUREMENT_UNITS[key],
+                color: MEASUREMENT_CHART_COLOR[key]!,
+              }))}
+            />
+          </div>
         </div>
       {/if}
 
@@ -435,6 +468,12 @@
     font-size: 13px;
     font-weight: 600;
     margin: 0 0 10px;
+  }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
   }
   .evolution-list {
     display: flex;

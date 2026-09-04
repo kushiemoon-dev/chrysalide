@@ -3,9 +3,10 @@
   import { format } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { getBloodTests, deleteBloodTest, getUserProfile } from '$lib/db'
-  import { getHematocritStatus } from '$lib/constants'
+  import { getHematocritStatus, BLOOD_MARKERS, REFERENCE_RANGES } from '$lib/constants'
   import type { BloodTest, BloodMarker } from '$lib/types'
   import HormoneChart from '$lib/components/bloodtests/HormoneChart.svelte'
+  import ExportButton from '$lib/components/ui/ExportButton.svelte'
   import Plus from '@lucide/svelte/icons/plus'
   import TrendingUp from '@lucide/svelte/icons/trending-up'
   import ListIcon from '@lucide/svelte/icons/list'
@@ -18,6 +19,8 @@
   let loading = $state(true)
   let context = $state<'feminizing' | 'masculinizing'>('feminizing')
   let activeTab = $state<'charts' | 'list'>('charts')
+  let userName = $state<string | undefined>()
+  let chartRef = $state<HTMLDivElement>()
 
   onMount(async () => {
     const [testsData, profile] = await Promise.all([getBloodTests(50), getUserProfile()])
@@ -25,8 +28,19 @@
     if (profile?.targetGender) {
       context = profile.targetGender === 'masculinizing' ? 'masculinizing' : 'feminizing'
     }
+    if (profile?.firstName) {
+      userName = profile.firstName
+    }
     loading = false
   })
+
+  function getMarkerStatus(marker: BloodMarker, value: number): 'normal' | 'low' | 'high' {
+    const range = REFERENCE_RANGES.find((r) => r.marker === marker && r.context === context)
+    if (!range) return 'normal'
+    if (value < range.min) return 'low'
+    if (value > range.max) return 'high'
+    return 'normal'
+  }
 
   async function handleDelete(id: number) {
     if (!confirm(i18n.t('bloodtests.confirmDelete'))) return
@@ -42,6 +56,25 @@
     tests.some((t) =>
       t.results.some((r) => ['prolactin', 'hematocrit', 'alt', 'potassium'].includes(r.marker))
     )
+  )
+
+  let hormoneExportData = $derived(
+    mainHormones
+      .map((marker) => {
+        const lastValue = tests[0]?.results.find((r) => r.marker === marker)
+        if (!lastValue) return null
+        const range = REFERENCE_RANGES.find((r) => r.marker === marker && r.context === context)
+        return {
+          marker,
+          label: i18n.t('bloodtests.markers.' + marker),
+          value: lastValue.value,
+          unit: BLOOD_MARKERS[marker].unit,
+          targetMin: range?.min,
+          targetMax: range?.max,
+          status: getMarkerStatus(marker, lastValue.value),
+        }
+      })
+      .filter((d): d is NonNullable<typeof d> => d !== null)
   )
 </script>
 
@@ -91,19 +124,34 @@
 
   {#if activeTab === 'charts'}
     <div class="card">
-      <p class="card-title">
-        {context === 'feminizing'
-          ? i18n.t('bloodtests.hormonesFem')
-          : i18n.t('bloodtests.hormonesMas')}
-      </p>
-      <HormoneChart
-        {tests}
-        series={mainHormones.map((marker) => ({
-          marker,
-          color: marker === 'estradiol' ? 'var(--pink-deep)' : 'var(--blue-deep)',
-        }))}
-        {context}
-      />
+      <div class="card-head">
+        <p class="card-title">
+          {context === 'feminizing'
+            ? i18n.t('bloodtests.hormonesFem')
+            : i18n.t('bloodtests.hormonesMas')}
+        </p>
+        {#if tests.length > 0}
+          <ExportButton
+            {chartRef}
+            title={i18n.t('bloodtests.hormoneTracking')}
+            subtitle={context === 'feminizing'
+              ? i18n.t('bloodtests.thsFem')
+              : i18n.t('bloodtests.thsMas')}
+            {userName}
+            data={hormoneExportData}
+          />
+        {/if}
+      </div>
+      <div bind:this={chartRef}>
+        <HormoneChart
+          {tests}
+          series={mainHormones.map((marker) => ({
+            marker,
+            color: marker === 'estradiol' ? 'var(--pink-deep)' : 'var(--blue-deep)',
+          }))}
+          {context}
+        />
+      </div>
     </div>
 
     {#if hasSafetyMarkers}
@@ -273,6 +321,12 @@
     font-size: 13px;
     font-weight: 600;
     margin: 0 0 10px;
+  }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
   }
   .test-list {
     display: flex;
