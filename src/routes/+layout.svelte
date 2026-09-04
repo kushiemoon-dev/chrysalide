@@ -1,6 +1,11 @@
 <script lang="ts">
   import '../app.css'
   import { theme } from '$lib/theme.svelte'
+  import {
+    isNotificationEnabled,
+    startReminderService,
+    stopReminderService,
+  } from '$lib/notification-scheduler'
   import AuroraBackground from '$lib/components/ui/AuroraBackground.svelte'
   import GlassNav from '$lib/components/ui/GlassNav.svelte'
 
@@ -12,6 +17,20 @@
 
   $effect(() => {
     document.documentElement.classList.toggle('reduce-motion', theme.config.reducedMotion)
+  })
+
+  $effect(() => {
+    if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch((error) => {
+        console.error('[PWA] Service Worker registration failed:', error)
+      })
+    }
+
+    if (isNotificationEnabled()) {
+      startReminderService()
+    }
+
+    return () => stopReminderService()
   })
 </script>
 

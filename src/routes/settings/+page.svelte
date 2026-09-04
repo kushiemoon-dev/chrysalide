@@ -13,7 +13,9 @@
     isAutoValidationEnabled,
     type NotificationPermission,
   } from '$lib/notifications'
-  import { startReminderService } from '$lib/notification-scheduler'
+  import { startReminderService, stopReminderService } from '$lib/notification-scheduler'
+  import QRExportDialog from '$lib/components/settings/QRExportDialog.svelte'
+  import QRImportDialog from '$lib/components/settings/QRImportDialog.svelte'
   import Moon from '@lucide/svelte/icons/moon'
   import Sun from '@lucide/svelte/icons/sun'
   import Monitor from '@lucide/svelte/icons/monitor'
@@ -28,6 +30,8 @@
   import Coins from '@lucide/svelte/icons/coins'
   import Info from '@lucide/svelte/icons/info'
   import Trash2 from '@lucide/svelte/icons/trash-2'
+  import Smartphone from '@lucide/svelte/icons/smartphone'
+  import QrCode from '@lucide/svelte/icons/qr-code'
 
   const MODE_ICONS = { light: Sun, dark: Moon, system: Monitor } as const
 
@@ -41,6 +45,8 @@
   let autoValidationEnabled = $state(false)
   let importError = $state(false)
   let fileInput = $state<HTMLInputElement>()
+  let showQRExport = $state(false)
+  let showQRImport = $state(false)
 
   $effect(() => {
     if (isNotificationSupported()) {
@@ -84,6 +90,7 @@
   function handleDisableNotifications() {
     notificationsEnabled = false
     setNotificationPreferences({ notificationsEnabled: false })
+    stopReminderService()
   }
 
   async function handleExport() {
@@ -205,6 +212,32 @@
     {/if}
   </div>
 </div>
+
+<div class="section">
+  <h2><Smartphone size={16} />{i18n.t('settings.qrSync.title')}</h2>
+  <div class="card">
+    <p class="row-desc">{i18n.t('settings.qrSync.description')}</p>
+    <div class="btn-row">
+      <button type="button" class="btn-outline" onclick={() => (showQRExport = true)}>
+        <QrCode size={16} />
+        {i18n.t('common.export')}
+      </button>
+      <button type="button" class="btn-outline" onclick={() => (showQRImport = true)}>
+        <QrCode size={16} />
+        {i18n.t('common.import')}
+      </button>
+    </div>
+  </div>
+</div>
+
+<QRExportDialog bind:open={showQRExport} />
+<QRImportDialog
+  bind:open={showQRImport}
+  oncomplete={() => {
+    showQRImport = false
+    window.location.reload()
+  }}
+/>
 
 <a href="/appointments" class="card link-card">
   <div class="link-icon"><Calendar size={18} /></div>
