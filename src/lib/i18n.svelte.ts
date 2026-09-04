@@ -29,14 +29,18 @@ function loadInitialLocale(): Locale {
 }
 
 function readPath(source: unknown, path: string): string | undefined {
-  const value = path
+  const value = readPathRaw(source, path)
+  return typeof value === 'string' ? value : undefined
+}
+
+function readPathRaw(source: unknown, path: string): unknown {
+  return path
     .split('.')
     .reduce<unknown>(
       (acc, key) =>
         acc && typeof acc === 'object' ? (acc as Record<string, unknown>)[key] : undefined,
       source
     )
-  return typeof value === 'string' ? value : undefined
 }
 
 class I18n {
@@ -53,6 +57,12 @@ class I18n {
       readPath(messagesByLocale[defaultLocale], path) ??
       path
     )
+  }
+
+  /** Non-string values (arrays, objects) at a translation path, e.g. a template's milestone list. */
+  raw = <T>(path: string): T | undefined => {
+    return (readPathRaw(messagesByLocale[this.locale], path) ??
+      readPathRaw(messagesByLocale[defaultLocale], path)) as T | undefined
   }
 }
 
