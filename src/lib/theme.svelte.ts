@@ -20,6 +20,11 @@ class ThemeStore {
     this.config = { ...this.config, mode }
     saveTheme(this.config)
   }
+
+  setReducedMotion(reducedMotion: boolean) {
+    this.config = { ...this.config, reducedMotion }
+    saveTheme(this.config)
+  }
 }
 
 export const theme = new ThemeStore()

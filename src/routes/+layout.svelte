@@ -9,6 +9,10 @@
   $effect(() => {
     document.documentElement.dataset.theme = theme.resolvedMode
   })
+
+  $effect(() => {
+    document.documentElement.classList.toggle('reduce-motion', theme.config.reducedMotion)
+  })
 </script>
 
 <AuroraBackground />
