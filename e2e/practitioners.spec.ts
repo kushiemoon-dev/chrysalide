@@ -65,17 +65,10 @@ test.describe('Annuaire des praticien·nes', () => {
     const card = page.getByText('Dr. À Supprimer')
     await expect(card).toBeVisible()
 
-    // Act: open the delete confirmation dialog (trash icon button, last action)
-    await page
-      .getByRole('button')
-      .filter({ has: page.locator('svg.lucide-trash-2') })
-      .click()
-
-    // Confirm deletion in the AlertDialog
-    const dialog = page.getByRole('alertdialog')
-    await expect(dialog).toBeVisible()
-    await expect(dialog.getByText('Supprimer ce·tte praticien·ne ?')).toBeVisible()
-    await dialog.getByRole('button', { name: 'Supprimer' }).click()
+    // Act: delete uses a native confirm() dialog in this port, not a custom
+    // alertdialog. The trash icon button carries an aria-label, not text.
+    page.once('dialog', (dialog) => dialog.accept())
+    await page.getByRole('button', { name: 'Supprimer' }).click()
 
     // Assert: the practitioner is gone and the empty state is shown again
     await expect(page.getByText('Dr. À Supprimer')).toHaveCount(0)

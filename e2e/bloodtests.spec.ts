@@ -26,7 +26,10 @@ test.describe('Ajout de résultat sanguin', () => {
   })
 
   test('enregistrer une analyse avec au moins un marqueur', async ({ page }) => {
-    await page.goto('/bloodtests/new')
+    // Wait for hydration: clicking Enregistrer before the client JS has attached
+    // the submit handler falls through to a native form GET (page.svelte pattern
+    // shared with objectives.spec.ts).
+    await page.goto('/bloodtests/new', { waitUntil: 'networkidle' })
 
     // Use input id directly for special character label compatibility
     await page.locator('#estradiol').click()
@@ -40,7 +43,7 @@ test.describe('Ajout de résultat sanguin', () => {
   })
 
   test('enregistrer une analyse avec plusieurs marqueurs', async ({ page }) => {
-    await page.goto('/bloodtests/new')
+    await page.goto('/bloodtests/new', { waitUntil: 'networkidle' })
 
     await page.locator('#estradiol').click()
     await page.locator('#estradiol').pressSequentially('150')
