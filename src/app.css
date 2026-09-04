@@ -67,6 +67,10 @@ body {
     color 0.3s ease;
 }
 
+dialog:modal {
+  margin: auto;
+}
+
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
