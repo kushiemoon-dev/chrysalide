@@ -14,9 +14,13 @@ test.describe('Navigation principale', () => {
   test("la page d'accueil affiche un état vide sans données", async ({ page }) => {
     await resetDatabase(page)
     await page.goto('/')
-    await expect(page.getByText('Aucun médicament configuré')).toBeVisible()
+    await expect(
+      page.getByText('Aucun médicament configuré').and(page.locator(':visible'))
+    ).toBeVisible()
     await expect(page.getByRole('link', { name: 'Ajouter un médicament' })).toBeVisible()
-    await expect(page.getByText('Aucun rendez-vous à venir')).toBeVisible()
+    await expect(
+      page.getByText('Aucun rendez-vous à venir').and(page.locator(':visible'))
+    ).toBeVisible()
     await expect(page.getByRole('link', { name: 'Ajouter un RDV' })).toBeVisible()
   })
 
