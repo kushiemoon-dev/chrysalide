@@ -52,6 +52,7 @@
   let stockDaysRemaining = $state<number | null>(null)
   let appointment = $state<Appointment | undefined>(undefined)
   let journalEntry = $state<JournalEntry | undefined>(undefined)
+  let hasMedications = $state(false)
   let loaded = $state(false)
 
   onMount(async () => {
@@ -65,6 +66,7 @@
     ])
 
     firstName = profile?.firstName
+    hasMedications = meds.length > 0
     const targetGender = profile?.targetGender ?? 'feminizing'
 
     const latestBloodTest = bloodTests[0]
@@ -194,37 +196,42 @@
         </div>
       {/if}
     </Row>
+  {:else if !hasMedications}
+    <SectionTitle text={i18n.t('dashboard.nextDose')} />
+    <p class="empty-hint">{i18n.t('dashboard.noMeds')}</p>
+    <a class="empty-cta" href="/medications/new">{i18n.t('dashboard.addMed')}</a>
   {/if}
 
-  {#if appointment || (nextDoseMed?.stock !== undefined && stockDaysRemaining !== null)}
-    <SectionTitle text={i18n.t('dashboard.thisWeek')} />
-    {#if appointment}
-      <Row href={`/appointments/${appointment.id}`}>
-        <div class="row-head">
-          <div>
-            <p class="title">
-              {appointment.doctor || i18n.t('appointments.types.' + appointment.type)}
-            </p>
-          </div>
-          <div class="when">
-            {formatDistanceToNow(new Date(appointment.date), {
-              addSuffix: true,
-              locale: getDateLocale(i18n.locale),
-            })}
-          </div>
+  <SectionTitle text={i18n.t('dashboard.thisWeek')} />
+  {#if appointment}
+    <Row href={`/appointments/${appointment.id}`}>
+      <div class="row-head">
+        <div>
+          <p class="title">
+            {appointment.doctor || i18n.t('appointments.types.' + appointment.type)}
+          </p>
         </div>
-      </Row>
-    {/if}
-    {#if nextDoseMed && nextDoseMed.stock !== undefined && stockDaysRemaining !== null}
-      <Row href={`/medications/${nextDoseMed.id}`}>
-        <p class="title">{nextDoseMed.name}</p>
-        <p class="meta">{nextDoseMed.stock} {nextDoseMed.stockUnit ?? ''}</p>
-        <StockBar
-          fraction={stockDaysRemaining / 30}
-          label={i18n.t('dashboard.stockEstimate').replace('{days}', String(stockDaysRemaining))}
-        />
-      </Row>
-    {/if}
+        <div class="when">
+          {formatDistanceToNow(new Date(appointment.date), {
+            addSuffix: true,
+            locale: getDateLocale(i18n.locale),
+          })}
+        </div>
+      </div>
+    </Row>
+  {:else}
+    <p class="empty-hint">{i18n.t('dashboard.noAppts')}</p>
+    <a class="empty-cta" href="/appointments/new">{i18n.t('dashboard.addAppt')}</a>
+  {/if}
+  {#if nextDoseMed && nextDoseMed.stock !== undefined && stockDaysRemaining !== null}
+    <Row href={`/medications/${nextDoseMed.id}`}>
+      <p class="title">{nextDoseMed.name}</p>
+      <p class="meta">{nextDoseMed.stock} {nextDoseMed.stockUnit ?? ''}</p>
+      <StockBar
+        fraction={stockDaysRemaining / 30}
+        label={i18n.t('dashboard.stockEstimate').replace('{days}', String(stockDaysRemaining))}
+      />
+    </Row>
   {/if}
 
   {#if journalEntry}
@@ -312,5 +319,15 @@
     font-style: italic;
     line-height: 1.5;
     margin: 0 0 6px;
+  }
+  .empty-hint {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+  .empty-cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
   }
 </style>

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { skipOnboarding } from './helpers'
+import { skipOnboarding, resetDatabase } from './helpers'
 
 test.describe('Navigation principale', () => {
   test.beforeEach(async ({ page }) => {
@@ -9,6 +9,15 @@ test.describe('Navigation principale', () => {
   test("la page d'accueil se charge", async ({ page }) => {
     await page.goto('/')
     await expect(page).toHaveTitle(/Chrysalide/)
+  })
+
+  test("la page d'accueil affiche un état vide sans données", async ({ page }) => {
+    await resetDatabase(page)
+    await page.goto('/')
+    await expect(page.getByText('Aucun médicament configuré')).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Ajouter un médicament' })).toBeVisible()
+    await expect(page.getByText('Aucun rendez-vous à venir')).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Ajouter un RDV' })).toBeVisible()
   })
 
   test('la barre de navigation inférieure est visible', async ({ page }) => {
