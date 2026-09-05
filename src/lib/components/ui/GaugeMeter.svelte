@@ -163,4 +163,49 @@
     line-height: 1.4;
     max-width: 180px;
   }
+
+  @media (min-width: 1024px) {
+    .meter-face {
+      width: 400px;
+      padding: 38px 30px 42px;
+      background: color-mix(in srgb, var(--bg) 80%, var(--glass-bg));
+      backdrop-filter: blur(24px) saturate(110%);
+      -webkit-backdrop-filter: blur(24px) saturate(110%);
+    }
+    .gauge {
+      width: 310px;
+      height: 155px;
+    }
+    .gauge::before {
+      width: 310px;
+      height: 310px;
+    }
+    .gauge::after {
+      top: 26px;
+      left: 26px;
+      width: 258px;
+      height: 258px;
+    }
+    .needle {
+      width: 3px;
+      height: 120px;
+    }
+    .needle::after {
+      width: 12px;
+      height: 12px;
+    }
+    .gauge-num {
+      font-size: 54px;
+      margin-top: 10px;
+    }
+    .gauge-unit {
+      font-size: 14.5px;
+      margin-top: 4px;
+    }
+    .gauge-note {
+      font-size: 12px;
+      margin-top: 12px;
+      max-width: 230px;
+    }
+  }
 </style>
