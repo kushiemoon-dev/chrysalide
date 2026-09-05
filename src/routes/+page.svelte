@@ -380,6 +380,9 @@
   .hematocrit-desktop {
     display: none;
   }
+  .timeline-desktop {
+    display: none;
+  }
   .row-head {
     display: flex;
     justify-content: space-between;
