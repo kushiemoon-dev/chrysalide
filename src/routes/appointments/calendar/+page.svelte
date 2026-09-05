@@ -1,17 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { format, isSameDay, isSameMonth, isThisYear } from 'date-fns'
+  import { format, isSameDay, isThisYear } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { getAppointments, getUpcomingAppointments } from '$lib/db'
   import type { Appointment } from '$lib/types'
-  import MonthCalendar from '$lib/components/ui/MonthCalendar.svelte'
+  import YearCalendar from '$lib/components/appointments/YearCalendar.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Plus from '@lucide/svelte/icons/plus'
 
   let allAppointments = $state<Appointment[]>([])
   let upcomingCount = $state(0)
   let selectedDate = $state(new Date())
-  let currentMonth = $state(new Date())
   let loading = $state(true)
 
   let dateLocale = $derived(getDateLocale(i18n.locale))
@@ -24,12 +23,6 @@
   })
 
   let thisYearCount = $derived(allAppointments.filter((a) => isThisYear(new Date(a.date))).length)
-
-  let monthDates = $derived(
-    allAppointments
-      .filter((a) => isSameMonth(new Date(a.date), currentMonth))
-      .map((a) => new Date(a.date))
-  )
 
   let selectedDayAppointments = $derived(
     allAppointments
@@ -67,13 +60,11 @@
   </div>
 
   <div class="card">
-    <MonthCalendar
-      {currentMonth}
+    <YearCalendar
+      appointments={allAppointments}
       {selectedDate}
-      highlighted={monthDates}
       {dateLocale}
       onSelectDate={(d) => (selectedDate = d)}
-      onMonthChange={(d) => (currentMonth = d)}
     />
   </div>
 
