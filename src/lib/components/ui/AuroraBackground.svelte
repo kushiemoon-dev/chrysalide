@@ -3,6 +3,8 @@
   <span class="a2"></span>
   <span class="a3"></span>
 </div>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
 
 <style>
   .aurora {
@@ -77,5 +79,22 @@
     to {
       transform: translate(30px, -40px) scale(1.2);
     }
+  }
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  .vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--vignette-opacity);
+    background: radial-gradient(140% 140% at 50% 50%, transparent 55%, rgb(0 0 0 / 45%) 100%);
   }
 </style>

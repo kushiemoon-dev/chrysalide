@@ -20,6 +20,8 @@
   --glass-border: rgb(255 255 255 / 70%);
   --aurora-opacity: 0.55;
   --aurora-blend: normal;
+  --grain-opacity: 0;
+  --vignette-opacity: 0;
   --shadow: rgb(23 26 33 / 25%);
   color-scheme: light;
 }
@@ -42,8 +44,10 @@
   --line: #2a2d34;
   --glass-bg: rgb(255 255 255 / 6%);
   --glass-border: rgb(255 255 255 / 14%);
-  --aurora-opacity: 0.5;
-  --aurora-blend: screen;
+  --aurora-opacity: 0.3;
+  --aurora-blend: normal;
+  --grain-opacity: 0.06;
+  --vignette-opacity: 1;
   --shadow: rgb(0 0 0 / 50%);
   color-scheme: dark;
 }
