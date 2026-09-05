@@ -63,17 +63,27 @@
 
   @media (min-width: 1024px) {
     .content {
-      margin: 0 0 0 260px;
+      --rail: 260px;
+      margin: 0 auto 0 var(--rail);
       padding: 56px 24px 70px;
     }
     .content.standard {
-      max-width: 640px;
+      --content-max: 640px;
     }
     .content.large {
-      max-width: 960px;
+      --content-max: 960px;
     }
     .content.dashboard {
-      max-width: 1180px;
+      --content-max: 1180px;
+    }
+    /* Centred in the space that remains to the right of the fixed nav rail.
+       `margin: 0 auto` would centre in the full viewport instead, which pins the
+       box to the left edge of that remaining space on wide screens. */
+    .content.standard,
+    .content.large,
+    .content.dashboard {
+      max-width: var(--content-max);
+      margin-left: calc(var(--rail) + max(0px, (100% - var(--rail) - var(--content-max)) / 2));
     }
     .content.onboarding {
       max-width: 480px;

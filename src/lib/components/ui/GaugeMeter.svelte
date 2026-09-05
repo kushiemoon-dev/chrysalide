@@ -208,4 +208,37 @@
       max-width: 230px;
     }
   }
+
+  /* The desktop breakpoint fires at 1024px, but the dashboard only has room for the
+     full-size gauge alongside its timeline from ~1194px. Between the two the gauge
+     scales down by 0.75 so the dashboard grid stops overflowing horizontally. */
+  @media (min-width: 1024px) and (max-width: 1193px) {
+    .meter-face {
+      width: 300px;
+      padding: 28px 22px 32px;
+    }
+    .gauge {
+      width: 232px;
+      height: 116px;
+    }
+    .gauge::before {
+      width: 232px;
+      height: 232px;
+    }
+    .gauge::after {
+      top: 20px;
+      left: 20px;
+      width: 192px;
+      height: 192px;
+    }
+    .needle {
+      height: 90px;
+    }
+    .gauge-num {
+      font-size: 42px;
+    }
+    .gauge-note {
+      max-width: 180px;
+    }
+  }
 </style>

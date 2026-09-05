@@ -272,7 +272,7 @@
       <div class="timeline-desktop">
         <div class="spine" aria-hidden="true"></div>
         {#if nextDoseMed}
-          <div class="entry now">
+          <a class="entry now" href={`/medications/${nextDoseMed.id}`}>
             <p class="when">{nextDoseTime}</p>
             <p class="title">{nextDoseMed.name}</p>
             {#if zoneOrder.length > 0}
@@ -283,7 +283,7 @@
                 {/each}
               </div>
             {/if}
-          </div>
+          </a>
         {:else if !hasMedications}
           <div class="entry">
             <p class="title">{i18n.t('dashboard.nextDose')}</p>
@@ -292,7 +292,7 @@
           </div>
         {/if}
         {#if appointment}
-          <div class="entry">
+          <a class="entry" href={`/appointments/${appointment.id}`}>
             <p class="when">
               {formatDistanceToNow(new Date(appointment.date), {
                 addSuffix: true,
@@ -302,7 +302,7 @@
             <p class="title">
               {appointment.doctor || i18n.t('appointments.types.' + appointment.type)}
             </p>
-          </div>
+          </a>
         {:else}
           <div class="entry">
             <p class="meta empty-hint">{i18n.t('dashboard.noAppts')}</p>
@@ -310,7 +310,7 @@
           </div>
         {/if}
         {#if nextDoseMed && nextDoseMed.stock !== undefined && stockDaysRemaining !== null}
-          <div class="entry">
+          <a class="entry" href={`/medications/${nextDoseMed.id}`}>
             <p class="title">{nextDoseMed.name}</p>
             <p class="meta">{nextDoseMed.stock} {nextDoseMed.stockUnit ?? ''}</p>
             <div class="stockbar-track">
@@ -322,10 +322,10 @@
             <p class="meta">
               {i18n.t('dashboard.stockEstimate').replace('{days}', String(stockDaysRemaining))}
             </p>
-          </div>
+          </a>
         {/if}
         {#if journalEntry}
-          <div class="entry">
+          <a class="entry" href={`/journal/${journalEntry.id}`}>
             <p class="title">{i18n.t('nav.journal')}</p>
             <p class="meta">"{journalEntry.content}"</p>
             {#if journalEntry.mood}
@@ -334,7 +334,7 @@
                 {i18n.t('journal.moods.' + journalEntry.mood)}
               </p>
             {/if}
-          </div>
+          </a>
         {/if}
       </div>
     </div>
@@ -440,7 +440,7 @@
   @media (min-width: 1024px) {
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 1fr 420px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
       gap: 90px;
       align-items: start;
     }
@@ -491,6 +491,7 @@
       filter: blur(110px);
       opacity: 0.16;
       z-index: 0;
+      pointer-events: none;
       animation: breathe 5.5s ease-in-out infinite alternate;
     }
     .hematocrit-mobile {
@@ -541,6 +542,11 @@
     .entry {
       position: relative;
       padding: 16px 18px 16px 0;
+    }
+    a.entry {
+      display: block;
+      color: inherit;
+      text-decoration: none;
     }
     .entry::before {
       content: '';
@@ -619,6 +625,17 @@
       height: 100%;
       background: linear-gradient(90deg, var(--blue-deep), var(--pink-deep));
       transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  }
+
+  /* The full-size hero gauge, the 90px gap and the 420px timeline only fit side by
+     side from ~1194px up. Below that the desktop breakpoint has already fired (the
+     nav rail needs it at 1024px), so the grid is tightened here instead of moving
+     the breakpoint. GaugeMeter scales itself down over the same range. */
+  @media (min-width: 1024px) and (max-width: 1193px) {
+    .dashboard-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+      gap: 40px;
     }
   }
 
