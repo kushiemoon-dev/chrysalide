@@ -81,7 +81,7 @@
   </div>
 {/if}
 
-<nav class="nav">
+<nav class="nav" data-testid="glass-nav">
   {#each mainItems as item (item.href)}
     <a href={item.href} class="nav-item" class:active={isActive(item.href)}>
       <span class="nav-dot"></span>
@@ -223,5 +223,13 @@
     color: var(--ink);
     height: auto;
     font-weight: 600;
+  }
+
+  @media (min-width: 1024px) {
+    .overlay,
+    .sheet,
+    .nav {
+      display: none;
+    }
   }
 </style>
