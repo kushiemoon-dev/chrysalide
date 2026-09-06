@@ -35,7 +35,28 @@
       ? categories.flatMap((cat) => faqItemIds[cat].map((id) => ({ id, category: cat })))
       : faqItemIds[selectedCategory].map((id) => ({ id, category: selectedCategory }))
   )
+
+  const seoTitle = 'FAQ Chrysalide : confidentialité, sécurité des données et suivi HRT'
+  const seoDescription =
+    "Vos données sont-elles sécurisées ? Comment fonctionne le suivi hormonal ? Réponses aux questions fréquentes sur Chrysalide, l'application de suivi HRT 100% locale pour personnes trans."
+  const seoUrl = 'https://chrysalide.kushie.dev/resources/faq'
+  const seoImage = 'https://chrysalide.kushie.dev/og-banner.png'
 </script>
+
+<svelte:head>
+  <title>{seoTitle}</title>
+  <meta name="description" content={seoDescription} />
+  <link rel="canonical" href={seoUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={seoUrl} />
+  <meta property="og:title" content={seoTitle} />
+  <meta property="og:description" content={seoDescription} />
+  <meta property="og:image" content={seoImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={seoTitle} />
+  <meta name="twitter:description" content={seoDescription} />
+  <meta name="twitter:image" content={seoImage} />
+</svelte:head>
 
 <div class="header">
   <a href="/resources" class="back-btn" aria-label={i18n.t('common.back')}>

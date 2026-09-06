@@ -10,6 +10,7 @@ Disallow: /onboarding
 Disallow: /practitioners
 Disallow: /progress
 Disallow: /resources
+Allow: /resources/faq
 Disallow: /settings
 
 Sitemap: https://chrysalide.kushie.dev/sitemap.xml
