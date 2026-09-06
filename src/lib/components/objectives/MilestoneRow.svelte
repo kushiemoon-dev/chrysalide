@@ -114,9 +114,11 @@
     padding: 10px;
     border-radius: 12px;
     background: var(--page);
+    transition: background 0.25s ease;
   }
   .row.achieved {
     background: color-mix(in srgb, var(--ok) 10%, transparent);
+    animation: confirm-pop 0.35s ease;
   }
   .row input[type='checkbox'] {
     margin-top: 3px;

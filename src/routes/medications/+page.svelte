@@ -845,11 +845,23 @@
     font-size: 12.5px;
     font-family: inherit;
     cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.15s ease;
+  }
+  .btn-outline-sm:active {
+    transform: scale(0.94);
   }
   .btn-outline-sm.taken {
     background: color-mix(in srgb, var(--blue-deep) 18%, transparent);
     color: var(--blue-deep);
     border-color: transparent;
+    animation: confirm-pop 0.4s ease;
+  }
+  .btn-outline-sm.taken :global(svg) {
+    animation: icon-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .btn-outline-sm:disabled {
     cursor: default;

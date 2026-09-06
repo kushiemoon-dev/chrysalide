@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { fade } from 'svelte/transition'
   import { format } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { getJournalEntries, searchJournalEntries, getJournalStats } from '$lib/db'
@@ -182,7 +183,7 @@
 {/if}
 
 {#snippet entryCard(entry: JournalEntry)}
-  <a href={`/journal/${entry.id}`} class="entry-card">
+  <a href={`/journal/${entry.id}`} class="entry-card" out:fade={{ duration: 200 }}>
     {#if entry.mood}
       <MoodBadge mood={entry.mood} size="md" />
     {/if}

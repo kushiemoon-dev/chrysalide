@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { fade } from 'svelte/transition'
   import { SvelteMap } from 'svelte/reactivity'
   import { i18n } from '$lib/i18n.svelte'
   import {
@@ -115,7 +116,7 @@
 {/if}
 
 {#snippet card(practitioner: Practitioner)}
-  <div class="p-card">
+  <div class="p-card" out:fade={{ duration: 200 }}>
     <div class="p-head">
       <div class="p-name">
         <span>{practitioner.name}</span>

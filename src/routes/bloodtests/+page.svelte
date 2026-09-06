@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { fade } from 'svelte/transition'
   import { format } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { getBloodTests, deleteBloodTest, getUserProfile } from '$lib/db'
@@ -170,7 +171,7 @@
   {:else}
     <div class="test-list">
       {#each tests as test (test.id)}
-        <div class="test-card">
+        <div class="test-card" out:fade={{ duration: 200 }}>
           <div class="test-head">
             <div>
               <span class="date"

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { fade } from 'svelte/transition'
   import { format } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import {
@@ -154,7 +155,7 @@
 {/if}
 
 {#snippet aptCard(apt: Appointment)}
-  <div class="apt-card">
+  <div class="apt-card" out:fade={{ duration: 200 }}>
     <div class="apt-head">
       <div>
         <span class="apt-type">{i18n.t('appointments.types.' + apt.type)}</span>

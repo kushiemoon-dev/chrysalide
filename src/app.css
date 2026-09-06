@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 
 :root {
-  --page: #efedf3;
-  --bg: #faf9fc;
+  --page: #ebe6f5;
+  --bg: #f8f4fd;
   --ink: #171a21;
   --ink-soft: #6b6f79;
   --ink-faint: #a6a9b2;
@@ -11,14 +11,14 @@
   --pink: #f0aac7;
   --pink-deep: #d66a9b;
   --gold: #f3d9a8;
-  --neutral-zone: #e4e2e8;
+  --neutral-zone: #e2dfeb;
   --ok: #6e9b6b;
   --watch: #c98a3d;
   --alert: #c15b4a;
-  --line: #e6e4ea;
+  --line: #e4e1ec;
   --glass-bg: rgb(255 255 255 / 55%);
   --glass-border: rgb(255 255 255 / 70%);
-  --aurora-opacity: 0.55;
+  --aurora-opacity: 0.35;
   --aurora-blend: normal;
   --grain-opacity: 0;
   --vignette-opacity: 0;
@@ -27,8 +27,8 @@
 }
 
 :root[data-theme='dark'] {
-  --page: #0b0c0f;
-  --bg: #16181d;
+  --page: #100c18;
+  --bg: #1c1728;
   --ink: #f2f1f5;
   --ink-soft: #9a9da8;
   --ink-faint: #63666f;
@@ -37,14 +37,14 @@
   --pink: #e39cc0;
   --pink-deep: #f0b4d2;
   --gold: #e0c182;
-  --neutral-zone: #33363e;
+  --neutral-zone: #322d3d;
   --ok: #8bc088;
   --watch: #e0ac66;
   --alert: #e08a78;
-  --line: #2a2d34;
+  --line: #2b2536;
   --glass-bg: rgb(255 255 255 / 6%);
   --glass-border: rgb(255 255 255 / 14%);
-  --aurora-opacity: 0.3;
+  --aurora-opacity: 0.18;
   --aurora-blend: normal;
   --grain-opacity: 0.06;
   --vignette-opacity: 1;
@@ -69,6 +69,40 @@ body {
   transition:
     background 0.3s ease,
     color 0.3s ease;
+}
+
+/* Shared action-feedback animations (dose taken, milestone achieved, etc.) */
+@keyframes confirm-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes icon-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 dialog:modal {
