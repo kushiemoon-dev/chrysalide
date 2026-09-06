@@ -2,5 +2,6 @@
   "framework": null,
   "buildCommand": "pnpm run build",
   "outputDirectory": "build",
+  "cleanUrls": true,
   "rewrites": [{ "source": "/(.*)", "destination": "/200.html" }]
 }
