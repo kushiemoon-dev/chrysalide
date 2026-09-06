@@ -37,6 +37,12 @@
     ApplicationZone,
   } from '$lib/types'
 
+  const seoTitle = 'Chrysalide : suivi HRT privé pour personnes trans'
+  const seoDescription =
+    'Suivi médical personnel pour personnes trans : hormones, bilans sanguins, rendez-vous, progression physique. 100% local, sans compte, aucune donnée envoyée à un serveur.'
+  const seoUrl = 'https://chrysalide.kushie.dev/'
+  const seoImage = 'https://chrysalide.kushie.dev/og-banner.png'
+
   let firstName = $state<string | undefined>(undefined)
   let primaryHormone = $state<BloodTestResult | undefined>(undefined)
   let primaryHormoneRange = $state<{ min: number; max: number; unit: string } | undefined>(
@@ -134,6 +140,21 @@
     loaded = true
   })
 </script>
+
+<svelte:head>
+  <title>{seoTitle}</title>
+  <meta name="description" content={seoDescription} />
+  <link rel="canonical" href={seoUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={seoUrl} />
+  <meta property="og:title" content={seoTitle} />
+  <meta property="og:description" content={seoDescription} />
+  <meta property="og:image" content={seoImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={seoTitle} />
+  <meta name="twitter:description" content={seoDescription} />
+  <meta name="twitter:image" content={seoImage} />
+</svelte:head>
 
 <div class="dashboard-grid">
   <div class="hero-col">

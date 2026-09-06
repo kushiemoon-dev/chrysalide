@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /acts
+Disallow: /appointments
+Disallow: /bloodtests
+Disallow: /journal
+Disallow: /medications
+Disallow: /objectives
+Disallow: /onboarding
+Disallow: /practitioners
+Disallow: /progress
+Disallow: /resources
+Disallow: /settings
+
+Sitemap: https://chrysalide.kushie.dev/sitemap.xml
