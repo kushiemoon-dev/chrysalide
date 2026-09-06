@@ -10,7 +10,7 @@ import {
   getMedicationLogs,
   getLastMedicationLog,
   getTodayLogs,
-  getYesterdayLogs,
+  getMedicationLogsBetween,
   getTodayLogsForMedication,
   addMedicationLog,
   updateMedicationLog,
@@ -151,7 +151,7 @@ describe('Medication logs', () => {
     expect(last?.id).toBe(id2)
   })
 
-  it("getTodayLogs / getYesterdayLogs isolent bien aujourd'hui vs hier", async () => {
+  it("getTodayLogs isole bien aujourd'hui du reste", async () => {
     const medId = await addMedication(baseMedication)
     const now = new Date()
     const todayNoon = new Date(now)
@@ -164,12 +164,25 @@ describe('Medication logs', () => {
     await addMedicationLog({ medicationId: medId as number, timestamp: yesterdayNoon, taken: true })
 
     const today = await getTodayLogs()
-    const yesterday = await getYesterdayLogs()
 
     expect(today).toHaveLength(1)
     expect(today[0]!.timestamp.toISOString()).toBe(todayNoon.toISOString())
-    expect(yesterday).toHaveLength(1)
-    expect(yesterday[0]!.timestamp.toISOString()).toBe(yesterdayNoon.toISOString())
+  })
+
+  it('getMedicationLogsBetween couvre un intervalle arbitraire de plusieurs jours', async () => {
+    const medId = await addMedication(baseMedication)
+    const inRange = new Date('2024-01-03T12:00:00')
+    const beforeRange = new Date('2023-12-31T12:00:00')
+    const afterRange = new Date('2024-01-10T12:00:00')
+
+    await addMedicationLog({ medicationId: medId as number, timestamp: inRange, taken: true })
+    await addMedicationLog({ medicationId: medId as number, timestamp: beforeRange, taken: true })
+    await addMedicationLog({ medicationId: medId as number, timestamp: afterRange, taken: true })
+
+    const result = await getMedicationLogsBetween(new Date('2024-01-01'), new Date('2024-01-08'))
+
+    expect(result).toHaveLength(1)
+    expect(result[0]!.timestamp.toISOString()).toBe(inRange.toISOString())
   })
 
   it("getTodayLogsForMedication filtre par médicament et par aujourd'hui", async () => {

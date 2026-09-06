@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { format, subDays, addDays, set, startOfDay } from 'date-fns'
+  import { format, addDays, startOfDay } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import {
     getMedications,
     addMedicationLog,
     getTodayLogs,
     getLastMedicationLog,
-    getYesterdayLogs,
+    getMedicationLogsBetween,
     getGelApplicationHistory,
   } from '$lib/db'
   import {
@@ -15,10 +15,8 @@
     isPeriodicFrequency,
     getFrequencyIntervalDays,
     isAutoValidationEnabled,
-    isScheduledTimePassed,
-    shouldTakeMedicationToday,
-    shouldTakeMedicationOnDate,
   } from '$lib/notifications'
+  import { computeMissingAutoValidations } from '$lib/auto-validation'
   import { getNextApplicationZone } from '$lib/utils'
   import {
     MEDICATION_TYPES,
@@ -76,92 +74,54 @@
     else zoneDialogEl.close()
   })
 
-  async function autoValidatePastDoses(medications: Medication[], existingLogs: MedicationLog[]) {
-    if (!isAutoValidationEnabled()) return 0
+  // Guards against a second concurrent pass (e.g. a visibilitychange firing
+  // while the onMount catch-up is still running).
+  let autoValidating = false
 
-    let autoCreatedCount = 0
-    const now = new Date()
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  /**
+   * Catches up on every past-due dose without a log yet, across the whole
+   * treatment period (not just today/yesterday). Runs on mount and whenever
+   * the tab regains visibility, instead of a setInterval that dies once the
+   * PWA is backgrounded.
+   */
+  async function catchUpAutoValidation(medications: Medication[]): Promise<number> {
+    if (autoValidating || !isAutoValidationEnabled()) return 0
 
-    for (const med of medications) {
-      if (!med.id || !med.isActive) continue
-      if (med.endDate && new Date(med.endDate) < todayStart) continue
-      if (!shouldTakeMedicationToday(med)) continue
+    const activeMeds = medications.filter((med) => med.isActive && med.id)
+    if (activeMeds.length === 0) return 0
 
-      const doseTimes = getMedicationReminderTimes(med)
+    autoValidating = true
+    try {
+      const earliestStart = activeMeds.reduce((earliest, med) => {
+        const start = new Date(med.startDate)
+        return start < earliest ? start : earliest
+      }, new Date(activeMeds[0]!.startDate))
+      const rangeStart = startOfDay(earliestStart)
+      const now = new Date()
 
-      for (let i = 0; i < doseTimes.length; i++) {
-        const time = doseTimes[i]!
-        if (!isScheduledTimePassed(time)) continue
+      const existingLogs = await getMedicationLogsBetween(rangeStart, now)
+      const pending = computeMissingAutoValidations({
+        medications: activeMeds,
+        existingLogs,
+        now,
+        enabled: true,
+      })
 
-        const alreadyLogged = existingLogs.some(
-          (log) => log.medicationId === med.id && log.scheduledTime === time
-        )
-        if (alreadyLogged) continue
-
+      for (const dose of pending) {
         await addMedicationLog({
-          medicationId: med.id,
-          timestamp: new Date(),
+          medicationId: dose.medicationId,
+          timestamp: dose.timestamp,
           taken: true,
-          scheduledTime: time,
-          doseIndex: i,
+          scheduledTime: dose.scheduledTime,
+          doseIndex: dose.doseIndex,
           notes: i18n.t('medications.list.autoValidated'),
         })
-        autoCreatedCount++
       }
+
+      return pending.length
+    } finally {
+      autoValidating = false
     }
-
-    return autoCreatedCount
-  }
-
-  async function autoValidateYesterdayDoses(medications: Medication[]) {
-    if (!isAutoValidationEnabled()) return 0
-
-    const yesterdayLogs = await getYesterdayLogs()
-    let autoCreatedCount = 0
-
-    const yesterday = subDays(new Date(), 1)
-    const yesterdayStart = new Date(
-      yesterday.getFullYear(),
-      yesterday.getMonth(),
-      yesterday.getDate()
-    )
-
-    for (const med of medications) {
-      if (!med.id || !med.isActive) continue
-      if (med.endDate && new Date(med.endDate) < yesterdayStart) continue
-      if (!shouldTakeMedicationOnDate(med, yesterday)) continue
-
-      const doseTimes = getMedicationReminderTimes(med)
-
-      for (let i = 0; i < doseTimes.length; i++) {
-        const time = doseTimes[i]!
-        const alreadyLogged = yesterdayLogs.some(
-          (log) => log.medicationId === med.id && log.scheduledTime === time
-        )
-        if (alreadyLogged) continue
-
-        const [hours, minutes] = time.split(':').map(Number)
-        const yesterdayTimestamp = set(yesterday, {
-          hours: hours!,
-          minutes: minutes!,
-          seconds: 0,
-          milliseconds: 0,
-        })
-
-        await addMedicationLog({
-          medicationId: med.id,
-          timestamp: yesterdayTimestamp,
-          taken: true,
-          scheduledTime: time,
-          doseIndex: i,
-          notes: i18n.t('medications.list.autoValidatedYesterday'),
-        })
-        autoCreatedCount++
-      }
-    }
-
-    return autoCreatedCount
   }
 
   async function loadData() {
@@ -178,8 +138,7 @@
     activeMedications = activeMeds
     inactiveMedications = allMeds.filter((med) => !activeMeds.includes(med))
 
-    await autoValidateYesterdayDoses(activeMeds)
-    const autoCreatedCount = await autoValidatePastDoses(activeMeds, logs)
+    const autoCreatedCount = await catchUpAutoValidation(activeMeds)
     todayLogs = autoCreatedCount > 0 ? await getTodayLogs() : logs
 
     const periodicMeds = activeMeds.filter((med) => isPeriodicFrequency(med.frequency))
@@ -201,18 +160,18 @@
       loading = false
     })
 
-    if (!isAutoValidationEnabled()) return
+    // Reruns the catch-up when the tab/PWA comes back to the foreground,
+    // since a background PWA can be suspended for an arbitrary amount of
+    // time (no reliable timer to fall back on).
+    async function handleVisibilityChange() {
+      if (document.visibilityState !== 'visible') return
+      if (activeMedications.length === 0) return
+      const count = await catchUpAutoValidation(activeMedications)
+      if (count > 0) todayLogs = await getTodayLogs()
+    }
 
-    const interval = setInterval(
-      async () => {
-        if (activeMedications.length === 0) return
-        const logs = await getTodayLogs()
-        const count = await autoValidatePastDoses(activeMedications, logs)
-        if (count > 0) todayLogs = await getTodayLogs()
-      },
-      5 * 60 * 1000
-    )
-    return () => clearInterval(interval)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
   })
 
   function openZoneModal(med: Medication, scheduledTime?: string, doseIndex?: number) {

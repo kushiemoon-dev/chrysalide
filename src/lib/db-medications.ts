@@ -64,17 +64,11 @@ export async function getTodayLogs() {
 }
 
 /**
- * Gets yesterday's logs
- * Used to auto-validate doses missed the previous day
+ * Gets all logs between two dates (inclusive of `from`, exclusive of `to`)
+ * Used to auto-validate doses missed over an arbitrary gap
  */
-export async function getYesterdayLogs() {
-  const yesterday = new Date()
-  yesterday.setDate(yesterday.getDate() - 1)
-  yesterday.setHours(0, 0, 0, 0)
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  return db.medicationLogs.where('timestamp').between(yesterday, today).toArray()
+export async function getMedicationLogsBetween(from: Date, to: Date) {
+  return db.medicationLogs.where('timestamp').between(from, to).toArray()
 }
 
 /**

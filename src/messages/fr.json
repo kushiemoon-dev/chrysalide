@@ -289,7 +289,6 @@
       "addPastDoseButton": "Ajouter une prise passée",
       "notePlaceholder": "Remarques, effets...",
       "autoValidated": "Auto-validé",
-      "autoValidatedYesterday": "Auto-validé (veille)",
       "gelZoneDialogTitle": "Zone d'application",
       "gelZoneDialogDesc": "Sélectionnez la zone d'application pour",
       "noteLabel": "Note (optionnel)",
