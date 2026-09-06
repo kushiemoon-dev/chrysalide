@@ -215,13 +215,10 @@
   }
   .nav-lbl {
     font-size: 9.5px;
-    color: transparent;
-    height: 0;
-    overflow: hidden;
+    color: var(--ink-faint);
   }
   .nav-item.active .nav-lbl {
     color: var(--ink);
-    height: auto;
     font-weight: 600;
   }
 
