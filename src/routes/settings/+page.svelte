@@ -335,7 +335,7 @@
 <div class="section">
   <h2><Info size={16} />{i18n.t('settings.about.title')}</h2>
   <div class="card">
-    <p class="row-desc"><span class="row-title">{i18n.t('common.version')}:</span> 1.3.1</p>
+    <p class="row-desc"><span class="row-title">{i18n.t('common.version')}:</span> 2.0.0</p>
     <p class="row-desc">{i18n.t('settings.about.description')}</p>
   </div>
 </div>
