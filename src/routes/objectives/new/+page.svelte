@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation'
   import { i18n } from '$lib/i18n.svelte'
   import { addObjective, addMilestone, getUserProfile } from '$lib/db'
+  import { fromDateInput } from '$lib/date-input'
   import type { ObjectiveCategory, ObjectiveStatus, ActCategory, UserProfile } from '$lib/types'
   import { categoryConfig } from '$lib/components/objectives/ObjectiveCard.svelte'
   import ObjectiveFormFields, {
@@ -63,7 +64,7 @@
         description: description.trim() || undefined,
         category,
         status,
-        targetDate: targetDate ? new Date(targetDate) : undefined,
+        targetDate: targetDate ? fromDateInput(targetDate) : undefined,
         progress: 0,
         actCategory: category === 'medical' && actCategory ? actCategory : undefined,
         information: category === 'medical' ? information.trim() || undefined : undefined,

@@ -53,4 +53,32 @@ test.describe('Navigation principale', () => {
     const addLink = page.getByRole('link', { name: /ajouter|nouveau|new|\+/i })
     await expect(addLink.first()).toBeVisible()
   })
+
+  test("une entrée de journal privée n'apparaît pas sur le tableau de bord", async ({ page }) => {
+    // resetDatabase registers a persistent init script that wipes the DB on
+    // every navigation, not just the next one, so it can't be used before a
+    // test that navigates more than once. One-off delete instead.
+    await page.goto('/journal/new')
+    await page.evaluate(
+      () =>
+        new Promise((resolve) => {
+          const req = indexedDB.deleteDatabase('ChrysalideDB')
+          req.onsuccess = resolve
+          req.onerror = resolve
+          req.onblocked = resolve
+        })
+    )
+    await page.reload()
+
+    await page.locator('#content').fill('Contenu strictement privé')
+    await page.locator('.switch input[type="checkbox"]').click()
+    await page.getByRole('button', { name: 'Enregistrer' }).click()
+    await expect(page).toHaveURL('/journal', { timeout: 15000 })
+
+    await page.goto('/')
+    await expect(
+      page.getByText('Aucun médicament configuré').and(page.locator(':visible'))
+    ).toBeVisible({ timeout: 15000 })
+    await expect(page.getByText('Contenu strictement privé')).toHaveCount(0)
+  })
 })

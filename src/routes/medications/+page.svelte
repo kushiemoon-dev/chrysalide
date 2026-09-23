@@ -17,6 +17,7 @@
     isAutoValidationEnabled,
   } from '$lib/notifications'
   import { computeMissingAutoValidations } from '$lib/auto-validation'
+  import { toDateInput } from '$lib/date-input'
   import { getNextApplicationZone } from '$lib/utils'
   import {
     MEDICATION_TYPES,
@@ -304,7 +305,7 @@
     pastScheduledTime = scheduledTime
     pastDoseIndex = doseIndex
     const now = new Date()
-    pastDate = now.toISOString().split('T')[0]!
+    pastDate = toDateInput(now)
     pastTime = format(now, 'HH:mm')
     pastDoseNote = ''
     pastDoseModalOpen = true

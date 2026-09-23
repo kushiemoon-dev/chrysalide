@@ -1,5 +1,6 @@
 <script lang="ts">
   import { i18n } from '$lib/i18n.svelte'
+  import { toDateInput } from '$lib/date-input'
   import type { MoodLevel } from '$lib/types'
   import MoodPicker from './MoodPicker.svelte'
   import TagInput from './TagInput.svelte'
@@ -29,7 +30,7 @@
     backHref?: string
   } = $props()
 
-  let today = new Date().toISOString().split('T')[0]!
+  let today = toDateInput(new Date())
   let contentLabel = $derived(
     i18n.t(variant === 'edit' ? 'journal.edit.content' : 'journal.new.contentLabel')
   )

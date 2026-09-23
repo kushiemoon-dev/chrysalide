@@ -74,6 +74,22 @@ export function getAppointmentDateTime(appointment: Appointment): Date {
 }
 
 /**
+ * Converts a numeric form input to a number, preserving 0 instead of
+ * treating it as an absent value (`value ? Number(value) : undefined`
+ * discards 0 because it's falsy).
+ */
+export function parseOptionalNumberInput(value: string): number | undefined {
+  return value === '' ? undefined : Number(value)
+}
+
+/**
+ * Formats an amount as EUR currency for the given locale.
+ */
+export function formatCurrency(value: number, locale: string): string {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' }).format(value)
+}
+
+/**
  * Suggests the next application zone in a fixed rotation, given the last
  * zone used. Unknown or missing last zone starts the rotation from the top.
  */

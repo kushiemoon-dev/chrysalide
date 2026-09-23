@@ -2,11 +2,12 @@
   import { goto } from '$app/navigation'
   import { i18n } from '$lib/i18n.svelte'
   import { addPhysicalProgress } from '$lib/db'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { Measurements } from '$lib/types'
   import ProgressFormFields from '$lib/components/progress/ProgressFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
-  let date = $state(new Date().toISOString().split('T')[0]!)
+  let date = $state(toDateInput(new Date()))
   let measurements = $state<Partial<Measurements>>({})
   let photos = $state<string[]>([])
   let notes = $state('')
@@ -21,7 +22,7 @@
       const hasMeasurements = Object.values(cleanMeasurements).some((v) => v !== undefined)
 
       const id = await addPhysicalProgress({
-        date: new Date(date),
+        date: fromDateInput(date),
         measurements: hasMeasurements ? cleanMeasurements : undefined,
         photos: photos.length > 0 ? $state.snapshot(photos) : undefined,
         notes: notes.trim() || undefined,

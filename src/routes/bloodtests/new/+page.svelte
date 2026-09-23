@@ -4,6 +4,7 @@
   import { i18n } from '$lib/i18n.svelte'
   import { addBloodTest, getUserProfile } from '$lib/db'
   import { BLOOD_MARKERS, convertToCanonicalUnit } from '$lib/constants'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { BloodMarker, BloodTestResult } from '$lib/types'
   import BloodTestFormFields, {
     EMPTY_MARKER_VALUES,
@@ -14,7 +15,7 @@
   let loading = $state(false)
   let context = $state<'feminizing' | 'masculinizing'>('feminizing')
 
-  let date = $state(new Date().toISOString().split('T')[0]!)
+  let date = $state(toDateInput(new Date()))
   let lab = $state('')
   let practitionerId = $state<number | undefined>(undefined)
   let notes = $state('')
@@ -50,7 +51,7 @@
     loading = true
     try {
       await addBloodTest({
-        date: new Date(date),
+        date: fromDateInput(date),
         lab: lab || undefined,
         practitionerId,
         results,

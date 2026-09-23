@@ -10,6 +10,8 @@
     getTotalAppointmentsCost,
   } from '$lib/db'
   import { getRelativeDayLabel } from '$lib/appointment-labels'
+  import { getModulePreferences } from '$lib/notifications'
+  import { formatCurrency } from '$lib/utils'
   import type { Appointment } from '$lib/types'
   import Plus from '@lucide/svelte/icons/plus'
   import Pencil from '@lucide/svelte/icons/pencil'
@@ -22,6 +24,7 @@
   let upcoming = $state<Appointment[]>([])
   let totalCost = $state(0)
   let loading = $state(true)
+  const costTrackingEnabled = getModulePreferences().costTrackingEnabled
   let activeTab = $state<'upcoming' | 'past'>('upcoming')
 
   onMount(async () => {
@@ -109,12 +112,12 @@
     </a>
   {/if}
 
-  {#if totalCost > 0}
+  {#if costTrackingEnabled && totalCost > 0}
     <div class="card blahaj-card">
       <p class="blahaj-label">{i18n.t('appointments.list.blahajLabel')}</p>
       <p class="blahaj-amount">
         {i18n.t('appointments.list.blahajBeforeAmount')}
-        <span class="amount">{totalCost} €</span>
+        <span class="amount">{formatCurrency(totalCost, i18n.locale)}</span>
         {i18n.t('appointments.list.blahajAfterAmount')}
       </p>
     </div>
