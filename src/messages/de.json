@@ -289,6 +289,7 @@
       "addPastDoseButton": "Vergangene Einnahme hinzufügen",
       "notePlaceholder": "Bemerkungen, Nebenwirkungen...",
       "autoValidated": "Automatisch bestätigt",
+      "reminderBody": "Zeit für deine Einnahme um {time} Uhr",
       "gelZoneDialogTitle": "Auftragsbereich",
       "gelZoneDialogDesc": "Wähle den Auftragsbereich für",
       "noteLabel": "Notiz (optional)",

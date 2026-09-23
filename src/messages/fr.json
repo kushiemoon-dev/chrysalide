@@ -289,6 +289,7 @@
       "addPastDoseButton": "Ajouter une prise passée",
       "notePlaceholder": "Remarques, effets...",
       "autoValidated": "Auto-validé",
+      "reminderBody": "C'est l'heure de votre prise de {time}",
       "gelZoneDialogTitle": "Zone d'application",
       "gelZoneDialogDesc": "Sélectionnez la zone d'application pour",
       "noteLabel": "Note (optionnel)",

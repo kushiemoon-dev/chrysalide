@@ -6,6 +6,7 @@
  */
 
 import { db } from './db'
+import { i18n } from './i18n.svelte'
 import type { Medication } from './types'
 
 // Storage keys for notification state
@@ -114,6 +115,14 @@ export function getMedicationReminderTimes(medication: Medication): string[] {
   return ['09:00']
 }
 
+/**
+ * Notification body for a dose reminder, translated instead of a hardcoded
+ * English string.
+ */
+export function getReminderNotificationBody(scheduledTime: string): string {
+  return i18n.t('medications.list.reminderBody').replace('{time}', scheduledTime)
+}
+
 export function shouldShowReminder(
   reminder: ScheduledReminder,
   shownIds: string[],
@@ -158,7 +167,7 @@ async function showReminder(reminder: ScheduledReminder): Promise<void> {
       type: 'SHOW_NOTIFICATION',
       payload: {
         title: `💊 ${reminder.medicationName}`,
-        body: `Time for your ${reminder.scheduledTime} dose`,
+        body: getReminderNotificationBody(reminder.scheduledTime),
         tag: `medication-${reminder.id}`,
         data: {
           medicationId: reminder.medicationId,
@@ -170,7 +179,7 @@ async function showReminder(reminder: ScheduledReminder): Promise<void> {
     // Fallback to regular notification
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(`💊 ${reminder.medicationName}`, {
-        body: `Time for your ${reminder.scheduledTime} dose`,
+        body: getReminderNotificationBody(reminder.scheduledTime),
         icon: '/icon-192.png',
         tag: `medication-${reminder.id}`,
         requireInteraction: true,

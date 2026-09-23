@@ -3,5 +3,11 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "build",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/(.*)", "destination": "/200" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/200" }],
+  "headers": [
+    {
+      "source": "/_app/immutable/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
 }

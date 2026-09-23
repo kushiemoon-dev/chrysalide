@@ -289,6 +289,7 @@
       "addPastDoseButton": "Add a past dose",
       "notePlaceholder": "Notes, effects...",
       "autoValidated": "Automatically validated",
+      "reminderBody": "Time for your {time} dose",
       "gelZoneDialogTitle": "Application zone",
       "gelZoneDialogDesc": "Select the application zone for",
       "noteLabel": "Note (optional)",

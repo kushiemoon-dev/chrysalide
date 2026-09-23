@@ -2,6 +2,7 @@
   import '../app.css'
   import { page } from '$app/state'
   import { theme } from '$lib/theme.svelte'
+  import { i18n } from '$lib/i18n.svelte'
   import {
     isNotificationEnabled,
     startReminderService,
@@ -19,6 +20,10 @@
 
   $effect(() => {
     document.documentElement.dataset.theme = theme.resolvedMode
+  })
+
+  $effect(() => {
+    document.documentElement.lang = i18n.locale
   })
 
   $effect(() => {
