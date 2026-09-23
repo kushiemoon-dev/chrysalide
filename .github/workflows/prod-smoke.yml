@@ -1,0 +1,27 @@
+name: Production smoke test
+
+on:
+  deployment_status:
+
+jobs:
+  smoke:
+    name: Check deep links
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+
+    steps:
+      - name: Check core routes respond
+        env:
+          BASE: ${{ github.event.deployment_status.target_url }}
+        run: |
+          ROUTES=(/ /medications /settings /journal /medications/1 /resources/faq /sw.js)
+          FAILED=0
+          for route in "${ROUTES[@]}"; do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 5 "$BASE$route")
+            echo "$route -> $CODE"
+            if [ "$CODE" != "200" ]; then
+              echo "::error::$route returned $CODE"
+              FAILED=1
+            fi
+          done
+          exit $FAILED

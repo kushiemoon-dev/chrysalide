@@ -2,23 +2,20 @@
  * Service Worker for Chrysalide
  * Offline support + Asset caching + Push Notifications
  *
- * @version 2.0.0
+ * @version 3.0.0
  */
 
-const CACHE_NAME = 'chrysalide-v2'
+// Bumped to force the browser to reinstall and drop the old cache: it held
+// Next.js HTML from before the SvelteKit rewrite, referencing /_next/ chunks
+// that no longer exist (blank page offline).
+const CACHE_NAME = 'chrysalide-v3'
 
-// Static assets to cache
-const STATIC_ASSETS = [
-  '/',
-  '/medications',
-  '/bloodtests',
-  '/progress',
-  '/settings',
-  '/appointments',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
-]
+// ponytail: only precache what's guaranteed to exist as a static file.
+// Inner routes are client-rendered from /200 (the SvelteKit shell), so they
+// don't need (and can't have, they 404 as static files) their own entry.
+// Precaching a URL that 404s fails the whole install, which is what left
+// new installs with no offline support and no service worker at all.
+const STATIC_ASSETS = ['/', '/200', '/manifest.json', '/icon-192.png', '/icon-512.png']
 
 // Installation - Cache static assets
 self.addEventListener('install', (event) => {
@@ -56,11 +53,6 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Skip Next.js internal requests
-  if (event.request.url.includes('/_next/')) {
-    return
-  }
-
   event.respondWith(
     fetch(event.request)
       .then((response) => {
@@ -81,7 +73,7 @@ self.addEventListener('fetch', (event) => {
           }
 
           if (event.request.mode === 'navigate') {
-            return caches.match('/')
+            return caches.match('/200')
           }
 
           return new Response('Offline', {
