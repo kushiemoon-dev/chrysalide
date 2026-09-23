@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: Check core routes respond
         env:
-          BASE: ${{ github.event.deployment_status.target_url }}
+          # Not target_url: that's the per-deploy vercel.app alias, which
+          # sits behind Vercel's deployment protection and always 302s.
+          BASE: https://chrysalide.kushie.dev
         run: |
           ROUTES=(/ /medications /settings /journal /medications/1 /resources/faq /sw.js)
           FAILED=0
