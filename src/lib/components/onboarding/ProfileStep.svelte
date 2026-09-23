@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { i18n } from '$lib/i18n.svelte'
   import { PRONOUNS_OPTIONS, TRANSITION_TYPES, type OnboardingState } from '$lib/onboarding'
 
@@ -16,8 +17,10 @@
 
   type TransitionType = NonNullable<OnboardingState['profile']>['transitionType']
 
-  let pronouns = $state(onboardingState.profile?.pronouns ?? '')
-  let transitionType = $state<TransitionType | ''>(onboardingState.profile?.transitionType ?? '')
+  let pronouns = $state(untrack(() => onboardingState.profile?.pronouns ?? ''))
+  let transitionType = $state<TransitionType | ''>(
+    untrack(() => onboardingState.profile?.transitionType ?? '')
+  )
 
   function handleNext() {
     onUpdate({

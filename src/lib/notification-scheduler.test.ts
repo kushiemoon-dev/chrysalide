@@ -6,8 +6,10 @@ import {
   getShownReminderIds,
   getTodayReminders,
   checkReminders,
+  getReminderNotificationBody,
 } from './notification-scheduler'
 import { db, addMedication } from './db'
+import { i18n } from './i18n.svelte'
 import type { Medication } from './types'
 
 const baseMedication: Medication = {
@@ -69,6 +71,22 @@ describe('getMedicationReminderTimes', () => {
   it('fréquence non reconnue retombe sur un rappel quotidien par défaut', () => {
     const result = getMedicationReminderTimes({ ...baseMedication, frequency: '1x/jour' })
     expect(result).toEqual(['09:00'])
+  })
+})
+
+describe('getReminderNotificationBody', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    i18n.setLocale('fr')
+  })
+
+  it("traduit le texte selon la langue active plutôt qu'un texte anglais en dur", () => {
+    expect(getReminderNotificationBody('09:00')).toBe("C'est l'heure de votre prise de 09:00")
+  })
+
+  it('utilise la traduction anglaise en locale en', () => {
+    i18n.setLocale('en')
+    expect(getReminderNotificationBody('09:00')).toBe('Time for your 09:00 dose')
   })
 })
 
