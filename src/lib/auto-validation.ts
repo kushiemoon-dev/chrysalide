@@ -1,4 +1,4 @@
-import { addDays, isSameDay, set } from 'date-fns'
+import { addDays, isSameDay, set, startOfDay } from 'date-fns'
 import { getMedicationReminderTimes, shouldTakeMedicationOnDate } from './notifications'
 import type { Medication, MedicationLog } from './types'
 
@@ -17,23 +17,27 @@ interface ComputeMissingAutoValidationsInput {
   existingLogs: MedicationLog[]
   now: Date
   enabled: boolean
+  since: Date
 }
 
 /**
- * Computes every past-due dose that has no matching log yet, across the
- * whole treatment period (from each medication's startDate up to now).
- * Pure: takes `now` as input instead of reading the clock, and `enabled`
- * instead of reading localStorage, so it stays trivially testable.
+ * Computes every past-due dose that has no matching log yet, from each
+ * medication's startDate up to now, but never earlier than `since` (the
+ * marker of the last catch-up run). Pure: takes `now` as input instead of
+ * reading the clock, and `enabled` instead of reading localStorage, so it
+ * stays trivially testable.
  */
 export function computeMissingAutoValidations({
   medications,
   existingLogs,
   now,
   enabled,
+  since,
 }: ComputeMissingAutoValidationsInput): PendingAutoValidation[] {
   if (!enabled) return []
 
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const sinceStart = startOfDay(since)
   const results: PendingAutoValidation[] = []
 
   for (const med of medications) {
@@ -44,7 +48,8 @@ export function computeMissingAutoValidations({
     const doseTimes = getMedicationReminderTimes(med)
 
     const start = new Date(med.startDate)
-    let day = new Date(start.getFullYear(), start.getMonth(), start.getDate())
+    const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate())
+    let day = startDay > sinceStart ? startDay : sinceStart
 
     while (day <= todayStart) {
       if (shouldTakeMedicationOnDate(med, day)) {

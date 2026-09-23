@@ -64,12 +64,18 @@ test.describe('Rattrapage de la validation automatique', () => {
     await skipOnboarding(page)
     await page.addInitScript(() => {
       localStorage.setItem('medication-auto-validation', 'true')
+      // Repère du dernier rattrapage bien avant le traitement ajouté par le
+      // test, pour que le rattrapage remonte jusqu'au début du traitement
+      // et non pas seulement à hier (comportement par défaut sans repère).
+      const since = new Date()
+      since.setDate(since.getDate() - 30)
+      localStorage.setItem('chrysalide_auto_validation_since', since.toISOString())
     })
   })
 
-  // Reproduces the original bug: only "today" and "yesterday" used to be
-  // caught up, so a medication started several days before the app was
-  // reopened never got its earlier doses validated.
+  // A medication started several days before the app was reopened must
+  // have its earlier doses caught up, bounded by the last catch-up marker
+  // rather than always replaying the whole treatment history.
   test('valide les prises manquées depuis le début du traitement, pas seulement la veille', async ({
     page,
   }) => {

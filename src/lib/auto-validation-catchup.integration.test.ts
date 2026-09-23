@@ -18,15 +18,21 @@ beforeEach(async () => {
   await db.medicationLogs.clear()
 })
 
-async function runCatchUp(medications: Medication[], now: Date) {
+async function runCatchUp(medications: Medication[], now: Date, since: Date = new Date(0)) {
   const earliestStart = medications.reduce((earliest, med) => {
     const start = new Date(med.startDate)
     return start < earliest ? start : earliest
   }, new Date(medications[0]!.startDate))
-  const rangeStart = startOfDay(earliestStart)
+  const rangeStart = startOfDay(since > earliestStart ? since : earliestStart)
 
   const existingLogs = await getMedicationLogsBetween(rangeStart, now)
-  const pending = computeMissingAutoValidations({ medications, existingLogs, now, enabled: true })
+  const pending = computeMissingAutoValidations({
+    medications,
+    existingLogs,
+    now,
+    enabled: true,
+    since,
+  })
 
   for (const dose of pending) {
     await addMedicationLog({

@@ -69,6 +69,11 @@ describe('getFrequencyIntervalDays', () => {
     expect(getFrequencyIntervalDays('1x/3mois')).toBe(84)
     expect(getFrequencyIntervalDays('1x/6mois')).toBe(168)
   })
+
+  it('retourne 84 pour 12 semaines (Nebido), pas 14', () => {
+    expect(getFrequencyIntervalDays('1x/12semaines')).toBe(84)
+    expect(getFrequencyIntervalDays('12 semaines')).toBe(84)
+  })
 })
 
 describe('parseFrequencyToHours', () => {
