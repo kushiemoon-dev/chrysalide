@@ -1,10 +1,12 @@
 <script lang="ts">
   import { i18n } from '$lib/i18n.svelte'
   import { APPOINTMENT_TYPES, REMINDER_TIMES } from '$lib/constants'
+  import { getModulePreferences } from '$lib/notifications'
   import type { AppointmentType, Objective } from '$lib/types'
   import PractitionerInput from '$lib/components/practitioners/PractitionerInput.svelte'
 
   const TYPES = Object.keys(APPOINTMENT_TYPES) as AppointmentType[]
+  const costTrackingEnabled = getModulePreferences().costTrackingEnabled
 
   let {
     date = $bindable(),
@@ -84,17 +86,19 @@
     />
   </div>
   <div class="field-row">
-    <div class="field">
-      <label for="cost">{i18n.t('appointments.form.costLabel')}</label>
-      <input
-        id="cost"
-        type="number"
-        step="0.01"
-        min="0"
-        bind:value={cost}
-        placeholder={i18n.t('appointments.form.costPlaceholder')}
-      />
-    </div>
+    {#if costTrackingEnabled}
+      <div class="field">
+        <label for="cost">{i18n.t('appointments.form.costLabel')}</label>
+        <input
+          id="cost"
+          type="number"
+          step="0.01"
+          min="0"
+          bind:value={cost}
+          placeholder={i18n.t('appointments.form.costPlaceholder')}
+        />
+      </div>
+    {/if}
     <div class="field">
       <label for="reminder">{i18n.t('appointments.form.reminderTitle')}</label>
       <select id="reminder" bind:value={reminderMinutes}>

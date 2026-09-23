@@ -3,6 +3,8 @@
   import { i18n } from '$lib/i18n.svelte'
   import { addMedication, getMedication, recordTreatmentChange } from '$lib/db'
   import { COMMON_MEDICATIONS } from '$lib/constants'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
+  import { parseOptionalNumberInput } from '$lib/utils'
   import type {
     MedicationType,
     AdministrationMethod,
@@ -22,7 +24,7 @@
   let unit = $state('mg')
   let frequency = $state('1x/jour')
   let method = $state<AdministrationMethod>('pill')
-  let startDate = $state(new Date().toISOString().split('T')[0]!)
+  let startDate = $state(toDateInput(new Date()))
   let stock = $state('')
   let stockUnit = $state('')
   let stockAlert = $state('')
@@ -55,10 +57,10 @@
         unit,
         frequency,
         method,
-        startDate: new Date(startDate),
-        stock: stock ? parseFloat(stock) : undefined,
+        startDate: fromDateInput(startDate),
+        stock: parseOptionalNumberInput(stock),
         stockUnit: stockUnit || undefined,
-        stockAlert: stockAlert ? parseFloat(stockAlert) : undefined,
+        stockAlert: parseOptionalNumberInput(stockAlert),
         isActive: true,
         schedulingMode,
         scheduledTimes: schedulingMode === 'advanced' ? scheduledTimes : undefined,

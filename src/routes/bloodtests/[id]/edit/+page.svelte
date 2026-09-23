@@ -4,6 +4,7 @@
   import { i18n } from '$lib/i18n.svelte'
   import { getBloodTest, updateBloodTest, getUserProfile } from '$lib/db'
   import { BLOOD_MARKERS, convertToCanonicalUnit } from '$lib/constants'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { BloodMarker, BloodTestResult } from '$lib/types'
   import BloodTestFormFields, {
     EMPTY_MARKER_VALUES,
@@ -41,7 +42,7 @@
       context = profile.targetGender === 'masculinizing' ? 'masculinizing' : 'feminizing'
     }
 
-    date = new Date(test.date).toISOString().split('T')[0]!
+    date = toDateInput(new Date(test.date))
     lab = test.lab ?? ''
     practitionerId = test.practitionerId
     notes = test.notes ?? ''
@@ -84,7 +85,7 @@
     saving = true
     try {
       await updateBloodTest(testId, {
-        date: new Date(date),
+        date: fromDateInput(date),
         lab: lab || undefined,
         practitionerId,
         results,

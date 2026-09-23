@@ -12,6 +12,7 @@
     getGelApplicationHistory,
   } from '$lib/db'
   import { MEDICATION_TYPES } from '$lib/constants'
+  import { toDateInput } from '$lib/date-input'
   import type { Medication, MedicationLog } from '$lib/types'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Trash2 from '@lucide/svelte/icons/trash-2'
@@ -73,7 +74,7 @@
     if (!log.id) return
     const date = new Date(log.timestamp)
     editingLogId = log.id
-    editingLogDate = date.toISOString().split('T')[0]!
+    editingLogDate = toDateInput(date)
     editingLogTime = format(date, 'HH:mm')
   }
 

@@ -9,6 +9,7 @@
     findOrCreatePractitioner,
     incrementPractitionerUsage,
   } from '$lib/db'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { AppointmentType, Objective } from '$lib/types'
   import AppointmentFormFields from '$lib/components/appointments/AppointmentFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
@@ -45,7 +46,7 @@
     appointmentId = id
     objectives = objectivesData
 
-    date = new Date(appointment.date).toISOString().split('T')[0]!
+    date = toDateInput(new Date(appointment.date))
     time = appointment.time ?? ''
     type = appointment.type
     doctor = appointment.doctor ?? ''
@@ -84,7 +85,7 @@
       }
 
       await updateAppointment(appointmentId, {
-        date: new Date(date),
+        date: fromDateInput(date),
         time: time || undefined,
         type,
         doctor: doctor || undefined,

@@ -6,6 +6,8 @@ import {
   isAppointmentPast,
   getAppointmentDateTime,
   getNextApplicationZone,
+  parseOptionalNumberInput,
+  formatCurrency,
 } from './utils'
 import type { Appointment } from './types'
 
@@ -182,5 +184,30 @@ describe('getNextApplicationZone', () => {
     expect(getNextApplicationZone(order, 'forearm_left' as (typeof order)[number])).toBe(
       'thigh_left'
     )
+  })
+})
+
+describe('parseOptionalNumberInput', () => {
+  it('retourne undefined pour une chaîne vide', () => {
+    expect(parseOptionalNumberInput('')).toBeUndefined()
+  })
+
+  it('conserve 0 au lieu de le traiter comme une valeur absente', () => {
+    expect(parseOptionalNumberInput('0')).toBe(0)
+  })
+
+  it('convertit une valeur numérique normale', () => {
+    expect(parseOptionalNumberInput('12')).toBe(12)
+    expect(parseOptionalNumberInput('3.5')).toBe(3.5)
+  })
+})
+
+describe('formatCurrency', () => {
+  it('formate un montant en euros pour le contexte français', () => {
+    expect(formatCurrency(12.5, 'fr')).toBe('12,50 €')
+  })
+
+  it('arrondit à deux décimales', () => {
+    expect(formatCurrency(12, 'fr')).toBe('12,00 €')
   })
 })

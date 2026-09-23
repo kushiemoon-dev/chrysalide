@@ -135,7 +135,7 @@
     }
 
     appointment = appointments[0]
-    journalEntry = journalEntries[0]
+    journalEntry = journalEntries.find((e) => !e.isPrivate)
 
     loaded = true
   })

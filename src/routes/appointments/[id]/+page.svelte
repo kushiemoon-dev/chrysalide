@@ -4,6 +4,8 @@
   import { format, set as setDateFields } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { getAppointment, deleteAppointment, getObjective } from '$lib/db'
+  import { getModulePreferences } from '$lib/notifications'
+  import { formatCurrency } from '$lib/utils'
   import type { Appointment, Objective } from '$lib/types'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Trash2 from '@lucide/svelte/icons/trash-2'
@@ -19,6 +21,7 @@
   let appointment = $state<Appointment | null>(null)
   let objective = $state<Objective | null>(null)
   let loading = $state(true)
+  const costTrackingEnabled = getModulePreferences().costTrackingEnabled
 
   async function loadData() {
     const id = parseInt(page.params.id!)
@@ -142,10 +145,10 @@
     </div>
   {/if}
 
-  {#if appointment.cost !== undefined && appointment.cost > 0}
+  {#if costTrackingEnabled && appointment.cost !== undefined && appointment.cost > 0}
     <div class="card">
       <p class="card-title"><Euro size={14} /> {i18n.t('appointments.detail.costTitle')}</p>
-      <p class="value">{appointment.cost} €</p>
+      <p class="value">{formatCurrency(appointment.cost, i18n.locale)}</p>
     </div>
   {/if}
 

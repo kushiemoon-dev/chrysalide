@@ -1,6 +1,7 @@
 <script lang="ts">
   import { format } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { Milestone } from '$lib/types'
   import CalendarIcon from '@lucide/svelte/icons/calendar'
   import CheckCircle2 from '@lucide/svelte/icons/check-circle-2'
@@ -27,7 +28,7 @@
 
   function startEdit() {
     editTitle = milestone.title
-    editDate = milestone.date ? new Date(milestone.date).toISOString().split('T')[0]! : ''
+    editDate = milestone.date ? toDateInput(new Date(milestone.date)) : ''
     isEditing = true
   }
 
@@ -35,7 +36,7 @@
     if (!editTitle.trim() || !milestone.id) return
     onUpdate(milestone.id, {
       title: editTitle.trim(),
-      date: editDate ? new Date(editDate) : undefined,
+      date: editDate ? fromDateInput(editDate) : undefined,
     })
     isEditing = false
   }

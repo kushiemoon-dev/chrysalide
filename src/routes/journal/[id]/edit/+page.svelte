@@ -4,6 +4,7 @@
   import { set as setDateFields } from 'date-fns'
   import { i18n } from '$lib/i18n.svelte'
   import { getJournalEntry, updateJournalEntry } from '$lib/db'
+  import { toDateInput } from '$lib/date-input'
   import type { MoodLevel } from '$lib/types'
   import JournalFormFields from '$lib/components/journal/JournalFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
@@ -36,7 +37,7 @@
 
     entryId = id
     originalDate = new Date(entry.date)
-    date = originalDate.toISOString().split('T')[0]!
+    date = toDateInput(originalDate)
     content = entry.content
     mood = entry.mood
     energyLevel = entry.energyLevel

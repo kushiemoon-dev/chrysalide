@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation'
   import { i18n } from '$lib/i18n.svelte'
   import { getObjective, updateObjective } from '$lib/db'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { Objective, ObjectiveCategory, ObjectiveStatus, ActCategory } from '$lib/types'
   import ObjectiveFormFields from '$lib/components/objectives/ObjectiveFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
@@ -40,7 +41,7 @@
     actCategory = data.actCategory ?? ''
     information = data.information ?? ''
     status = data.status
-    targetDate = data.targetDate ? new Date(data.targetDate).toISOString().split('T')[0]! : ''
+    targetDate = data.targetDate ? toDateInput(new Date(data.targetDate)) : ''
     notes = data.notes ?? ''
 
     loading = false
@@ -64,7 +65,7 @@
         description: description.trim() || undefined,
         category,
         status,
-        targetDate: targetDate ? new Date(targetDate) : undefined,
+        targetDate: targetDate ? fromDateInput(targetDate) : undefined,
         notes: notes.trim() || undefined,
         actCategory: category === 'medical' && actCategory ? actCategory : undefined,
         information: category === 'medical' ? information.trim() || undefined : undefined,

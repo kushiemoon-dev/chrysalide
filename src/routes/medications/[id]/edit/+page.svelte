@@ -3,6 +3,8 @@
   import { goto } from '$app/navigation'
   import { i18n } from '$lib/i18n.svelte'
   import { getMedication, updateMedication, recordTreatmentChange } from '$lib/db'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
+  import { parseOptionalNumberInput } from '$lib/utils'
   import type {
     MedicationType,
     AdministrationMethod,
@@ -56,8 +58,8 @@
     unit = med.unit
     frequency = med.frequency
     method = med.method
-    startDate = new Date(med.startDate).toISOString().split('T')[0]!
-    endDate = med.endDate ? new Date(med.endDate).toISOString().split('T')[0]! : ''
+    startDate = toDateInput(new Date(med.startDate))
+    endDate = med.endDate ? toDateInput(new Date(med.endDate)) : ''
     stock = med.stock?.toString() || ''
     stockUnit = med.stockUnit || ''
     stockAlert = med.stockAlert?.toString() || ''
@@ -131,11 +133,11 @@
         unit,
         frequency,
         method,
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : undefined,
-        stock: stock ? parseFloat(stock) : undefined,
+        startDate: fromDateInput(startDate),
+        endDate: endDate ? fromDateInput(endDate) : undefined,
+        stock: parseOptionalNumberInput(stock),
         stockUnit: stockUnit || undefined,
-        stockAlert: stockAlert ? parseFloat(stockAlert) : undefined,
+        stockAlert: parseOptionalNumberInput(stockAlert),
         notes: notes || undefined,
         isActive,
         schedulingMode,

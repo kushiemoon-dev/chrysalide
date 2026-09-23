@@ -3,6 +3,7 @@
   import { format, subMonths, startOfMonth, endOfMonth, endOfDay } from 'date-fns'
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { getTreatmentChanges } from '$lib/db'
+  import { toDateInput, fromDateInput } from '$lib/date-input'
   import type { TreatmentChange, TreatmentChangeType } from '$lib/types'
   import ChangeEntry, { changeTypeConfig } from '$lib/components/medications/ChangeEntry.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
@@ -20,8 +21,8 @@
 
   let typeFilter = $state<FilterType>('all')
   let medicationFilter = $state<MedicationFilter>('all')
-  let rangeFrom = $state(subMonths(new Date(), 6).toISOString().split('T')[0]!)
-  let rangeTo = $state(new Date().toISOString().split('T')[0]!)
+  let rangeFrom = $state(toDateInput(subMonths(new Date(), 6)))
+  let rangeTo = $state(toDateInput(new Date()))
 
   onMount(async () => {
     changes = await getTreatmentChanges(undefined, 500)
@@ -31,8 +32,8 @@
   let dateLocale = $derived(getDateLocale(i18n.locale))
 
   let filteredChanges = $derived.by(() => {
-    const from = new Date(rangeFrom)
-    const to = endOfDay(new Date(rangeTo))
+    const from = fromDateInput(rangeFrom)
+    const to = endOfDay(fromDateInput(rangeTo))
     return changes.filter((change) => {
       if (typeFilter !== 'all' && change.changeType !== typeFilter) return false
       if (medicationFilter !== 'all' && change.medicationId !== medicationFilter) return false
@@ -77,8 +78,8 @@
   })
 
   function setRange(months: number) {
-    rangeFrom = subMonths(new Date(), months).toISOString().split('T')[0]!
-    rangeTo = new Date().toISOString().split('T')[0]!
+    rangeFrom = toDateInput(subMonths(new Date(), months))
+    rangeTo = toDateInput(new Date())
   }
 </script>
 

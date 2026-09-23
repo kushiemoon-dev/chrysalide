@@ -3,13 +3,14 @@
   import { set as setDateFields } from 'date-fns'
   import { i18n } from '$lib/i18n.svelte'
   import { addJournalEntry } from '$lib/db'
+  import { toDateInput } from '$lib/date-input'
   import type { MoodLevel } from '$lib/types'
   import JournalFormFields from '$lib/components/journal/JournalFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let saving = $state(false)
 
-  let date = $state(new Date().toISOString().split('T')[0]!)
+  let date = $state(toDateInput(new Date()))
   let content = $state('')
   let mood = $state<MoodLevel | undefined>(undefined)
   let energyLevel = $state<MoodLevel | undefined>(undefined)
