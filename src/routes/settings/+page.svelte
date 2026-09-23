@@ -75,6 +75,9 @@
   function handleAutoValidationToggle(enabled: boolean) {
     autoValidationEnabled = enabled
     localStorage.setItem('medication-auto-validation', String(enabled))
+    if (enabled) {
+      localStorage.setItem('chrysalide_auto_validation_since', new Date().toISOString())
+    }
   }
 
   async function handleEnableNotifications() {

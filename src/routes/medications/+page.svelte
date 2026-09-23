@@ -79,10 +79,10 @@
   let autoValidating = false
 
   /**
-   * Catches up on every past-due dose without a log yet, across the whole
-   * treatment period (not just today/yesterday). Runs on mount and whenever
-   * the tab regains visibility, instead of a setInterval that dies once the
-   * PWA is backgrounded.
+   * Catches up on every past-due dose without a log yet, since the last
+   * catch-up run (marker in localStorage), never before a medication's own
+   * startDate. Runs on mount and whenever the tab regains visibility,
+   * instead of a setInterval that dies once the PWA is backgrounded.
    */
   async function catchUpAutoValidation(medications: Medication[]): Promise<number> {
     if (autoValidating || !isAutoValidationEnabled()) return 0
@@ -96,8 +96,10 @@
         const start = new Date(med.startDate)
         return start < earliest ? start : earliest
       }, new Date(activeMeds[0]!.startDate))
-      const rangeStart = startOfDay(earliestStart)
       const now = new Date()
+      const storedSince = localStorage.getItem('chrysalide_auto_validation_since')
+      const since = storedSince ? new Date(storedSince) : startOfDay(addDays(now, -1))
+      const rangeStart = startOfDay(since > earliestStart ? since : earliestStart)
 
       const existingLogs = await getMedicationLogsBetween(rangeStart, now)
       const pending = computeMissingAutoValidations({
@@ -105,6 +107,7 @@
         existingLogs,
         now,
         enabled: true,
+        since,
       })
 
       for (const dose of pending) {
@@ -117,6 +120,8 @@
           notes: i18n.t('medications.list.autoValidated'),
         })
       }
+
+      localStorage.setItem('chrysalide_auto_validation_since', now.toISOString())
 
       return pending.length
     } finally {

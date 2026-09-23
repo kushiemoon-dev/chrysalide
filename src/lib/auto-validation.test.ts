@@ -27,6 +27,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-05T12:00:00'),
       enabled: false,
+      since: med.startDate,
     })
     expect(result).toEqual([])
   })
@@ -41,6 +42,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: logs,
       now: new Date('2024-01-05T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toEqual([])
   })
@@ -52,6 +54,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-05T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toHaveLength(2)
     expect(result[0]).toMatchObject({
@@ -75,6 +78,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-08T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toHaveLength(8) // 1er au 8 janvier inclus
   })
@@ -86,6 +90,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-05T08:00:00'), // avant 9h
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toEqual([])
   })
@@ -97,6 +102,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-05T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toHaveLength(1)
   })
@@ -111,6 +117,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-08T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toHaveLength(3) // 1, 2, 3 janvier seulement
   })
@@ -122,6 +129,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-05T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toEqual([])
   })
@@ -133,6 +141,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: [],
       now: new Date('2024-01-15T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     // jours 1, 8, 15 (interval de 7 jours depuis le 1er)
     expect(result).toHaveLength(3)
@@ -149,6 +158,7 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: logs,
       now: new Date('2024-01-05T12:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toEqual([])
   })
@@ -171,8 +181,48 @@ describe('computeMissingAutoValidations', () => {
       existingLogs: logs,
       now: new Date('2024-01-05T23:00:00'),
       enabled: true,
+      since: med.startDate,
     })
     expect(result).toHaveLength(1)
     expect(result[0]).toMatchObject({ scheduledTime: '21:00', doseIndex: 1 })
+  })
+
+  it('ne rattrape rien avant since (repère du dernier rattrapage)', () => {
+    const med = makeMedication({ startDate: new Date('2023-01-01') })
+    const result = computeMissingAutoValidations({
+      medications: [med],
+      existingLogs: [],
+      now: new Date('2024-01-07T12:00:00'),
+      enabled: true,
+      since: new Date('2024-01-05'),
+    })
+    expect(result).toHaveLength(3) // 5, 6, 7 janvier seulement, pas depuis 2023
+    expect(result.map((r) => r.timestamp.getDate())).toEqual([5, 6, 7])
+  })
+
+  it('respecte une startDate postérieure à since', () => {
+    const med = makeMedication({ startDate: new Date('2024-01-05') })
+    const result = computeMissingAutoValidations({
+      medications: [med],
+      existingLogs: [],
+      now: new Date('2024-01-07T12:00:00'),
+      enabled: true,
+      since: new Date('2023-01-01'), // bien avant startDate
+    })
+    expect(result).toHaveLength(3) // 5, 6, 7 janvier, jamais avant le début du traitement
+    expect(result.map((r) => r.timestamp.getDate())).toEqual([5, 6, 7])
+  })
+
+  it('comble un trou de plusieurs jours depuis le dernier rattrapage', () => {
+    const med = makeMedication({ startDate: new Date('2024-01-01') })
+    const result = computeMissingAutoValidations({
+      medications: [med],
+      existingLogs: [],
+      now: new Date('2024-01-08T12:00:00'),
+      enabled: true,
+      since: new Date('2024-01-05'), // dernier rattrapage
+    })
+    expect(result).toHaveLength(4) // 5, 6, 7, 8 janvier seulement, pas depuis le 1er
+    expect(result.map((r) => r.timestamp.getDate())).toEqual([5, 6, 7, 8])
   })
 })

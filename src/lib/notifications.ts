@@ -144,6 +144,7 @@ export function getFrequencyIntervalDays(frequency: string): number {
   if (lower.includes('1x/10jours') || lower.includes('10 jours')) return 10
   if (lower.includes('2x/semaine')) return 3.5 // ~2 times per week
   if (lower.includes('1x/semaine') || lower.includes('hebdomadaire')) return 7
+  if (lower.includes('1x/12semaines') || lower.includes('12 semaines')) return 84
   if (lower.includes('1x/2semaines') || lower.includes('2 semaines')) return 14
   if (lower.includes('1x/mois') || lower.includes('mensuel')) return 28
   if (lower.includes('1x/3mois') || lower.includes('3 mois') || lower.includes('trimestriel'))
