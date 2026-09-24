@@ -19,6 +19,7 @@
   } from '$lib/db'
   import { shouldTakeMedicationToday, getMedicationReminderTimes } from '$lib/notifications'
   import { estimateStockDaysRemaining } from '$lib/notifications'
+  import { runAutoValidationCatchUp } from '$lib/auto-validation-catchup'
   import { getNextApplicationZone } from '$lib/utils'
   import {
     REFERENCE_RANGES,
@@ -61,7 +62,7 @@
   let hasMedications = $state(false)
   let loaded = $state(false)
 
-  onMount(async () => {
+  async function loadDashboard() {
     const [profile, meds, todayLogs, bloodTests, appointments, journalEntries] = await Promise.all([
       getUserProfile(),
       getMedications(true),
@@ -138,6 +139,23 @@
     journalEntry = journalEntries.find((e) => !e.isPrivate)
 
     loaded = true
+  }
+
+  onMount(() => {
+    async function init() {
+      await runAutoValidationCatchUp()
+      await loadDashboard()
+    }
+    init()
+
+    async function handleVisibilityChange() {
+      if (document.visibilityState !== 'visible') return
+      const count = await runAutoValidationCatchUp()
+      if (count > 0) await loadDashboard()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
   })
 </script>
 
