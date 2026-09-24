@@ -3,6 +3,7 @@
   import { format } from 'date-fns'
   import type { Measurements, PhysicalProgress } from '$lib/types'
   import { chronological } from './progress-charts'
+  import ChartTooltip from '$lib/components/ui/ChartTooltip.svelte'
 
   let {
     entries,
@@ -59,26 +60,84 @@
       })
       .filter((s): s is NonNullable<typeof s> => s !== null)
   )
+
+  let activeIndex = $state<number | null>(null)
+  let svgEl = $state<SVGSVGElement>()
+  let chartWrapEl = $state<HTMLDivElement>()
+
+  function handlePointer(e: PointerEvent) {
+    if (!svgEl || sortedEntries.length === 0) return
+    const rect = svgEl.getBoundingClientRect()
+    const ratio = (e.clientX - rect.left) / rect.width
+    const n = sortedEntries.length
+    const index = n > 1 ? Math.round(ratio * (n - 1)) : 0
+    activeIndex = Math.max(0, Math.min(index, n - 1))
+  }
+
+  function closeTooltip() {
+    activeIndex = null
+  }
+
+  $effect(() => {
+    function handleOutside(e: PointerEvent) {
+      if (chartWrapEl && !chartWrapEl.contains(e.target as Node)) activeIndex = null
+    }
+    document.addEventListener('pointerdown', handleOutside)
+    return () => document.removeEventListener('pointerdown', handleOutside)
+  })
+
+  let tooltipRows = $derived.by(() => {
+    if (activeIndex === null) return []
+    const entry = sortedEntries[activeIndex]
+    if (!entry) return []
+    return series
+      .map((s) => {
+        const value = entry.measurements?.[s.key]
+        if (value === undefined) return null
+        return { label: s.label, value: `${value} ${s.unit}`, color: s.color, alert: false }
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+  })
 </script>
 
 {#if chartSeries.length === 0}
   <p class="empty">{i18n.t('progress.noMeasurements')}</p>
 {:else}
-  <svg viewBox={`0 0 ${VIEW_W} ${height}`} class="chart">
-    {#each chartSeries as s (s.key)}
-      {#if s.points.length > 1}
-        <polyline
-          points={s.points.map((p) => `${p.x},${p.y}`).join(' ')}
-          fill="none"
-          stroke={s.color}
-          stroke-width="2"
-        />
-      {/if}
-      {#each s.points as p, i (i)}
-        <circle cx={p.x} cy={p.y} r="3" fill={s.color} />
+  <div class="chart-wrap" bind:this={chartWrapEl}>
+    <svg
+      viewBox={`0 0 ${VIEW_W} ${height}`}
+      class="chart"
+      role="img"
+      bind:this={svgEl}
+      onpointerdown={handlePointer}
+      onpointermove={handlePointer}
+      onpointerleave={closeTooltip}
+    >
+      {#each chartSeries as s (s.key)}
+        {#if s.points.length > 1}
+          <polyline
+            points={s.points.map((p) => `${p.x},${p.y}`).join(' ')}
+            fill="none"
+            stroke={s.color}
+            stroke-width="2"
+          />
+        {/if}
+        {#each s.points as p, i (i)}
+          <circle cx={p.x} cy={p.y} r="3" fill={s.color} />
+        {/each}
       {/each}
-    {/each}
-  </svg>
+    </svg>
+    {#if activeIndex !== null && tooltipRows.length > 0}
+      <ChartTooltip
+        containerEl={chartWrapEl}
+        x={chartWrapEl ? (xFor(activeIndex) / VIEW_W) * chartWrapEl.clientWidth : 0}
+        date={format(sortedEntries[activeIndex]!.date, 'd MMMM yyyy', {
+          locale: getDateLocale(i18n.locale),
+        })}
+        rows={tooltipRows}
+      />
+    {/if}
+  </div>
 
   {#if sortedEntries.length > 1}
     <div class="x-labels">
@@ -113,9 +172,13 @@
     text-align: center;
     padding: 24px 0;
   }
+  .chart-wrap {
+    position: relative;
+  }
   .chart {
     width: 100%;
     display: block;
+    touch-action: none;
   }
   .x-labels {
     display: flex;
