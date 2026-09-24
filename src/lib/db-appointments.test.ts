@@ -168,4 +168,33 @@ describe('getAppointmentsByAct / getAppointmentsByObjective', () => {
     const apts = await getAppointmentsByObjective(1)
     expect(apts).toHaveLength(1)
   })
+
+  it('getAppointmentsByObjective trie par date+heure décroissant', async () => {
+    await addAppointment({
+      ...baseAppointment,
+      objectiveId: 1,
+      date: new Date('2099-01-10'),
+      time: '09:00',
+    })
+    await addAppointment({
+      ...baseAppointment,
+      objectiveId: 1,
+      date: new Date('2099-01-20'),
+      time: '09:00',
+    })
+    // Same day as the first, but later in the day.
+    await addAppointment({
+      ...baseAppointment,
+      objectiveId: 1,
+      date: new Date('2099-01-10'),
+      time: '16:00',
+    })
+
+    const apts = await getAppointmentsByObjective(1)
+    expect(apts.map((a) => `${a.date.toISOString().split('T')[0]}T${a.time}`)).toEqual([
+      '2099-01-20T09:00',
+      '2099-01-10T16:00',
+      '2099-01-10T09:00',
+    ])
+  })
 })
