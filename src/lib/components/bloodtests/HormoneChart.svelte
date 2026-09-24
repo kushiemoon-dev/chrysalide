@@ -3,16 +3,19 @@
   import { format } from 'date-fns'
   import { BLOOD_MARKERS, REFERENCE_RANGES, getHematocritStatus } from '$lib/constants'
   import type { BloodTest, BloodMarker } from '$lib/types'
+  import ChartTooltip from '$lib/components/ui/ChartTooltip.svelte'
 
   let {
     tests,
     series,
     context,
+    ariaLabel,
     height = 150,
   }: {
     tests: BloodTest[]
     series: { marker: BloodMarker; color: string }[]
     context: 'feminizing' | 'masculinizing'
+    ariaLabel: string
     height?: number
   } = $props()
 
@@ -24,6 +27,14 @@
 
   function referenceRange(marker: BloodMarker) {
     return REFERENCE_RANGES.find((r) => r.marker === marker && r.context === context)
+  }
+
+  // Hematocrit has its own dedicated thresholds (also used by the legend
+  // below), not a REFERENCE_RANGES entry per context.
+  function isOutOfRange(marker: BloodMarker, value: number): boolean {
+    if (marker === 'hematocrit') return getHematocritStatus(value) !== 'ok'
+    const range = referenceRange(marker)
+    return range ? value < range.min || value > range.max : false
   }
 
   function seriesPoints(marker: BloodMarker) {
@@ -79,36 +90,123 @@
       })
       .filter((s): s is NonNullable<typeof s> => s !== null)
   )
+
+  let activeIndex = $state<number | null>(null)
+  let svgEl = $state<SVGSVGElement>()
+  let chartWrapEl = $state<HTMLDivElement>()
+
+  function hasAnyValue(index: number): boolean {
+    const test = sortedTests[index]
+    if (!test) return false
+    return series.some(({ marker }) => test.results.some((r) => r.marker === marker))
+  }
+
+  // The tap snaps to the nearest index by pixel ratio, but that index might
+  // carry no value for any series drawn on this chart (sparse safety
+  // markers, for example) — walk outward until an index with real data is
+  // found, so a tap near a point never silently shows nothing.
+  function nearestValidIndex(target: number): number {
+    const n = sortedTests.length
+    for (let d = 0; d < n; d++) {
+      if (target - d >= 0 && hasAnyValue(target - d)) return target - d
+      if (target + d < n && hasAnyValue(target + d)) return target + d
+    }
+    return target
+  }
+
+  function handlePointer(e: PointerEvent) {
+    if (!svgEl || sortedTests.length === 0) return
+    const rect = svgEl.getBoundingClientRect()
+    const ratio = (e.clientX - rect.left) / rect.width
+    const n = sortedTests.length
+    const index = n > 1 ? Math.round(ratio * (n - 1)) : 0
+    activeIndex = nearestValidIndex(Math.max(0, Math.min(index, n - 1)))
+  }
+
+  // A real tap fires pointerdown/pointerup then pointerleave in quick
+  // succession for a pointer that can't hover (it never "left" a point it
+  // was never hovering) — only a mouse leaving the chart should close it.
+  function closeTooltip(e: PointerEvent) {
+    if (e.pointerType === 'mouse') activeIndex = null
+  }
+
+  $effect(() => {
+    function handleOutside(e: PointerEvent) {
+      if (chartWrapEl && !chartWrapEl.contains(e.target as Node)) activeIndex = null
+    }
+    document.addEventListener('pointerdown', handleOutside)
+    return () => document.removeEventListener('pointerdown', handleOutside)
+  })
+
+  let tooltipRows = $derived.by(() => {
+    if (activeIndex === null) return []
+    const test = sortedTests[activeIndex]
+    if (!test) return []
+    return series
+      .map(({ marker, color }) => {
+        const result = test.results.find((r) => r.marker === marker)
+        if (!result) return null
+        const outOfRange = isOutOfRange(marker, result.value)
+        return {
+          label: i18n.t('bloodtests.markers.' + marker),
+          value: `${result.value} ${BLOOD_MARKERS[marker].unit}`,
+          color,
+          alert: outOfRange,
+        }
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+  })
 </script>
 
 {#if chartSeries.length === 0}
   <p class="empty">{i18n.t('bloodtests.notEnoughForChart')}</p>
 {:else}
-  <svg viewBox={`0 0 ${VIEW_W} ${height}`} class="chart">
-    {#each chartSeries as s (s.marker)}
-      {#if s.bandY !== undefined && s.bandHeight !== undefined}
-        <rect
-          x="0"
-          y={s.bandY}
-          width={VIEW_W}
-          height={s.bandHeight}
-          fill={s.color}
-          opacity="0.12"
-        />
-      {/if}
-      {#if s.points.length > 1}
-        <polyline
-          points={s.points.map((p) => `${p.x},${p.y}`).join(' ')}
-          fill="none"
-          stroke={s.color}
-          stroke-width="2"
-        />
-      {/if}
-      {#each s.points as p, i (i)}
-        <circle cx={p.x} cy={p.y} r="3" fill={s.color} />
+  <div class="chart-wrap" bind:this={chartWrapEl}>
+    <svg
+      viewBox={`0 0 ${VIEW_W} ${height}`}
+      class="chart"
+      role="img"
+      aria-label={ariaLabel}
+      bind:this={svgEl}
+      onpointerdown={handlePointer}
+      onpointermove={handlePointer}
+      onpointerleave={closeTooltip}
+    >
+      {#each chartSeries as s (s.marker)}
+        {#if s.bandY !== undefined && s.bandHeight !== undefined}
+          <rect
+            x="0"
+            y={s.bandY}
+            width={VIEW_W}
+            height={s.bandHeight}
+            fill={s.color}
+            opacity="0.12"
+          />
+        {/if}
+        {#if s.points.length > 1}
+          <polyline
+            points={s.points.map((p) => `${p.x},${p.y}`).join(' ')}
+            fill="none"
+            stroke={s.color}
+            stroke-width="2"
+          />
+        {/if}
+        {#each s.points as p, i (i)}
+          <circle cx={p.x} cy={p.y} r="3" fill={s.color} />
+        {/each}
       {/each}
-    {/each}
-  </svg>
+    </svg>
+    {#if activeIndex !== null && tooltipRows.length > 0}
+      <ChartTooltip
+        containerEl={chartWrapEl}
+        x={chartWrapEl ? (xFor(activeIndex) / VIEW_W) * chartWrapEl.clientWidth : 0}
+        date={format(sortedTests[activeIndex]!.date, 'd MMMM yyyy', {
+          locale: getDateLocale(i18n.locale),
+        })}
+        rows={tooltipRows}
+      />
+    {/if}
+  </div>
 
   {#if sortedTests.length > 1}
     <div class="x-labels">
@@ -147,9 +245,15 @@
     text-align: center;
     padding: 24px 0;
   }
+  .chart-wrap {
+    position: relative;
+  }
   .chart {
     width: 100%;
     display: block;
+    /* Blocks horizontal scroll-vs-scrub ambiguity while still letting a
+       vertical swipe that starts on the chart scroll the page. */
+    touch-action: pan-y;
   }
   .x-labels {
     display: flex;

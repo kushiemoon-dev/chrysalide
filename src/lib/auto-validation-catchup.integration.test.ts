@@ -1,52 +1,26 @@
 import 'fake-indexeddb/auto'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { addDays, set, startOfDay } from 'date-fns'
-import { db, addMedication, getMedication, addMedicationLog, getMedicationLogsBetween } from './db'
-import { computeMissingAutoValidations } from './auto-validation'
-import type { Medication } from './types'
+import { addDays, set } from 'date-fns'
+import { db, addMedication, getMedication, addMedicationLog } from './db'
+import { runAutoValidationCatchUp } from './auto-validation-catchup'
 
 /**
- * Exercises the exact pipeline used by catchUpAutoValidation
- * (medications/+page.svelte) against a real (fake-indexeddb) database, to
- * check that existing users' saved data survives an update: a treatment
- * neglected for months, mixed with genuine manually-logged doses, must
- * back-fill without duplicating real entries and without corrupting stock.
+ * Exercises runAutoValidationCatchUp against a real (fake-indexeddb)
+ * database, to check that existing users' saved data survives an update: a
+ * treatment neglected for months, mixed with genuine manually-logged doses,
+ * must back-fill without duplicating real entries and without corrupting
+ * stock, even when triggered concurrently from more than one screen.
  */
 
 beforeEach(async () => {
   await db.medications.clear()
   await db.medicationLogs.clear()
+  localStorage.clear()
+  localStorage.setItem('medication-auto-validation', 'true')
+  // No prior catch-up run recorded: matches the local test helper's old
+  // default `since = new Date(0)`.
+  localStorage.setItem('chrysalide_auto_validation_since', new Date(0).toISOString())
 })
-
-async function runCatchUp(medications: Medication[], now: Date, since: Date = new Date(0)) {
-  const earliestStart = medications.reduce((earliest, med) => {
-    const start = new Date(med.startDate)
-    return start < earliest ? start : earliest
-  }, new Date(medications[0]!.startDate))
-  const rangeStart = startOfDay(since > earliestStart ? since : earliestStart)
-
-  const existingLogs = await getMedicationLogsBetween(rangeStart, now)
-  const pending = computeMissingAutoValidations({
-    medications,
-    existingLogs,
-    now,
-    enabled: true,
-    since,
-  })
-
-  for (const dose of pending) {
-    await addMedicationLog({
-      medicationId: dose.medicationId,
-      timestamp: dose.timestamp,
-      taken: true,
-      scheduledTime: dose.scheduledTime,
-      doseIndex: dose.doseIndex,
-      notes: 'Auto-validé',
-    })
-  }
-
-  return pending
-}
 
 describe('Rattrapage sur un traitement négligé (scénario utilisateur existant)', () => {
   it('comble 60 jours de trou sans dupliquer les prises déjà loguées, et sans stock négatif', async () => {
@@ -81,11 +55,10 @@ describe('Rattrapage sur un traitement négligé (scénario utilisateur existant
       scheduledTime: '09:00',
     })
 
-    const medication = (await getMedication(medId))!
-    const pending = await runCatchUp([medication], now)
+    const count = await runAutoValidationCatchUp(now)
 
     // 61 jours (0 à 60 inclus) moins les 2 déjà loguées manuellement.
-    expect(pending).toHaveLength(59)
+    expect(count).toBe(59)
 
     const allLogs = await db.medicationLogs.where('medicationId').equals(medId).toArray()
     expect(allLogs).toHaveLength(61)
@@ -117,11 +90,43 @@ describe('Rattrapage sur un traitement négligé (scénario utilisateur existant
       isActive: false,
     })) as number
 
-    const medication = (await getMedication(medId))!
-    const pending = await runCatchUp([medication], now)
+    const count = await runAutoValidationCatchUp(now)
 
-    expect(pending).toHaveLength(0)
+    expect(count).toBe(0)
     const stockAfter = await getMedication(medId)
     expect(stockAfter?.stock).toBe(10)
+  })
+
+  it("deux appels concurrents ne produisent qu'un seul passage de rattrapage (pas de doublon)", async () => {
+    const startDate = new Date('2024-01-01')
+    const now = set(addDays(startDate, 5), { hours: 12 })
+
+    const medId = (await addMedication({
+      name: 'Traitement concurrent',
+      type: 'estrogen',
+      dosage: 2,
+      unit: 'mg',
+      frequency: '1x/jour',
+      method: 'pill',
+      startDate,
+      stock: 10,
+      isActive: true,
+    })) as number
+
+    const [countA, countB] = await Promise.all([
+      runAutoValidationCatchUp(now),
+      runAutoValidationCatchUp(now),
+    ])
+
+    // The second call joins the first's in-flight promise instead of
+    // starting a second pass: both resolve to the same single-run result.
+    expect(countA).toBe(countB)
+    expect(countA).toBe(6) // days 0 to 5 inclusive
+
+    const allLogs = await db.medicationLogs.where('medicationId').equals(medId).toArray()
+    expect(allLogs).toHaveLength(6)
+
+    const updatedMedication = await getMedication(medId)
+    expect(updatedMedication?.stock).toBe(4) // 10 - 6, not 10 - 12
   })
 })

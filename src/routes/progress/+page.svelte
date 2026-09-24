@@ -202,6 +202,7 @@
                 unit: MEASUREMENT_UNITS[key],
                 color: MEASUREMENT_CHART_COLOR[key]!,
               }))}
+              ariaLabel={i18n.t('progress.bodyMeasurements')}
             />
           </div>
         </div>
@@ -220,6 +221,7 @@
                 color: MEASUREMENT_CHART_COLOR.weight!,
               },
             ]}
+            ariaLabel={i18n.t('progress.weightLabel')}
           />
         </div>
       {/if}

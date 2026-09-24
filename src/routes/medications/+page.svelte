@@ -7,16 +7,14 @@
     addMedicationLog,
     getTodayLogs,
     getLastMedicationLog,
-    getMedicationLogsBetween,
     getGelApplicationHistory,
   } from '$lib/db'
   import {
     getMedicationReminderTimes,
     isPeriodicFrequency,
     getFrequencyIntervalDays,
-    isAutoValidationEnabled,
   } from '$lib/notifications'
-  import { computeMissingAutoValidations } from '$lib/auto-validation'
+  import { runAutoValidationCatchUp } from '$lib/auto-validation-catchup'
   import { toDateInput } from '$lib/date-input'
   import { getNextApplicationZone } from '$lib/utils'
   import {
@@ -75,61 +73,6 @@
     else zoneDialogEl.close()
   })
 
-  // Guards against a second concurrent pass (e.g. a visibilitychange firing
-  // while the onMount catch-up is still running).
-  let autoValidating = false
-
-  /**
-   * Catches up on every past-due dose without a log yet, since the last
-   * catch-up run (marker in localStorage), never before a medication's own
-   * startDate. Runs on mount and whenever the tab regains visibility,
-   * instead of a setInterval that dies once the PWA is backgrounded.
-   */
-  async function catchUpAutoValidation(medications: Medication[]): Promise<number> {
-    if (autoValidating || !isAutoValidationEnabled()) return 0
-
-    const activeMeds = medications.filter((med) => med.isActive && med.id)
-    if (activeMeds.length === 0) return 0
-
-    autoValidating = true
-    try {
-      const earliestStart = activeMeds.reduce((earliest, med) => {
-        const start = new Date(med.startDate)
-        return start < earliest ? start : earliest
-      }, new Date(activeMeds[0]!.startDate))
-      const now = new Date()
-      const storedSince = localStorage.getItem('chrysalide_auto_validation_since')
-      const since = storedSince ? new Date(storedSince) : startOfDay(addDays(now, -1))
-      const rangeStart = startOfDay(since > earliestStart ? since : earliestStart)
-
-      const existingLogs = await getMedicationLogsBetween(rangeStart, now)
-      const pending = computeMissingAutoValidations({
-        medications: activeMeds,
-        existingLogs,
-        now,
-        enabled: true,
-        since,
-      })
-
-      for (const dose of pending) {
-        await addMedicationLog({
-          medicationId: dose.medicationId,
-          timestamp: dose.timestamp,
-          taken: true,
-          scheduledTime: dose.scheduledTime,
-          doseIndex: dose.doseIndex,
-          notes: i18n.t('medications.list.autoValidated'),
-        })
-      }
-
-      localStorage.setItem('chrysalide_auto_validation_since', now.toISOString())
-
-      return pending.length
-    } finally {
-      autoValidating = false
-    }
-  }
-
   async function loadData() {
     const [allMeds, logs] = await Promise.all([getMedications(false), getTodayLogs()])
 
@@ -144,7 +87,7 @@
     activeMedications = activeMeds
     inactiveMedications = allMeds.filter((med) => !activeMeds.includes(med))
 
-    const autoCreatedCount = await catchUpAutoValidation(activeMeds)
+    const autoCreatedCount = await runAutoValidationCatchUp()
     todayLogs = autoCreatedCount > 0 ? await getTodayLogs() : logs
 
     const periodicMeds = activeMeds.filter((med) => isPeriodicFrequency(med.frequency))
@@ -172,7 +115,7 @@
     async function handleVisibilityChange() {
       if (document.visibilityState !== 'visible') return
       if (activeMedications.length === 0) return
-      const count = await catchUpAutoValidation(activeMedications)
+      const count = await runAutoValidationCatchUp()
       if (count > 0) todayLogs = await getTodayLogs()
     }
 

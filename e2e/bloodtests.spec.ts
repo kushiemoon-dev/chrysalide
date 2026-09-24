@@ -1,5 +1,30 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { skipOnboarding } from './helpers'
+
+async function seedTwoEstradiolTests(page: Page) {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('ChrysalideDB')
+        req.onsuccess = () => {
+          const tx = req.result.transaction('bloodTests', 'readwrite')
+          tx.objectStore('bloodTests').add({
+            date: new Date('2026-01-10'),
+            results: [{ marker: 'estradiol', value: 120, unit: 'pg/mL' }],
+            createdAt: new Date(),
+          })
+          tx.objectStore('bloodTests').add({
+            date: new Date('2026-02-10'),
+            results: [{ marker: 'estradiol', value: 150, unit: 'pg/mL' }],
+            createdAt: new Date(),
+          })
+          tx.oncomplete = () => resolve()
+          tx.onerror = () => reject(tx.error)
+        }
+        req.onerror = () => reject(req.error)
+      })
+  )
+}
 
 test.describe('Ajout de résultat sanguin', () => {
   test.beforeEach(async ({ page }) => {
@@ -60,5 +85,139 @@ test.describe('Ajout de résultat sanguin', () => {
     await expect(labInput).toBeVisible()
     // placeholder should say "Optionnel"
     await expect(labInput).toHaveAttribute('placeholder', 'Optionnel')
+  })
+})
+
+test.describe("Infobulle du graphique d'hormones", () => {
+  test.beforeEach(async ({ page }) => {
+    await skipOnboarding(page)
+  })
+
+  test('un tap affiche date/marqueur/valeur, un tap dehors ferme, reste dans le conteneur à 360px (AC-5, AC-7)', async ({
+    page,
+  }) => {
+    await page.goto('/bloodtests')
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    await seedTwoEstradiolTests(page)
+    await page.reload()
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    const svg = page.locator('svg.chart').first()
+    const box = (await svg.boundingBox())!
+    await svg.dispatchEvent('pointerdown', {
+      clientX: box.x + box.width / 2,
+      clientY: box.y + box.height / 2,
+      pointerType: 'touch',
+      bubbles: true,
+    })
+
+    const tooltip = page.locator('.chart-tooltip')
+    await expect(tooltip).toBeVisible()
+    await expect(tooltip).toContainText('Œstradiol (E2)')
+    // The seeded value must actually reach the tooltip, not just the marker
+    // label (both test dates use estradiol, so either 120 or 150 is correct
+    // depending on which point the tap snapped to).
+    await expect(tooltip).toContainText(/120 pg\/mL|150 pg\/mL/)
+
+    await page.locator('h1').first().dispatchEvent('pointerdown', { bubbles: true })
+    await expect(tooltip).toHaveCount(0)
+
+    // AC-7: infobulle bornée horizontalement dans son conteneur, même à 360px.
+    await page.setViewportSize({ width: 360, height: 800 })
+    const boxAfterResize = (await svg.boundingBox())!
+    await svg.dispatchEvent('pointerdown', {
+      clientX: boxAfterResize.x + boxAfterResize.width * 0.9,
+      clientY: boxAfterResize.y + boxAfterResize.height / 2,
+      pointerType: 'touch',
+      bubbles: true,
+    })
+    const tooltipBox = (await tooltip.boundingBox())!
+    const wrapBox = (await page.locator('.chart-wrap').first().boundingBox())!
+    expect(tooltipBox.x).toBeGreaterThanOrEqual(wrapBox.x - 1)
+    expect(tooltipBox.x + tooltipBox.width).toBeLessThanOrEqual(wrapBox.x + wrapBox.width + 1)
+  })
+})
+
+test.describe("Infobulle du graphique d'hormones sur un vrai écran tactile", () => {
+  // Real touch emulation (not a single synthetic pointerdown): a real tap
+  // fires pointerdown, pointerup, then pointerout/pointerleave in quick
+  // succession for a pointer that can't hover, since it never "leaves" a
+  // point it was never hovering. onpointerleave must not close the tooltip
+  // for that pointer type, or lifting the finger closes it immediately.
+  test.use({ hasTouch: true })
+
+  test.beforeEach(async ({ page }) => {
+    await skipOnboarding(page)
+  })
+
+  test("un vrai tap laisse l'infobulle ouverte après avoir relevé le doigt (AC-5)", async ({
+    page,
+  }) => {
+    await page.goto('/bloodtests')
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    await seedTwoEstradiolTests(page)
+    await page.reload()
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    const svg = page.locator('svg.chart').first()
+    const box = (await svg.boundingBox())!
+    await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2)
+
+    await expect(page.locator('.chart-tooltip')).toBeVisible()
+  })
+})
+
+test.describe('Infobulle du graphique de sécurité (marqueurs sans plage par contexte)', () => {
+  test.beforeEach(async ({ page }) => {
+    await skipOnboarding(page)
+  })
+
+  test('un hématocrite au-dessus du seuil est coloré en alerte dans la même infobulle (AC-5)', async ({
+    page,
+  }) => {
+    await page.goto('/bloodtests')
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    // Hematocrit has no REFERENCE_RANGES entry per context (unlike
+    // estradiol): it uses its own dedicated threshold (HEMATOCRIT_ALERT_THRESHOLD
+    // = 54), which the tooltip must consult the same way the legend does.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve, reject) => {
+          const req = indexedDB.open('ChrysalideDB')
+          req.onsuccess = () => {
+            const tx = req.result.transaction('bloodTests', 'readwrite')
+            tx.objectStore('bloodTests').add({
+              date: new Date('2026-01-10'),
+              results: [{ marker: 'hematocrit', value: 56, unit: '%' }],
+              createdAt: new Date(),
+            })
+            tx.oncomplete = () => resolve()
+            tx.onerror = () => reject(tx.error)
+          }
+          req.onerror = () => reject(req.error)
+        })
+    )
+    await page.reload()
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    // Only chart on the page: no estradiol seeded, so the main hormone
+    // chart shows its empty state instead of an <svg>, leaving just the
+    // "safety markers" card (prolactin + hematocrit).
+    const svg = page.locator('svg.chart').first()
+    const box = (await svg.boundingBox())!
+    await svg.dispatchEvent('pointerdown', {
+      clientX: box.x + box.width / 2,
+      clientY: box.y + box.height / 2,
+      pointerType: 'touch',
+      bubbles: true,
+    })
+
+    const alertValue = page
+      .locator('.chart-tooltip .tt-row', { hasText: 'Hématocrite' })
+      .locator('.tt-value')
+    await expect(alertValue).toHaveClass(/alert/)
   })
 })

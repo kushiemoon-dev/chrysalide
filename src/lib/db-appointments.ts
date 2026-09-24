@@ -1,4 +1,5 @@
 import { db } from './db-schema'
+import { getAppointmentDateTime } from './utils'
 import type { Appointment, AppointmentType, Practitioner } from './types'
 
 // Appointments
@@ -157,5 +158,8 @@ export async function getAppointmentsByAct(actId: number) {
 }
 
 export async function getAppointmentsByObjective(objectiveId: number): Promise<Appointment[]> {
-  return db.appointments.where('objectiveId').equals(objectiveId).toArray()
+  const appointments = await db.appointments.where('objectiveId').equals(objectiveId).toArray()
+  return appointments.sort(
+    (a, b) => getAppointmentDateTime(b).getTime() - getAppointmentDateTime(a).getTime()
+  )
 }
