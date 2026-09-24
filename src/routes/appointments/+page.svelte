@@ -11,7 +11,7 @@
   } from '$lib/db'
   import { getRelativeDayLabel } from '$lib/appointment-labels'
   import { getModulePreferences } from '$lib/notifications'
-  import { formatCurrency } from '$lib/utils'
+  import { formatCurrency, getAppointmentDateTime } from '$lib/utils'
   import type { Appointment } from '$lib/types'
   import Plus from '@lucide/svelte/icons/plus'
   import Pencil from '@lucide/svelte/icons/pencil'
@@ -40,8 +40,31 @@
   })
 
   let upcomingIds = $derived(new Set(upcoming.map((a) => a.id)))
-  let past = $derived(allAppointments.filter((a) => !upcomingIds.has(a.id)))
+  let past = $derived(
+    allAppointments
+      .filter((a) => !upcomingIds.has(a.id))
+      .sort((a, b) => getAppointmentDateTime(b).getTime() - getAppointmentDateTime(a).getTime())
+  )
   let nextAppointment = $derived(upcoming[0] ?? null)
+
+  let pastGroups = $derived.by(() => {
+    const groups: { key: string; label: string; appointments: Appointment[] }[] = []
+    for (const apt of past) {
+      const date = new Date(apt.date)
+      const key = format(date, 'yyyy-MM')
+      const lastGroup = groups[groups.length - 1]
+      if (lastGroup?.key === key) {
+        lastGroup.appointments.push(apt)
+      } else {
+        groups.push({
+          key,
+          label: format(date, 'MMMM yyyy', { locale: getDateLocale(i18n.locale) }),
+          appointments: [apt],
+        })
+      }
+    }
+    return groups
+  })
 
   async function handleDelete(id: number) {
     if (!confirm(i18n.t('appointments.detail.deleteConfirm'))) return
@@ -149,11 +172,14 @@
   {:else if past.length === 0}
     <p class="empty">{i18n.t('appointments.list.nonePast')}</p>
   {:else}
-    <div class="apt-list">
-      {#each past as apt (apt.id)}
-        {@render aptCard(apt)}
-      {/each}
-    </div>
+    {#each pastGroups as group (group.key)}
+      <p class="month-heading">{group.label}</p>
+      <div class="apt-list">
+        {#each group.appointments as apt (apt.id)}
+          {@render aptCard(apt)}
+        {/each}
+      </div>
+    {/each}
   {/if}
 {/if}
 
@@ -364,6 +390,16 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+  .month-heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: capitalize;
+    margin: 18px 0 10px;
+  }
+  .month-heading:first-of-type {
+    margin-top: 0;
   }
   .apt-card {
     border: 1px solid var(--line);
