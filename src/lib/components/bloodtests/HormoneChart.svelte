@@ -85,17 +85,39 @@
   let svgEl = $state<SVGSVGElement>()
   let chartWrapEl = $state<HTMLDivElement>()
 
+  function hasAnyValue(index: number): boolean {
+    const test = sortedTests[index]
+    if (!test) return false
+    return series.some(({ marker }) => test.results.some((r) => r.marker === marker))
+  }
+
+  // The tap snaps to the nearest index by pixel ratio, but that index might
+  // carry no value for any series drawn on this chart (sparse safety
+  // markers, for example) — walk outward until an index with real data is
+  // found, so a tap near a point never silently shows nothing.
+  function nearestValidIndex(target: number): number {
+    const n = sortedTests.length
+    for (let d = 0; d < n; d++) {
+      if (target - d >= 0 && hasAnyValue(target - d)) return target - d
+      if (target + d < n && hasAnyValue(target + d)) return target + d
+    }
+    return target
+  }
+
   function handlePointer(e: PointerEvent) {
     if (!svgEl || sortedTests.length === 0) return
     const rect = svgEl.getBoundingClientRect()
     const ratio = (e.clientX - rect.left) / rect.width
     const n = sortedTests.length
     const index = n > 1 ? Math.round(ratio * (n - 1)) : 0
-    activeIndex = Math.max(0, Math.min(index, n - 1))
+    activeIndex = nearestValidIndex(Math.max(0, Math.min(index, n - 1)))
   }
 
-  function closeTooltip() {
-    activeIndex = null
+  // A real tap fires pointerdown/pointerup then pointerleave in quick
+  // succession for a pointer that can't hover (it never "left" a point it
+  // was never hovering) — only a mouse leaving the chart should close it.
+  function closeTooltip(e: PointerEvent) {
+    if (e.pointerType === 'mouse') activeIndex = null
   }
 
   $effect(() => {
@@ -219,7 +241,9 @@
   .chart {
     width: 100%;
     display: block;
-    touch-action: none;
+    /* Blocks horizontal scroll-vs-scrub ambiguity while still letting a
+       vertical swipe that starts on the chart scroll the page. */
+    touch-action: pan-y;
   }
   .x-labels {
     display: flex;

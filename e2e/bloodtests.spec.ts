@@ -1,5 +1,30 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { skipOnboarding } from './helpers'
+
+async function seedTwoEstradiolTests(page: Page) {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('ChrysalideDB')
+        req.onsuccess = () => {
+          const tx = req.result.transaction('bloodTests', 'readwrite')
+          tx.objectStore('bloodTests').add({
+            date: new Date('2026-01-10'),
+            results: [{ marker: 'estradiol', value: 120, unit: 'pg/mL' }],
+            createdAt: new Date(),
+          })
+          tx.objectStore('bloodTests').add({
+            date: new Date('2026-02-10'),
+            results: [{ marker: 'estradiol', value: 150, unit: 'pg/mL' }],
+            createdAt: new Date(),
+          })
+          tx.oncomplete = () => resolve()
+          tx.onerror = () => reject(tx.error)
+        }
+        req.onerror = () => reject(req.error)
+      })
+  )
+}
 
 test.describe('Ajout de résultat sanguin', () => {
   test.beforeEach(async ({ page }) => {
@@ -74,28 +99,7 @@ test.describe("Infobulle du graphique d'hormones", () => {
     await page.goto('/bloodtests')
     await expect(page.locator('.loading')).toHaveCount(0)
 
-    await page.evaluate(
-      () =>
-        new Promise<void>((resolve, reject) => {
-          const req = indexedDB.open('ChrysalideDB')
-          req.onsuccess = () => {
-            const tx = req.result.transaction('bloodTests', 'readwrite')
-            tx.objectStore('bloodTests').add({
-              date: new Date('2026-01-10'),
-              results: [{ marker: 'estradiol', value: 120, unit: 'pg/mL' }],
-              createdAt: new Date(),
-            })
-            tx.objectStore('bloodTests').add({
-              date: new Date('2026-02-10'),
-              results: [{ marker: 'estradiol', value: 150, unit: 'pg/mL' }],
-              createdAt: new Date(),
-            })
-            tx.oncomplete = () => resolve()
-            tx.onerror = () => reject(tx.error)
-          }
-          req.onerror = () => reject(req.error)
-        })
-    )
+    await seedTwoEstradiolTests(page)
     await page.reload()
     await expect(page.locator('.loading')).toHaveCount(0)
 
@@ -111,6 +115,10 @@ test.describe("Infobulle du graphique d'hormones", () => {
     const tooltip = page.locator('.chart-tooltip')
     await expect(tooltip).toBeVisible()
     await expect(tooltip).toContainText('Œstradiol (E2)')
+    // The seeded value must actually reach the tooltip, not just the marker
+    // label (both test dates use estradiol, so either 120 or 150 is correct
+    // depending on which point the tap snapped to).
+    await expect(tooltip).toContainText(/120 pg\/mL|150 pg\/mL/)
 
     await page.locator('h1').first().dispatchEvent('pointerdown', { bubbles: true })
     await expect(tooltip).toHaveCount(0)
@@ -128,5 +136,35 @@ test.describe("Infobulle du graphique d'hormones", () => {
     const wrapBox = (await page.locator('.chart-wrap').first().boundingBox())!
     expect(tooltipBox.x).toBeGreaterThanOrEqual(wrapBox.x - 1)
     expect(tooltipBox.x + tooltipBox.width).toBeLessThanOrEqual(wrapBox.x + wrapBox.width + 1)
+  })
+})
+
+test.describe("Infobulle du graphique d'hormones sur un vrai écran tactile", () => {
+  // Real touch emulation (not a single synthetic pointerdown): a real tap
+  // fires pointerdown, pointerup, then pointerout/pointerleave in quick
+  // succession for a pointer that can't hover, since it never "leaves" a
+  // point it was never hovering. onpointerleave must not close the tooltip
+  // for that pointer type, or lifting the finger closes it immediately.
+  test.use({ hasTouch: true })
+
+  test.beforeEach(async ({ page }) => {
+    await skipOnboarding(page)
+  })
+
+  test("un vrai tap laisse l'infobulle ouverte après avoir relevé le doigt (AC-5)", async ({
+    page,
+  }) => {
+    await page.goto('/bloodtests')
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    await seedTwoEstradiolTests(page)
+    await page.reload()
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    const svg = page.locator('svg.chart').first()
+    const box = (await svg.boundingBox())!
+    await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2)
+
+    await expect(page.locator('.chart-tooltip')).toBeVisible()
   })
 })

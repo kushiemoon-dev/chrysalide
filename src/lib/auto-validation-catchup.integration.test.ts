@@ -96,4 +96,37 @@ describe('Rattrapage sur un traitement négligé (scénario utilisateur existant
     const stockAfter = await getMedication(medId)
     expect(stockAfter?.stock).toBe(10)
   })
+
+  it("deux appels concurrents ne produisent qu'un seul passage de rattrapage (pas de doublon)", async () => {
+    const startDate = new Date('2024-01-01')
+    const now = set(addDays(startDate, 5), { hours: 12 })
+
+    const medId = (await addMedication({
+      name: 'Traitement concurrent',
+      type: 'estrogen',
+      dosage: 2,
+      unit: 'mg',
+      frequency: '1x/jour',
+      method: 'pill',
+      startDate,
+      stock: 10,
+      isActive: true,
+    })) as number
+
+    const [countA, countB] = await Promise.all([
+      runAutoValidationCatchUp(now),
+      runAutoValidationCatchUp(now),
+    ])
+
+    // The second call joins the first's in-flight promise instead of
+    // starting a second pass: both resolve to the same single-run result.
+    expect(countA).toBe(countB)
+    expect(countA).toBe(6) // days 0 to 5 inclusive
+
+    const allLogs = await db.medicationLogs.where('medicationId').equals(medId).toArray()
+    expect(allLogs).toHaveLength(6)
+
+    const updatedMedication = await getMedication(medId)
+    expect(updatedMedication?.stock).toBe(4) // 10 - 6, not 10 - 12
+  })
 })

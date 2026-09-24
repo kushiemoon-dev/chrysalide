@@ -74,7 +74,10 @@ async function getMedicationStock(page: Page, name: string) {
 // links rather than page.goto(), since a real navigation would re-run
 // resetDatabase's addInitScript and wipe what was just created.
 async function createMedicationWithStartDate(page: Page, name: string, startDate: Date) {
-  await page.goto('/medications/new')
+  // networkidle: clicking Enregistrer before the client JS has attached the
+  // submit handler falls through to a native form GET (same cold-start race
+  // documented in bloodtests.spec.ts and objectives.spec.ts).
+  await page.goto('/medications/new', { waitUntil: 'networkidle' })
   await page.locator('#name').click()
   await page.locator('#name').pressSequentially(name)
   await page.locator('#dosage').click()
@@ -97,7 +100,10 @@ test.describe('Ajout de médicament', () => {
   })
 
   test('ajouter un médicament avec les champs obligatoires', async ({ page }) => {
-    await page.goto('/medications/new')
+    // networkidle: clicking Enregistrer before the client JS has attached
+    // the submit handler falls through to a native form GET (same cold-start
+    // race documented in bloodtests.spec.ts and objectives.spec.ts).
+    await page.goto('/medications/new', { waitUntil: 'networkidle' })
 
     // Use pressSequentially for React 19 controlled inputs
     await page.locator('#name').click()
@@ -162,7 +168,7 @@ test.describe('Rattrapage de la validation automatique', () => {
   test('valide les prises manquées depuis le début du traitement, pas seulement la veille', async ({
     page,
   }) => {
-    await page.goto('/medications/new')
+    await page.goto('/medications/new', { waitUntil: 'networkidle' })
     await page.locator('#name').click()
     await page.locator('#name').pressSequentially('Test rattrapage E2E')
     await page.locator('#dosage').click()
@@ -216,6 +222,10 @@ test.describe('Rattrapage de la validation automatique', () => {
   })
 
   test('valide aussi en ouvrant directement le calendrier (AC-9)', async ({ page }) => {
+    // Yesterday would fall in the previous month, and the day lookup below
+    // only searches the currently-displayed month.
+    test.skip(new Date().getDate() === 1, 'yesterday falls in the previous month on the 1st')
+
     await createMedicationWithStartDate(page, 'Calendrier direct E2E', daysAgo(5))
 
     await page.getByRole('link', { name: 'Calendrier des prises' }).click()
@@ -229,6 +239,13 @@ test.describe('Rattrapage de la validation automatique', () => {
 
     await selectCalendarDay(page, daysAgo(1))
     await expect(page.locator('input[type="checkbox"]').first()).toBeChecked()
+
+    const logs = await getAllLogs(page)
+    const yesterdayKey = daysAgo(1).toISOString().split('T')[0]
+    const yesterdayLog = logs.find(
+      (l) => new Date(l.timestamp).toISOString().split('T')[0] === yesterdayKey
+    )
+    expect(yesterdayLog?.notes).toBe('Auto-validé')
   })
 
   test('le tableau de bord ne compte plus une dose déjà auto-validée comme due (AC-10)', async ({
@@ -255,7 +272,7 @@ test.describe('Rattrapage de la validation automatique', () => {
   }) => {
     const initialStock = 20
 
-    await page.goto('/medications/new')
+    await page.goto('/medications/new', { waitUntil: 'networkidle' })
     await page.locator('#name').click()
     await page.locator('#name').pressSequentially('Multi-écrans E2E')
     await page.locator('#dosage').click()
