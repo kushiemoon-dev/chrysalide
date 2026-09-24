@@ -168,3 +168,56 @@ test.describe("Infobulle du graphique d'hormones sur un vrai écran tactile", ()
     await expect(page.locator('.chart-tooltip')).toBeVisible()
   })
 })
+
+test.describe('Infobulle du graphique de sécurité (marqueurs sans plage par contexte)', () => {
+  test.beforeEach(async ({ page }) => {
+    await skipOnboarding(page)
+  })
+
+  test('un hématocrite au-dessus du seuil est coloré en alerte dans la même infobulle (AC-5)', async ({
+    page,
+  }) => {
+    await page.goto('/bloodtests')
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    // Hematocrit has no REFERENCE_RANGES entry per context (unlike
+    // estradiol): it uses its own dedicated threshold (HEMATOCRIT_ALERT_THRESHOLD
+    // = 54), which the tooltip must consult the same way the legend does.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve, reject) => {
+          const req = indexedDB.open('ChrysalideDB')
+          req.onsuccess = () => {
+            const tx = req.result.transaction('bloodTests', 'readwrite')
+            tx.objectStore('bloodTests').add({
+              date: new Date('2026-01-10'),
+              results: [{ marker: 'hematocrit', value: 56, unit: '%' }],
+              createdAt: new Date(),
+            })
+            tx.oncomplete = () => resolve()
+            tx.onerror = () => reject(tx.error)
+          }
+          req.onerror = () => reject(req.error)
+        })
+    )
+    await page.reload()
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    // Only chart on the page: no estradiol seeded, so the main hormone
+    // chart shows its empty state instead of an <svg>, leaving just the
+    // "safety markers" card (prolactin + hematocrit).
+    const svg = page.locator('svg.chart').first()
+    const box = (await svg.boundingBox())!
+    await svg.dispatchEvent('pointerdown', {
+      clientX: box.x + box.width / 2,
+      clientY: box.y + box.height / 2,
+      pointerType: 'touch',
+      bubbles: true,
+    })
+
+    const alertValue = page
+      .locator('.chart-tooltip .tt-row', { hasText: 'Hématocrite' })
+      .locator('.tt-value')
+    await expect(alertValue).toHaveClass(/alert/)
+  })
+})

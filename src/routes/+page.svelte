@@ -141,17 +141,25 @@
     loaded = true
   }
 
+  async function catchUpThenReload() {
+    try {
+      const count = await runAutoValidationCatchUp()
+      if (count > 0) await loadDashboard()
+    } catch (error) {
+      console.error('[AutoValidation] catch-up failed:', error)
+    }
+  }
+
   onMount(() => {
     async function init() {
-      await runAutoValidationCatchUp()
       await loadDashboard()
+      await catchUpThenReload()
     }
     init()
 
     async function handleVisibilityChange() {
       if (document.visibilityState !== 'visible') return
-      const count = await runAutoValidationCatchUp()
-      if (count > 0) await loadDashboard()
+      await catchUpThenReload()
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)

@@ -54,9 +54,14 @@ test.describe('Calendrier des rendez-vous', () => {
 })
 
 test.describe('Suivi des coûts', () => {
+  // No resetDatabase here (each test already gets its own isolated,
+  // pre-empty browser context): the second test below relies on a
+  // page.reload() preserving the appointment it just created — resetDatabase
+  // wipes IndexedDB on every navigation, not just the first, which made that
+  // test's final assertion pass regardless of whether cost-tracking-disabled
+  // actually hides the cost (the appointment was simply gone either way).
   test.beforeEach(async ({ page }) => {
     await skipOnboarding(page)
-    await resetDatabase(page)
   })
 
   test('le champ coût est masqué par défaut et apparaît quand le suivi est activé', async ({

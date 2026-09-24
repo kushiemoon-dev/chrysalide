@@ -9,11 +9,13 @@
     tests,
     series,
     context,
+    ariaLabel,
     height = 150,
   }: {
     tests: BloodTest[]
     series: { marker: BloodMarker; color: string }[]
     context: 'feminizing' | 'masculinizing'
+    ariaLabel: string
     height?: number
   } = $props()
 
@@ -25,6 +27,14 @@
 
   function referenceRange(marker: BloodMarker) {
     return REFERENCE_RANGES.find((r) => r.marker === marker && r.context === context)
+  }
+
+  // Hematocrit has its own dedicated thresholds (also used by the legend
+  // below), not a REFERENCE_RANGES entry per context.
+  function isOutOfRange(marker: BloodMarker, value: number): boolean {
+    if (marker === 'hematocrit') return getHematocritStatus(value) !== 'ok'
+    const range = referenceRange(marker)
+    return range ? value < range.min || value > range.max : false
   }
 
   function seriesPoints(marker: BloodMarker) {
@@ -136,8 +146,7 @@
       .map(({ marker, color }) => {
         const result = test.results.find((r) => r.marker === marker)
         if (!result) return null
-        const range = referenceRange(marker)
-        const outOfRange = range ? result.value < range.min || result.value > range.max : false
+        const outOfRange = isOutOfRange(marker, result.value)
         return {
           label: i18n.t('bloodtests.markers.' + marker),
           value: `${result.value} ${BLOOD_MARKERS[marker].unit}`,
@@ -157,6 +166,7 @@
       viewBox={`0 0 ${VIEW_W} ${height}`}
       class="chart"
       role="img"
+      aria-label={ariaLabel}
       bind:this={svgEl}
       onpointerdown={handlePointer}
       onpointermove={handlePointer}

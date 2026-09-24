@@ -8,10 +8,12 @@
   let {
     entries,
     series,
+    ariaLabel,
     height = 150,
   }: {
     entries: PhysicalProgress[]
     series: { key: keyof Measurements; label: string; unit: string; color: string }[]
+    ariaLabel: string
     height?: number
   } = $props()
 
@@ -130,6 +132,7 @@
       viewBox={`0 0 ${VIEW_W} ${height}`}
       class="chart"
       role="img"
+      aria-label={ariaLabel}
       bind:this={svgEl}
       onpointerdown={handlePointer}
       onpointermove={handlePointer}

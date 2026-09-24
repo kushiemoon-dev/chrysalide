@@ -5,11 +5,11 @@ import { db, addMedication, getMedication, addMedicationLog } from './db'
 import { runAutoValidationCatchUp } from './auto-validation-catchup'
 
 /**
- * Exercises the exact pipeline used by catchUpAutoValidation
- * (medications/+page.svelte) against a real (fake-indexeddb) database, to
- * check that existing users' saved data survives an update: a treatment
- * neglected for months, mixed with genuine manually-logged doses, must
- * back-fill without duplicating real entries and without corrupting stock.
+ * Exercises runAutoValidationCatchUp against a real (fake-indexeddb)
+ * database, to check that existing users' saved data survives an update: a
+ * treatment neglected for months, mixed with genuine manually-logged doses,
+ * must back-fill without duplicating real entries and without corrupting
+ * stock, even when triggered concurrently from more than one screen.
  */
 
 beforeEach(async () => {

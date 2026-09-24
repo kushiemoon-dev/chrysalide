@@ -35,10 +35,7 @@
     logs = await db.medicationLogs.where('timestamp').between(start, end).toArray()
   }
 
-  async function loadData() {
-    medications = await getMedications(false)
-    await runAutoValidationCatchUp()
-
+  async function refreshTotalDaysWithLogs() {
     const allLogs = await db.medicationLogs.filter((log) => log.taken === true).toArray()
     if (allLogs.length > 0) {
       const firstDose = allLogs.reduce((earliest, log) => {
@@ -47,7 +44,17 @@
       }, new Date(allLogs[0]!.timestamp))
       totalDaysWithLogs = differenceInDays(new Date(), firstDose) + 1
     }
+  }
 
+  async function loadData() {
+    medications = await getMedications(false)
+    try {
+      await runAutoValidationCatchUp()
+    } catch (error) {
+      console.error('[AutoValidation] catch-up failed:', error)
+    }
+
+    await refreshTotalDaysWithLogs()
     await reloadMonthLogs()
   }
 
@@ -59,8 +66,15 @@
 
     async function handleVisibilityChange() {
       if (document.visibilityState !== 'visible') return
-      const count = await runAutoValidationCatchUp()
-      if (count > 0) await reloadMonthLogs()
+      try {
+        const count = await runAutoValidationCatchUp()
+        if (count > 0) {
+          await refreshTotalDaysWithLogs()
+          await reloadMonthLogs()
+        }
+      } catch (error) {
+        console.error('[AutoValidation] catch-up failed:', error)
+      }
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)

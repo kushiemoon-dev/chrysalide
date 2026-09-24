@@ -13,7 +13,20 @@
 
   let tooltipEl = $state<HTMLDivElement>()
 
+  // clientWidth reads below aren't reactive on their own — a window resize
+  // (rotating a phone, resizing a desktop window) wouldn't otherwise
+  // recompute the bound. Tracking viewportWidth makes it a dependency.
+  let viewportWidth = $state(typeof window === 'undefined' ? 0 : window.innerWidth)
+  $effect(() => {
+    function handleResize() {
+      viewportWidth = window.innerWidth
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  })
+
   let left = $derived.by(() => {
+    void viewportWidth
     if (!containerEl || !tooltipEl) return x
     const wrapWidth = containerEl.clientWidth
     const ttWidth = tooltipEl.clientWidth

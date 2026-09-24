@@ -322,6 +322,9 @@ test.describe('Rattrapage désactivé', () => {
     await expect(page).toHaveURL('/medications')
     await page.getByRole('link', { name: 'Calendrier des prises' }).click()
     await expect(page).toHaveURL('/medications/calendar')
+    // Wait for this screen's own (disabled, near-instant) catch-up attempt
+    // to finish settling before reading the database, instead of racing it.
+    await expect(page.locator('.loading')).toHaveCount(0)
 
     const logs = await getAllLogs(page)
     expect(logs).toHaveLength(0)

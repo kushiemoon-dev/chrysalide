@@ -151,6 +151,9 @@
             color: marker === 'estradiol' ? 'var(--pink-deep)' : 'var(--blue-deep)',
           }))}
           {context}
+          ariaLabel={context === 'feminizing'
+            ? i18n.t('bloodtests.hormonesFem')
+            : i18n.t('bloodtests.hormonesMas')}
         />
       </div>
     </div>
@@ -165,6 +168,7 @@
             { marker: 'hematocrit', color: 'var(--blue-deep)' },
           ]}
           {context}
+          ariaLabel={i18n.t('bloodtests.list.safetyMarkers')}
         />
       </div>
     {/if}
