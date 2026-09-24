@@ -62,3 +62,71 @@ test.describe('Ajout de résultat sanguin', () => {
     await expect(labInput).toHaveAttribute('placeholder', 'Optionnel')
   })
 })
+
+test.describe("Infobulle du graphique d'hormones", () => {
+  test.beforeEach(async ({ page }) => {
+    await skipOnboarding(page)
+  })
+
+  test('un tap affiche date/marqueur/valeur, un tap dehors ferme, reste dans le conteneur à 360px (AC-5, AC-7)', async ({
+    page,
+  }) => {
+    await page.goto('/bloodtests')
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve, reject) => {
+          const req = indexedDB.open('ChrysalideDB')
+          req.onsuccess = () => {
+            const tx = req.result.transaction('bloodTests', 'readwrite')
+            tx.objectStore('bloodTests').add({
+              date: new Date('2026-01-10'),
+              results: [{ marker: 'estradiol', value: 120, unit: 'pg/mL' }],
+              createdAt: new Date(),
+            })
+            tx.objectStore('bloodTests').add({
+              date: new Date('2026-02-10'),
+              results: [{ marker: 'estradiol', value: 150, unit: 'pg/mL' }],
+              createdAt: new Date(),
+            })
+            tx.oncomplete = () => resolve()
+            tx.onerror = () => reject(tx.error)
+          }
+          req.onerror = () => reject(req.error)
+        })
+    )
+    await page.reload()
+    await expect(page.locator('.loading')).toHaveCount(0)
+
+    const svg = page.locator('svg.chart').first()
+    const box = (await svg.boundingBox())!
+    await svg.dispatchEvent('pointerdown', {
+      clientX: box.x + box.width / 2,
+      clientY: box.y + box.height / 2,
+      pointerType: 'touch',
+      bubbles: true,
+    })
+
+    const tooltip = page.locator('.chart-tooltip')
+    await expect(tooltip).toBeVisible()
+    await expect(tooltip).toContainText('Œstradiol (E2)')
+
+    await page.locator('h1').first().dispatchEvent('pointerdown', { bubbles: true })
+    await expect(tooltip).toHaveCount(0)
+
+    // AC-7: infobulle bornée horizontalement dans son conteneur, même à 360px.
+    await page.setViewportSize({ width: 360, height: 800 })
+    const boxAfterResize = (await svg.boundingBox())!
+    await svg.dispatchEvent('pointerdown', {
+      clientX: boxAfterResize.x + boxAfterResize.width * 0.9,
+      clientY: boxAfterResize.y + boxAfterResize.height / 2,
+      pointerType: 'touch',
+      bubbles: true,
+    })
+    const tooltipBox = (await tooltip.boundingBox())!
+    const wrapBox = (await page.locator('.chart-wrap').first().boundingBox())!
+    expect(tooltipBox.x).toBeGreaterThanOrEqual(wrapBox.x - 1)
+    expect(tooltipBox.x + tooltipBox.width).toBeLessThanOrEqual(wrapBox.x + wrapBox.width + 1)
+  })
+})
