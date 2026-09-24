@@ -11,6 +11,7 @@
   import { i18n, getDateLocale } from '$lib/i18n.svelte'
   import { db, getMedications } from '$lib/db'
   import { getMedicationReminderTimes, shouldTakeMedicationOnDate } from '$lib/notifications'
+  import { runAutoValidationCatchUp } from '$lib/auto-validation-catchup'
   import type { Medication, MedicationLog } from '$lib/types'
   import MonthCalendar from '$lib/components/ui/MonthCalendar.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
@@ -34,8 +35,9 @@
     logs = await db.medicationLogs.where('timestamp').between(start, end).toArray()
   }
 
-  onMount(async () => {
+  async function loadData() {
     medications = await getMedications(false)
+    await runAutoValidationCatchUp()
 
     const allLogs = await db.medicationLogs.filter((log) => log.taken === true).toArray()
     if (allLogs.length > 0) {
@@ -47,7 +49,22 @@
     }
 
     await reloadMonthLogs()
-    loading = false
+  }
+
+  onMount(() => {
+    loading = true
+    loadData().finally(() => {
+      loading = false
+    })
+
+    async function handleVisibilityChange() {
+      if (document.visibilityState !== 'visible') return
+      const count = await runAutoValidationCatchUp()
+      if (count > 0) await reloadMonthLogs()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
   })
 
   function getLogsForDay(date: Date) {
@@ -111,6 +128,7 @@
 
     for (const day of days) {
       for (const med of medications) {
+        if (!med.isActive) continue
         if (!shouldTakeMedicationOnDate(med, day)) continue
 
         const doseTimes = getMedicationReminderTimes(med)
@@ -148,7 +166,11 @@
   let selectedDayLogs = $derived(getLogsForDay(selectedDate))
   let takenCount = $derived(selectedDayLogs.filter((l) => l.taken).length)
   let medicationsForSelectedDay = $derived(
-    medications.filter((med) => shouldTakeMedicationOnDate(med, selectedDate))
+    medications.filter((med) =>
+      med.isActive
+        ? shouldTakeMedicationOnDate(med, selectedDate)
+        : selectedDayLogs.some((l) => l.medicationId === med.id)
+    )
   )
   let totalDoses = $derived(
     medicationsForSelectedDay.reduce((sum, med) => sum + getMedicationReminderTimes(med).length, 0)
