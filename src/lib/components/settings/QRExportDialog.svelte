@@ -1,7 +1,7 @@
 <script lang="ts">
   import QRCode from 'qrcode'
-  import { generateExportQRData, type DataChunk } from '$lib/qr-sync'
-  import { i18n } from '$lib/i18n.svelte'
+  import { generateExportQRData, type DataChunk } from '#lib/qr-sync.ts'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import QrCode from '@lucide/svelte/icons/qr-code'
   import ChevronLeft from '@lucide/svelte/icons/chevron-left'
   import ChevronRight from '@lucide/svelte/icons/chevron-right'

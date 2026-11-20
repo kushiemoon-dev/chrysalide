@@ -1,19 +1,19 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { addObjective, addMilestone, getUserProfile } from '$lib/db'
-  import { fromDateInput } from '$lib/date-input'
-  import type { ObjectiveCategory, ObjectiveStatus, ActCategory, UserProfile } from '$lib/types'
-  import { categoryConfig } from '$lib/components/objectives/ObjectiveCard.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { addObjective, addMilestone, getUserProfile } from '#lib/db.ts'
+  import { fromDateInput } from '#lib/date-input.ts'
+  import type { ObjectiveCategory, ObjectiveStatus, ActCategory, UserProfile } from '#lib/types.ts'
+  import { categoryConfig } from '#lib/components/objectives/ObjectiveCard.svelte'
   import ObjectiveFormFields, {
     type MilestoneInput,
-  } from '$lib/components/objectives/ObjectiveFormFields.svelte'
+  } from '#lib/components/objectives/ObjectiveFormFields.svelte'
   import {
     getTemplatesForContext,
     ALL_OBJECTIVE_TEMPLATES,
     type ObjectiveTemplate,
-  } from '$lib/objective-templates'
+  } from '#lib/objective-templates.ts'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Sparkles from '@lucide/svelte/icons/sparkles'
   import FileText from '@lucide/svelte/icons/file-text'

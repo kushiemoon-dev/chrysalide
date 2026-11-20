@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import { ACT_CATEGORIES } from '$lib/constants'
-  import type { ObjectiveCategory, ObjectiveStatus, ActCategory } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { ACT_CATEGORIES } from '#lib/constants.ts'
+  import type { ObjectiveCategory, ObjectiveStatus, ActCategory } from '#lib/types.ts'
   import { categoryConfig } from './ObjectiveCard.svelte'
   import Plus from '@lucide/svelte/icons/plus'
   import X from '@lucide/svelte/icons/x'

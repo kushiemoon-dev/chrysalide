@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import { PREDEFINED_TAGS, TAG_CATEGORY_KEY, isPredefinedTag } from './tag-data'
-  import type { JournalTagCategory } from '$lib/types'
+  import type { JournalTagCategory } from '#lib/types.ts'
   import TagBadge from './TagBadge.svelte'
   import Plus from '@lucide/svelte/icons/plus'
   import X from '@lucide/svelte/icons/x'

@@ -1,18 +1,18 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { addMedication, getMedication, recordTreatmentChange } from '$lib/db'
-  import { COMMON_MEDICATIONS } from '$lib/constants'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import { parseOptionalNumberInput } from '$lib/utils'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { addMedication, getMedication, recordTreatmentChange } from '#lib/db.ts'
+  import { COMMON_MEDICATIONS } from '#lib/constants.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import { parseOptionalNumberInput } from '#lib/utils.ts'
   import type {
     MedicationType,
     AdministrationMethod,
     SchedulingMode,
     PillAdministrationRoute,
     InjectionAdministrationRoute,
-  } from '$lib/types'
-  import MedicationFormFields from '$lib/components/medications/MedicationFormFields.svelte'
+  } from '#lib/types.ts'
+  import MedicationFormFields from '#lib/components/medications/MedicationFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Sparkles from '@lucide/svelte/icons/sparkles'
 

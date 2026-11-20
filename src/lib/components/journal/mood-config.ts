@@ -1,4 +1,4 @@
-import type { MoodLevel } from '$lib/types'
+import type { MoodLevel } from '#lib/types.ts'
 
 export const MOOD_LEVELS: MoodLevel[] = [1, 2, 3, 4, 5]
 

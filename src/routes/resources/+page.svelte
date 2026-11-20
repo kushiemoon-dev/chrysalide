@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import {
     resources,
     getResourcesByCategory,
     searchResources,
     type Resource,
     type ResourceCategory,
-  } from '$lib/resources-data'
+  } from '#lib/resources-data.ts'
   import Users from '@lucide/svelte/icons/users'
   import Stethoscope from '@lucide/svelte/icons/stethoscope'
   import Scale from '@lucide/svelte/icons/scale'

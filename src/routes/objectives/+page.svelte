@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { i18n } from '$lib/i18n.svelte'
-  import { getObjectives, getMilestones, getUserProfile } from '$lib/db'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { getObjectives, getMilestones, getUserProfile } from '#lib/db.ts'
   import type {
     Objective,
     Milestone,
     ObjectiveCategory,
     ObjectiveStatus,
     UserProfile,
-  } from '$lib/types'
-  import ObjectiveCard, { categoryConfig } from '$lib/components/objectives/ObjectiveCard.svelte'
-  import BlahajProgress from '$lib/components/objectives/BlahajProgress.svelte'
+  } from '#lib/types.ts'
+  import ObjectiveCard, { categoryConfig } from '#lib/components/objectives/ObjectiveCard.svelte'
+  import BlahajProgress from '#lib/components/objectives/BlahajProgress.svelte'
   import Plus from '@lucide/svelte/icons/plus'
   import Target from '@lucide/svelte/icons/target'
   import Activity from '@lucide/svelte/icons/activity'

@@ -1,5 +1,5 @@
 <script module lang="ts">
-  import type { ObjectiveCategory, ObjectiveStatus } from '$lib/types'
+  import type { ObjectiveCategory, ObjectiveStatus } from '#lib/types.ts'
   import Stethoscope from '@lucide/svelte/icons/stethoscope'
   import FileText from '@lucide/svelte/icons/file-text'
   import Users from '@lucide/svelte/icons/users'
@@ -31,9 +31,9 @@
 </script>
 
 <script lang="ts">
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import { format } from 'date-fns'
-  import type { Objective } from '$lib/types'
+  import type { Objective } from '#lib/types.ts'
   import ChevronRight from '@lucide/svelte/icons/chevron-right'
   import CalendarIcon from '@lucide/svelte/icons/calendar'
 

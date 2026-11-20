@@ -16,9 +16,9 @@
   import { SvelteMap, SvelteSet } from 'svelte/reactivity'
   import ChevronLeft from '@lucide/svelte/icons/chevron-left'
   import ChevronRight from '@lucide/svelte/icons/chevron-right'
-  import { i18n } from '$lib/i18n.svelte'
-  import { APPOINTMENT_TYPES } from '$lib/constants'
-  import type { Appointment } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { APPOINTMENT_TYPES } from '#lib/constants.ts'
+  import type { Appointment } from '#lib/types.ts'
 
   let {
     appointments,

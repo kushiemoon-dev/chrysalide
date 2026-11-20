@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state'
-  import { getModulePreferences } from '$lib/notifications'
-  import { i18n } from '$lib/i18n.svelte'
+  import { getModulePreferences } from '#lib/notifications.ts'
+  import { i18n } from '#lib/i18n.svelte.ts'
 
   const itemDefs = [
     { href: '/', key: 'nav.home', moduleKey: null },

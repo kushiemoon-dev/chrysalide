@@ -1,4 +1,4 @@
-import type { JournalTagCategory } from '$lib/types'
+import type { JournalTagCategory } from '#lib/types.ts'
 
 export const PREDEFINED_TAGS: { name: string; category: JournalTagCategory }[] = [
   { name: 'heureux', category: 'mood' },

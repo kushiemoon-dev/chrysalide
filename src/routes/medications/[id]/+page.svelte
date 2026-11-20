@@ -2,7 +2,7 @@
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
   import { format, differenceInDays } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import {
     getMedication,
     deleteMedication,
@@ -10,10 +10,10 @@
     deleteMedicationLog,
     updateMedicationLog,
     getGelApplicationHistory,
-  } from '$lib/db'
-  import { MEDICATION_TYPES } from '$lib/constants'
-  import { toDateInput } from '$lib/date-input'
-  import type { Medication, MedicationLog } from '$lib/types'
+  } from '#lib/db.ts'
+  import { MEDICATION_TYPES } from '#lib/constants.ts'
+  import { toDateInput } from '#lib/date-input.ts'
+  import type { Medication, MedicationLog } from '#lib/types.ts'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Trash2 from '@lucide/svelte/icons/trash-2'
   import Pencil from '@lucide/svelte/icons/pencil'

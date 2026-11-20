@@ -2,7 +2,7 @@
   import { domToPng } from 'modern-screenshot'
   import { jsPDF } from 'jspdf'
   import { format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import Download from '@lucide/svelte/icons/download'
   import FileImage from '@lucide/svelte/icons/file-image'
   import FileText from '@lucide/svelte/icons/file-text'

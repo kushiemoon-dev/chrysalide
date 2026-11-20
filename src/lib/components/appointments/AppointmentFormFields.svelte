@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import { APPOINTMENT_TYPES, REMINDER_TIMES } from '$lib/constants'
-  import { getModulePreferences } from '$lib/notifications'
-  import type { AppointmentType, Objective } from '$lib/types'
-  import PractitionerInput from '$lib/components/practitioners/PractitionerInput.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { APPOINTMENT_TYPES, REMINDER_TIMES } from '#lib/constants.ts'
+  import { getModulePreferences } from '#lib/notifications.ts'
+  import type { AppointmentType, Objective } from '#lib/types.ts'
+  import PractitionerInput from '#lib/components/practitioners/PractitionerInput.svelte'
 
   const TYPES = Object.keys(APPOINTMENT_TYPES) as AppointmentType[]
   const costTrackingEnabled = getModulePreferences().costTrackingEnabled

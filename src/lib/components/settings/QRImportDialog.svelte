@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { QRScanSession, importFromQRData, type DataChunk } from '$lib/qr-sync'
-  import { i18n } from '$lib/i18n.svelte'
+  import { QRScanSession, importFromQRData, type DataChunk } from '#lib/qr-sync.ts'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import QrCode from '@lucide/svelte/icons/qr-code'
   import Camera from '@lucide/svelte/icons/camera'
   import Check from '@lucide/svelte/icons/check'

@@ -1,17 +1,17 @@
 <script lang="ts">
   import '../app.css'
   import { page } from '$app/state'
-  import { theme } from '$lib/theme.svelte'
-  import { i18n } from '$lib/i18n.svelte'
+  import { theme } from '#lib/theme.svelte.ts'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import {
     isNotificationEnabled,
     startReminderService,
     stopReminderService,
-  } from '$lib/notification-scheduler'
-  import AuroraBackground from '$lib/components/ui/AuroraBackground.svelte'
-  import GlassNav from '$lib/components/ui/GlassNav.svelte'
-  import DesktopNav from '$lib/components/ui/DesktopNav.svelte'
-  import { getContentWidthClass } from '$lib/content-width'
+  } from '#lib/notification-scheduler.ts'
+  import AuroraBackground from '#lib/components/ui/AuroraBackground.svelte'
+  import GlassNav from '#lib/components/ui/GlassNav.svelte'
+  import DesktopNav from '#lib/components/ui/DesktopNav.svelte'
+  import { getContentWidthClass } from '#lib/content-width.ts'
 
   let { children } = $props()
 

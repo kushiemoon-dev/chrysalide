@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { MEDICATION_TYPES } from '$lib/constants'
-  import type { Medication } from '$lib/types'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { MEDICATION_TYPES } from '#lib/constants.ts'
+  import type { Medication } from '#lib/types.ts'
   import { format, differenceInDays, startOfMonth, endOfMonth, eachMonthOfInterval } from 'date-fns'
 
   let { medications }: { medications: Medication[] } = $props()

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import Lock from '@lucide/svelte/icons/lock'
   import Shield from '@lucide/svelte/icons/shield'
   import Heart from '@lucide/svelte/icons/heart'

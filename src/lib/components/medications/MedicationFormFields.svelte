@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import {
     MEDICATION_TYPES,
     ADMINISTRATION_METHODS,
@@ -8,14 +8,14 @@
     PILL_ROUTES,
     INJECTION_ROUTES,
     getFrequenciesForMethod,
-  } from '$lib/constants'
+  } from '#lib/constants.ts'
   import type {
     MedicationType,
     AdministrationMethod,
     SchedulingMode,
     PillAdministrationRoute,
     InjectionAdministrationRoute,
-  } from '$lib/types'
+  } from '#lib/types.ts'
   import Clock from '@lucide/svelte/icons/clock'
   import Plus from '@lucide/svelte/icons/plus'
   import Trash2 from '@lucide/svelte/icons/trash-2'

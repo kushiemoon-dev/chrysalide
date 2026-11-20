@@ -1,10 +1,10 @@
 <script lang="ts">
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { getMedication, updateMedication, recordTreatmentChange } from '$lib/db'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import { parseOptionalNumberInput } from '$lib/utils'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { getMedication, updateMedication, recordTreatmentChange } from '#lib/db.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import { parseOptionalNumberInput } from '#lib/utils.ts'
   import type {
     MedicationType,
     AdministrationMethod,
@@ -12,8 +12,8 @@
     Medication,
     PillAdministrationRoute,
     InjectionAdministrationRoute,
-  } from '$lib/types'
-  import MedicationFormFields from '$lib/components/medications/MedicationFormFields.svelte'
+  } from '#lib/types.ts'
+  import MedicationFormFields from '#lib/components/medications/MedicationFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let loading = $state(true)

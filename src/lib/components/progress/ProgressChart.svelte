@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import { format } from 'date-fns'
-  import type { Measurements, PhysicalProgress } from '$lib/types'
+  import type { Measurements, PhysicalProgress } from '#lib/types.ts'
   import { chronological } from './progress-charts'
-  import ChartTooltip from '$lib/components/ui/ChartTooltip.svelte'
+  import ChartTooltip from '#lib/components/ui/ChartTooltip.svelte'
 
   let {
     entries,

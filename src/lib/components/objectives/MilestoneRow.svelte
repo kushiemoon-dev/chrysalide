@@ -1,8 +1,8 @@
 <script lang="ts">
   import { format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import type { Milestone } from '$lib/types'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import type { Milestone } from '#lib/types.ts'
   import CalendarIcon from '@lucide/svelte/icons/calendar'
   import CheckCircle2 from '@lucide/svelte/icons/check-circle-2'
   import Pencil from '@lucide/svelte/icons/pencil'

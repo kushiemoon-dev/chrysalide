@@ -2,13 +2,13 @@
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
   import { format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { db } from '$lib/db'
-  import type { PhysicalProgress, Measurements } from '$lib/types'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { db } from '#lib/db.ts'
+  import type { PhysicalProgress, Measurements } from '#lib/types.ts'
   import {
     MEASUREMENT_FIELD_KEY,
     MEASUREMENT_UNITS,
-  } from '$lib/components/progress/progress-charts'
+  } from '#lib/components/progress/progress-charts.ts'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Trash2 from '@lucide/svelte/icons/trash-2'
   import CalendarIcon from '@lucide/svelte/icons/calendar'

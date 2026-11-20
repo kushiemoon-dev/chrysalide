@@ -1,5 +1,5 @@
 <script module lang="ts">
-  import type { TreatmentChangeType } from '$lib/types'
+  import type { TreatmentChangeType } from '#lib/types.ts'
   import Play from '@lucide/svelte/icons/play'
   import Square from '@lucide/svelte/icons/square'
   import Pause from '@lucide/svelte/icons/pause'
@@ -21,9 +21,9 @@
 </script>
 
 <script lang="ts">
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import { format } from 'date-fns'
-  import type { TreatmentChange } from '$lib/types'
+  import type { TreatmentChange } from '#lib/types.ts'
   import Pill from '@lucide/svelte/icons/pill'
   import User from '@lucide/svelte/icons/user'
   import FileText from '@lucide/svelte/icons/file-text'

@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { formatDistanceToNow, format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import GaugeMeter from '$lib/components/ui/GaugeMeter.svelte'
-  import Pill from '$lib/components/ui/Pill.svelte'
-  import SectionTitle from '$lib/components/ui/SectionTitle.svelte'
-  import Row from '$lib/components/ui/Row.svelte'
-  import StockBar from '$lib/components/ui/StockBar.svelte'
-  import ThemeSwitch from '$lib/components/ui/ThemeSwitch.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import GaugeMeter from '#lib/components/ui/GaugeMeter.svelte'
+  import Pill from '#lib/components/ui/Pill.svelte'
+  import SectionTitle from '#lib/components/ui/SectionTitle.svelte'
+  import Row from '#lib/components/ui/Row.svelte'
+  import StockBar from '#lib/components/ui/StockBar.svelte'
+  import ThemeSwitch from '#lib/components/ui/ThemeSwitch.svelte'
   import {
     getUserProfile,
     getMedications,
@@ -16,11 +16,11 @@
     getUpcomingAppointments,
     getJournalEntries,
     getGelApplicationHistory,
-  } from '$lib/db'
-  import { shouldTakeMedicationToday, getMedicationReminderTimes } from '$lib/notifications'
-  import { estimateStockDaysRemaining } from '$lib/notifications'
-  import { runAutoValidationCatchUp } from '$lib/auto-validation-catchup'
-  import { getNextApplicationZone } from '$lib/utils'
+  } from '#lib/db.ts'
+  import { shouldTakeMedicationToday, getMedicationReminderTimes } from '#lib/notifications.ts'
+  import { estimateStockDaysRemaining } from '#lib/notifications.ts'
+  import { runAutoValidationCatchUp } from '#lib/auto-validation-catchup.ts'
+  import { getNextApplicationZone } from '#lib/utils.ts'
   import {
     REFERENCE_RANGES,
     BLOOD_MARKERS,
@@ -28,7 +28,7 @@
     GEL_APPLICATION_ZONES,
     PATCH_APPLICATION_ZONES,
     PATCH_APPLICATION_ZONE_ORDER,
-  } from '$lib/constants'
+  } from '#lib/constants.ts'
   import type {
     Medication,
     MedicationLog,
@@ -36,7 +36,7 @@
     JournalEntry,
     BloodTestResult,
     ApplicationZone,
-  } from '$lib/types'
+  } from '#lib/types.ts'
 
   const seoTitle = 'Chrysalide : suivi HRT privé pour personnes trans'
   const seoDescription =

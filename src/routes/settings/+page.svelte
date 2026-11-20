@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n, locales, type Locale } from '$lib/i18n.svelte'
-  import { theme } from '$lib/theme.svelte'
-  import { exportAllData, importAllData, getUpcomingAppointments } from '$lib/db'
+  import { i18n, locales, type Locale } from '#lib/i18n.svelte.ts'
+  import { theme } from '#lib/theme.svelte.ts'
+  import { exportAllData, importAllData, getUpcomingAppointments } from '#lib/db.ts'
   import {
     isNotificationSupported,
     getNotificationPermission,
@@ -12,10 +12,10 @@
     setModulePreferences,
     isAutoValidationEnabled,
     type NotificationPermission,
-  } from '$lib/notifications'
-  import { startReminderService, stopReminderService } from '$lib/notification-scheduler'
-  import QRExportDialog from '$lib/components/settings/QRExportDialog.svelte'
-  import QRImportDialog from '$lib/components/settings/QRImportDialog.svelte'
+  } from '#lib/notifications.ts'
+  import { startReminderService, stopReminderService } from '#lib/notification-scheduler.ts'
+  import QRExportDialog from '#lib/components/settings/QRExportDialog.svelte'
+  import QRImportDialog from '#lib/components/settings/QRImportDialog.svelte'
   import Moon from '@lucide/svelte/icons/moon'
   import Sun from '@lucide/svelte/icons/sun'
   import Monitor from '@lucide/svelte/icons/monitor'

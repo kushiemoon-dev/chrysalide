@@ -1,4 +1,4 @@
-import { browser } from '$app/environment'
+import { browser } from '$app/env'
 import { fr as frDateLocale, enUS as enDateLocale, de as deDateLocale } from 'date-fns/locale'
 import type { Locale as DateFnsLocale } from 'date-fns'
 import fr from '../messages/fr.json'
@@ -10,7 +10,6 @@ export type Locale = (typeof locales)[number]
 export const defaultLocale: Locale = 'fr'
 
 const LOCALE_STORAGE_KEY = 'chrysalide-locale'
-
 const messagesByLocale: Record<Locale, unknown> = { fr, en, de }
 
 function resolveFromNavigator(): Locale | undefined {

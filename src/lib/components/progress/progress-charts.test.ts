@@ -5,7 +5,7 @@ import {
   measurementDiff,
   closestEntryIndex,
 } from './progress-charts'
-import type { PhysicalProgress } from '$lib/types'
+import type { PhysicalProgress } from '#lib/types.ts'
 
 function entry(date: string, weight?: number, chest?: number): PhysicalProgress {
   return {

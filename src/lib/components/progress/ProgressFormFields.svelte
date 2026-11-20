@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import type { Measurements } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import type { Measurements } from '#lib/types.ts'
   import { MEASUREMENT_FIELD_KEY, MEASUREMENT_KEYS, MEASUREMENT_UNITS } from './progress-charts'
   import Camera from '@lucide/svelte/icons/camera'
   import ImageIcon from '@lucide/svelte/icons/image'

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { addPractitioner } from '$lib/db'
-  import type { AppointmentType } from '$lib/types'
-  import PractitionerFormFields from '$lib/components/practitioners/PractitionerFormFields.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { addPractitioner } from '#lib/db.ts'
+  import type { AppointmentType } from '#lib/types.ts'
+  import PractitionerFormFields from '#lib/components/practitioners/PractitionerFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let saving = $state(false)

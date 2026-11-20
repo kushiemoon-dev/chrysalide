@@ -1,29 +1,29 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { format, addDays, startOfDay } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import {
     getMedications,
     addMedicationLog,
     getTodayLogs,
     getLastMedicationLog,
     getGelApplicationHistory,
-  } from '$lib/db'
+  } from '#lib/db.ts'
   import {
     getMedicationReminderTimes,
     isPeriodicFrequency,
     getFrequencyIntervalDays,
-  } from '$lib/notifications'
-  import { runAutoValidationCatchUp } from '$lib/auto-validation-catchup'
-  import { toDateInput } from '$lib/date-input'
-  import { getNextApplicationZone } from '$lib/utils'
+  } from '#lib/notifications.ts'
+  import { runAutoValidationCatchUp } from '#lib/auto-validation-catchup.ts'
+  import { toDateInput } from '#lib/date-input.ts'
+  import { getNextApplicationZone } from '#lib/utils.ts'
   import {
     MEDICATION_TYPES,
     GEL_APPLICATION_ZONES,
     PATCH_APPLICATION_ZONE_ORDER,
-  } from '$lib/constants'
-  import type { Medication, MedicationLog, ApplicationZone } from '$lib/types'
-  import TreatmentGanttChart from '$lib/components/medications/TreatmentGanttChart.svelte'
+  } from '#lib/constants.ts'
+  import type { Medication, MedicationLog, ApplicationZone } from '#lib/types.ts'
+  import TreatmentGanttChart from '#lib/components/medications/TreatmentGanttChart.svelte'
   import Plus from '@lucide/svelte/icons/plus'
   import History from '@lucide/svelte/icons/history'
   import CalendarDays from '@lucide/svelte/icons/calendar-days'

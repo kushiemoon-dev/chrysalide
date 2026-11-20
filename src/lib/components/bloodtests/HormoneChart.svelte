@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import { format } from 'date-fns'
-  import { BLOOD_MARKERS, REFERENCE_RANGES, getHematocritStatus } from '$lib/constants'
-  import type { BloodTest, BloodMarker } from '$lib/types'
-  import ChartTooltip from '$lib/components/ui/ChartTooltip.svelte'
+  import { BLOOD_MARKERS, REFERENCE_RANGES, getHematocritStatus } from '#lib/constants.ts'
+  import type { BloodTest, BloodMarker } from '#lib/types.ts'
+  import ChartTooltip from '#lib/components/ui/ChartTooltip.svelte'
 
   let {
     tests,
