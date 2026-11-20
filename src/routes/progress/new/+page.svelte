@@ -1,10 +1,10 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { addPhysicalProgress } from '$lib/db'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import type { Measurements } from '$lib/types'
-  import ProgressFormFields from '$lib/components/progress/ProgressFormFields.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { addPhysicalProgress } from '#lib/db.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import type { Measurements } from '#lib/types.ts'
+  import ProgressFormFields from '#lib/components/progress/ProgressFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let date = $state(toDateInput(new Date()))

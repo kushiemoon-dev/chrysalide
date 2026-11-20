@@ -2,15 +2,15 @@
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
   import { format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { getBloodTest, deleteBloodTest, getUserProfile } from '$lib/db'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { getBloodTest, deleteBloodTest, getUserProfile } from '#lib/db.ts'
   import {
     REFERENCE_RANGES,
     getHematocritStatus,
     getReferenceRangeSource,
     HEMATOCRIT_ALERT_THRESHOLD_SOURCE,
-  } from '$lib/constants'
-  import type { BloodTest, BloodMarker } from '$lib/types'
+  } from '#lib/constants.ts'
+  import type { BloodTest, BloodMarker } from '#lib/types.ts'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Trash2 from '@lucide/svelte/icons/trash-2'
   import Pencil from '@lucide/svelte/icons/pencil'

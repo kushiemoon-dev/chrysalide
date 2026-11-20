@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { format, isSameDay, isThisYear } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { getAppointments, getUpcomingAppointments } from '$lib/db'
-  import type { Appointment } from '$lib/types'
-  import YearCalendar from '$lib/components/appointments/YearCalendar.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { getAppointments, getUpcomingAppointments } from '#lib/db.ts'
+  import type { Appointment } from '#lib/types.ts'
+  import YearCalendar from '#lib/components/appointments/YearCalendar.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Plus from '@lucide/svelte/icons/plus'
 

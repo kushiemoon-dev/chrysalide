@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import { MOOD_EMOJI, MOOD_COLOR } from './mood-config'
-  import type { MoodLevel } from '$lib/types'
+  import type { MoodLevel } from '#lib/types.ts'
 
   let { mood, size = 'sm' }: { mood: MoodLevel; size?: 'sm' | 'md' | 'lg' } = $props()
 </script>

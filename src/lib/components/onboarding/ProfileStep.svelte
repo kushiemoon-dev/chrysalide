@@ -1,7 +1,7 @@
 <script lang="ts">
   import { untrack } from 'svelte'
-  import { i18n } from '$lib/i18n.svelte'
-  import { PRONOUNS_OPTIONS, TRANSITION_TYPES, type OnboardingState } from '$lib/onboarding'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { PRONOUNS_OPTIONS, TRANSITION_TYPES, type OnboardingState } from '#lib/onboarding.ts'
 
   let {
     onboardingState,

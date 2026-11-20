@@ -1,15 +1,15 @@
 <script lang="ts">
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { getBloodTest, updateBloodTest, getUserProfile } from '$lib/db'
-  import { BLOOD_MARKERS, convertToCanonicalUnit } from '$lib/constants'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import type { BloodMarker, BloodTestResult } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { getBloodTest, updateBloodTest, getUserProfile } from '#lib/db.ts'
+  import { BLOOD_MARKERS, convertToCanonicalUnit } from '#lib/constants.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import type { BloodMarker, BloodTestResult } from '#lib/types.ts'
   import BloodTestFormFields, {
     EMPTY_MARKER_VALUES,
     DEFAULT_MARKER_UNITS,
-  } from '$lib/components/bloodtests/BloodTestFormFields.svelte'
+  } from '#lib/components/bloodtests/BloodTestFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let loading = $state(true)

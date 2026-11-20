@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import { getPractitioners, searchPractitioners } from '$lib/db'
-  import type { AppointmentType, Practitioner } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { getPractitioners, searchPractitioners } from '#lib/db.ts'
+  import type { AppointmentType, Practitioner } from '#lib/types.ts'
   import User from '@lucide/svelte/icons/user'
   import Plus from '@lucide/svelte/icons/plus'
   import MapPin from '@lucide/svelte/icons/map-pin'

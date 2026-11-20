@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { format, differenceInDays, subDays } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { getPhysicalProgress } from '$lib/db'
-  import type { PhysicalProgress } from '$lib/types'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { getPhysicalProgress } from '#lib/db.ts'
+  import type { PhysicalProgress } from '#lib/types.ts'
   import {
     MEASUREMENT_KEYS,
     MEASUREMENT_LABEL_KEY,
     MEASUREMENT_UNITS,
     measurementDiff,
     closestEntryIndex,
-  } from '$lib/components/progress/progress-charts'
+  } from '#lib/components/progress/progress-charts.ts'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import ArrowRight from '@lucide/svelte/icons/arrow-right'
   import ArrowLeftRight from '@lucide/svelte/icons/arrow-left-right'

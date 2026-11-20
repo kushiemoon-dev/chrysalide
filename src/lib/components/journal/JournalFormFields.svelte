@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import { toDateInput } from '$lib/date-input'
-  import type { MoodLevel } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { toDateInput } from '#lib/date-input.ts'
+  import type { MoodLevel } from '#lib/types.ts'
   import MoodPicker from './MoodPicker.svelte'
   import TagInput from './TagInput.svelte'
   import Sparkles from '@lucide/svelte/icons/sparkles'

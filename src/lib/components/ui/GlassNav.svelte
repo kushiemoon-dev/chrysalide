@@ -8,8 +8,8 @@
   import Calendar from '@lucide/svelte/icons/calendar'
   import Users from '@lucide/svelte/icons/users'
   import ExternalLink from '@lucide/svelte/icons/external-link'
-  import { getModulePreferences } from '$lib/notifications'
-  import { i18n } from '$lib/i18n.svelte'
+  import { getModulePreferences } from '#lib/notifications.ts'
+  import { i18n } from '#lib/i18n.svelte.ts'
 
   const mainItemDefs = [
     { href: '/', key: 'nav.home' },

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import { getTagCategory, isPredefinedTag, TAG_CATEGORY_COLOR } from './tag-data'
 
   let { tag }: { tag: string } = $props()

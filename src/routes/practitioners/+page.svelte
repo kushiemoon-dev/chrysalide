@@ -2,14 +2,14 @@
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
   import { SvelteMap } from 'svelte/reactivity'
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import {
     getPractitioners,
     deletePractitioner,
     countAppointmentsForAllPractitioners,
-  } from '$lib/db'
-  import { APPOINTMENT_TYPES } from '$lib/constants'
-  import type { Practitioner, AppointmentType } from '$lib/types'
+  } from '#lib/db.ts'
+  import { APPOINTMENT_TYPES } from '#lib/constants.ts'
+  import type { Practitioner, AppointmentType } from '#lib/types.ts'
   import Plus from '@lucide/svelte/icons/plus'
   import Pencil from '@lucide/svelte/icons/pencil'
   import Trash2 from '@lucide/svelte/icons/trash-2'

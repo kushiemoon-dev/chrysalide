@@ -69,7 +69,7 @@
 </script>
 
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import PartyPopper from '@lucide/svelte/icons/party-popper'
 
   let {

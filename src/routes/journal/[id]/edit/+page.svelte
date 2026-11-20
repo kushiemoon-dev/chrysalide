@@ -2,11 +2,11 @@
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
   import { set as setDateFields } from 'date-fns'
-  import { i18n } from '$lib/i18n.svelte'
-  import { getJournalEntry, updateJournalEntry } from '$lib/db'
-  import { toDateInput } from '$lib/date-input'
-  import type { MoodLevel } from '$lib/types'
-  import JournalFormFields from '$lib/components/journal/JournalFormFields.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { getJournalEntry, updateJournalEntry } from '#lib/db.ts'
+  import { toDateInput } from '#lib/date-input.ts'
+  import type { MoodLevel } from '#lib/types.ts'
+  import JournalFormFields from '#lib/components/journal/JournalFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let loading = $state(true)

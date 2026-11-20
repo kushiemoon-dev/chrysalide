@@ -2,17 +2,17 @@
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
   import { format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import {
     getAppointments,
     getUpcomingAppointments,
     deleteAppointment,
     getTotalAppointmentsCost,
-  } from '$lib/db'
-  import { getRelativeDayLabel } from '$lib/appointment-labels'
-  import { getModulePreferences } from '$lib/notifications'
-  import { formatCurrency, getAppointmentDateTime } from '$lib/utils'
-  import type { Appointment } from '$lib/types'
+  } from '#lib/db.ts'
+  import { getRelativeDayLabel } from '#lib/appointment-labels.ts'
+  import { getModulePreferences } from '#lib/notifications.ts'
+  import { formatCurrency, getAppointmentDateTime } from '#lib/utils.ts'
+  import type { Appointment } from '#lib/types.ts'
   import Plus from '@lucide/svelte/icons/plus'
   import Pencil from '@lucide/svelte/icons/pencil'
   import Trash2 from '@lucide/svelte/icons/trash-2'

@@ -1,4 +1,4 @@
-import type { Measurements, PhysicalProgress } from '$lib/types'
+import type { Measurements, PhysicalProgress } from '#lib/types.ts'
 
 export const MEASUREMENT_KEYS = [
   'weight',

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
-  import { getObjective, updateObjective } from '$lib/db'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import type { Objective, ObjectiveCategory, ObjectiveStatus, ActCategory } from '$lib/types'
-  import ObjectiveFormFields from '$lib/components/objectives/ObjectiveFormFields.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { getObjective, updateObjective } from '#lib/db.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import type { Objective, ObjectiveCategory, ObjectiveStatus, ActCategory } from '#lib/types.ts'
+  import ObjectiveFormFields from '#lib/components/objectives/ObjectiveFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let loading = $state(true)

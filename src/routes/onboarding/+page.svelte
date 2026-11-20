@@ -1,17 +1,17 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import {
     getOnboardingState,
     saveOnboardingState,
     completeOnboarding,
     ONBOARDING_STEPS,
     type OnboardingState,
-  } from '$lib/onboarding'
-  import WelcomeStep from '$lib/components/onboarding/WelcomeStep.svelte'
-  import ProfileStep from '$lib/components/onboarding/ProfileStep.svelte'
-  import MedicationStep from '$lib/components/onboarding/MedicationStep.svelte'
-  import TourStep from '$lib/components/onboarding/TourStep.svelte'
+  } from '#lib/onboarding.ts'
+  import WelcomeStep from '#lib/components/onboarding/WelcomeStep.svelte'
+  import ProfileStep from '#lib/components/onboarding/ProfileStep.svelte'
+  import MedicationStep from '#lib/components/onboarding/MedicationStep.svelte'
+  import TourStep from '#lib/components/onboarding/TourStep.svelte'
 
   let onboardingState = $state<OnboardingState>({ completed: false, currentStep: 0 })
   let mounted = $state(false)

@@ -1,17 +1,17 @@
 <script lang="ts">
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
-  import { i18n } from '$lib/i18n.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
   import {
     getAppointment,
     updateAppointment,
     getObjectives,
     findOrCreatePractitioner,
     incrementPractitionerUsage,
-  } from '$lib/db'
-  import { toDateInput, fromDateInput } from '$lib/date-input'
-  import type { AppointmentType, Objective } from '$lib/types'
-  import AppointmentFormFields from '$lib/components/appointments/AppointmentFormFields.svelte'
+  } from '#lib/db.ts'
+  import { toDateInput, fromDateInput } from '#lib/date-input.ts'
+  import type { AppointmentType, Objective } from '#lib/types.ts'
+  import AppointmentFormFields from '#lib/components/appointments/AppointmentFormFields.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
 
   let loading = $state(true)

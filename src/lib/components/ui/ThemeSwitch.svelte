@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { theme } from '$lib/theme.svelte'
-  import { i18n } from '$lib/i18n.svelte'
+  import { theme } from '#lib/theme.svelte.ts'
+  import { i18n } from '#lib/i18n.svelte.ts'
 </script>
 
 <div class="theme-switch">

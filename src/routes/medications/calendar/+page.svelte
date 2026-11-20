@@ -8,12 +8,12 @@
     eachDayOfInterval,
     differenceInDays,
   } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { db, getMedications } from '$lib/db'
-  import { getMedicationReminderTimes, shouldTakeMedicationOnDate } from '$lib/notifications'
-  import { runAutoValidationCatchUp } from '$lib/auto-validation-catchup'
-  import type { Medication, MedicationLog } from '$lib/types'
-  import MonthCalendar from '$lib/components/ui/MonthCalendar.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { db, getMedications } from '#lib/db.ts'
+  import { getMedicationReminderTimes, shouldTakeMedicationOnDate } from '#lib/notifications.ts'
+  import { runAutoValidationCatchUp } from '#lib/auto-validation-catchup.ts'
+  import type { Medication, MedicationLog } from '#lib/types.ts'
+  import MonthCalendar from '#lib/components/ui/MonthCalendar.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import CalendarIcon from '@lucide/svelte/icons/calendar'
   import Loader2 from '@lucide/svelte/icons/loader-2'

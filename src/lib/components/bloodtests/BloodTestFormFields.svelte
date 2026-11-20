@@ -1,6 +1,6 @@
 <script module lang="ts">
-  import { BLOOD_MARKERS as _BLOOD_MARKERS } from '$lib/constants'
-  import type { BloodMarker as _BloodMarker } from '$lib/types'
+  import { BLOOD_MARKERS as _BLOOD_MARKERS } from '#lib/constants.ts'
+  import type { BloodMarker as _BloodMarker } from '#lib/types.ts'
 
   const _MARKERS = Object.keys(_BLOOD_MARKERS) as _BloodMarker[]
 
@@ -14,10 +14,10 @@
 </script>
 
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import { BLOOD_MARKERS, getMarkerUnitOptions, getReferenceRangeSource } from '$lib/constants'
-  import type { BloodMarker } from '$lib/types'
-  import PractitionerInput from '$lib/components/practitioners/PractitionerInput.svelte'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { BLOOD_MARKERS, getMarkerUnitOptions, getReferenceRangeSource } from '#lib/constants.ts'
+  import type { BloodMarker } from '#lib/types.ts'
+  import PractitionerInput from '#lib/components/practitioners/PractitionerInput.svelte'
   import FlaskConical from '@lucide/svelte/icons/flask-conical'
   import Heart from '@lucide/svelte/icons/heart'
   import Activity from '@lucide/svelte/icons/activity'

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { format, differenceInDays } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
-  import { getPhysicalProgress, getUserProfile } from '$lib/db'
-  import type { PhysicalProgress } from '$lib/types'
-  import ProgressChart from '$lib/components/progress/ProgressChart.svelte'
-  import ExportButton from '$lib/components/ui/ExportButton.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
+  import { getPhysicalProgress, getUserProfile } from '#lib/db.ts'
+  import type { PhysicalProgress } from '#lib/types.ts'
+  import ProgressChart from '#lib/components/progress/ProgressChart.svelte'
+  import ExportButton from '#lib/components/ui/ExportButton.svelte'
   import {
     availableMeasurements,
     measurementDiff,
@@ -13,7 +13,7 @@
     MEASUREMENT_LABEL_KEY,
     MEASUREMENT_CHART_COLOR,
     BODY_MEASUREMENT_KEYS,
-  } from '$lib/components/progress/progress-charts'
+  } from '#lib/components/progress/progress-charts.ts'
   import Plus from '@lucide/svelte/icons/plus'
   import ArrowLeftRight from '@lucide/svelte/icons/arrow-left-right'
   import TrendingUp from '@lucide/svelte/icons/trending-up'

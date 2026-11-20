@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { i18n } from '$lib/i18n.svelte'
-  import { APPOINTMENT_TYPES } from '$lib/constants'
-  import type { AppointmentType } from '$lib/types'
+  import { i18n } from '#lib/i18n.svelte.ts'
+  import { APPOINTMENT_TYPES } from '#lib/constants.ts'
+  import type { AppointmentType } from '#lib/types.ts'
 
   const TYPES = Object.keys(APPOINTMENT_TYPES) as AppointmentType[]
 

@@ -2,7 +2,7 @@
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
   import { format } from 'date-fns'
-  import { i18n, getDateLocale } from '$lib/i18n.svelte'
+  import { i18n, getDateLocale } from '#lib/i18n.svelte.ts'
   import {
     getObjective,
     getMilestones,
@@ -15,13 +15,19 @@
     recalculateObjectiveProgress,
     getAppointmentsByObjective,
     getPractitioner,
-  } from '$lib/db'
-  import type { Objective, Milestone, ObjectiveStatus, Appointment, Practitioner } from '$lib/types'
-  import { categoryConfig, statusConfig } from '$lib/components/objectives/ObjectiveCard.svelte'
-  import MilestoneRow from '$lib/components/objectives/MilestoneRow.svelte'
+  } from '#lib/db.ts'
+  import type {
+    Objective,
+    Milestone,
+    ObjectiveStatus,
+    Appointment,
+    Practitioner,
+  } from '#lib/types.ts'
+  import { categoryConfig, statusConfig } from '#lib/components/objectives/ObjectiveCard.svelte'
+  import MilestoneRow from '#lib/components/objectives/MilestoneRow.svelte'
   import CelebrationModal, {
     fireConfetti,
-  } from '$lib/components/objectives/CelebrationModal.svelte'
+  } from '#lib/components/objectives/CelebrationModal.svelte'
   import ArrowLeft from '@lucide/svelte/icons/arrow-left'
   import Pencil from '@lucide/svelte/icons/pencil'
   import Trash2 from '@lucide/svelte/icons/trash-2'
